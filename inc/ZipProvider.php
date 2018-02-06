@@ -1,0 +1,135 @@
+<?php
+/**
+ * ZipProvider class.
+ *
+ * @since 1.0.0
+ */
+
+namespace Required\Traduttore;
+
+use GP;
+use GP_Format;
+use GP_Locale;
+use GP_Locales;
+use GP_Translation_Set;
+use WP_Filesystem_Base;
+use ZipArchive;
+
+/**
+ * Class used to register main actions and filters.
+ *
+ * @since 1.0.0
+ */
+class ZipProvider {
+	const CACHE_DIR = 'traduttore';
+
+	/** @var GP_Translation_Set */
+	protected $translation_set;
+
+	public function __construct( GP_Translation_Set $translation_set ) {
+		$this->translation_set = $translation_set;
+	}
+
+	/**
+	 * Generates and caches a ZIP file for a translation set.
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function generate_zip_file() {
+		if ( ! class_exists( '\ZipArchive' ) ) {
+			return false;
+		}
+
+		/** @var WP_Filesystem_Base $wp_filesystem */
+		global $wp_filesystem;
+
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . '/wp-admin/includes/admin.php';
+
+			if ( ! \WP_Filesystem() ) {
+				return false;
+			}
+		}
+
+		// Make sure the cache directory exists.
+		if ( ! @is_dir( $this->get_cache_dir() ) ) {
+			$wp_filesystem->mkdir( $this->get_cache_dir(), FS_CHMOD_DIR );
+		}
+
+		/** @var GP_Locale $locale */
+		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
+		$project = GP::$project->get( $this->translation_set->project_id );
+		$entries = GP::$translation->for_export( $project, $this->translation_set );
+
+		$files_for_zip = [];
+
+		/** @var GP_Format $format */
+		foreach( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
+			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
+			$temp_file = wp_tempnam( $file_name );
+
+			// Get the contents from the formatter.
+			$contents = $format->print_exported_file( $project, $locale, $this->translation_set, $entries );
+
+			$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
+
+			$files_for_zip[$temp_file] = $file_name;
+		}
+
+		$zip = new ZipArchive();
+
+		if ( $zip->open( $this->get_zip_path(), ZipArchive::CREATE ) === true ) {
+			foreach ( $files_for_zip as $temp_file => $file_name ) {
+				$zip->addFile( $temp_file, $file_name );
+			}
+
+			$zip->close();
+		}
+
+		foreach ( $files_for_zip as $temp_file => $file_name ) {
+			unlink( $temp_file );
+		}
+
+		return true;
+	}
+
+	protected function get_zip_filename() {
+		/** @var GP_Locale $locale */
+		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
+		$project = GP::$project->get( $this->translation_set->project_id );
+
+		return sprintf(
+			'%1$s-%2$s.zip',
+			str_replace( '/', '-', $project->slug ),
+			$locale->wp_locale
+		);
+	}
+
+	public function get_zip_url() {
+		return sprintf(
+			'%1$s/%2$s/%3$s',
+			WP_CONTENT_URL,
+			self::CACHE_DIR,
+			$this->get_zip_filename()
+		);
+	}
+
+	public function get_zip_path() {
+		return sprintf(
+			'%1$s/%2$s/%3$s',
+			WP_CONTENT_DIR,
+			self::CACHE_DIR,
+			$this->get_zip_filename()
+		);
+	}
+
+	protected function get_cache_dir() {
+		return sprintf(
+			'%1$s/%2$s',
+			WP_CONTENT_DIR,
+			self::CACHE_DIR
+		);
+	}
+}
