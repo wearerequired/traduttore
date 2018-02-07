@@ -2,7 +2,7 @@
 /**
  * TranslationApi class.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Required\Traduttore;
@@ -16,9 +16,16 @@ use GP_Translation_Set;
 /**
  * Class used to add a simple translations API.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 class TranslationApiRoute extends GP_Route_Main {
+	/**
+	 * Route callback handler.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $project_path Project path.
+	 */
 	public function route_callback( $project_path ) {
 		// Get the project object from the project path that was passed in.
 		$project = GP::$project->by_path( $project_path );
@@ -39,7 +46,7 @@ class TranslationApiRoute extends GP_Route_Main {
 				'updated' => $set->last_modified(),
 				'english_name' => $locale->english_name,
 				'native_name' => $locale->native_name,
-				'package' => $zip_provider->get_zip_url(),
+				'package' => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : false,
 				'iso' => array_filter( [
 					$locale->lang_code_iso_639_1,
 					$locale->lang_code_iso_639_2,

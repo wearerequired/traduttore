@@ -2,7 +2,7 @@
 /**
  * ZipProvider class.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Required\Traduttore;
@@ -16,22 +16,40 @@ use WP_Filesystem_Base;
 use ZipArchive;
 
 /**
- * Class used to register main actions and filters.
+ * Class used to generate ZIP files for translations.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 class ZipProvider {
+	/**
+	 * @since 2.0.0
+	 *
+	 * @var string Cache directory for ZIP files.
+	 */
 	const CACHE_DIR = 'traduttore';
 
-	/** @var GP_Translation_Set */
+	/**
+	 * @since 2.0.0
+	 *
+	 * @var GP_Translation_Set The translation set.
+	 */
 	protected $translation_set;
 
+	/**
+	 * ZipProvider constructor.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param GP_Translation_Set $translation_set Translation set to get the ZIP for.
+	 */
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
 	}
 
 	/**
 	 * Generates and caches a ZIP file for a translation set.
+	 *
+	 * @since 2.0.0
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem
 	 *
@@ -66,16 +84,15 @@ class ZipProvider {
 		$files_for_zip = [];
 
 		/** @var GP_Format $format */
-		foreach( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
+		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
 			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
 			$temp_file = wp_tempnam( $file_name );
 
-			// Get the contents from the formatter.
 			$contents = $format->print_exported_file( $project, $locale, $this->translation_set, $entries );
 
 			$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
 
-			$files_for_zip[$temp_file] = $file_name;
+			$files_for_zip[ $temp_file ] = $file_name;
 		}
 
 		$zip = new ZipArchive();
@@ -95,6 +112,13 @@ class ZipProvider {
 		return true;
 	}
 
+	/**
+	 * Returns the name of the ZIP file without the path.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string ZIP filename.
+	 */
 	protected function get_zip_filename() {
 		/** @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
@@ -107,6 +131,13 @@ class ZipProvider {
 		);
 	}
 
+	/**
+	 * Returns the full URL to the ZIP file.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string ZIP file URL.
+	 */
 	public function get_zip_url() {
 		return sprintf(
 			'%1$s/%2$s/%3$s',
@@ -116,6 +147,13 @@ class ZipProvider {
 		);
 	}
 
+	/**
+	 * Returns the full path to the ZIP file.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string ZIP file path.
+	 */
 	public function get_zip_path() {
 		return sprintf(
 			'%1$s/%2$s/%3$s',
@@ -125,6 +163,13 @@ class ZipProvider {
 		);
 	}
 
+	/**
+	 * Returns the full path to the cache directory.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string Cache directory path.
+	 */
 	protected function get_cache_dir() {
 		return sprintf(
 			'%1$s/%2$s',

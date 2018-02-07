@@ -3,7 +3,7 @@
  * Plugin Name: Traduttore
  * Plugin URI:  https://github.com/wearerequired/traduttore/
  * Description: Customizations for translate.required.com
- * Version:     1.0.0
+ * Version:     2.0.0
  * Author:      required
  * Author URI:  https://required.com
  * License:     GPL-2.0+
