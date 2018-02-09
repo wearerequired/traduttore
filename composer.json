@@ -29,6 +29,9 @@
   "require": {
     "php": ">=7.0"
   },
+  "suggest": {
+    "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
+  },
   "autoload": {
     "psr-4": {
       "Required\\Traduttore\\": "inc"
