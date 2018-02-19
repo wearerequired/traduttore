@@ -55,6 +55,7 @@ class TranslationApiRoute extends GP_Route_Main {
 			];
 		}
 
+		header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		echo wp_json_encode( [ 'translations' => $result ] );
 	}
 }
