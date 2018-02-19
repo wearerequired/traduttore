@@ -41,16 +41,20 @@ class TranslationApiRoute extends GP_Route_Main {
 
 			$zip_provider = new ZipProvider( $set );
 
+			if ( ! file_exists( $zip_provider->get_zip_path() ) ) {
+				continue;
+			}
+
 			$result[] = [
 				'language'     => $locale->wp_locale,
 				'updated'      => $set->last_modified(),
 				'english_name' => $locale->english_name,
 				'native_name'  => $locale->native_name,
-				'package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : false,
+				'package'      => $zip_provider->get_zip_url(),
 				'iso'          => array_filter( [
 					$locale->lang_code_iso_639_1,
 					$locale->lang_code_iso_639_2,
-					$locale->lang_code_iso_639_3
+					$locale->lang_code_iso_639_3,
 				] ),
 			];
 		}
