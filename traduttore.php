@@ -32,6 +32,8 @@
 
 namespace Required\Traduttore;
 
+use WP_CLI;
+
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 }
@@ -52,4 +54,9 @@ function init() {
 	$plugin = new Plugin();
 	$plugin->init();
 }
+
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
+
+if ( class_exists( '\WP_CLI' ) ) {
+	WP_CLI::add_command( 'traduttore', \Required\Traduttore\CLI_Command::class );
+}
