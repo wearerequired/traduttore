@@ -79,7 +79,11 @@ class ZipProvider {
 		/** @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
-		$entries = GP::$translation->for_export( $project, $this->translation_set );
+		$entries = GP::$translation->for_export( $project, $this->translation_set, [ 'status' => 'current' ] );
+
+		if ( ! $entries ) {
+			return false;
+		}
 
 		$files_for_zip = [];
 
