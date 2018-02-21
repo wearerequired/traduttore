@@ -1,17 +1,36 @@
 {
   "name": "wearerequired/traduttore",
   "type": "wordpress-plugin",
-  "license": "GPL-2.0+",
+  "description": "WordPress plugin to add customizations for translate.required.com",
+  "homepage": "https://github.com/wearerequired/traduttore",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "required",
       "email": "info@required.ch",
       "homepage": "https://required.com",
+      "role": "Company"
+    },
+    {
+      "name": "Dominik Schilling",
+      "email": "dominik@required.ch",
+      "role": "Developer"
+    },
+    {
+      "name": "Pascal Birchler",
+      "email": "pascal@required.ch",
       "role": "Developer"
     }
   ],
+  "keywords": [
+    "wordpress",
+    "glotpress"
+  ],
   "require": {
     "php": ">=7.0"
+  },
+  "suggest": {
+    "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
   },
   "autoload": {
     "psr-4": {

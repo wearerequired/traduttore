@@ -3,7 +3,7 @@
  * Plugin Name: Traduttore
  * Plugin URI:  https://github.com/wearerequired/traduttore/
  * Description: Customizations for translate.required.com
- * Version:     1.0.0
+ * Version:     2.0.0
  * Author:      required
  * Author URI:  https://required.com
  * License:     GPL-2.0+
@@ -32,6 +32,8 @@
 
 namespace Required\Traduttore;
 
+use WP_CLI;
+
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 }
@@ -52,4 +54,9 @@ function init() {
 	$plugin = new Plugin();
 	$plugin->init();
 }
+
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
+
+if ( class_exists( '\WP_CLI' ) ) {
+	WP_CLI::add_command( 'traduttore', \Required\Traduttore\CLI_Command::class );
+}
