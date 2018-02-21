@@ -163,12 +163,12 @@ class Plugin {
 			return false;
 		}
 
-		if ( ! \defined( 'GITHUB_SYNC_SECRET' ) ) {
+		if ( ! \defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
 			return false;
 		}
 
 		$github_signature  = $request->get_header( 'x-hub-signature' );
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), GITHUB_SYNC_SECRET );
+		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), TRADUTTORE_GITHUB_SYNC_SECRET );
 
 		return hash_equals( $github_signature, $payload_signature );
 	}
