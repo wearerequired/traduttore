@@ -52,4 +52,39 @@ class CLI_Command extends WP_CLI_Command {
 			}
 		}
 	}
+
+	/**
+	 * Updates project translations from GitHub repository.
+	 *
+	 * Finds the project the repository belongs to and updates the translations accordingly.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <url>
+	 * : GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Update
+	 *     $ wp traduttore update_from_github https://github.com/wearerequired/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 */
+	public function update_from_github( $args, $assoc_args ) {
+		$project = GitHubUpdater::find_project( $args[0] );
+
+		if ( ! $project ) {
+			WP_CLI::error( 'Project not found' );
+		}
+
+		$github_updater = new GitHubUpdater( $args[0], $project );
+		$success        = $github_updater->fetch_and_update();
+
+		do_action( 'traduttore_updated_from_github', $success, $project );
+
+		if ( $success ) {
+			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->id ) );
+		} else {
+			WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->id ) );
+		}
+	}
 }

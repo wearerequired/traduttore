@@ -12,6 +12,10 @@ use GP_Locale;
 use GP_Locales;
 use GP_Translation;
 use GP_Translation_Set;
+use WP_Error;
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * Class used to register main actions and filters.
@@ -24,7 +28,6 @@ class Plugin {
 	 * Initializes the plugin.
 	 *
 	 * @since 1.0.0
-	 * @access public
 	 */
 	public function init() {
 		$this->register_hooks();
@@ -34,7 +37,6 @@ class Plugin {
 	 * Registers actions and filters.
 	 *
 	 * @since 1.0.0
-	 * @access public
 	 */
 	public function register_hooks() {
 		$permissions = new Permissions();
@@ -49,6 +51,8 @@ class Plugin {
 
 			return $locations;
 		}, 50 );
+
+		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
 		add_action( 'gp_init', function () {
 			GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
@@ -69,6 +73,15 @@ class Plugin {
 			$success      = $zip_provider->generate_zip_file();
 
 			do_action( 'traduttore_zip_generated', $success, $translation_set );
+		} );
+
+		add_action( 'traduttore_update_from_github', function ( $repository, $project_id ) {
+			$project = GP::$project->get( $project_id );
+
+			$github_updater = new GitHubUpdater( $repository, $project );
+			$success        = $github_updater->fetch_and_update();
+
+			do_action( 'traduttore_updated_from_github', $success, $project );
 		} );
 
 		add_filter( 'slack_get_events', function( $events ) {
@@ -95,5 +108,68 @@ class Plugin {
 
 			return $events;
 		} );
+	}
+
+	/**
+	 * Registers new REST API routes.
+	 *
+	 * @since 1.0.0
+	 */
+	public function register_rest_routes() {
+		register_rest_route( 'github-webhook/v1', '/push-event', [
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => [ $this,  'github_webhook_push' ],
+			'permission_callback' => [ $this,  'github_webhook_permission_push'],
+		] );
+	}
+
+	/**
+	 * @param WP_REST_Request $request Request object.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function github_webhook_push( WP_REST_Request $request ) {
+		$params = $request->get_params();
+
+		if ( ! isset( $params['repository']['url'] ) ) {
+			return new WP_Error( '400', 'Bad request' );
+		}
+
+		$project = GitHubUpdater::find_project( $params['html_url'] );
+
+		if ( ! $project ) {
+			return new WP_Error( '404', 'Could not find project for this repository' );
+		}
+
+		// Schedule job to be run in the background to
+		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 15, 'traduttore_update_from_github', [ $params['repository']['url'], $project->id ] );
+		}
+
+		return new WP_REST_Response( [ 'OK' ] );
+	}
+
+	/**
+	 * Permission callback for the incoming webhook REST route.
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 *
+	 * @return True if permission is granted, false otherwise.
+	 */
+	public function github_webhook_permission_push( $request ) {
+		$event_name = $request->get_header( 'x-github-event' );
+
+		if ( 'push' !== $event_name ) {
+			return false;
+		}
+
+		if ( ! \defined( 'GITHUB_SYNC_SECRET' ) ) {
+			return false;
+		}
+
+		$github_signature  = $request->get_header( 'x-hub-signature' );
+		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), GITHUB_SYNC_SECRET );
+
+		return hash_equals( $github_signature, $payload_signature );
 	}
 }
