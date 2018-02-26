@@ -80,9 +80,7 @@ class Plugin {
 			$project = GP::$project->get( $project_id );
 
 			$github_updater = new GitHubUpdater( $repository, $project );
-			$success        = $github_updater->fetch_and_update();
-
-			do_action( 'traduttore_updated_from_github', $success, $project );
+			$github_updater->fetch_and_update();
 		} );
 
 		add_filter( 'slack_get_events', function( $events ) {

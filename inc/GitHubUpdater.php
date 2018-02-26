@@ -111,7 +111,18 @@ class GitHubUpdater {
 			return false;
 		}
 
-		GP::$original->import_for_project( $this->project, $translations );
+		$stats = GP::$original->import_for_project( $this->project, $translations );
+
+		/**
+		 * Fires after translations have been updated from GitHub.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Project $project      The GlotPress project that was updated.
+		 * @param array      $stats        Stats about the number of imported translations.
+		 * @param PO         $translations PO object containing all the translations from the POT file.
+		 */
+		do_action( 'traduttore_updated_from_github', $this->project, $stats, $translations );
 
 		return true;
 	}

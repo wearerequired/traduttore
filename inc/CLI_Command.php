@@ -79,8 +79,6 @@ class CLI_Command extends WP_CLI_Command {
 		$github_updater = new GitHubUpdater( $args[0], $project );
 		$success        = $github_updater->fetch_and_update();
 
-		do_action( 'traduttore_updated_from_github', $success, $project );
-
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->id ) );
 		} else {
