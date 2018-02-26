@@ -24,12 +24,12 @@ class CLI_Command extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     # Generate ZIP files for the project with ID 123.
-	 *     $ wp traduttore generate-zip 123
+	 *     $ wp traduttore translations build 123
 	 *     ZIP file generated for translation set (ID: 1)
 	 *     ZIP file generated for translation set (ID: 3)
 	 *     ZIP file generated for translation set (ID: 7)
 	 */
-	public function generate_zip( $args, $assoc_args ) {
+	public function build( $args, $assoc_args ) {
 		if ( is_numeric( $args[0] ) ) {
 			$project = GP::$project->get( $args[0] );
 		} else {
@@ -69,10 +69,10 @@ class CLI_Command extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     # Update
-	 *     $ wp traduttore update_from_github https://github.com/wearerequired/required-valencia
+	 *     $ wp traduttore translations update https://github.com/wearerequired/required-valencia
 	 *     Success: Updated translations for project (ID: 123)!
 	 */
-	public function update_from_github( $args, $assoc_args ) {
+	public function update( $args, $assoc_args ) {
 		$project = GitHubUpdater::find_project( $args[0] );
 
 		if ( ! $project ) {
