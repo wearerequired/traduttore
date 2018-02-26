@@ -72,7 +72,7 @@ class Plugin {
 			$translation_set = GP::$translation_set->get( $translation_set_id );
 
 			$zip_provider = new ZipProvider( $translation_set );
-			$success      = $zip_provider->generate_zip_file();
+			$zip_provider->generate_zip_file();
 		} );
 
 		add_action( 'traduttore_update_from_github', function ( $repository ) {
