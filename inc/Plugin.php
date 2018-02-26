@@ -113,8 +113,8 @@ class Plugin {
 					list($originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error) = $stats;
 
 					return sprintf(
-						'``<%1$s|%2$s>`: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
-						gp_url_project( $project ),
+						'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
+						home_url( gp_url_project( $project ) ),
 						$project->name,
 						$originals_added,
 						$originals_fuzzied,
