@@ -114,7 +114,7 @@ class ZipProvider {
 		}
 
 		/**
-		 * Fires after a ZIP file containing translation files for a given translation set have been updated.
+		 * Fires after a ZIP file for a given translation set has been generated.
 		 *
 		 * @since 2.0.0
 		 *
