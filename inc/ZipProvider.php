@@ -72,8 +72,8 @@ class ZipProvider {
 		}
 
 		// Make sure the cache directory exists.
-		if ( ! @is_dir( $this->get_cache_dir() ) ) {
-			$wp_filesystem->mkdir( $this->get_cache_dir(), FS_CHMOD_DIR );
+		if ( ! @is_dir( static::get_cache_dir() ) ) {
+			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
 		}
 
 		/** @var GP_Locale $locale */
@@ -174,7 +174,7 @@ class ZipProvider {
 	 *
 	 * @return string Cache directory path.
 	 */
-	protected function get_cache_dir() {
+	public static function get_cache_dir() {
 		return sprintf(
 			'%1$s/%2$s',
 			WP_CONTENT_DIR,
