@@ -12,6 +12,7 @@ use GP_Locale;
 use GP_Locales;
 use GP_Translation;
 use GP_Translation_Set;
+use WP;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -108,6 +109,34 @@ class Plugin {
 
 			return $events;
 		} );
+
+		/**
+		 * Filter Restricted Site Access to allow external requests to Traduttore's endpoints.
+		 *
+		 * @param bool $is_restricted Whether access is restricted.
+		 * @param WP   $wp            The WordPress object. Only available on the front end.
+		 *
+		 * @return bool Whether access should be restricted.
+		 */
+		add_filter( 'restricted_site_access_is_restricted', function( $is_restricted, $wp ) {
+			if ( defined( 'REST_REQUEST' ) && REST_REQUEST && $wp instanceof WP ) {
+				$route = untrailingslashit( $wp->query_vars['rest_route'] );
+
+				if ( '/github-webhook/v1/push-event' === $route ) {
+					return false;
+				}
+			}
+
+			if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
+				$route = GP::$router->request_uri();
+
+				if ( 0 === strpos( $route, '/api/translations/' ) ) {
+					return false;
+				}
+			}
+
+			return $is_restricted;
+		}, 10, 2 );
 	}
 
 	/**
