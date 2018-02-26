@@ -105,6 +105,8 @@ class GitHubUpdater {
 		$translations = new PO();
 		$result       = $translations->import_from_file( $pot_target );
 
+		unlink( $pot_target );
+
 		if ( ! $result ) {
 			return false;
 		}
