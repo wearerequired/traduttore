@@ -11,7 +11,7 @@ Customizations for translate.required.com.
 Easily create ZIP files containing the translations for all translation sets of a project.
 
 ```bash
-wp traduttore generate_zip <project>
+wp traduttore translations build <project>
 ```
 
 ZIP files will automatically be updated when the translations change. This WP-CLI command is mostly for debugging / testing.
@@ -21,7 +21,7 @@ ZIP files will automatically be updated when the translations change. This WP-CL
 Easily update a project's translatable string from a GitHub repository.
 
 ```bash
-wp traduttore update_from_github <repository_url>
+wp traduttore translations update <project|repository_url>
 ```
 
 This step can be automated by setting up a new webhook on GitHub. To do this, follow these steps:
