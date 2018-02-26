@@ -88,7 +88,7 @@ class GitHubUpdater {
 	public function fetch_and_update() {
 		$slug       = $this->project->slug;
 		$git_target = get_temp_dir() . 'traduttore-github-' . $slug;
-		$pot_target = wp_tempnam( $slug . '.pot' );
+		$pot_target = wp_tempnam( 'traduttore-' . $slug . '.pot' );
 
 		$result = $this->fetch_github_repository( $this->ssh_url, $git_target );
 
