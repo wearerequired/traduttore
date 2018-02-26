@@ -119,7 +119,7 @@ class Plugin {
 		 * @return bool Whether access should be restricted.
 		 */
 		add_filter( 'restricted_site_access_is_restricted', function( $is_restricted, $wp ) {
-			if ( $wp instanceof WP ) {
+			if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
 				$route = untrailingslashit( $wp->query_vars['rest_route'] );
 
 				if ( '/github-webhook/v1/push-event' === $route ) {
