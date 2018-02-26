@@ -19,7 +19,7 @@ class CLI_Command extends WP_CLI_Command {
 	 * ## OPTIONS
 	 *
 	 * <project>
-	 * : Slug or ID of the project to generate ZIP files for.
+	 * : Path or ID of the project to generate ZIP files for.
 	 *
 	 * ## EXAMPLES
 	 *
@@ -63,17 +63,33 @@ class CLI_Command extends WP_CLI_Command {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <url>
-	 * : GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 * <project|url>
+	 * : Project path / ID or GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     # Update
+	 *     # Update translations from repository URL.
 	 *     $ wp traduttore translations update https://github.com/wearerequired/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 *     # Update translations from project path.
+	 *     $ wp traduttore translations update required/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 *     # Update translations from project ID.
+	 *     $ wp traduttore translations update 123
 	 *     Success: Updated translations for project (ID: 123)!
 	 */
 	public function update( $args, $assoc_args ) {
-		$project = GitHubUpdater::find_project( $args[0] );
+		if ( is_numeric( $args[0] ) ) {
+			$project = GP::$project->get( (int) $args[0] );
+		} else {
+			$project = GP::$project->by_path( $args[0] );
+
+			if ( ! $project ) {
+				$project = GitHubUpdater::find_project( $args[0] );
+			}
+		}
 
 		if ( ! $project ) {
 			WP_CLI::error( 'Project not found' );
