@@ -10,6 +10,7 @@ namespace Required\Traduttore;
 use GP;
 use GP_Locale;
 use GP_Locales;
+use GP_Project;
 use GP_Translation;
 use GP_Translation_Set;
 use WP;
@@ -84,7 +85,7 @@ class Plugin {
 		} );
 
 		add_filter( 'slack_get_events', function( $events ) {
-			$events['traduttore_zip_generated'] = array(
+			$events['traduttore_zip_generated'] = [
 				'action'      => 'traduttore_zip_generated',
 				'description' => __( 'When a new translation ZIP files is built', 'traduttore' ),
 				'message'     => function( $success, GP_Translation_Set $translation_set ) {
@@ -103,7 +104,25 @@ class Plugin {
 						$project->name
 					);
 				}
-			);
+			];
+
+			$events['traduttore_updated_from_github'] = [
+				'action'      => 'traduttore_updated_from_github',
+				'description' => __( 'When a new translation ZIP files is built', 'traduttore' ),
+				'message'     => function( GP_Project $project, array $stats ) {
+					list($originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error) = $stats;
+
+					return sprintf(
+						'``<%1$s|%2$s>`: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
+						gp_url_project( $project ),
+						$project->name,
+						$originals_added,
+						$originals_fuzzied,
+						$originals_obsoleted,
+						$originals_error
+					);
+				}
+			];
 
 			return $events;
 		} );
