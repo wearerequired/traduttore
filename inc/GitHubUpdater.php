@@ -2,7 +2,7 @@
 /**
  * GitHubUpdater class.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Required\Traduttore;
@@ -14,18 +14,18 @@ use PO;
 /**
  * Updates a project's translation from a GitHub repository.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 class GitHubUpdater {
 	/**
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @var string Repository SSH URL.
 	 */
 	protected $ssh_url;
 
 	/**
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @var GP_Project GlotPress project.
 	 */
@@ -34,7 +34,7 @@ class GitHubUpdater {
 	/**
 	 * GitHubUpdater constructor.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $repository GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 * @param GP_Project $project GlotPress project.
@@ -47,7 +47,7 @@ class GitHubUpdater {
 	/**
 	 * Find a GlotPress project by a GitHub repository URL.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $html_url GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 *
@@ -66,7 +66,7 @@ class GitHubUpdater {
 	/**
 	 * Turns a regular repository URL into one that can be connected to via SSH.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $url GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 *
@@ -81,7 +81,7 @@ class GitHubUpdater {
 	/**
 	 * Fetches the GitHub repository and updates the translations based on the source code.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return bool True on success, false otherwise.
 	 */
@@ -116,7 +116,7 @@ class GitHubUpdater {
 		/**
 		 * Fires after translations have been updated from GitHub.
 		 *
-		 * @since 1.0.0
+		 * @since 2.0.0
 		 *
 		 * @param GP_Project $project      The GlotPress project that was updated.
 		 * @param array      $stats        Stats about the number of imported translations.
@@ -132,7 +132,7 @@ class GitHubUpdater {
 	 *
 	 * If the repository has been cloned before, the latest changes will be pulled.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $source GitHub repository URL.
 	 * @param string $target Target directory.
@@ -156,7 +156,7 @@ class GitHubUpdater {
 	/**
 	 * Creates a POT file from a given source directory.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $source Source directory.
 	 * @param string $target Target file name.

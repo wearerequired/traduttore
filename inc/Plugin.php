@@ -159,7 +159,7 @@ class Plugin {
 	/**
 	 * Clears all scheduled hooks upon plugin deactivation.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	public static function on_plugin_deactivation() {
 		wp_unschedule_hook( 'traduttore_generate_zip' );
@@ -169,7 +169,7 @@ class Plugin {
 	/**
 	 * Registers new REST API routes.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	public function register_rest_routes() {
 		register_rest_route( 'github-webhook/v1', '/push-event', [
@@ -180,9 +180,13 @@ class Plugin {
 	}
 
 	/**
+	 * GitHub webhook callback function.
+	 *
+	 * @since 2.0.0
+	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
-	 * @return WP_Error|WP_REST_Response
+	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function github_webhook_push( WP_REST_Request $request ) {
 		$params     = $request->get_params();
@@ -211,6 +215,8 @@ class Plugin {
 
 	/**
 	 * Permission callback for the incoming webhook REST route.
+	 *
+	 * @since 2.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *

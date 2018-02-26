@@ -7,6 +7,11 @@ use GP_Translation_Set;
 use WP_CLI;
 use WP_CLI_Command;
 
+/**
+ * Class to handle Traduttore CLI commands.
+ *
+ * @since 2.0.0
+ */
 class CLI_Command extends WP_CLI_Command {
 	/**
 	 * Generate translation ZIP files for a project.
