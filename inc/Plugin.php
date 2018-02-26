@@ -206,7 +206,7 @@ class Plugin {
 		}
 
 		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
-			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 15, 'traduttore_update_from_github', [ $params['repository']['html_url'] ] );
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $params['repository']['html_url'] ] );
 		}
 
 		return new WP_REST_Response( [ 'OK' ] );
