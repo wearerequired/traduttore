@@ -228,7 +228,7 @@ class Plugin {
 			return false;
 		}
 
-		if ( ! \defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
+		if ( ! defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
 			return false;
 		}
 
