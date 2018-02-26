@@ -90,7 +90,6 @@ class Plugin {
 				'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 				'message'     => function( $success, GP_Translation_Set $translation_set ) {
 					if ( ! $success ) {
-						// Todo: Send error message.
 						return false;
 					}
 
@@ -99,9 +98,10 @@ class Plugin {
 					$project = GP::$project->get( $translation_set->project_id );
 
 					return sprintf(
-						'Successfully updated *%1$s* ZIP file for *%2$s*',
-						$locale->english_name,
-						$project->name
+						'<%1$s|%2$s>: ZIP file updated for *%3$s*.',
+						home_url( gp_url_project( $project ) ),
+						$project->name,
+						$locale->english_name
 					);
 				}
 			];
@@ -202,7 +202,6 @@ class Plugin {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		// Schedule job to be run in the background to
 		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
 			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 15, 'traduttore_update_from_github', [ $params['repository']['html_url'], $project->id ] );
 		}
