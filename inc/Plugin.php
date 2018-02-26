@@ -109,7 +109,7 @@ class Plugin {
 				'action'      => 'traduttore_updated_from_github',
 				'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
 				'message'     => function( GP_Project $project, array $stats ) {
-					list($originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error) = $stats;
+					list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $stats;
 
 					return sprintf(
 						'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
@@ -131,7 +131,6 @@ class Plugin {
 		 *
 		 * @param bool $is_restricted Whether access is restricted.
 		 * @param WP   $wp            The WordPress object. Only available on the front end.
-		 *
 		 * @return bool Whether access should be restricted.
 		 */
 		add_filter( 'restricted_site_access_is_restricted', function( $is_restricted, $wp ) {
@@ -184,7 +183,6 @@ class Plugin {
 	 * @since 2.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
-	 *
 	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function github_webhook_push( WP_REST_Request $request ) {
@@ -218,7 +216,6 @@ class Plugin {
 	 * @since 2.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
-	 *
 	 * @return True if permission is granted, false otherwise.
 	 */
 	public function github_webhook_permission_push( $request ) {

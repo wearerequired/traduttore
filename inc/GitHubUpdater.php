@@ -50,7 +50,6 @@ class GitHubUpdater {
 	 * @since 2.0.0
 	 *
 	 * @param string $repository GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
-	 *
 	 * @return false|GP_Project Project on success, false otherwise.
 	 */
 	public static function find_project( $repository ) {
@@ -69,7 +68,6 @@ class GitHubUpdater {
 	 * @since 2.0.0
 	 *
 	 * @param string $url GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
-	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/required-valencia.git.
 	 */
 	protected function get_ssh_from_url( $url ) {
@@ -136,7 +134,6 @@ class GitHubUpdater {
 	 *
 	 * @param string $source GitHub repository URL.
 	 * @param string $target Target directory.
-	 *
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function fetch_github_repository( $source, $target ) {
@@ -161,7 +158,6 @@ class GitHubUpdater {
 	 * @param string $source Source directory.
 	 * @param string $target Target file name.
 	 * @param string $slug Project slug/domain.
-	 *
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_pot_file( $source, $target, $slug ) {
