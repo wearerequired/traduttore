@@ -111,6 +111,16 @@ class Plugin {
 	}
 
 	/**
+	 * Clears all scheduled hooks upon plugin deactivation.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function on_plugin_deactivation() {
+		wp_unschedule_hook( 'traduttore_generate_zip' );
+		wp_unschedule_hook( 'traduttore_update_from_github' );
+	}
+
+	/**
 	 * Registers new REST API routes.
 	 *
 	 * @since 1.0.0

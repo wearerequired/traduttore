@@ -45,6 +45,8 @@ if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
 
 define( __NAMESPACE__ . '\PLUGIN_FILE', __FILE__ );
 
+register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' ] );
+
 /**
  * Initializes the plugin.
  *
