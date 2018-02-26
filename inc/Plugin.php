@@ -168,7 +168,12 @@ class Plugin {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function github_webhook_push( WP_REST_Request $request ) {
-		$params = $request->get_params();
+		$params     = $request->get_params();
+		$event_name = $request->get_header( 'x-github-event' );
+
+		if ( 'ping' === $event_name ) {
+			return new WP_REST_Response( [ 'OK' ] );
+		}
 
 		if ( ! isset( $params['repository']['url'] ) ) {
 			return new WP_Error( '400', 'Bad request' );
@@ -198,7 +203,7 @@ class Plugin {
 	public function github_webhook_permission_push( $request ) {
 		$event_name = $request->get_header( 'x-github-event' );
 
-		if ( 'push' !== $event_name ) {
+		if ( ! in_array( $event_name, [ 'push', 'ping' ], true ) ) {
 			return false;
 		}
 
