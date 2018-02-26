@@ -220,8 +220,13 @@ class Plugin {
 	 */
 	public function github_webhook_permission_push( $request ) {
 		$event_name = $request->get_header( 'x-github-event' );
+		$params     = $request->get_params();
 
 		if ( ! in_array( $event_name, [ 'push', 'ping' ], true ) ) {
+			return false;
+		}
+
+		if ( ! isset( $params['ref'] ) || 'refs/heads/' . $params['repository']['default_branch'] !== $params['ref'] ) {
 			return false;
 		}
 
