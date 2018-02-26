@@ -49,16 +49,16 @@ class GitHubUpdater {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $html_url GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
+	 * @param string $repository GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 *
 	 * @return false|GP_Project Project on success, false otherwise.
 	 */
-	public static function find_project( $html_url ) {
+	public static function find_project( $repository ) {
 		global $wpdb;
 
 		$table = GP::$project->table;
 
-		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", $wpdb->esc_like( $html_url ) . '%' );
+		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", $wpdb->esc_like( $repository ) . '%' );
 
 		return GP::$project->coerce( $wpdb->get_row( $query ) );
 	}
