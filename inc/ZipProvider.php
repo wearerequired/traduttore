@@ -113,6 +113,17 @@ class ZipProvider {
 			unlink( $temp_file );
 		}
 
+		/**
+		 * Fires after a ZIP file containing translation files for a given translation set have been updated.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param string             $zip_file        Path to the generated ZIP file.
+		 * @param string             $zip_url         URL to the generated ZIP file.
+		 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
+		 */
+		do_action( 'traduttore_zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set );
+
 		return true;
 	}
 

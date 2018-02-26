@@ -48,8 +48,6 @@ class CLI_Command extends WP_CLI_Command {
 			$zip_provider = new ZipProvider( $translation_set );
 			$success      = $zip_provider->generate_zip_file();
 
-			do_action( 'traduttore_zip_generated', $success, $translation_set );
-
 			if ( $success ) {
 				WP_CLI::success( sprintf( 'ZIP file generated for translation set (ID: %d)', $translation_set->id ) );
 			} else {

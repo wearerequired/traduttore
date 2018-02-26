@@ -73,8 +73,6 @@ class Plugin {
 
 			$zip_provider = new ZipProvider( $translation_set );
 			$success      = $zip_provider->generate_zip_file();
-
-			do_action( 'traduttore_zip_generated', $success, $translation_set );
 		} );
 
 		add_action( 'traduttore_update_from_github', function ( $repository ) {
@@ -92,20 +90,17 @@ class Plugin {
 			$events['traduttore_zip_generated'] = [
 				'action'      => 'traduttore_zip_generated',
 				'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
-				'message'     => function( $success, GP_Translation_Set $translation_set ) {
-					if ( ! $success ) {
-						return false;
-					}
-
+				'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
 					/** @var GP_Locale $locale */
 					$locale  = GP_Locales::by_slug( $translation_set->locale );
 					$project = GP::$project->get( $translation_set->project_id );
 
 					return sprintf(
-						'<%1$s|%2$s>: ZIP file updated for *%3$s*.',
+						'<%1$s|%2$s>: ZIP file updated for *%3$s*. (<%4$s|Download>)',
 						home_url( gp_url_project( $project ) ),
 						$project->name,
-						$locale->english_name
+						$locale->english_name,
+						$zip_url
 					);
 				}
 			];
