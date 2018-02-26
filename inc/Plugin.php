@@ -77,8 +77,12 @@ class Plugin {
 			do_action( 'traduttore_zip_generated', $success, $translation_set );
 		} );
 
-		add_action( 'traduttore_update_from_github', function ( $repository, $project_id ) {
-			$project = GP::$project->get( $project_id );
+		add_action( 'traduttore_update_from_github', function ( $repository ) {
+			$project = GitHubUpdater::find_project( $repository );
+
+			if ( ! $project ) {
+				return;
+			}
 
 			$github_updater = new GitHubUpdater( $repository, $project );
 			$github_updater->fetch_and_update();
@@ -207,7 +211,7 @@ class Plugin {
 		}
 
 		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
-			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 15, 'traduttore_update_from_github', [ $params['repository']['html_url'], $project->id ] );
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 15, 'traduttore_update_from_github', [ $params['repository']['html_url'] ] );
 		}
 
 		return new WP_REST_Response( [ 'OK' ] );
