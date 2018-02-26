@@ -87,7 +87,7 @@ class Plugin {
 		add_filter( 'slack_get_events', function( $events ) {
 			$events['traduttore_zip_generated'] = [
 				'action'      => 'traduttore_zip_generated',
-				'description' => __( 'When a new translation ZIP files is built', 'traduttore' ),
+				'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 				'message'     => function( $success, GP_Translation_Set $translation_set ) {
 					if ( ! $success ) {
 						// Todo: Send error message.
@@ -108,7 +108,7 @@ class Plugin {
 
 			$events['traduttore_updated_from_github'] = [
 				'action'      => 'traduttore_updated_from_github',
-				'description' => __( 'When a new translation ZIP files is built', 'traduttore' ),
+				'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
 				'message'     => function( GP_Project $project, array $stats ) {
 					list($originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error) = $stats;
 
