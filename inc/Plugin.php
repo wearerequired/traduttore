@@ -175,11 +175,11 @@ class Plugin {
 			return new WP_REST_Response( [ 'OK' ] );
 		}
 
-		if ( ! isset( $params['repository']['url'] ) ) {
+		if ( ! isset( $params['repository']['html_url'] ) ) {
 			return new WP_Error( '400', 'Bad request' );
 		}
 
-		$project = GitHubUpdater::find_project( $params['html_url'] );
+		$project = GitHubUpdater::find_project( $params['repository']['html_url'] );
 
 		if ( ! $project ) {
 			return new WP_Error( '404', 'Could not find project for this repository' );
