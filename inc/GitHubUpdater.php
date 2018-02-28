@@ -167,7 +167,7 @@ class GitHubUpdater {
 			chdir( $current_dir );
 		} else {
 			exec( escapeshellcmd( sprintf(
-				'git clone %1$s %2$s',
+				'git clone %1$s %2$s -q',
 				escapeshellarg( $source ),
 				escapeshellarg( $target )
 			) ), $output, $status );
