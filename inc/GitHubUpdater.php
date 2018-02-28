@@ -166,7 +166,11 @@ class GitHubUpdater {
 			exec( escapeshellcmd( 'git pull -q' ), $output, $status );
 			chdir( $current_dir );
 		} else {
-			exec( escapeshellcmd( sprintf( 'git clone %1$s %2$s', $source, $target ) ), $output, $status );
+			exec( escapeshellcmd( sprintf(
+				'git clone %1$s %2$s',
+				escapeshellarg( $source ),
+				escapeshellarg( $target )
+			) ), $output, $status );
 		}
 
 		return 0 === $status;
@@ -183,7 +187,12 @@ class GitHubUpdater {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_pot_file( $source, $target, $slug ) {
-		exec( escapeshellcmd( sprintf( 'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s', $source, $target, $slug ) ), $output, $status );
+		exec( escapeshellcmd( sprintf(
+			'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s',
+			escapeshellarg( $source ),
+			escapeshellarg( $target ),
+			escapeshellarg( $slug )
+		) ), $output, $status );
 
 		return 0 === $status;
 	}
