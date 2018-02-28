@@ -45,6 +45,8 @@ if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
 
 define( __NAMESPACE__ . '\PLUGIN_FILE', __FILE__ );
 
+register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' ] );
+
 /**
  * Initializes the plugin.
  *
@@ -55,8 +57,8 @@ function init() {
 	$plugin->init();
 }
 
-add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\init', 1 );
 
 if ( class_exists( '\WP_CLI' ) ) {
-	WP_CLI::add_command( 'traduttore', \Required\Traduttore\CLI_Command::class );
+	WP_CLI::add_command( 'traduttore translations', \Required\Traduttore\CLI_Command::class );
 }

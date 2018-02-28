@@ -72,8 +72,8 @@ class ZipProvider {
 		}
 
 		// Make sure the cache directory exists.
-		if ( ! @is_dir( $this->get_cache_dir() ) ) {
-			$wp_filesystem->mkdir( $this->get_cache_dir(), FS_CHMOD_DIR );
+		if ( ! @is_dir( static::get_cache_dir() ) ) {
+			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
 		}
 
 		/** @var GP_Locale $locale */
@@ -112,6 +112,17 @@ class ZipProvider {
 		foreach ( $files_for_zip as $temp_file => $file_name ) {
 			unlink( $temp_file );
 		}
+
+		/**
+		 * Fires after a ZIP file for a given translation set has been generated.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param string             $zip_file        Path to the generated ZIP file.
+		 * @param string             $zip_url         URL to the generated ZIP file.
+		 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
+		 */
+		do_action( 'traduttore_zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set );
 
 		return true;
 	}
@@ -174,7 +185,7 @@ class ZipProvider {
 	 *
 	 * @return string Cache directory path.
 	 */
-	protected function get_cache_dir() {
+	public static function get_cache_dir() {
 		return sprintf(
 			'%1$s/%2$s',
 			WP_CONTENT_DIR,
