@@ -75,14 +75,14 @@ class Plugin {
 			$zip_provider->generate_zip_file();
 		} );
 
-		add_action( 'traduttore_update_from_github', function ( $repository ) {
-			$project = GitHubUpdater::find_project( $repository );
+		add_action( 'traduttore_update_from_github', function ( $project_id ) {
+			$project = GP::$project->get( $project_id );
 
 			if ( ! $project ) {
 				return;
 			}
 
-			$github_updater = new GitHubUpdater( $repository, $project );
+			$github_updater = new GitHubUpdater( $project );
 			$github_updater->fetch_and_update();
 		} );
 
@@ -204,7 +204,7 @@ class Plugin {
 		}
 
 		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
-			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $params['repository']['html_url'] ] );
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->id ] );
 		}
 
 		return new WP_REST_Response( [ 'OK' ] );

@@ -95,7 +95,7 @@ class CLI_Command extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$github_updater = new GitHubUpdater( $args[0], $project );
+		$github_updater = new GitHubUpdater( $project );
 		$success        = $github_updater->fetch_and_update();
 
 		if ( $success ) {

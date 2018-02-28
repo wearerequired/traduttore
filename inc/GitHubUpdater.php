@@ -27,13 +27,6 @@ class GitHubUpdater {
 	/**
 	 * @since 2.0.0
 	 *
-	 * @var string Repository SSH URL.
-	 */
-	protected $ssh_url;
-
-	/**
-	 * @since 2.0.0
-	 *
 	 * @var GP_Project GlotPress project.
 	 */
 	protected $project;
@@ -43,11 +36,9 @@ class GitHubUpdater {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $repository GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 * @param GP_Project $project GlotPress project.
 	 */
-	public function __construct( $repository, GP_Project $project ) {
-		$this->ssh_url = $this->get_ssh_from_url( $repository );
+	public function __construct( GP_Project $project ) {
 		$this->project = $project;
 	}
 
@@ -64,21 +55,23 @@ class GitHubUpdater {
 
 		$table = GP::$project->table;
 
-		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", $wpdb->esc_like( $repository ) . '%' );
+		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $repository ) . '%' );
 
 		return GP::$project->coerce( $wpdb->get_row( $query ) );
 	}
 
 	/**
-	 * Turns a regular repository URL into one that can be connected to via SSH.
+	 * Returns the repository URL based on the project's source URL template.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $url GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/required-valencia.git.
 	 */
-	protected function get_ssh_from_url( $url ) {
-		$path = wp_parse_url( $url, PHP_URL_PATH );
+	protected function get_ssh_url() {
+		// e.g. https://github.com/wearerequired/required-valencia/blob/master/%file%#L%line%.
+		$url = $this->project->source_url_template();
+		$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
+		$path = array_shift( $parts );
 
 		return sprintf( 'git@github.com:%s.git', ltrim( $path, '/' ) );
 	}
@@ -102,7 +95,7 @@ class GitHubUpdater {
 
 		$this->add_lock();
 
-		$result = $this->fetch_github_repository( $this->ssh_url, $git_target );
+		$result = $this->fetch_github_repository( $this->get_ssh_url(), $git_target );
 
 		if ( ! $result ) {
 			$this->remove_lock();
