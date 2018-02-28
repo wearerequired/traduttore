@@ -141,7 +141,7 @@ class GitHubUpdater {
 		 * @param array      $stats        Stats about the number of imported translations.
 		 * @param PO         $translations PO object containing all the translations from the POT file.
 		 */
-		//do_action( 'traduttore_updated_from_github', $this->project, $stats, $translations );
+		do_action( 'traduttore_updated_from_github', $this->project, $stats, $translations );
 
 		return true;
 	}
