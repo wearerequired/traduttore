@@ -91,13 +91,14 @@ class GitHubUpdater {
 	 * @return bool True on success, false otherwise.
 	 */
 	public function fetch_and_update() {
+		if ( $this->has_lock() ) {
+			return false;
+		}
+
 		$slug       = $this->project->slug;
 		$git_target = get_temp_dir() . 'traduttore-github-' . $slug;
 		$pot_target = wp_tempnam( 'traduttore-' . $slug . '.pot' );
 
-		if ( $this->has_lock() ) {
-			return false;
-		}
 
 		$this->add_lock();
 
@@ -130,8 +131,6 @@ class GitHubUpdater {
 
 		$stats = GP::$original->import_for_project( $this->project, $translations );
 
-		$this->remove_lock();
-
 		/**
 		 * Fires after translations have been updated from GitHub.
 		 *
@@ -142,6 +141,8 @@ class GitHubUpdater {
 		 * @param PO         $translations PO object containing all the translations from the POT file.
 		 */
 		do_action( 'traduttore_updated_from_github', $this->project, $stats, $translations );
+
+		$this->remove_lock();
 
 		return true;
 	}
@@ -213,7 +214,6 @@ class GitHubUpdater {
 	 * @since 2.0.0
 	 */
 	protected function remove_lock() {
-		// gp_delete_meta() is internal.
-		gp_update_meta( $this->project->id, static::LOCK_KEY, 0, 'project' );
+		gp_delete_meta( $this->project->id, static::LOCK_KEY, null, 'project' );
 	}
 }
