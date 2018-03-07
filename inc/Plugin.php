@@ -190,11 +190,16 @@ class Plugin {
 		$event_name = $request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {
-			return new WP_REST_Response( [ 'OK' ] );
+			return new WP_REST_Response( [ 'result' => 'OK' ] );
 		}
 
-		if ( ! isset( $params['repository']['html_url'] ) ) {
+		if ( ! isset( $params['repository']['html_url'], $params['ref'] ) ) {
 			return new WP_Error( '400', 'Bad request' );
+		}
+
+		// We only care about the default branch but don't want to send an error still.
+		if ( 'refs/heads/' . $params['repository']['default_branch'] !== $params['ref'] ) {
+			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
 		}
 
 		$project = GitHubUpdater::find_project( $params['repository']['html_url'] );
@@ -207,7 +212,7 @@ class Plugin {
 			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->id ] );
 		}
 
-		return new WP_REST_Response( [ 'OK' ] );
+		return new WP_REST_Response( [ 'result' => 'OK' ] );
 	}
 
 	/**
@@ -220,13 +225,12 @@ class Plugin {
 	 */
 	public function github_webhook_permission_push( $request ) {
 		$event_name = $request->get_header( 'x-github-event' );
-		$params     = $request->get_params();
 
 		if ( 'ping' === $event_name ) {
 			return true;
 		}
 
-		if ( 'push' !== $event_name || ! isset( $params['ref'] ) || 'refs/heads/' . $params['repository']['default_branch'] !== $params['ref'] ) {
+		if ( 'push' !== $event_name ) {
 			return false;
 		}
 
