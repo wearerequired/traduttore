@@ -63,7 +63,7 @@ class Plugin {
 		add_action( 'gp_translation_saved', function ( GP_Translation $translation ) {
 			// Regenerate ZIP file if not already scheduled.
 			if ( ! wp_next_scheduled( 'traduttore_generate_zip', [ $translation->translation_set_id ] ) ) {
-				wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 15, 'traduttore_generate_zip', [ $translation->translation_set_id ] );
+				wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore_generate_zip', [ $translation->translation_set_id ] );
 			}
 		} );
 
