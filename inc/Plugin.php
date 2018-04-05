@@ -76,7 +76,7 @@ class Plugin {
 		} );
 
 		add_action( 'traduttore_update_from_github', function ( $project_id ) {
-			$project = GP::$project->get( $project_id );
+			$project = GP::$project->get( (int) $project_id );
 
 			if ( ! $project ) {
 				return;
