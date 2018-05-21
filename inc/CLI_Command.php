@@ -21,6 +21,9 @@ class CLI_Command extends WP_CLI_Command {
 	 * <project>
 	 * : Path or ID of the project to generate ZIP files for.
 	 *
+	 * [--force]
+	 * : Force ZIP file generation, even if there were no changes since the last build.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     # Generate ZIP files for the project with ID 123.
@@ -46,7 +49,14 @@ class CLI_Command extends WP_CLI_Command {
 		/** @var GP_Translation_Set $translation_set */
 		foreach ( $translation_sets as $translation_set ) {
 			$zip_provider = new ZipProvider( $translation_set );
-			$success      = $zip_provider->generate_zip_file();
+
+			if ( ! $assoc_args['force'] && $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
+				WP_CLI::warning( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
+
+				continue;
+			}
+
+			$success = $zip_provider->generate_zip_file();
 
 			if ( $success ) {
 				WP_CLI::success( sprintf( 'ZIP file generated for translation set (ID: %d)', $translation_set->id ) );
