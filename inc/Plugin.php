@@ -31,7 +31,7 @@ class Plugin {
 	 *
 	 * @since 1.0.0
 	 */
-	public function init() {
+	public function init(): void {
 		$this->register_hooks();
 	}
 
@@ -40,20 +40,7 @@ class Plugin {
 	 *
 	 * @since 1.0.0
 	 */
-	public function register_hooks() {
-		$permissions = new Permissions();
-		add_filter( 'gp_projects', [ $permissions, 'filter_projects' ] );
-
-		add_action( 'gp_tmpl_load_locations', function( $locations ) {
-			$core_templates = GP_PATH . 'gp-templates/';
-
-			require_once $core_templates . 'helper-functions.php';
-
-			$locations[] = $core_templates;
-
-			return $locations;
-		}, 50 );
-
+	public function register_hooks(): void {
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
 		add_action( 'gp_init', function () {
@@ -109,7 +96,13 @@ class Plugin {
 				'action'      => 'traduttore_updated_from_github',
 				'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
 				'message'     => function( GP_Project $project, array $stats ) {
-					list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $stats;
+					[
+						$originals_added,
+						$originals_existing,
+						$originals_fuzzied,
+						$originals_obsoleted,
+						$originals_error
+					] = $stats;
 
 					return sprintf(
 						'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
@@ -159,7 +152,7 @@ class Plugin {
 	 *
 	 * @since 2.0.0
 	 */
-	public static function on_plugin_deactivation() {
+	public static function on_plugin_deactivation(): void {
 		wp_unschedule_hook( 'traduttore_generate_zip' );
 		wp_unschedule_hook( 'traduttore_update_from_github' );
 	}
@@ -169,7 +162,7 @@ class Plugin {
 	 *
 	 * @since 2.0.0
 	 */
-	public function register_rest_routes() {
+	public function register_rest_routes(): void {
 		register_rest_route( 'github-webhook/v1', '/push-event', [
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => [ $this,  'github_webhook_push' ],
@@ -223,7 +216,7 @@ class Plugin {
 	 * @param WP_REST_Request $request Request object.
 	 * @return True if permission is granted, false otherwise.
 	 */
-	public function github_webhook_permission_push( $request ) {
+	public function github_webhook_permission_push( $request ): bool {
 		$event_name = $request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {

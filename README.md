@@ -1,6 +1,6 @@
 # Traduttore
 
-Customizations for translate.required.com.
+WordPress plugin that enables you to translate your WordPress projects in GlotPress and automatically install these translations. 
 
 ## Usage
 
