@@ -104,4 +104,57 @@ class CLI_Command extends WP_CLI_Command {
 			WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->id ) );
 		}
 	}
+
+	/**
+	 * Removes the cached Git repository for a given project.
+	 *
+	 * Finds the project the repository belongs to and removes the checked out Git repository completely.
+	 *
+	 * Useful when the local repository was somehow corrupted.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <project|url>
+	 * : Project path / ID or GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Update translations from repository URL.
+	 *     $ wp traduttore translations clear-cache https://github.com/wearerequired/required-valencia
+	 *     Success: Removed cached Git repository for project (ID: 123)!
+	 *
+	 *     # Update translations from project path.
+	 *     $ wp traduttore translations clear-cache required/required-valencia
+	 *     Success: Removed cached Git repository for project (ID: 123)!
+	 *
+	 *     # Update translations from project ID.
+	 *     $ wp traduttore translations clear-cache 123
+	 *     Success: Removed cached Git repository for project (ID: 123)!
+	 */
+	public function clear_cache( $args, $assoc_args ) {
+		if ( is_numeric( $args[0] ) ) {
+			$project = GP::$project->get( (int) $args[0] );
+		} else {
+			$project = GP::$project->by_path( $args[0] );
+
+			if ( ! $project ) {
+				$project = GitHubUpdater::find_project( $args[0] );
+			}
+		}
+
+		if ( ! $project ) {
+			WP_CLI::error( 'Project not found' );
+		}
+
+		$github_updater = new GitHubUpdater( $project );
+		$git_target     = $github_updater->get_repository_path();
+
+		$success = rmdir( $git_target );
+
+		if ( $success ) {
+			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->id ) );
+		} else {
+			WP_CLI::warning( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->id ) );
+		}
+	}
 }

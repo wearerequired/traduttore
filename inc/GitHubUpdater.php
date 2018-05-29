@@ -77,6 +77,19 @@ class GitHubUpdater {
 	}
 
 	/**
+	 * Returns the path to where the GitHub repository should be checked out.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string Git repository path.
+	 */
+	public function get_repository_path() {
+		$slug       = $this->project->slug;
+
+		return get_temp_dir() . 'traduttore-github-' . $slug;
+	}
+
+	/**
 	 * Fetches the GitHub repository and updates the translations based on the source code.
 	 *
 	 * @since 2.0.0
@@ -89,7 +102,7 @@ class GitHubUpdater {
 		}
 
 		$slug       = $this->project->slug;
-		$git_target = get_temp_dir() . 'traduttore-github-' . $slug;
+		$git_target = $this->get_repository_path();
 		$pot_target = wp_tempnam( 'traduttore-' . $slug . '.pot' );
 
 
