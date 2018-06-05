@@ -36,6 +36,13 @@ class ZipProvider {
 	protected $translation_set;
 
 	/**
+	 * @since 2.0.0
+	 *
+	 * @var string Build time meta key.
+	 */
+	const BUILD_TIME_KEY = '_traduttore_build_time';
+
+	/**
 	 * ZipProvider constructor.
 	 *
 	 * @since 2.0.0
@@ -113,6 +120,8 @@ class ZipProvider {
 			unlink( $temp_file );
 		}
 
+		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $translation_set->last_modified(), 'translation_set' );
+
 		/**
 		 * Fires after a ZIP file for a given translation set has been generated.
 		 *
@@ -144,6 +153,18 @@ class ZipProvider {
 			str_replace( '/', '-', $project->slug ),
 			$locale->wp_locale
 		);
+	}
+
+	/**
+	 * Returns the last ZIP build time for a given translation set.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param \GP_Translation_Set $tranlsation_set Translation set.
+	 * @return string|false Build time on success, false otherwise.
+	 */
+	public static function get_last_build_time( GP_Translation_Set $tranlsation_set ) {
+		return gp_get_meta( 'translation_set', $tranlsation_set->id, static::BUILD_TIME_KEY );
 	}
 
 	/**

@@ -25,7 +25,6 @@ use WP_REST_Server;
  * @since 1.0.0
  */
 class Plugin {
-
 	/**
 	 * Initializes the plugin.
 	 *
@@ -57,6 +56,10 @@ class Plugin {
 		add_action( 'traduttore_generate_zip', function( $translation_set_id ) {
 			/** @var GP_Translation_Set $translation_set */
 			$translation_set = GP::$translation_set->get( $translation_set_id );
+
+			if ( $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
+				return;
+			}
 
 			$zip_provider = new ZipProvider( $translation_set );
 			$zip_provider->generate_zip_file();

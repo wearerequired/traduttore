@@ -55,7 +55,7 @@ class TranslationApiRoute extends GP_Route_Main {
 			$result[] = [
 				'language'     => $locale->wp_locale,
 				'version'      => '1.0',
-				'updated'      => $set->last_modified(),
+				'updated'      => ZipProvider::get_last_build_time( $set ),
 				'english_name' => $locale->english_name,
 				'native_name'  => $locale->native_name,
 				'package'      => $zip_provider->get_zip_url(),
