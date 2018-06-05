@@ -27,7 +27,7 @@
     "glotpress"
   ],
   "require": {
-    "php": ">=7.0"
+    "php": ">=7.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
