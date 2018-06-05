@@ -41,19 +41,6 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function register_hooks(): void {
-		$permissions = new Permissions();
-		add_filter( 'gp_projects', [ $permissions, 'filter_projects' ] );
-
-		add_action( 'gp_tmpl_load_locations', function( $locations ) {
-			$core_templates = GP_PATH . 'gp-templates/';
-
-			require_once $core_templates . 'helper-functions.php';
-
-			$locations[] = $core_templates;
-
-			return $locations;
-		}, 50 );
-
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
 		add_action( 'gp_init', function () {
@@ -109,7 +96,13 @@ class Plugin {
 				'action'      => 'traduttore_updated_from_github',
 				'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
 				'message'     => function( GP_Project $project, array $stats ) {
-					list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $stats;
+					[
+						$originals_added,
+						$originals_existing,
+						$originals_fuzzied,
+						$originals_obsoleted,
+						$originals_error
+					] = $stats;
 
 					return sprintf(
 						'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',

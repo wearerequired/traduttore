@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Traduttore
  * Plugin URI:  https://github.com/wearerequired/traduttore/
- * Description: Customizations for translate.required.com
+ * Description: Add WordPress.org-style language pack API to your GlotPress installation for your WordPress projects hosted on GitHub.
  * Version:     2.0.0
  * Author:      required
  * Author URI:  https://required.com
@@ -60,5 +60,5 @@ function init() {
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init', 1 );
 
 if ( class_exists( '\WP_CLI' ) ) {
-	WP_CLI::add_command( 'traduttore translations', \Required\Traduttore\CLI_Command::class );
+	WP_CLI::add_command( 'traduttore translations', CLI_Command::class );
 }
