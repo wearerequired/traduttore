@@ -66,6 +66,9 @@ class CLI_Command extends WP_CLI_Command {
 	 * <project|url>
 	 * : Project path / ID or GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
+	 * [--delete]
+	 * : Whether to first delete the existing local repository or not.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     # Update translations from repository URL.
@@ -89,7 +92,7 @@ class CLI_Command extends WP_CLI_Command {
 		}
 
 		$github_updater = new GitHubUpdater( $project );
-		$success        = $github_updater->fetch_and_update();
+		$success        = $github_updater->fetch_and_update( isset( $assoc_args['delete'] ) );
 
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->id ) );
@@ -133,9 +136,8 @@ class CLI_Command extends WP_CLI_Command {
 		}
 
 		$github_updater = new GitHubUpdater( $project );
-		$git_target     = $github_updater->get_repository_path();
 
-		$success = rmdir( $git_target );
+		$success = $github_updater->remove_local_repository();
 
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->id ) );

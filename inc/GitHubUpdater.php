@@ -72,13 +72,25 @@ class GitHubUpdater {
 	}
 
 	/**
+	 * Attempts to delete the folder containing the local repository checkout.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function remove_local_repository(): bool {
+		return rmdir( $this->get_repository_path() );
+	}
+
+	/**
 	 * Fetches the GitHub repository and updates the translations based on the source code.
 	 *
 	 * @since 2.0.0
 	 *
+	 * @param bool $delete Whether to first delete the existing local repository or not.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function fetch_and_update() {
+	public function fetch_and_update( $delete = false ): bool {
 		if ( $this->has_lock() ) {
 			return false;
 		}
@@ -89,6 +101,10 @@ class GitHubUpdater {
 
 
 		$this->add_lock();
+
+		if ( $delete ) {
+			$this->remove_local_repository();
+		}
 
 		$result = $this->fetch_github_repository( $this->get_ssh_url(), $git_target );
 

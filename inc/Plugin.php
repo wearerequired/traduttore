@@ -83,7 +83,7 @@ class Plugin {
 			}
 
 			$github_updater = new GitHubUpdater( $project );
-			$github_updater->fetch_and_update();
+			$github_updater->fetch_and_update( true );
 		} );
 
 		add_filter( 'slack_get_events', function( $events ) {
