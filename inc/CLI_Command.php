@@ -51,7 +51,7 @@ class CLI_Command extends WP_CLI_Command {
 			$zip_provider = new ZipProvider( $translation_set );
 
 			if ( ! $assoc_args['force'] && $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
-				WP_CLI::warning( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
+				WP_CLI::log( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
 
 				continue;
 			}
