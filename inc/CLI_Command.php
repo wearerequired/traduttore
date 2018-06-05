@@ -140,7 +140,7 @@ class CLI_Command extends WP_CLI_Command {
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->id ) );
 		} else {
-			WP_CLI::warning( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->id ) );
+			WP_CLI::error( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->id ) );
 		}
 	}
 }
