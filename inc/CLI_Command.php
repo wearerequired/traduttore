@@ -81,15 +81,8 @@ class CLI_Command extends WP_CLI_Command {
 	 *     Success: Updated translations for project (ID: 123)!
 	 */
 	public function update( $args, $assoc_args ) {
-		if ( is_numeric( $args[0] ) ) {
-			$project = GP::$project->get( (int) $args[0] );
-		} else {
-			$project = GP::$project->by_path( $args[0] );
-
-			if ( ! $project ) {
-				$project = GitHubUpdater::find_project( $args[0] );
-			}
-		}
+		$locator = new ProjectLocator( $args[0] );
+		$project = $locator->get_project();
 
 		if ( ! $project ) {
 			WP_CLI::error( 'Project not found' );
@@ -132,15 +125,8 @@ class CLI_Command extends WP_CLI_Command {
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 */
 	public function clear_cache( $args, $assoc_args ) {
-		if ( is_numeric( $args[0] ) ) {
-			$project = GP::$project->get( (int) $args[0] );
-		} else {
-			$project = GP::$project->by_path( $args[0] );
-
-			if ( ! $project ) {
-				$project = GitHubUpdater::find_project( $args[0] );
-			}
-		}
+		$locator = new ProjectLocator( $args[0] );
+		$project = $locator->get_project();
 
 		if ( ! $project ) {
 			WP_CLI::error( 'Project not found' );

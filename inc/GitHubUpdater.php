@@ -43,24 +43,6 @@ class GitHubUpdater {
 	}
 
 	/**
-	 * Find a GlotPress project by a GitHub repository URL.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $repository GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
-	 * @return false|GP_Project Project on success, false otherwise.
-	 */
-	public static function find_project( $repository ) {
-		global $wpdb;
-
-		$table = GP::$project->table;
-
-		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $repository ) . '%' );
-
-		return GP::$project->coerce( $wpdb->get_row( $query ) );
-	}
-
-	/**
 	 * Returns the repository URL based on the project's source URL template.
 	 *
 	 * @since 2.0.0

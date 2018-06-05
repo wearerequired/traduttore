@@ -202,7 +202,12 @@ class Plugin {
 			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
 		}
 
-		$project = GitHubUpdater::find_project( $params['repository']['html_url'] );
+		$locator = new ProjectLocator( $params['repository']['html_url'] );
+		$project = $locator->get_project();
+
+		if ( ! $project ) {
+			WP_CLI::error( 'Project not found' );
+		}
 
 		if ( ! $project ) {
 			return new WP_Error( '404', 'Could not find project for this repository' );
