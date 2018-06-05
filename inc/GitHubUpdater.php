@@ -22,7 +22,7 @@ class GitHubUpdater {
 	 *
 	 * @var string Lock meta key.
 	 */
-	const LOCK_KEY = '_traduttore_update_lock';
+	protected const LOCK_KEY = '_traduttore_update_lock';
 
 	/**
 	 * @since 2.0.0
@@ -43,31 +43,13 @@ class GitHubUpdater {
 	}
 
 	/**
-	 * Find a GlotPress project by a GitHub repository URL.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $repository GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
-	 * @return false|GP_Project Project on success, false otherwise.
-	 */
-	public static function find_project( $repository ) {
-		global $wpdb;
-
-		$table = GP::$project->table;
-
-		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $repository ) . '%' );
-
-		return GP::$project->coerce( $wpdb->get_row( $query ) );
-	}
-
-	/**
 	 * Returns the repository URL based on the project's source URL template.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/required-valencia.git.
 	 */
-	protected function get_ssh_url() {
+	protected function get_ssh_url(): string {
 		// e.g. https://github.com/wearerequired/required-valencia/blob/master/%file%#L%line%.
 		$url = $this->project->source_url_template();
 		$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
@@ -77,23 +59,52 @@ class GitHubUpdater {
 	}
 
 	/**
+	 * Returns the path to where the GitHub repository should be checked out.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string Git repository path.
+	 */
+	public function get_repository_path(): string {
+		$slug       = $this->project->slug;
+
+		return get_temp_dir() . 'traduttore-github-' . $slug;
+	}
+
+	/**
+	 * Attempts to delete the folder containing the local repository checkout.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function remove_local_repository(): bool {
+		return rmdir( $this->get_repository_path() );
+	}
+
+	/**
 	 * Fetches the GitHub repository and updates the translations based on the source code.
 	 *
 	 * @since 2.0.0
 	 *
+	 * @param bool $delete Whether to first delete the existing local repository or not.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function fetch_and_update() {
+	public function fetch_and_update( $delete = false ): bool {
 		if ( $this->has_lock() ) {
 			return false;
 		}
 
 		$slug       = $this->project->slug;
-		$git_target = get_temp_dir() . 'traduttore-github-' . $slug;
+		$git_target = $this->get_repository_path();
 		$pot_target = wp_tempnam( 'traduttore-' . $slug . '.pot' );
 
 
 		$this->add_lock();
+
+		if ( $delete ) {
+			$this->remove_local_repository();
+		}
 
 		$result = $this->fetch_github_repository( $this->get_ssh_url(), $git_target );
 
@@ -151,7 +162,7 @@ class GitHubUpdater {
 	 * @param string $target Target directory.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function fetch_github_repository( $source, $target ) {
+	protected function fetch_github_repository( $source, $target ): bool {
 		if ( is_dir( $target ) ) {
 			$current_dir = getcwd();
 			chdir( $target );
@@ -160,7 +171,7 @@ class GitHubUpdater {
 			chdir( $current_dir );
 		} else {
 			exec( escapeshellcmd( sprintf(
-				'git clone %1$s %2$s -q',
+				'git clone --depth=1 %1$s %2$s -q',
 				escapeshellarg( $source ),
 				escapeshellarg( $target )
 			) ), $output, $status );
@@ -179,7 +190,7 @@ class GitHubUpdater {
 	 * @param string $slug Project slug/domain.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_pot_file( $source, $target, $slug ) {
+	protected function create_pot_file( $source, $target, $slug ): bool {
 		exec( escapeshellcmd( sprintf(
 			'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s',
 			escapeshellarg( $source ),
@@ -195,7 +206,7 @@ class GitHubUpdater {
 	 *
 	 * @since 2.0.0
 	 */
-	protected function add_lock() {
+	protected function add_lock(): void {
 		gp_update_meta( $this->project->id, static::LOCK_KEY, 1, 'project' );
 	}
 
@@ -206,7 +217,7 @@ class GitHubUpdater {
 	 *
 	 * @return bool Whether the project is locked.
 	 */
-	protected function has_lock(  ) {
+	protected function has_lock(): bool {
 		return (bool) gp_get_meta( 'project', $this->project->id, static::LOCK_KEY );
 	}
 
@@ -215,7 +226,7 @@ class GitHubUpdater {
 	 *
 	 * @since 2.0.0
 	 */
-	protected function remove_lock() {
+	protected function remove_lock(): void {
 		gp_delete_meta( $this->project->id, static::LOCK_KEY, null, 'project' );
 	}
 }
