@@ -22,7 +22,7 @@ class GitHubUpdater {
 	 *
 	 * @var string Lock meta key.
 	 */
-	const LOCK_KEY = '_traduttore_update_lock';
+	protected const LOCK_KEY = '_traduttore_update_lock';
 
 	/**
 	 * @since 2.0.0
@@ -49,7 +49,7 @@ class GitHubUpdater {
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/required-valencia.git.
 	 */
-	protected function get_ssh_url() {
+	protected function get_ssh_url(): string {
 		// e.g. https://github.com/wearerequired/required-valencia/blob/master/%file%#L%line%.
 		$url = $this->project->source_url_template();
 		$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
@@ -65,7 +65,7 @@ class GitHubUpdater {
 	 *
 	 * @return string Git repository path.
 	 */
-	public function get_repository_path() {
+	public function get_repository_path(): string {
 		$slug       = $this->project->slug;
 
 		return get_temp_dir() . 'traduttore-github-' . $slug;
@@ -146,7 +146,7 @@ class GitHubUpdater {
 	 * @param string $target Target directory.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function fetch_github_repository( $source, $target ) {
+	protected function fetch_github_repository( $source, $target ): bool {
 		if ( is_dir( $target ) ) {
 			$current_dir = getcwd();
 			chdir( $target );
@@ -174,7 +174,7 @@ class GitHubUpdater {
 	 * @param string $slug Project slug/domain.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_pot_file( $source, $target, $slug ) {
+	protected function create_pot_file( $source, $target, $slug ): bool {
 		exec( escapeshellcmd( sprintf(
 			'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s',
 			escapeshellarg( $source ),
@@ -190,7 +190,7 @@ class GitHubUpdater {
 	 *
 	 * @since 2.0.0
 	 */
-	protected function add_lock() {
+	protected function add_lock(): void {
 		gp_update_meta( $this->project->id, static::LOCK_KEY, 1, 'project' );
 	}
 
@@ -201,7 +201,7 @@ class GitHubUpdater {
 	 *
 	 * @return bool Whether the project is locked.
 	 */
-	protected function has_lock(  ) {
+	protected function has_lock(): bool {
 		return (bool) gp_get_meta( 'project', $this->project->id, static::LOCK_KEY );
 	}
 
@@ -210,7 +210,7 @@ class GitHubUpdater {
 	 *
 	 * @since 2.0.0
 	 */
-	protected function remove_lock() {
+	protected function remove_lock(): void {
 		gp_delete_meta( $this->project->id, static::LOCK_KEY, null, 'project' );
 	}
 }
