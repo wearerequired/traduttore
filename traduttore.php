@@ -60,5 +60,7 @@ function init() {
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init', 1 );
 
 if ( class_exists( '\WP_CLI' ) ) {
-	WP_CLI::add_command( 'traduttore translations', CLI_Command::class );
+	WP_CLI::add_command( 'traduttore build', CLI\BuildCommand::class );
+	WP_CLI::add_command( 'traduttore cache', CLI\CacheCommand::class );
+	WP_CLI::add_command( 'traduttore update', CLI\UpdateCommand::class );
 }
