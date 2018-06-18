@@ -24,7 +24,8 @@
   ],
   "keywords": [
     "wordpress",
-    "glotpress"
+    "glotpress",
+    "translations"
   ],
   "require": {
     "php": ">=7.1"
