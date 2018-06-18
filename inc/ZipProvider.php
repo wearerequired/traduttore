@@ -120,7 +120,7 @@ class ZipProvider {
 			unlink( $temp_file );
 		}
 
-		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $translation_set->last_modified(), 'translation_set' );
+		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $this->translation_set->last_modified(), 'translation_set' );
 
 		/**
 		 * Fires after a ZIP file for a given translation set has been generated.
