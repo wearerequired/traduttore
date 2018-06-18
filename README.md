@@ -23,6 +23,7 @@ After that, you never have to worry about the translation workflow ever again!
 * Works with any WordPress plugin or theme hosted on GitHub
 * Custom WP-CLI commands to manage translations
 * Supports [Restricted Site Access](https://de.wordpress.org/plugins/restricted-site-access/)
+* Supports sending [Slack](https://wordpress.org/plugins/slack/) notifications
 
 ## Installation
 
