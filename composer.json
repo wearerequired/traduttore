@@ -30,6 +30,14 @@
   "require": {
     "php": ">=7.1"
   },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "dev-master",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4"
+  },
+  "scripts": {
+    "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
+    "lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source"
+  },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
   },
