@@ -18,6 +18,8 @@ use PO;
  */
 class ProjectLocator {
 	/**
+	 * Possible GlotPress project ID or path or GitHub repository path.
+	 *
 	 * @var string|int Project information.
 	 */
 	protected $project;
@@ -44,7 +46,7 @@ class ProjectLocator {
 		}
 
 		if ( ! $project ) {
-			$project = GitHubUpdater::find_project( $this->project );
+			$project = $this->find_by_github_repository_url();
 		}
 
 		return $project;
@@ -56,7 +58,7 @@ class ProjectLocator {
 	 * @since 2.0.0
 	 * @return false|GP_Project Project on success, false otherwise.
 	 */
-	protected function find_project() {
+	protected function find_by_github_repository_url() {
 		global $wpdb;
 
 		$table = GP::$project->table;
