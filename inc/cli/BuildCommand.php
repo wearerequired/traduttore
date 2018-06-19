@@ -1,4 +1,11 @@
 <?php
+/**
+ * Command for building language pack ZIP files.
+ *
+ * @since 2.0.0
+ *
+ * @package Required\Traduttore\CLI
+ */
 
 namespace Required\Traduttore\CLI;
 
@@ -29,6 +36,14 @@ use WP_CLI_Command;
  * @since 2.0.0
  */
 class BuildCommand extends WP_CLI_Command {
+	/**
+	 * Class constructor.
+	 *
+	 * Automatically called by WP-CLI.
+	 *
+	 * @param array $args Command args.
+	 * @param array $assoc_args Associative args.
+	 */
 	public function __construct( $args, $assoc_args ) {
 		if ( is_numeric( $args[0] ) ) {
 			$project = GP::$project->get( $args[0] );
@@ -43,7 +58,7 @@ class BuildCommand extends WP_CLI_Command {
 
 		$translation_sets = (array) GP::$translation_set->by_project_id( $project->id );
 
-		/** @var GP_Translation_Set $translation_set */
+		/* @var GP_Translation_Set $translation_set */
 		foreach ( $translation_sets as $translation_set ) {
 			$zip_provider = new ZipProvider( $translation_set );
 

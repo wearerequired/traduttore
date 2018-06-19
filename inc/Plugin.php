@@ -3,6 +3,8 @@
  * Plugin class.
  *
  * @since 1.0.0
+ *
+ * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -42,85 +44,95 @@ class Plugin {
 	public function register_hooks(): void {
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
-		add_action( 'gp_init', function () {
-			GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
-		} );
-
-		add_action( 'gp_translation_saved', function ( GP_Translation $translation ) {
-			// Regenerate ZIP file if not already scheduled.
-			if ( ! wp_next_scheduled( 'traduttore_generate_zip', [ $translation->translation_set_id ] ) ) {
-				wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore_generate_zip', [ $translation->translation_set_id ] );
+		add_action(
+			'gp_init', function () {
+				GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
 			}
-		} );
+		);
 
-		add_action( 'traduttore_generate_zip', function( $translation_set_id ) {
-			/** @var GP_Translation_Set $translation_set */
-			$translation_set = GP::$translation_set->get( $translation_set_id );
-
-			if ( $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
-				return;
-			}
-
-			$zip_provider = new ZipProvider( $translation_set );
-			$zip_provider->generate_zip_file();
-		} );
-
-		add_action( 'traduttore_update_from_github', function ( $project_id ) {
-			$project = GP::$project->get( (int) $project_id );
-
-			if ( ! $project ) {
-				return;
-			}
-
-			$github_updater = new GitHubUpdater( $project );
-			$github_updater->fetch_and_update( true );
-		} );
-
-		add_filter( 'slack_get_events', function( $events ) {
-			$events['traduttore_zip_generated'] = [
-				'action'      => 'traduttore_zip_generated',
-				'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
-				'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
-					/** @var GP_Locale $locale */
-					$locale  = GP_Locales::by_slug( $translation_set->locale );
-					$project = GP::$project->get( $translation_set->project_id );
-
-					return sprintf(
-						'<%1$s|%2$s>: ZIP file updated for *%3$s*. (<%4$s|Download>)',
-						home_url( gp_url_project( $project ) ),
-						$project->name,
-						$locale->english_name,
-						$zip_url
-					);
+		add_action(
+			'gp_translation_saved', function ( GP_Translation $translation ) {
+				// Regenerate ZIP file if not already scheduled.
+				if ( ! wp_next_scheduled( 'traduttore_generate_zip', [ $translation->translation_set_id ] ) ) {
+					wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore_generate_zip', [ $translation->translation_set_id ] );
 				}
-			];
+			}
+		);
 
-			$events['traduttore_updated_from_github'] = [
-				'action'      => 'traduttore_updated_from_github',
-				'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
-				'message'     => function( GP_Project $project, array $stats ) {
-					[
-						$originals_added,
-						$originals_existing,
-						$originals_fuzzied,
-						$originals_obsoleted,
-						$originals_error
-					] = $stats;
+		add_action(
+			'traduttore_generate_zip', function( $translation_set_id ) {
+				/* @var GP_Translation_Set $translation_set */
+				$translation_set = GP::$translation_set->get( $translation_set_id );
 
-					return sprintf(
-						'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
-						home_url( gp_url_project( $project ) ),
-						$project->name,
-						$originals_added,
-						$originals_fuzzied,
-						$originals_obsoleted,
-						$originals_error
-					);
+				if ( $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
+					return;
 				}
-			];
 
-			return $events;
-		} );
+				$zip_provider = new ZipProvider( $translation_set );
+				$zip_provider->generate_zip_file();
+			}
+		);
+
+		add_action(
+			'traduttore_update_from_github', function ( $project_id ) {
+				$project = GP::$project->get( (int) $project_id );
+
+				if ( ! $project ) {
+					return;
+				}
+
+				$github_updater = new GitHubUpdater( $project );
+				$github_updater->fetch_and_update( true );
+			}
+		);
+
+		add_filter(
+			'slack_get_events', function( $events ) {
+				$events['traduttore_zip_generated'] = [
+					'action'      => 'traduttore_zip_generated',
+					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
+					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
+						/* @var GP_Locale $locale */
+						$locale  = GP_Locales::by_slug( $translation_set->locale );
+						$project = GP::$project->get( $translation_set->project_id );
+
+						return sprintf(
+							'<%1$s|%2$s>: ZIP file updated for *%3$s*. (<%4$s|Download>)',
+							home_url( gp_url_project( $project ) ),
+							$project->name,
+							$locale->english_name,
+							$zip_url
+						);
+					},
+				];
+
+				$events['traduttore_updated_from_github'] = [
+					'action'      => 'traduttore_updated_from_github',
+					'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
+					'message'     => function( GP_Project $project, array $stats ) {
+						[
+							$originals_added,
+							$originals_existing,
+							$originals_fuzzied,
+							$originals_obsoleted,
+							$originals_error,
+						] = $stats;
+
+						return sprintf(
+							'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
+							home_url( gp_url_project( $project ) ),
+							$project->name,
+							$originals_added,
+							$originals_fuzzied,
+							$originals_obsoleted,
+							$originals_error
+						);
+					},
+				];
+
+				return $events;
+			}
+		);
 
 		/**
 		 * Filter Restricted Site Access to allow external requests to Traduttore's endpoints.
@@ -129,25 +141,27 @@ class Plugin {
 		 * @param WP   $wp            The WordPress object. Only available on the front end.
 		 * @return bool Whether access should be restricted.
 		 */
-		add_filter( 'restricted_site_access_is_restricted', function( $is_restricted, $wp ) {
-			if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
-				$route = untrailingslashit( $wp->query_vars['rest_route'] );
+		add_filter(
+			'restricted_site_access_is_restricted', function( $is_restricted, $wp ) {
+				if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
+					$route = untrailingslashit( $wp->query_vars['rest_route'] );
 
-				if ( '/github-webhook/v1/push-event' === $route ) {
-					return false;
+					if ( '/github-webhook/v1/push-event' === $route ) {
+						return false;
+					}
 				}
-			}
 
-			if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
-				$route = GP::$router->request_uri();
+				if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
+					$route = GP::$router->request_uri();
 
-				if ( 0 === strpos( $route, '/api/translations/' ) ) {
-					return false;
+					if ( 0 === strpos( $route, '/api/translations/' ) ) {
+						return false;
+					}
 				}
-			}
 
-			return $is_restricted;
-		}, 10, 2 );
+				return $is_restricted;
+			}, 10, 2
+		);
 	}
 
 	/**
@@ -166,11 +180,13 @@ class Plugin {
 	 * @since 2.0.0
 	 */
 	public function register_rest_routes(): void {
-		register_rest_route( 'github-webhook/v1', '/push-event', [
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => [ $this,  'github_webhook_push' ],
-			'permission_callback' => [ $this,  'github_webhook_permission_push'],
-		] );
+		register_rest_route(
+			'github-webhook/v1', '/push-event', [
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'github_webhook_push' ],
+				'permission_callback' => [ $this, 'github_webhook_permission_push' ],
+			]
+		);
 	}
 
 	/**
@@ -224,7 +240,7 @@ class Plugin {
 	 * @param WP_REST_Request $request Request object.
 	 * @return True if permission is granted, false otherwise.
 	 */
-	public function github_webhook_permission_push( $request ): bool {
+	public function github_webhook_permission_push( $request ) : bool {
 		$event_name = $request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Command for updating translations.
+ *
+ * @since 2.0.0
+ *
+ * @package Required\Traduttore\CLI
+ */
 
 namespace Required\Traduttore\CLI;
 
@@ -37,6 +44,14 @@ use WP_CLI_Command;
  * @since 2.0.0
  */
 class UpdateCommand extends WP_CLI_Command {
+	/**
+	 * Class constructor.
+	 *
+	 * Automatically called by WP-CLI.
+	 *
+	 * @param array $args Command args.
+	 * @param array $assoc_args Associative args.
+	 */
 	public function __construct( $args, $assoc_args ) {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();

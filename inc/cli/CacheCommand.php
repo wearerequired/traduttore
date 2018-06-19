@@ -1,4 +1,11 @@
 <?php
+/**
+ * Command for managing the Traduttore cache.
+ *
+ * @since 2.0.0
+ *
+ * @package Required\Traduttore\CLI
+ */
 
 namespace Required\Traduttore\CLI;
 
@@ -38,6 +45,9 @@ class CacheCommand extends WP_CLI_Command {
 	 *     # Update translations from project ID.
 	 *     $ wp traduttore cache clear 123
 	 *     Success: Removed cached Git repository for project (ID: 123)!
+	 *
+	 * @param array $args Command args.
+	 * @param array $assoc_args Associative args.
 	 */
 	public function clear( $args, $assoc_args ) {
 		$locator = new ProjectLocator( $args[0] );

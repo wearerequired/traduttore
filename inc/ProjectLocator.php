@@ -3,6 +3,8 @@
  * ProjectLocator class.
  *
  * @since 2.0.0
+ *
+ * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -63,8 +65,10 @@ class ProjectLocator {
 
 		$table = GP::$project->table;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $this->project ) . '%' );
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		return GP::$project->coerce( $wpdb->get_row( $query ) );
 	}
 }

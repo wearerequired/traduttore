@@ -39,7 +39,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
-	trigger_error( sprintf( '%s does not exist. Check Composer\'s autoloader.',  __NAMESPACE__ . '\Plugin' ), E_USER_WARNING );
+	trigger_error( sprintf( '%s does not exist. Check Composer\'s autoloader.', __NAMESPACE__ . '\Plugin' ), E_USER_WARNING );
 	return;
 }
 

@@ -3,6 +3,8 @@
  * GitHubUpdater class.
  *
  * @since 2.0.0
+ *
+ * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -18,6 +20,8 @@ use PO;
  */
 class GitHubUpdater {
 	/**
+	 * Lock meta key.
+	 *
 	 * @since 2.0.0
 	 *
 	 * @var string Lock meta key.
@@ -25,6 +29,8 @@ class GitHubUpdater {
 	protected const LOCK_KEY = '_traduttore_update_lock';
 
 	/**
+	 * GlotPress project.
+	 *
 	 * @since 2.0.0
 	 *
 	 * @var GP_Project GlotPress project.
@@ -51,9 +57,9 @@ class GitHubUpdater {
 	 */
 	protected function get_ssh_url(): string {
 		// e.g. https://github.com/wearerequired/required-valencia/blob/master/%file%#L%line%.
-		$url = $this->project->source_url_template();
+		$url   = $this->project->source_url_template();
 		$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
-		$path = array_shift( $parts );
+		$path  = array_shift( $parts );
 
 		return sprintf( 'git@github.com:%s.git', ltrim( $path, '/' ) );
 	}
@@ -66,7 +72,7 @@ class GitHubUpdater {
 	 * @return string Git repository path.
 	 */
 	public function get_repository_path(): string {
-		$slug       = $this->project->slug;
+		$slug = $this->project->slug;
 
 		return get_temp_dir() . 'traduttore-github-' . $slug;
 	}
@@ -78,7 +84,7 @@ class GitHubUpdater {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function remove_local_repository(): bool {
+	public function remove_local_repository() : bool {
 		return rmdir( $this->get_repository_path() );
 	}
 
@@ -90,7 +96,7 @@ class GitHubUpdater {
 	 * @param bool $delete Whether to first delete the existing local repository or not.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function fetch_and_update( $delete = false ): bool {
+	public function fetch_and_update( $delete = false ) : bool {
 		if ( $this->has_lock() ) {
 			return false;
 		}
@@ -98,7 +104,6 @@ class GitHubUpdater {
 		$slug       = $this->project->slug;
 		$git_target = $this->get_repository_path();
 		$pot_target = wp_tempnam( 'traduttore-' . $slug . '.pot' );
-
 
 		$this->add_lock();
 
@@ -162,7 +167,7 @@ class GitHubUpdater {
 	 * @param string $target Target directory.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function fetch_github_repository( $source, $target ): bool {
+	protected function fetch_github_repository( $source, $target ) : bool {
 		if ( is_dir( $target ) ) {
 			$current_dir = getcwd();
 			chdir( $target );
@@ -170,11 +175,15 @@ class GitHubUpdater {
 			exec( escapeshellcmd( 'git pull -q' ), $output, $status );
 			chdir( $current_dir );
 		} else {
-			exec( escapeshellcmd( sprintf(
-				'git clone --depth=1 %1$s %2$s -q',
-				escapeshellarg( $source ),
-				escapeshellarg( $target )
-			) ), $output, $status );
+			exec(
+				escapeshellcmd(
+					sprintf(
+						'git clone --depth=1 %1$s %2$s -q',
+						escapeshellarg( $source ),
+						escapeshellarg( $target )
+					)
+				), $output, $status
+			);
 		}
 
 		return 0 === $status;
@@ -190,13 +199,17 @@ class GitHubUpdater {
 	 * @param string $slug Project slug/domain.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_pot_file( $source, $target, $slug ): bool {
-		exec( escapeshellcmd( sprintf(
-			'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s',
-			escapeshellarg( $source ),
-			escapeshellarg( $target ),
-			escapeshellarg( $slug )
-		) ), $output, $status );
+	protected function create_pot_file( $source, $target, $slug ) : bool {
+		exec(
+			escapeshellcmd(
+				sprintf(
+					'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s',
+					escapeshellarg( $source ),
+					escapeshellarg( $target ),
+					escapeshellarg( $slug )
+				)
+			), $output, $status
+		);
 
 		return 0 === $status;
 	}

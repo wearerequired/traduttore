@@ -3,6 +3,8 @@
  * TranslationApi class.
  *
  * @since 2.0.0
+ *
+ * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -41,9 +43,9 @@ class TranslationApiRoute extends GP_Route_Main {
 
 		$result = [];
 
-		/** @var GP_Translation_Set $set */
+		/* @var GP_Translation_Set $set */
 		foreach ( $translation_sets as $set ) {
-			/** @var GP_Locale $locale */
+			/* @var GP_Locale $locale */
 			$locale = GP_Locales::by_slug( $set->locale );
 
 			$zip_provider = new ZipProvider( $set );
@@ -59,11 +61,13 @@ class TranslationApiRoute extends GP_Route_Main {
 				'english_name' => $locale->english_name,
 				'native_name'  => $locale->native_name,
 				'package'      => $zip_provider->get_zip_url(),
-				'iso'          => array_filter( [
-					$locale->lang_code_iso_639_1,
-					$locale->lang_code_iso_639_2,
-					$locale->lang_code_iso_639_3,
-				] ),
+				'iso'          => array_filter(
+					[
+						$locale->lang_code_iso_639_1,
+						$locale->lang_code_iso_639_2,
+						$locale->lang_code_iso_639_3,
+					]
+				),
 			];
 		}
 

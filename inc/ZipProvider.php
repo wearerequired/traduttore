@@ -3,6 +3,8 @@
  * ZipProvider class.
  *
  * @since 2.0.0
+ *
+ * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -22,6 +24,8 @@ use ZipArchive;
  */
 class ZipProvider {
 	/**
+	 * Traduttore cache directory name.
+	 *
 	 * @since 2.0.0
 	 *
 	 * @var string Cache directory for ZIP files.
@@ -29,6 +33,8 @@ class ZipProvider {
 	const CACHE_DIR = 'traduttore';
 
 	/**
+	 * The GlotPress translation set.
+	 *
 	 * @since 2.0.0
 	 *
 	 * @var GP_Translation_Set The translation set.
@@ -36,6 +42,8 @@ class ZipProvider {
 	protected $translation_set;
 
 	/**
+	 * Build time meta key.
+	 *
 	 * @since 2.0.0
 	 *
 	 * @var string Build time meta key.
@@ -67,7 +75,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/** @var WP_Filesystem_Base $wp_filesystem */
+		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -79,11 +87,11 @@ class ZipProvider {
 		}
 
 		// Make sure the cache directory exists.
-		if ( ! @is_dir( static::get_cache_dir() ) ) {
+		if ( ! is_dir( static::get_cache_dir() ) ) {
 			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
 		}
 
-		/** @var GP_Locale $locale */
+		/* @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
 		$entries = GP::$translation->for_export( $project, $this->translation_set, [ 'status' => 'current' ] );
@@ -94,7 +102,7 @@ class ZipProvider {
 
 		$files_for_zip = [];
 
-		/** @var GP_Format $format */
+		/* @var GP_Format $format */
 		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
 			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
 			$temp_file = wp_tempnam( $file_name );
@@ -144,7 +152,7 @@ class ZipProvider {
 	 * @return string ZIP filename.
 	 */
 	protected function get_zip_filename() {
-		/** @var GP_Locale $locale */
+		/* @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
 
