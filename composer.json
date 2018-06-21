@@ -32,11 +32,13 @@
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-master",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4"
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+    "phpunit/phpunit": "^6"
   },
   "scripts": {
     "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
-    "lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source"
+    "lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source",
+    "test": "phpunit"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
@@ -44,6 +46,11 @@
   "autoload": {
     "psr-4": {
       "Required\\Traduttore\\": "inc"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   }
 }

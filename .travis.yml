@@ -1,0 +1,46 @@
+sudo: false
+dist: trusty
+
+language: php
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - composer install
+
+jobs:
+  fast_finish: true
+  include:
+    - stage: lint
+      script:
+        - composer lint
+
+    - stage: test
+      php: 7.2
+      env: WP_VERSION=latest
+      script:
+        - composer test
+        - WP_MULTISITE=1 composer test
+
+    - stage: test
+      php: 7.1
+      env: WP_VERSION=latest
+      script:
+        - composer test
+        - WP_MULTISITE=1 composer test
+
+    - stage: test
+      php: 7.0
+      env: WP_VERSION=latest
+      script:
+        - composer test
+        - WP_MULTISITE=1 composer test
