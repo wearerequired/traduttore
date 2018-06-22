@@ -112,6 +112,9 @@ class GitHubUpdater {
 			return false;
 		}
 
+		// Include Administration File API for wp_tempnam().
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+
 		$slug       = $this->project->slug;
 		$git_target = $this->get_repository_path();
 		$pot_target = wp_tempnam( 'traduttore-' . $slug . '.pot' );
