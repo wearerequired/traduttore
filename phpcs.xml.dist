@@ -5,7 +5,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="tracduttore" />
+			<property name="text_domain" type="array" value="traduttore" />
 		</properties>
 	</rule>
 </ruleset>
