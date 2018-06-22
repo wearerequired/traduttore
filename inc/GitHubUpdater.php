@@ -214,10 +214,17 @@ class GitHubUpdater {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_pot_file( $source, $target, $slug ) : bool {
+		// Allow to override the path to the WP-CLI bin.
+		$wp_bin = 'wp';
+		if ( defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
+			$wp_bin = TRADUTTORE_WP_BIN;
+		}
+
 		exec(
 			escapeshellcmd(
 				sprintf(
-					'wp i18n make-pot %1$s %2$s --slug=%3$s --domain=%3$s',
+					'%1$s i18n make-pot %2$s %3$s --slug=%4$s',
+					$wp_bin,
 					escapeshellarg( $source ),
 					escapeshellarg( $target ),
 					escapeshellarg( $slug )
