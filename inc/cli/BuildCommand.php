@@ -11,6 +11,7 @@ namespace Required\Traduttore\CLI;
 
 use GP;
 use GP_Translation_Set;
+use Required\Traduttore\ZipProvider;
 use WP_CLI;
 use WP_CLI_Command;
 
