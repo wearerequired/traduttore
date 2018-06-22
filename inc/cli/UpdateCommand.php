@@ -52,7 +52,7 @@ class UpdateCommand extends WP_CLI_Command {
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
-	public function __construct( $args, $assoc_args ) {
+	public function __invoke( $args, $assoc_args ) {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
