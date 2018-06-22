@@ -9,8 +9,8 @@
 
 namespace Required\Traduttore\CLI;
 
-use GP;
-use GP_Translation_Set;
+use Required\Traduttore\GitHubUpdater;
+use Required\Traduttore\ProjectLocator;
 use WP_CLI;
 use WP_CLI_Command;
 
