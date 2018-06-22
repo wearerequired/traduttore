@@ -11,7 +11,6 @@ namespace Required\Traduttore;
 
 use GP;
 use GP_Project;
-use PO;
 
 /**
  * Helper class to find a GlotPress project based on path, ID, or GitHub repository URL.
