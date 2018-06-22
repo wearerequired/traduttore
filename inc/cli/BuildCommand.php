@@ -11,6 +11,7 @@ namespace Required\Traduttore\CLI;
 
 use GP;
 use GP_Translation_Set;
+use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\ZipProvider;
 use WP_CLI;
 use WP_CLI_Command;
@@ -46,13 +47,9 @@ class BuildCommand extends WP_CLI_Command {
 	 * @param array $assoc_args Associative args.
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		if ( is_numeric( $args[0] ) ) {
-			$project = GP::$project->get( $args[0] );
-		} else {
-			$project = GP::$project->by_path( $args[0] );
-		}
+		$locator = new ProjectLocator( $args[0] );
+		$project = $locator->get_project();
 
-		// Get the project object from the project path that was passed in.
 		if ( ! $project ) {
 			WP_CLI::error( 'Project not found' );
 		}
