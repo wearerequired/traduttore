@@ -15,6 +15,7 @@ use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\ZipProvider;
 use WP_CLI;
 use WP_CLI_Command;
+use function WP_CLI\Utils\get_flag_value;
 
 /**
  * Generate translation ZIP files for a project.
@@ -60,7 +61,7 @@ class BuildCommand extends WP_CLI_Command {
 		foreach ( $translation_sets as $translation_set ) {
 			$zip_provider = new ZipProvider( $translation_set );
 
-			if ( isset( $assoc_args['force'] ) && ! $assoc_args['force'] && $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
+			if ( ! get_flag_value( $assoc_args, 'force' ) && $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
 				WP_CLI::log( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
 
 				continue;
