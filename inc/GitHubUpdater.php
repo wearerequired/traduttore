@@ -85,7 +85,18 @@ class GitHubUpdater {
 	 * @return bool True on success, false on failure.
 	 */
 	public function remove_local_repository() : bool {
-		return rmdir( $this->get_repository_path() );
+		/* @var WP_Filesystem_Base $wp_filesystem */
+		global $wp_filesystem;
+
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . '/wp-admin/includes/admin.php';
+
+			if ( ! \WP_Filesystem() ) {
+				return false;
+			}
+		}
+
+		return $wp_filesystem->rmdir( $this->get_repository_path(), true );
 	}
 
 	/**
