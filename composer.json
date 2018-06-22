@@ -27,16 +27,29 @@
     "glotpress",
     "translations"
   ],
+  "config": {
+    "sort-packages": true
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:wearerequired/coding-standards.git"
+    }
+  ],
   "require": {
     "php": ">=7.1"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "dev-master",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4"
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+    "wearerequired/coding-standards": "dev-master"
   },
   "scripts": {
-    "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
-    "lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source"
+    "format": "phpcbf --report-summary --report-source .",
+    "lint": "phpcs --report-summary --report-source ."
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
