@@ -1,49 +1,49 @@
 {
-  "name": "wearerequired/traduttore",
-  "type": "wordpress-plugin",
-  "description": "WordPress.org-style translation API for your WordPress projects.",
-  "homepage": "https://github.com/wearerequired/traduttore",
-  "license": "GPL-2.0-or-later",
-  "authors": [
-    {
-      "name": "required",
-      "email": "info@required.ch",
-      "homepage": "https://required.com",
-      "role": "Company"
-    },
-    {
-      "name": "Dominik Schilling",
-      "email": "dominik@required.ch",
-      "role": "Developer"
-    },
-    {
-      "name": "Pascal Birchler",
-      "email": "pascal@required.ch",
-      "role": "Developer"
-    }
-  ],
-  "keywords": [
-    "wordpress",
-    "glotpress",
-    "translations"
-  ],
-  "require": {
-    "php": ">=7.1"
-  },
-  "require-dev": {
-    "wp-coding-standards/wpcs": "dev-master",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4"
-  },
-  "scripts": {
-    "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
-    "lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source"
-  },
-  "suggest": {
-    "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
-  },
-  "autoload": {
-    "psr-4": {
-      "Required\\Traduttore\\": "inc"
-    }
-  }
+	"name": "wearerequired/traduttore",
+	"type": "wordpress-plugin",
+	"description": "WordPress.org-style translation API for your WordPress projects.",
+	"homepage": "https://github.com/wearerequired/traduttore",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "required",
+			"email": "info@required.ch",
+			"homepage": "https://required.com",
+			"role": "Company"
+		},
+		{
+			"name": "Dominik Schilling",
+			"email": "dominik@required.ch",
+			"role": "Developer"
+		},
+		{
+			"name": "Pascal Birchler",
+			"email": "pascal@required.ch",
+			"role": "Developer"
+		}
+	],
+	"keywords": [
+		"wordpress",
+		"glotpress",
+		"translations"
+	],
+	"require": {
+		"php": ">=7.1"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "dev-master",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4"
+	},
+	"scripts": {
+		"format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
+		"lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source"
+	},
+	"suggest": {
+		"wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
+	},
+	"autoload": {
+		"psr-4": {
+			"Required\\Traduttore\\": "inc"
+		}
+	}
 }
