@@ -105,6 +105,6 @@ Traduttore pulls the remote Git repository from GitHub and uses that for importi
 
 If this local repository somehow gets broken, you can remove it via WP-CLI as follows:
 
-```
+```bash
 wp traduttore cache clear <project|repository_url>
 ````
