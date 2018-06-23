@@ -25,7 +25,19 @@ After that, you never have to worry about the translation workflow ever again!
 * Supports [Restricted Site Access](https://de.wordpress.org/plugins/restricted-site-access/)
 * Supports sending [Slack](https://wordpress.org/plugins/slack/) notifications
 
-## Installation
+## Setup
+
+### System Requirements
+
+Traduttore requires at least PHP 7.1, while the [Traduttore Registry](https://github.com/wearerequired/traduttore-registry) also supports PHP 7.0.
+
+Note: In case you need to support older versions of PHP in your project, you could fork Traduttore Registry to achieve this compatibility.
+
+Traduttore requires [WP-CLI](https://wp-cli.org/) to be installed on the server alongside with the rather new [i18n-command package](https://github.com/wp-cli/i18n-command).
+
+You can define `TRADUTTORE_WP_BIN` in your `wp-config.php` file to tell Traduttore where the WP-CLI executable is. The default is `wp`.
+
+### Installation
 
 If you're using [Composer](https://getcomposer.org/) to manage dependencies, you can use the following command to add the plugin to your site:
 
@@ -34,6 +46,12 @@ composer require wearerequired/traduttore
 ```
 
 Alternatively, you can download a ZIP file containing the plugin on [GitHub](https://github.com/wearerequired/traduttore).
+
+### GitHub Access
+
+Traduttore connects to GitHub via SSH to fetch a project's repository. If you're projects are not public, you need to make sure that the server has access to them by providing an SSH key. Ideally, you'd create a so-called [machine user](https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users) for this purpose.
+
+You can learn more about this at [Connecting to GitHub with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/)
 
 ### Webhooks
 
@@ -49,6 +67,13 @@ To enable automatic string extraction from your GitHub projects, you need to cre
 Now, every time you push changes to GitHub, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
 
 Note: `TRADUTTORE_GITHUB_SYNC_SECRET` needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
+
+## Configuration
+
+The following constants can be defined to configure Traduttore:
+
+* `TRADUTTORE_GITHUB_SYNC_SECRET`: Secret token for incoming GitHub webhook requests.
+* `TRADUTTORE_WP_BIN`: Path to the WP-CLI executable on the system.
 
 ## Usage
 
