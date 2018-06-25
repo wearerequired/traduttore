@@ -2,7 +2,7 @@
 /**
  * Plugin uninstall handler.
  *
- * @package Traduttore
+ * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
