@@ -13,7 +13,7 @@ if ( ! $_tests_dir ) {
 }
 
 if ( ! $_gp_tests_dir ) {
-	$_gp_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress/wp-content/plugins/glotpress/tests/phpunit';
+	$_gp_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress/build/wp-content/plugins/glotpress/tests/phpunit';
 }
 
 if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
