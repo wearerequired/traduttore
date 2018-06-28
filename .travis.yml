@@ -24,8 +24,12 @@ env:
 
 matrix:
   include:
-    - env: WP_VERSION=nightly
-    - env: WP_TRAVISCI=travis:codecoverage
+    - php: 7.2
+      env: WP_VERSION=nightly WP_MULTISITE=0
+    - php: 7.2
+      env: WP_VERSION=nightly WP_MULTISITE=1
+    - php: 7.2
+      env: WP_VERSION=nightly WP_MULTISITE=0 WP_TRAVISCI=travis:codecoverage
 
 before_install:
   - |
