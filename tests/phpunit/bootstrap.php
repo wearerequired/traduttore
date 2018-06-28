@@ -25,6 +25,8 @@ if ( ! file_exists( $_gp_tests_dir . '/bootstrap.php' ) ) {
 	die( "GlotPress test suite could not be found. Have you run bin/install-wp-tests.sh ?\n" );
 }
 
+putenv( "WP_TESTS_DIR=$_tests_dir" );
+
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
