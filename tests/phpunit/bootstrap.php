@@ -5,7 +5,7 @@
  * @package Required\Traduttore
  */
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+$_tests_dir    = getenv( 'WP_TESTS_DIR' );
 $_gp_tests_dir = getenv( 'GP_TESTS_DIR' );
 
 if ( ! $_tests_dir ) {
@@ -28,11 +28,13 @@ if ( ! file_exists( $_gp_tests_dir . '/bootstrap.php' ) ) {
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
-tests_add_filter( 'muplugins_loaded', function() use ( $_gp_tests_dir ) {
-	require_once $_gp_tests_dir . '/includes/loader.php';
+tests_add_filter(
+	'muplugins_loaded', function() use ( $_gp_tests_dir ) {
+		require_once $_gp_tests_dir . '/includes/loader.php';
 
-	require dirname( dirname( __DIR__ ) ) . '/traduttore.php';
-} );
+		require dirname( dirname( __DIR__ ) ) . '/traduttore.php';
+	}
+);
 
 global $wp_tests_options;
 
