@@ -124,9 +124,11 @@ class Plugin {
 						 *
 						 * @since 2.0.3
 						 *
-						 * @param string $message The notification message.
+						 * @param string             $message         The notification message.
+						 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
+						 * @param GP_Project         $project         The GlotPress project that was updated.
 						 */
-						return apply_filters( 'traduttore_zip_generated_notification_message', $message );
+						return apply_filters( 'traduttore_zip_generated_notification_message', $message, $translation_set, $project );
 					},
 				];
 
@@ -175,9 +177,11 @@ class Plugin {
 						 *
 						 * @since 2.0.3
 						 *
-						 * @param string $message The notification message.
+						 * @param string     $message The notification message.
+						 * @param GP_Project $project The GlotPress project that was updated.
+						 * @param array      $stats   Stats about the number of imported translations.
 						 */
-						return apply_filters( 'traduttore_updated_from_github_notification_message', $message );
+						return apply_filters( 'traduttore_updated_from_github_notification_message', $message, $project, $stats );
 					},
 				];
 
