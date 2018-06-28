@@ -150,7 +150,6 @@ install_db() {
 
 install_gp() {
 	# Set up GlotPress
-	echo "Loading GlotPress..."
 	git clone -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
 }
 
