@@ -4,3 +4,6 @@ vendor/*
 
 # Node.js
 node_modules/
+
+# PHPUnit
+coverage.xml
