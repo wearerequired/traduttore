@@ -5,6 +5,8 @@
 	<rule ref="WordPress-Core" />
 	<rule ref="WordPress-Docs">
 		<exclude-pattern>*/tests/*</exclude-pattern>
+		<!-- Prevent false positives for IDE annotations -->
+		<exclude name="Squiz.PHP.CommentedOutCode"/>
 	</rule>
 
 	<!-- Check all PHP files in directory tree by default. -->
