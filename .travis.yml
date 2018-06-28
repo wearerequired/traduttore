@@ -14,8 +14,51 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+php:
+  - 7.2
+  - 7.1
+  - 7.0
+
+env:
+  - WP_VERSION=latest WP_MULTISITE=0
+  - WP_VERSION=latest WP_MULTISITE=1
+
+matrix:
+  include:
+    - env: WP_VERSION=nightly
+    - env: WP_TRAVISCI=travis:codecoverage
+
+before_install:
+  - |
+    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+      cp $HOME/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini /tmp
+      phpenv config-rm xdebug.ini
+    else
+      echo "xdebug.ini does not exist"
+    fi
+
 install:
   - composer install
+
+before_script:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+
+script:
+  - composer test
+  - |
+    if [[ "$WP_TRAVISCI" == "travis:codecoverage" ]] ; then
+      phpenv config-add /tmp/xdebug.ini || echo "xdebug.ini does not exist"
+      composer test -- --coverage-clover build/logs/clover.xml
+    else
+      composer test
+    fi
+
+after_script:
+  - |
+    if [[ "$WP_TRAVISCI" == "travis:codecoverage" ]] ; then
+      bash <(curl -s https://codecov.io/bash)
+    fi
 
 jobs:
   fast_finish: true
@@ -24,23 +67,7 @@ jobs:
       script:
         - composer lint
 
-    - stage: test
-      php: 7.2
-      env: WP_VERSION=latest
-      script:
-        - composer test
-        - WP_MULTISITE=1 composer test
-
-    - stage: test
-      php: 7.1
-      env: WP_VERSION=latest
-      script:
-        - composer test
-        - WP_MULTISITE=1 composer test
-
-    - stage: test
-      php: 7.0
-      env: WP_VERSION=latest
-      script:
-        - composer test
-        - WP_MULTISITE=1 composer test
+stages:
+  - lint
+  - test
+  - deploy
