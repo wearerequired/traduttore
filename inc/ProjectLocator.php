@@ -64,10 +64,10 @@ class ProjectLocator {
 
 		$table = GP::$project->table;
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
 		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $this->project ) . '%' );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
 		return GP::$project->coerce( $wpdb->get_row( $query ) );
 	}
 }
