@@ -218,10 +218,6 @@ class Plugin {
 		$project = $locator->get_project();
 
 		if ( ! $project ) {
-			WP_CLI::error( 'Project not found' );
-		}
-
-		if ( ! $project ) {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
