@@ -16,6 +16,7 @@ TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
 WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
+GP_TESTS_DIR="$WP_CORE_DIR/build/wp-content/plugins/glotpress/tests/phpunit"
 
 download() {
     if [ `which curl` ]; then
@@ -150,7 +151,7 @@ install_db() {
 install_gp() {
 	# Set up GlotPress
 	echo "Loading GlotPress..."
-	git clone -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/src/wp-content/plugins/glotpress"
+	git clone -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
 }
 
 install_wp
