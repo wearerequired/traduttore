@@ -36,9 +36,9 @@
     "phpunit/phpunit": "^6.5.8"
   },
   "scripts": {
-    "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
-    "lint": "phpcs --standard=phpcs.xml.dist --report-summary --report-source",
-    "test": "phpunit"
+    "format": "vendor/bin/phpcbf --report-summary --report-source .",
+    "lint": "vendor/bin/phpcs --report-summary --report-source .",
+    "test": "vendor/bin/phpunit"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
