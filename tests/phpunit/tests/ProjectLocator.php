@@ -17,17 +17,17 @@ class ProjectLocator extends GP_UnitTestCase {
 	/**
 	 * @var \GP_Project
 	 */
-	public $root;
+	protected $root;
 
 	/**
 	 * @var \GP_Project
 	 */
-	public $sub;
+	protected $sub;
 
 	/**
 	 * @var \GP_Project
 	 */
-	public $subsub;
+	protected $subsub;
 
 	public function setUp() {
 		parent::setUp();
