@@ -23,11 +23,13 @@ class GitHubUpdater extends GP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->project = $this->factory->project->create( [
-			'name'                => 'Sample Project',
-			'slug'                => 'sample-project',
-			'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
-		] );
+		$this->project = $this->factory->project->create(
+			[
+				'name'                => 'Sample Project',
+				'slug'                => 'sample-project',
+				'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+			]
+		);
 	}
 
 	public function test_get_repository_path() {

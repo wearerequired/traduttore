@@ -310,7 +310,7 @@ class Plugin {
 			return false;
 		}
 
-		$github_signature  = $request->get_header( 'x-hub-signature' );
+		$github_signature = $request->get_header( 'x-hub-signature' );
 
 		if ( ! $github_signature ) {
 			return false;
