@@ -64,4 +64,30 @@ class GitHubUpdater extends GP_UnitTestCase {
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
 	}
+
+	public function test_fetch_and_update_existing_repository() {
+		add_filter( 'traduttore_git_clone_use_https', '__return_true' );
+		$result1 = $this->updater->fetch_and_update();
+		$result2 = $this->updater->fetch_and_update();
+		remove_filter( 'traduttore_git_clone_use_https', '__return_true' );
+
+		$originals = GP::$original->by_project_id( $this->project->id );
+
+		$this->assertTrue( $result1 );
+		$this->assertTrue( $result2 );
+		$this->assertNotEmpty( $originals );
+	}
+
+	public function test_fetch_and_update_and_delete_existing_repository() {
+		add_filter( 'traduttore_git_clone_use_https', '__return_true' );
+		$result1 = $this->updater->fetch_and_update();
+		$result2 = $this->updater->fetch_and_update( true );
+		remove_filter( 'traduttore_git_clone_use_https', '__return_true' );
+
+		$originals = GP::$original->by_project_id( $this->project->id );
+
+		$this->assertTrue( $result1 );
+		$this->assertTrue( $result2 );
+		$this->assertNotEmpty( $originals );
+	}
 }
