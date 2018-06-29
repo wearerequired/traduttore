@@ -29,12 +29,12 @@ class TranslationApiRoute extends GP_Route_Main {
 	 * @param string $project_path Project path.
 	 */
 	public function route_callback( $project_path ) {
-		header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+		$this->header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
 		// Get the project object from the project path that was passed in.
 		$project = GP::$project->by_path( $project_path );
 		if ( ! $project ) {
-			status_header( 404 );
+			$this->status_header( 404 );
 			echo wp_json_encode( [ 'error' => 'Project not found.' ] );
 			return;
 		}
