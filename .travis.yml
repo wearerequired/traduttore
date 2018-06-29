@@ -19,15 +19,16 @@ php:
   - 7.1
 
 env:
+  global:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=1
   - WP_VERSION=nightly WP_MULTISITE=0
   - WP_VERSION=nightly WP_MULTISITE=1
+  matrix:
+    - PATH="$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
+    - WP_CLI_BIN_DIR="$TRAVIS_BUILD_DIR/vendor/bin"
+    - TRADUTTORE_WP_BIN="$WP_CLI_BIN_DIR"
 
-global:
-- PATH="$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
-- WP_CLI_BIN_DIR="$TRAVIS_BUILD_DIR/vendor/bin"
-- TRADUTTORE_WP_BIN="$WP_CLI_BIN_DIR"
 
 before_install:
   - |
