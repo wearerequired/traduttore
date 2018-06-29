@@ -1,5 +1,7 @@
 # Traduttore
 
+[![Build Status](https://travis-ci.com/wearerequired/traduttore.svg?branch=master)](https://travis-ci.com/wearerequired/traduttore) [![codecov](https://codecov.io/gh/wearerequired/traduttore/branch/master/graph/badge.svg)](https://codecov.io/gh/wearerequired/traduttore)
+
 Traduttore is a WordPress plugin that allows you to host your own WordPress.org-style translation API for your WordPress projects.
 
 ## How it Works
