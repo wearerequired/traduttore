@@ -47,3 +47,4 @@ $wp_tests_options['permalink_structure'] = '/%postname%';
 require $_tests_dir . '/includes/bootstrap.php';
 
 require_once $_gp_tests_dir . '/lib/testcase.php';
+require_once $_gp_tests_dir . '/lib/testcase-route.php';
