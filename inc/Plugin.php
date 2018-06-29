@@ -294,6 +294,10 @@ class Plugin {
 	public function github_webhook_permission_push( $request ) : bool {
 		$event_name = $request->get_header( 'x-github-event' );
 
+		if ( ! $event_name ) {
+			return false;
+		}
+
 		if ( 'ping' === $event_name ) {
 			return true;
 		}
@@ -307,6 +311,11 @@ class Plugin {
 		}
 
 		$github_signature  = $request->get_header( 'x-hub-signature' );
+
+		if ( ! $github_signature ) {
+			return false;
+		}
+
 		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), TRADUTTORE_GITHUB_SYNC_SECRET );
 
 		return hash_equals( $github_signature, $payload_signature );
