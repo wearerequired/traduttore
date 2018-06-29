@@ -20,7 +20,7 @@ class ZipProvider extends GP_UnitTestCase {
 	protected $locale;
 
 	/**
-	 * @var \GP_Project
+	 * @var \GP_Translation_Set
 	 */
 	protected $translation_set;
 
@@ -57,6 +57,23 @@ class ZipProvider extends GP_UnitTestCase {
 				'parent_project_id' => $this->translation_set->project->id,
 			]
 		);
+	}
+
+	public function tearDown() {
+		/* @var WP_Filesystem_Base $wp_filesystem */
+		global $wp_filesystem;
+
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . '/wp-admin/includes/admin.php';
+
+			if ( ! \WP_Filesystem() ) {
+				return false;
+			}
+		}
+
+		$wp_filesystem->rmdir( Provider::get_cache_dir(), true );
+
+		parent::tearDown();
 	}
 
 	public function test_get_cache_dir() {
