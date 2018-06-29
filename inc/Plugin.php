@@ -276,7 +276,7 @@ class Plugin {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
+		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $project->id ] ) ) {
 			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->id ] );
 		}
 
