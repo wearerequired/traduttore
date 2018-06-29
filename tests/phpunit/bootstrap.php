@@ -48,3 +48,7 @@ require $_tests_dir . '/includes/bootstrap.php';
 
 require_once $_gp_tests_dir . '/lib/testcase.php';
 require_once $_gp_tests_dir . '/lib/testcase-route.php';
+
+if ( ! defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
+	define( 'TRADUTTORE_GITHUB_SYNC_SECRET', 'traduttore-test' );
+}
