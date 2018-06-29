@@ -33,7 +33,7 @@
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-master",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-    "phpunit/phpunit": "^6"
+    "phpunit/phpunit": "^6.5.8"
   },
   "scripts": {
     "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
