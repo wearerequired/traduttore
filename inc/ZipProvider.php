@@ -145,6 +145,40 @@ class ZipProvider {
 	}
 
 	/**
+	 * Removes the ZIP file for a translation set.
+	 *
+	 * @since 2.0.3
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function remove_zip_file() {
+		if ( ! file_exists( $this->get_zip_path() ) ) {
+			return false;
+		}
+
+		/* @var WP_Filesystem_Base $wp_filesystem */
+		global $wp_filesystem;
+
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . '/wp-admin/includes/admin.php';
+
+			if ( ! \WP_Filesystem() ) {
+				return false;
+			}
+		}
+
+		$success = $wp_filesystem->rmdir( $this->get_zip_path(), true );
+
+		if ( $success ) {
+			gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, '', 'translation_set' );
+		}
+
+		return $success;
+	}
+
+	/**
 	 * Returns the name of the ZIP file without the path.
 	 *
 	 * @since 2.0.0
