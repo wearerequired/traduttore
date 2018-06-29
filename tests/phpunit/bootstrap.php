@@ -53,6 +53,6 @@ if ( ! defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
 	define( 'TRADUTTORE_GITHUB_SYNC_SECRET', 'traduttore-test' );
 }
 
-if ( ! defined( 'TRADUTTORE_WP_BIN' ) ) {
+if ( ! defined( 'TRADUTTORE_WP_BIN' ) && getenv( 'WP_CLI_BIN_DIR' ) ) {
 	define( 'TRADUTTORE_WP_BIN', getenv( 'WP_CLI_BIN_DIR' ) . '/wp' );
 }
