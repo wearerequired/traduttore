@@ -1,8 +1,8 @@
 <?php
 /**
- * Class GetPushResources
+ * Class Webhook
  *
- * @package H2push
+ * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;

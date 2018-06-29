@@ -1,8 +1,8 @@
 <?php
 /**
- * Class GetPushResources
+ * Class ZipProvider
  *
- * @package H2push
+ * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
