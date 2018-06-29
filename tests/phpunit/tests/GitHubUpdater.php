@@ -55,7 +55,9 @@ class GitHubUpdater extends GP_UnitTestCase {
 	}
 
 	public function test_fetch_and_update() {
+		add_filter( 'traduttore_git_clone_use_https', '__return_true' );
 		$result = $this->updater->fetch_and_update();
+		remove_filter( 'traduttore_git_clone_use_https', '__return_true' );
 
 		$originals = GP::$original->by_project_id( $this->project->id );
 
