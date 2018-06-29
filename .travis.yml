@@ -27,8 +27,6 @@ env:
   global:
     - PATH="$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
     - WP_CLI_BIN_DIR="$TRAVIS_BUILD_DIR/vendor/bin"
-    - TRADUTTORE_WP_BIN="$WP_CLI_BIN_DIR"
-
 
 before_install:
   - |

@@ -52,3 +52,7 @@ require_once $_gp_tests_dir . '/lib/testcase-route.php';
 if ( ! defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
 	define( 'TRADUTTORE_GITHUB_SYNC_SECRET', 'traduttore-test' );
 }
+
+if ( ! defined( 'TRADUTTORE_WP_BIN' ) ) {
+	define( 'TRADUTTORE_WP_BIN', getenv( 'WP_CLI_BIN_DIR' ) . '/wp' );
+}
