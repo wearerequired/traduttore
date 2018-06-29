@@ -20,8 +20,6 @@ if ( ! $wp_filesystem ) {
 	}
 }
 
-$wp_filesystem->rmdir( $file_or_folder, true );
-
 array_map(
 	function ( $file_or_folder ) use ( $wp_filesystem ) {
 		$wp_filesystem->delete( $file_or_folder, true, is_dir( $file_or_folder ) ? 'd' : 'f' );
