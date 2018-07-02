@@ -105,7 +105,12 @@ class GitHubUpdater {
 		}
 
 		/**
-		 * Filters the URL used to clone a Git repository
+		 * Filters the URL used to clone a Git repository.
+		 *
+		 * @since 2.0.3
+		 *
+		 * @param string     $clone_url The URL to clone a Git repository.
+		 * @param GP_Project $project   The currrent GlotPress project.
 		 */
 		return apply_filters( 'traduttore_git_clone_url', $clone_url, $this->project );
 	}
