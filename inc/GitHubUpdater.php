@@ -38,6 +38,15 @@ class GitHubUpdater {
 	protected $project;
 
 	/**
+	 * The project's repository name.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string Repository name.
+	 */
+	protected $repository_name;
+
+	/**
 	 * GitHubUpdater constructor.
 	 *
 	 * @since 2.0.0
@@ -45,23 +54,111 @@ class GitHubUpdater {
 	 * @param GP_Project $project GlotPress project.
 	 */
 	public function __construct( GP_Project $project ) {
-		$this->project = $project;
+		$this->project         = $project;
+		$this->repository_name = $this->get_repository_name();
 	}
 
 	/**
-	 * Returns the repository URL based on the project's source URL template.
+	 * Returns the name for a Git repository.
 	 *
-	 * @since 2.0.0
+	 * @since 2.0.3
 	 *
-	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/required-valencia.git.
+	 * @return string Repository name in the form <owner>/<repo>, e.g. wearerequired/traduttore.
 	 */
-	protected function get_ssh_url(): string {
-		// e.g. https://github.com/wearerequired/required-valencia/blob/master/%file%#L%line%.
+	protected function get_repository_name() : string {
+		// e.g. https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%.
 		$url   = $this->project->source_url_template();
 		$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
 		$path  = array_shift( $parts );
 
-		return sprintf( 'git@github.com:%s.git', ltrim( $path, '/' ) );
+		return ltrim( $path, '/' );
+	}
+
+	/**
+	 * Indicates whether a GitHub repository is publicly accessible or not.
+	 *
+	 * @since 2.0.3.
+	 *
+	 * @return bool Whether the repository is publicly accessible.
+	 */
+	protected function is_public_repository() : bool {
+		$response = wp_remote_head( 'https://api.github.com/repos/' . $this->repository_name );
+
+		return 200 === wp_remote_retrieve_response_code( $response );
+	}
+
+	/**
+	 * Returns the repository's clone URL.
+	 *
+	 * Supports either HTTPS or SSH.
+	 *
+	 * @since 2.0.3
+	 *
+	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git
+	 *                or https://github.com/wearerequired/traduttore.git.
+	 */
+	protected function get_clone_url() : string {
+		/**
+		 * Filters whether HTTPS or SSH should be used to clone a repository.
+		 *
+		 * @since 2.0.3
+		 *
+		 * @param bool       $use_https Whether to use HTTPS or SSH. Defaults to HTTPS for public repositories.
+		 * @param GP_Project $project   The currrent GlotPress project.
+		 */
+		$use_https = apply_filters( 'traduttore_git_clone_use_https', $this->is_public_repository(), $this->project );
+
+		$clone_url = $this->get_ssh_url();
+
+		if ( $use_https ) {
+			$clone_url = $this->get_https_url();
+		}
+
+		/**
+		 * Filters the URL used to clone a Git repository.
+		 *
+		 * @since 2.0.3
+		 *
+		 * @param string     $clone_url The URL to clone a Git repository.
+		 * @param GP_Project $project   The currrent GlotPress project.
+		 */
+		return apply_filters( 'traduttore_git_clone_url', $clone_url, $this->project );
+	}
+
+	/**
+	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
+	 */
+	protected function get_ssh_url() : string {
+		return sprintf( 'git@github.com:%s.git', $this->repository_name );
+	}
+
+	/**
+	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
+	 *
+	 * @since 2.0.3
+	 *
+	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
+	 */
+	protected function get_https_url() : string {
+		/**
+		 * Filters the credentials to be used for connecting to GitHub via HTTPS.
+		 *
+		 * @since 2.0.3
+		 *
+		 * @param string     $credentials GitHub credentials in the form username:password. Default empty string.
+		 * @param GP_Project $project     The currrent GlotPress project.
+		 */
+		$credentials = apply_filters( 'traduttore_github_https_credentials', '', $this->project );
+
+		if ( ! empty( $credentials ) ) {
+			return sprintf( 'https://%1$s@github.com/%2$s.git', $credentials, $this->repository_name );
+		}
+
+		return sprintf( 'https://github.com/%s.git', $this->repository_name );
 	}
 
 	/**
@@ -71,7 +168,7 @@ class GitHubUpdater {
 	 *
 	 * @return string Git repository path.
 	 */
-	public function get_repository_path(): string {
+	public function get_repository_path() : string {
 		$slug = $this->project->slug;
 
 		return get_temp_dir() . 'traduttore-github-' . $slug;
@@ -125,7 +222,7 @@ class GitHubUpdater {
 			$this->remove_local_repository();
 		}
 
-		$result = $this->fetch_github_repository( $this->get_ssh_url(), $git_target );
+		$result = $this->fetch_github_repository( $this->get_clone_url(), $git_target );
 
 		if ( ! $result ) {
 			$this->remove_lock();

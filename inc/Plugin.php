@@ -276,7 +276,7 @@ class Plugin {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $params['repository']['url'] ] ) ) {
+		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $project->id ] ) ) {
 			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->id ] );
 		}
 
@@ -294,6 +294,10 @@ class Plugin {
 	public function github_webhook_permission_push( $request ) : bool {
 		$event_name = $request->get_header( 'x-github-event' );
 
+		if ( ! $event_name ) {
+			return false;
+		}
+
 		if ( 'ping' === $event_name ) {
 			return true;
 		}
@@ -306,7 +310,12 @@ class Plugin {
 			return false;
 		}
 
-		$github_signature  = $request->get_header( 'x-hub-signature' );
+		$github_signature = $request->get_header( 'x-hub-signature' );
+
+		if ( ! $github_signature ) {
+			return false;
+		}
+
 		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), TRADUTTORE_GITHUB_SYNC_SECRET );
 
 		return hash_equals( $github_signature, $payload_signature );
