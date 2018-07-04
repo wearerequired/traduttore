@@ -38,6 +38,15 @@ class GitHubUpdater {
 	protected $project;
 
 	/**
+	 * The project's repository name.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string Repository name.
+	 */
+	protected $repository_name;
+
+	/**
 	 * GitHubUpdater constructor.
 	 *
 	 * @since 2.0.0
@@ -45,7 +54,8 @@ class GitHubUpdater {
 	 * @param GP_Project $project GlotPress project.
 	 */
 	public function __construct( GP_Project $project ) {
-		$this->project = $project;
+		$this->project         = $project;
+		$this->repository_name = $this->get_repository_name();
 	}
 
 	/**
@@ -72,7 +82,7 @@ class GitHubUpdater {
 	 * @return bool Whether the repository is publicly accessible.
 	 */
 	protected function is_public_repository() : bool {
-		$response = wp_remote_head( 'https://api.github.com/repos/' . $this->get_repository_name() );
+		$response = wp_remote_head( 'https://api.github.com/repos/' . $this->repository_name );
 
 		return 200 === wp_remote_retrieve_response_code( $response );
 	}
@@ -123,7 +133,7 @@ class GitHubUpdater {
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
 	protected function get_ssh_url() : string {
-		return sprintf( 'git@github.com:%s.git', $this->get_repository_name() );
+		return sprintf( 'git@github.com:%s.git', $this->repository_name );
 	}
 
 	/**
@@ -145,10 +155,10 @@ class GitHubUpdater {
 		$credentials = apply_filters( 'traduttore_github_https_credentials', '', $this->project );
 
 		if ( ! empty( $credentials ) ) {
-			return sprintf( 'https://%1$s@github.com/%2$s.git', $credentials, $this->get_repository_name() );
+			return sprintf( 'https://%1$s@github.com/%2$s.git', $credentials, $this->repository_name );
 		}
 
-		return sprintf( 'https://github.com/%s.git', $this->get_repository_name() );
+		return sprintf( 'https://github.com/%s.git', $this->repository_name );
 	}
 
 	/**
