@@ -202,11 +202,10 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param \GP_Translation_Set $tranlsation_set Translation set.
 	 * @return string|false Build time on success, false otherwise.
 	 */
-	public static function get_last_build_time( GP_Translation_Set $tranlsation_set ) {
-		return gp_get_meta( 'translation_set', $tranlsation_set->id, static::BUILD_TIME_KEY );
+	public function get_last_build_time() {
+		return gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
 	}
 
 	/**

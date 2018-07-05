@@ -95,9 +95,9 @@ class ZipProvider extends GP_UnitTestCase {
 	}
 
 	public function test_get_last_build_time_for_new_set() {
-		$build_time = Provider::get_last_build_time( $this->translation_set );
+		$provider = new Provider( $this->translation_set );
 
-		$this->assertFalse( $build_time );
+		$this->assertFalse( $provider->get_last_build_time() );
 	}
 
 	public function test_generate_zip_file_empty_set() {
@@ -137,7 +137,7 @@ class ZipProvider extends GP_UnitTestCase {
 
 		$provider->generate_zip_file();
 
-		$build_time = Provider::get_last_build_time( $this->translation_set );
+		$build_time = $provider->get_last_build_time( $this->translation_set );
 
 		$this->assertInternalType( 'string', $build_time );
 	}

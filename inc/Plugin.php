@@ -64,11 +64,12 @@ class Plugin {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
-				if ( $translation_set->last_modified() <= ZipProvider::get_last_build_time( $translation_set ) ) {
+				$zip_provider = new ZipProvider( $translation_set );
+
+				if ( $translation_set->last_modified() <= $zip_provider->get_last_build_time( $translation_set ) ) {
 					return;
 				}
 
-				$zip_provider = new ZipProvider( $translation_set );
 				$zip_provider->generate_zip_file();
 			}
 		);
