@@ -57,14 +57,21 @@ class CacheCommand extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$github_updater = new GitHubUpdater( $project );
+		$loader = ( new LoaderFactory() )->get_loader( $project );
 
-		$success = $github_updater->remove_local_repository();
-
-		if ( $success ) {
-			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->id ) );
-		} else {
-			WP_CLI::error( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->id ) );
+		if ( ! $loader ) {
+			WP_CLI::error( 'Invalid project type' );
 		}
+
+		$updater = new Updater( $project );
+		$runner  = new Runner( $loader, $updater );
+
+		if ( $runner->delete_local_repository() ) {
+			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->get_id() ) );
+
+			return;
+		}
+
+		WP_CLI::error( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->get_id() ) );
 	}
 }

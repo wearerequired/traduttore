@@ -29,8 +29,5 @@
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
-
-	<rule ref="PEAR.NamingConventions.ValidClassName.Invalid">
-		<exclude-pattern>/tests/*</exclude-pattern>
-	</rule>
+	<exclude-pattern>*/tests/phpunit/data/*</exclude-pattern>
 </ruleset>

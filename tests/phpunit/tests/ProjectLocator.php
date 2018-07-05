@@ -32,7 +32,11 @@ class ProjectLocator extends GP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->root   = $this->factory->project->create( [ 'name' => 'Root' ] );
+		$this->root   = $this->factory->project->create(
+			[
+				'name' => 'Root',
+			]
+		);
 		$this->sub    = $this->factory->project->create(
 			[
 				'name'              => 'Sub',
@@ -51,36 +55,36 @@ class ProjectLocator extends GP_UnitTestCase {
 	public function test_find_project_by_glotpress_path() {
 		$locator = new Locator( 'root' );
 
-		$this->assertEquals( $locator->get_project()->id, $this->root->id );
+		$this->assertEquals( $locator->get_project()->get_id(), $this->root->id );
 	}
 
 	public function test_find_project_by_glotpress_subpath() {
 		$locator = new Locator( 'root/sub' );
 
-		$this->assertEquals( $locator->get_project()->id, $this->sub->id );
+		$this->assertEquals( $locator->get_project()->get_id(), $this->sub->id );
 	}
 
 	public function test_find_project_by_glotpress_subsubpath() {
 		$locator = new Locator( 'root/sub/subsub' );
 
-		$this->assertEquals( $locator->get_project()->id, $this->subsub->id );
+		$this->assertEquals( $locator->get_project()->get_id(), $this->subsub->id );
 	}
 
 	public function test_find_project_by_glotpress_id() {
 		$locator = new Locator( (int) $this->sub->id );
 
-		$this->assertEquals( $locator->get_project()->id, $this->sub->id );
+		$this->assertEquals( $locator->get_project()->get_id(), $this->sub->id );
 	}
 
 	public function test_find_project_by_glotpress_id_as_string() {
 		$locator = new Locator( (string) $this->sub->id );
 
-		$this->assertEquals( $locator->get_project()->id, $this->sub->id );
+		$this->assertEquals( $locator->get_project()->get_id(), $this->sub->id );
 	}
 
 	public function test_find_project_by_github_url() {
 		$locator = new Locator( 'https://github.com/wearerequired/traduttore' );
 
-		$this->assertEquals( $locator->get_project()->id, $this->subsub->id );
+		$this->assertEquals( $locator->get_project()->get_id(), $this->subsub->id );
 	}
 }

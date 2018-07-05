@@ -55,7 +55,7 @@ class BuildCommand extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$translation_sets = (array) GP::$translation_set->by_project_id( $project->id );
+		$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
 		/* @var GP_Translation_Set $translation_set */
 		foreach ( $translation_sets as $translation_set ) {

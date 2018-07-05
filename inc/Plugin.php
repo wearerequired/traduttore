@@ -75,14 +75,25 @@ class Plugin {
 
 		add_action(
 			'traduttore_update_from_github', function ( $project_id ) {
-				$project = GP::$project->get( (int) $project_id );
+				$locator = new ProjectLocator( $project_id );
+				$project = $locator->get_project();
 
 				if ( ! $project ) {
 					return;
 				}
 
-				$github_updater = new GitHubUpdater( $project );
-				$github_updater->fetch_and_update( true );
+				$loader = ( new LoaderFactory() )->get_loader( $project );
+
+				if ( ! $loader ) {
+					return;
+				}
+
+				$updater = new Updater( $project );
+				$runner  = new Runner( $loader, $updater );
+
+				$runner->delete_local_repository();
+
+				$runner->run();
 			}
 		);
 
@@ -276,8 +287,8 @@ class Plugin {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $project->id ] ) ) {
-			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->id ] );
+		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $project->get_id() ] ) ) {
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->get_id() ] );
 		}
 
 		return new WP_REST_Response( [ 'result' => 'OK' ] );
