@@ -9,7 +9,9 @@
 
 namespace Required\Traduttore;
 
-use Required\Traduttore\Loader\{GitHub, GitLab};
+use Required\Traduttore\Loader\{
+	Bitbucket, GitHub, GitLab
+};
 
 /**
  * LoaderFactory class.
@@ -33,6 +35,8 @@ class LoaderFactory {
 				return new GitHub( $repository );
 			case Repository::TYPE_GITLAB:
 				return new GitLab( $repository );
+			case Repository::TYPE_BITBUCKET:
+				return new Bitbucket( $repository );
 		}
 
 		return null;

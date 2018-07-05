@@ -37,6 +37,13 @@ class Repository {
 	public const TYPE_GITLAB = 2;
 
 	/**
+	 * Bitbucket repository type.
+	 *
+	 * @since 3.0.0
+	 */
+	public const TYPE_BITBUCKET = 3;
+
+	/**
 	 * GlotPress project.
 	 *
 	 * @since 3.0.0
@@ -171,6 +178,10 @@ class Repository {
 			return self::TYPE_GITLAB;
 		}
 
+		if ( 'bitbucket.org' === $this->host ) {
+			return self::TYPE_BITBUCKET;
+		}
+
 		return self::TYPE_UNKNOWN;
 	}
 
@@ -185,6 +196,12 @@ class Repository {
 			case self::TYPE_GITLAB:
 				$url   = $this->project->get_source_url_template();
 				$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
+				$path  = array_shift( $parts );
+
+				return ltrim( $path, '/' );
+			case self::TYPE_BITBUCKET:
+				$url   = $this->project->get_source_url_template();
+				$parts = explode( '/src/', wp_parse_url( $url, PHP_URL_PATH ) );
 				$path  = array_shift( $parts );
 
 				return ltrim( $path, '/' );
