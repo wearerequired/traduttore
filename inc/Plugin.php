@@ -53,14 +53,14 @@ class Plugin {
 		add_action(
 			'gp_translation_saved', function ( GP_Translation $translation ) {
 				// Regenerate ZIP file if not already scheduled.
-				if ( ! wp_next_scheduled( 'traduttore_generate_zip', [ $translation->translation_set_id ] ) ) {
-					wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore_generate_zip', [ $translation->translation_set_id ] );
+				if ( ! wp_next_scheduled( 'traduttore.generate_zip', [ $translation->translation_set_id ] ) ) {
+					wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore.generate_zip', [ $translation->translation_set_id ] );
 				}
 			}
 		);
 
 		add_action(
-			'traduttore_generate_zip', function( $translation_set_id ) {
+			'traduttore.generate_zip', function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
@@ -75,7 +75,7 @@ class Plugin {
 		);
 
 		add_action(
-			'traduttore_update_from_github', function ( $project_id ) {
+			'traduttore.update', function ( $project_id ) {
 				$locator = new ProjectLocator( $project_id );
 				$project = $locator->get_project();
 
@@ -100,8 +100,8 @@ class Plugin {
 
 		add_filter(
 			'slack_get_events', function( $events ) {
-				$events['traduttore_zip_generated'] = [
-					'action'      => 'traduttore_zip_generated',
+				$events['traduttore.zip_generated'] = [
+					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
 						/* @var GP_Locale $locale */
@@ -117,7 +117,7 @@ class Plugin {
 						 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
 						 * @param GP_Project         $project         The GlotPress project that was updated.
 						 */
-						$send_message = apply_filters( 'traduttore_zip_generated_send_notification', true, $translation_set, $project );
+						$send_message = apply_filters( 'traduttore.zip_generated_send_notification', true, $translation_set, $project );
 
 						if ( ! $send_message ) {
 							return false;
@@ -140,13 +140,13 @@ class Plugin {
 						 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
 						 * @param GP_Project         $project         The GlotPress project that was updated.
 						 */
-						return apply_filters( 'traduttore_zip_generated_notification_message', $message, $translation_set, $project );
+						return apply_filters( 'traduttore.zip_generated_notification_message', $message, $translation_set, $project );
 					},
 				];
 
-				$events['traduttore_updated_from_github'] = [
-					'action'      => 'traduttore_updated_from_github',
-					'description' => __( 'When new translations are updated from GitHub', 'traduttore' ),
+				$events['traduttore.updated'] = [
+					'action'      => 'traduttore.updated',
+					'description' => __( 'When new translations are updated for a project', 'traduttore' ),
 					'message'     => function( GP_Project $project, array $stats ) {
 						[
 							$originals_added,
@@ -168,7 +168,7 @@ class Plugin {
 						 * @param GP_Project $project      The GlotPress project that was updated.
 						 * @param array      $stats        Stats about the number of imported translations.
 						 */
-						$send_message = apply_filters( 'traduttore_updated_from_github_send_notification', $send_message, $project, $stats );
+						$send_message = apply_filters( 'traduttore.updated_send_notification', $send_message, $project, $stats );
 
 						if ( ! $send_message ) {
 							return false;
@@ -193,7 +193,7 @@ class Plugin {
 						 * @param GP_Project $project The GlotPress project that was updated.
 						 * @param array      $stats   Stats about the number of imported translations.
 						 */
-						return apply_filters( 'traduttore_updated_from_github_notification_message', $message, $project, $stats );
+						return apply_filters( 'traduttore.updated_notification_message', $message, $project, $stats );
 					},
 				];
 
@@ -237,8 +237,8 @@ class Plugin {
 	 * @since 2.0.0
 	 */
 	public static function on_plugin_deactivation(): void {
-		wp_unschedule_hook( 'traduttore_generate_zip' );
-		wp_unschedule_hook( 'traduttore_update_from_github' );
+		wp_unschedule_hook( 'traduttore.generate_zip' );
+		wp_unschedule_hook( 'traduttore.update_from_github' );
 	}
 
 	/**
@@ -288,8 +288,8 @@ class Plugin {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		if ( ! wp_next_scheduled( 'traduttore_update_from_github', [ $project->get_id() ] ) ) {
-			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore_update_from_github', [ $project->get_id() ] );
+		if ( ! wp_next_scheduled( 'traduttore.update', [ $project->get_id() ] ) ) {
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore.update', [ $project->get_id() ] );
 		}
 
 		return new WP_REST_Response( [ 'result' => 'OK' ] );

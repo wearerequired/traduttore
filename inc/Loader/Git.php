@@ -111,9 +111,9 @@ abstract class Git implements Loader {
 		 * @since 2.0.3
 		 *
 		 * @param bool       $use_https  Whether to use HTTPS or SSH. Defaults to HTTPS for public repositories.
-		 * @param Repository $repository The currrent repository.
+		 * @param Repository $repository The current repository.
 		 */
-		$use_https = apply_filters( 'traduttore_git_clone_use_https', $this->is_public_repository(), $this->repository );
+		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->is_public_repository(), $this->repository );
 
 		$clone_url = $this->get_ssh_url();
 
@@ -127,9 +127,9 @@ abstract class Git implements Loader {
 		 * @since 2.0.3
 		 *
 		 * @param string     $clone_url  The URL to clone a Git repository.
-		 * @param Repository $repository The currrent repository.
+		 * @param Repository $repository The current repository.
 		 */
-		return apply_filters( 'traduttore_git_clone_url', $clone_url, $this->repository );
+		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
 	}
 
 	/**
@@ -157,9 +157,9 @@ abstract class Git implements Loader {
 		 * @since 2.0.3
 		 *
 		 * @param string     $credentials Git credentials in the form username:password. Default empty string.
-		 * @param Repository $repository  The currrent repository.
+		 * @param Repository $repository  The current repository.
 		 */
-		$credentials = apply_filters( 'traduttore_git_https_credentials', '', $this->repository );
+		$credentials = apply_filters( 'traduttore.git_https_credentials', '', $this->repository );
 
 		if ( ! empty( $credentials ) ) {
 			return sprintf( 'https://%1$s@%2$s/%3$s.git', $credentials, $this->repository->get_host(), $this->repository->get_name() );
