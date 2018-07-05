@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3
+
+* Uses HTTPS instead of SSH for cloning repositories if possible
+* Fixed uninstall routine
+* Fixed a few other smaller issues
+
 ## 2.0.2
 
 * Fixed a few errors within the CLI commands
