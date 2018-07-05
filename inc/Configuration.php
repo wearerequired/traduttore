@@ -106,7 +106,7 @@ class Configuration {
 		if ( file_exists( $composer_file ) ) {
 			$config = json_decode( file_get_contents( $composer_file ), true );
 
-			if ( $config && isset( $config['extra'], $config['extra']['traduttore'] ) ) {
+			if ( $config && isset( $config['extra']['traduttore'] ) ) {
 				return $config['extra']['traduttore'];
 			}
 		}
