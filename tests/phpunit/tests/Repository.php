@@ -30,6 +30,11 @@ class Repository extends GP_UnitTestCase {
 	 */
 	protected $gitlab;
 
+	/**
+	 * @var Project
+	 */
+	protected $bitbucket;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -45,7 +50,7 @@ class Repository extends GP_UnitTestCase {
 			$this->factory->project->create(
 				[
 					'name'                => 'GitHub',
-					'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+					'source_url_template' => 'https://github.com/github/traduttore/blob/master/%file%#L%line%',
 				]
 			)
 		);
@@ -55,6 +60,15 @@ class Repository extends GP_UnitTestCase {
 				[
 					'name'                => 'GitLab',
 					'source_url_template' => 'https://gitlab.com/gitlab/traduttore/blob/master/%file%#L%line%',
+				]
+			)
+		);
+
+		$this->bitbucket = new Project(
+			$this->factory->project->create(
+				[
+					'name'                => 'Bitbucket',
+					'source_url_template' => 'https://bitbucket.org/bitbucket/traduttore/src/master/%file%#lines-%line%',
 				]
 			)
 		);
@@ -105,7 +119,7 @@ class Repository extends GP_UnitTestCase {
 	public function test_get_name_github() {
 		$repository = new Repo( $this->github );
 
-		$this->assertSame( 'wearerequired/traduttore', $repository->get_name() );
+		$this->assertSame( 'github/traduttore', $repository->get_name() );
 	}
 
 	public function test_get_project_gitlab() {
@@ -130,5 +144,29 @@ class Repository extends GP_UnitTestCase {
 		$repository = new Repo( $this->gitlab );
 
 		$this->assertSame( 'gitlab/traduttore', $repository->get_name() );
+	}
+
+	public function test_get_project_bitbucket() {
+		$repository = new Repo( $this->bitbucket );
+
+		$this->assertSame( $this->bitbucket, $repository->get_project() );
+	}
+
+	public function test_get_host_bitbucket() {
+		$repository = new Repo( $this->bitbucket );
+
+		$this->assertSame( 'bitbucket.org', $repository->get_host() );
+	}
+
+	public function test_get_type_bitbucket() {
+		$repository = new Repo( $this->bitbucket );
+
+		$this->assertSame( Repo::TYPE_BITBUCKET, $repository->get_type() );
+	}
+
+	public function test_get_name_bitbucket() {
+		$repository = new Repo( $this->bitbucket );
+
+		$this->assertSame( 'bitbucket/traduttore', $repository->get_name() );
 	}
 }

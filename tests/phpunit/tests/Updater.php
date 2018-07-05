@@ -75,4 +75,21 @@ class Updater extends GP_UnitTestCase {
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
 	}
+
+	public function test_has_no_lock_initially() {
+		$this->assertFalse( $this->updater->has_lock() );
+	}
+
+	public function test_has_lock_after_adding() {
+		$this->updater->add_lock();
+
+		$this->assertTrue( $this->updater->has_lock() );
+	}
+
+	public function test_has_no_lock_after_removal() {
+		$this->updater->add_lock();
+		$this->updater->remove_lock();
+
+		$this->assertFalse( $this->updater->has_lock() );
+	}
 }

@@ -40,4 +40,26 @@ class Loader extends GP_UnitTestCase {
 
 		$this->assertStringEndsWith( 'traduttore-github.com-sample-project', $loader->get_local_path() );
 	}
+
+	public function test_download_repository() {
+		$loader = new GitHubLoader( new Repository( $this->project ) );
+
+		add_filter( 'traduttore.git_clone_use_https', '__return_true' );
+		$result = $loader->download();
+		remove_filter( 'traduttore.git_clone_use_https', '__return_true' );
+
+		$this->assertSame( $result, $loader->get_local_path() );
+	}
+
+	public function test_download_existing_repository() {
+		$loader = new GitHubLoader( new Repository( $this->project ) );
+
+		add_filter( 'traduttore.git_clone_use_https', '__return_true' );
+		$result1 = $loader->download();
+		$result2 = $loader->download();
+		remove_filter( 'traduttore.git_clone_use_https', '__return_true' );
+
+		$this->assertSame( $result1, $loader->get_local_path() );
+		$this->assertSame( $result2, $loader->get_local_path() );
+	}
 }

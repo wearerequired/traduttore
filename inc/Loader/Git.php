@@ -55,7 +55,7 @@ abstract class Git implements Loader {
 			exec( escapeshellcmd( 'git pull -q' ), $output, $status );
 			chdir( $current_dir );
 
-			return 0 === $status;
+			return 0 === $status ? $target : null;
 		}
 
 		exec(

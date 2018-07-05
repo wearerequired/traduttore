@@ -89,4 +89,27 @@ class Runner extends GP_UnitTestCase {
 		$this->assertTrue( $result1 );
 		$this->assertTrue( $result2 );
 	}
+
+	public function test_run_stops_when_project_is_locked() {
+		$updater = $this->createMock( Updater::class );
+		$updater->method( 'has_lock' )->willReturn( true );
+
+		$this->runner = new R( $this->loader, $updater );
+
+		$result = $this->runner->run();
+
+		$this->assertFalse( $result );
+	}
+
+	public function test_run_stops_when_download_fails() {
+		$loader = $this->createMock( Loader::class );
+		$loader->method( 'download' )->willReturn( null );
+		$updater = $this->createMock( Updater::class );
+
+		$this->runner = new R( $loader, $updater );
+
+		$result = $this->runner->run();
+
+		$this->assertFalse( $result );
+	}
 }

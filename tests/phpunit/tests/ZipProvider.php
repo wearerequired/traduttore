@@ -141,4 +141,43 @@ class ZipProvider extends GP_UnitTestCase {
 
 		$this->assertInternalType( 'string', $build_time );
 	}
+
+	public function test_remove_zip_file() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		$this->assertTrue( $provider->remove_zip_file() );
+	}
+
+	public function test_remove_zip_file_resets_build_time() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+		$provider->remove_zip_file();
+
+		$build_time = $provider->get_last_build_time();
+
+		$this->assertNull( $build_time );
+	}
 }
