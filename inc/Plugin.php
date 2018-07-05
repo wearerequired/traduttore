@@ -238,7 +238,7 @@ class Plugin {
 	 */
 	public static function on_plugin_deactivation(): void {
 		wp_unschedule_hook( 'traduttore.generate_zip' );
-		wp_unschedule_hook( 'traduttore.update_from_github' );
+		wp_unschedule_hook( 'traduttore.update' );
 	}
 
 	/**
