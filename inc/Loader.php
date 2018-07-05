@@ -9,10 +9,14 @@ namespace Required\Traduttore;
 
 /**
  * Loader interface.
+ *
+ * @since 3.0.0
  */
 interface Loader {
 	/**
 	 * Class constructor.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param Repository $repository Repository instance.
 	 */
@@ -23,7 +27,7 @@ interface Loader {
 	 *
 	 * If the repository has been downloaded before, the latest changes will be pulled.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return string Path to the downloaded repository on success.
 	 */
@@ -32,7 +36,7 @@ interface Loader {
 	/**
 	 * Returns the local repository path..
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return string Repository path.
 	 */

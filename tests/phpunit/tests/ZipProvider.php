@@ -85,19 +85,19 @@ class ZipProvider extends GP_UnitTestCase {
 	public function test_get_zip_path() {
 		$provider = new Provider( $this->translation_set );
 
-		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE.zip', $provider->get_zip_path( $this->translation_set ) );
+		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE.zip', $provider->get_zip_path() );
 	}
 
 	public function test_get_zip_url() {
 		$provider = new Provider( $this->translation_set );
 
-		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE.zip' ), $provider->get_zip_url( $this->translation_set ) );
+		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE.zip' ), $provider->get_zip_url() );
 	}
 
 	public function test_get_last_build_time_for_new_set() {
 		$provider = new Provider( $this->translation_set );
 
-		$this->assertFalse( $provider->get_last_build_time() );
+		$this->assertNull( $provider->get_last_build_time() );
 	}
 
 	public function test_generate_zip_file_empty_set() {
@@ -137,7 +137,7 @@ class ZipProvider extends GP_UnitTestCase {
 
 		$provider->generate_zip_file();
 
-		$build_time = $provider->get_last_build_time( $this->translation_set );
+		$build_time = $provider->get_last_build_time();
 
 		$this->assertInternalType( 'string', $build_time );
 	}

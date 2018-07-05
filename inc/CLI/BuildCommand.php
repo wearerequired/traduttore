@@ -11,8 +11,7 @@ namespace Required\Traduttore\CLI;
 
 use GP;
 use GP_Translation_Set;
-use Required\Traduttore\ProjectLocator;
-use Required\Traduttore\ZipProvider;
+use Required\Traduttore\{ProjectLocator, ZipProvider};
 use WP_CLI;
 use WP_CLI_Command;
 use function WP_CLI\Utils\get_flag_value;
@@ -44,6 +43,8 @@ class BuildCommand extends WP_CLI_Command {
 	 *
 	 * Automatically called by WP-CLI.
 	 *
+	 * @since 2.0.0
+	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
@@ -61,7 +62,7 @@ class BuildCommand extends WP_CLI_Command {
 		foreach ( $translation_sets as $translation_set ) {
 			$zip_provider = new ZipProvider( $translation_set );
 
-			if ( ! get_flag_value( $assoc_args, 'force' ) && $translation_set->last_modified() <= $zip_provider->get_last_build_time( $translation_set ) ) {
+			if ( ! get_flag_value( $assoc_args, 'force' ) && $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
 				WP_CLI::log( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
 
 				continue;

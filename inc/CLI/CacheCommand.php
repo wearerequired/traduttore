@@ -9,7 +9,7 @@
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\GitHubUpdater;
+use Required\Traduttore\{LoaderFactory, Updater, Runner};
 use Required\Traduttore\ProjectLocator;
 use WP_CLI;
 use WP_CLI_Command;
@@ -45,6 +45,8 @@ class CacheCommand extends WP_CLI_Command {
 	 *     # Update translations from project ID.
 	 *     $ wp traduttore cache clear 123
 	 *     Success: Removed cached Git repository for project (ID: 123)!
+	 *
+	 * @since 2.0.0
 	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.

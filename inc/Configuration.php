@@ -18,6 +18,8 @@ class Configuration {
 	/**
 	 * Repository path.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @var string Repository path.
 	 */
 	protected $path;
@@ -25,12 +27,16 @@ class Configuration {
 	/**
 	 * Repository configuration.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @var array Repository configuration.
 	 */
 	protected $config = [];
 
 	/**
 	 * Class constructor.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param string $path Repository path.
 	 */
@@ -43,6 +49,8 @@ class Configuration {
 	/**
 	 * Returns the repository path.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return string $path Repository path.
 	 */
 	public function get_path() : string {
@@ -52,6 +60,8 @@ class Configuration {
 	/**
 	 * Returns the configuration array.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return array Repository configuration.
 	 */
 	public function get_config() : array {
@@ -60,6 +70,8 @@ class Configuration {
 
 	/**
 	 * Returns a single config.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param string $key Config key.
 	 * @return mixed|null Config value.
@@ -74,6 +86,8 @@ class Configuration {
 
 	/**
 	 * Loads the configuration for the current path.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return array Configuration data if found.
 	 */

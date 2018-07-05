@@ -9,12 +9,14 @@ namespace Required\Traduttore\Loader;
 
 /**
  * GitLab Loader.
+ *
+ * @since 3.0.0
  */
-class GitLab {
+class GitLab extends Git {
 	/**
 	 * Indicates whether a GitHub repository is publicly accessible or not.
 	 *
-	 * @since 2.0.3.
+	 * @since 3.0.0
 	 *
 	 * @return bool Whether the repository is publicly accessible.
 	 */

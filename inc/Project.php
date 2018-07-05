@@ -14,11 +14,13 @@ use GP_Project;
 /**
  * GlotPress Project decorator class.
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 class Project {
 	/**
 	 * GlotPress project.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @var GP_Project Project information.
 	 */
@@ -27,6 +29,8 @@ class Project {
 	/**
 	 * Project constructor.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @param GP_Project $project GlotPress project.
 	 */
 	public function __construct( $project ) {
@@ -34,7 +38,9 @@ class Project {
 	}
 
 	/**
-	 * Returns the actual GlotPress project
+	 * Returns the actual GlotPress project.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return GP_Project GlotPress project.
 	 */
@@ -45,6 +51,8 @@ class Project {
 	/**
 	 * Returns the project's ID.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return int Project ID.
 	 */
 	public function get_id() : int {
@@ -54,6 +62,8 @@ class Project {
 	/**
 	 * Returns the project's slug.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return string Project slug.
 	 */
 	public function get_slug() : string {
@@ -62,6 +72,8 @@ class Project {
 
 	/**
 	 * Returns the project's source URL template.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return string Source URL template.
 	 */

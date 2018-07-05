@@ -9,14 +9,18 @@
 
 namespace Required\Traduttore;
 
+use WP_Filesystem_Base;
+
 /**
  * Project class.
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 class Runner {
 	/**
 	 * Loader instance.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @var Loader VCS loader.
 	 */
@@ -25,12 +29,16 @@ class Runner {
 	/**
 	 * Updater instance.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @var Updater Translation updater.
 	 */
 	protected $updater;
 
 	/**
 	 * Runner constructor.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param Loader  $loader VCS loader.
 	 * @param Updater $updater Translation updater.
@@ -43,7 +51,7 @@ class Runner {
 	/**
 	 * Attempts to delete the folder containing the local repository checkout.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return bool True on success, false on failure.
 	 */
@@ -65,7 +73,7 @@ class Runner {
 	/**
 	 * Fetches the GitHub repository and updates the translations based on the source code.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return bool True on success, false otherwise.
 	 */

@@ -9,11 +9,10 @@
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\LoaderFactory;
-use Required\Traduttore\Updater;
-use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\{ProjectLocator, LoaderFactory, Updater, Runner};
 use WP_CLI;
 use WP_CLI_Command;
+use function WP_CLI\Utils\get_flag_value;
 
 /**
  * Updates project translations from GitHub repository.
@@ -50,11 +49,13 @@ class UpdateCommand extends WP_CLI_Command {
 	 *
 	 * Automatically called by WP-CLI.
 	 *
+	 * @since 2.0.0
+	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		$delete  = Utils\get_flag_value( $assoc_args, 'delete', false );
+		$delete  = get_flag_value( $assoc_args, 'delete', false );
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 

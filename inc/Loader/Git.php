@@ -12,10 +12,14 @@ use Required\Traduttore\Loader;
 
 /**
  * Git loader.
+ *
+ * @since 3.0.0
  */
 abstract class Git implements Loader {
 	/**
 	 * Repository information.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @var Repository Repository object.
 	 */
@@ -23,6 +27,8 @@ abstract class Git implements Loader {
 
 	/**
 	 * Class constructor.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param Repository $repository Repository instance.
 	 */
@@ -35,14 +41,12 @@ abstract class Git implements Loader {
 	 *
 	 * If the repository has been cloned before, the latest changes will be pulled.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return string Path to the downloaded repository on success.
 	 */
 	public function download() :? string {
 		$target = $this->get_local_path();
-
-		var_dump( $target );
 
 		if ( is_dir( $target ) ) {
 			$current_dir = getcwd();
@@ -70,7 +74,7 @@ abstract class Git implements Loader {
 	/**
 	 * Returns the path to where the Git repository should be checked out.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return string Git repository path.
 	 */
@@ -86,7 +90,7 @@ abstract class Git implements Loader {
 	/**
 	 * Indicates whether a Git repository is publicly accessible or not.
 	 *
-	 * @since 2.0.3.
+	 * @since 3.0.0
 	 *
 	 * @return bool Whether the repository is publicly accessible.
 	 */
@@ -99,7 +103,7 @@ abstract class Git implements Loader {
 	 *
 	 * Supports either HTTPS or SSH.
 	 *
-	 * @since 2.0.3
+	 * @since 3.0.0
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git
 	 *                or https://github.com/wearerequired/traduttore.git.
@@ -108,7 +112,7 @@ abstract class Git implements Loader {
 		/**
 		 * Filters whether HTTPS or SSH should be used to clone a repository.
 		 *
-		 * @since 2.0.3
+		 * @since 3.0.0
 		 *
 		 * @param bool       $use_https  Whether to use HTTPS or SSH. Defaults to HTTPS for public repositories.
 		 * @param Repository $repository The current repository.
@@ -124,7 +128,7 @@ abstract class Git implements Loader {
 		/**
 		 * Filters the URL used to clone a Git repository.
 		 *
-		 * @since 2.0.3
+		 * @since 3.0.0
 		 *
 		 * @param string     $clone_url  The URL to clone a Git repository.
 		 * @param Repository $repository The current repository.
@@ -135,7 +139,7 @@ abstract class Git implements Loader {
 	/**
 	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
@@ -146,7 +150,7 @@ abstract class Git implements Loader {
 	/**
 	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
 	 *
-	 * @since 2.0.3
+	 * @since 3.0.0
 	 *
 	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
 	 */
@@ -154,7 +158,7 @@ abstract class Git implements Loader {
 		/**
 		 * Filters the credentials to be used for connecting to a Git repository via HTTPS.
 		 *
-		 * @since 2.0.3
+		 * @since 3.0.0
 		 *
 		 * @param string     $credentials Git credentials in the form username:password. Default empty string.
 		 * @param Repository $repository  The current repository.

@@ -30,12 +30,16 @@ class Updater {
 	/**
 	 * GlotPress project.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @var Project Project information.
 	 */
 	protected $project;
 
 	/**
 	 * Returns a new loader instance for a given project.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param Project $project Project information.
 	 */
@@ -74,6 +78,8 @@ class Updater {
 
 	/**
 	 * Updates the project based on the given configuration.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param Configuration $config Configuration object.
 	 * @return bool True on success, false otherwise.
@@ -160,6 +166,8 @@ class Updater {
 	 *
 	 * Allows overriding the path to the binary via the TRADUTTORE_WP_BIN constant.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return string WP-CLI binary path.
 	 */
 	protected function get_wp_bin() : string {
@@ -172,6 +180,8 @@ class Updater {
 
 	/**
 	 * Returns the path to the temporary POT file.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return string POT file path.
 	 */

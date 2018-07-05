@@ -66,7 +66,7 @@ class Plugin {
 
 				$zip_provider = new ZipProvider( $translation_set );
 
-				if ( $translation_set->last_modified() <= $zip_provider->get_last_build_time( $translation_set ) ) {
+				if ( $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
 					return;
 				}
 

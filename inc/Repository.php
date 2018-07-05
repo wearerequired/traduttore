@@ -12,26 +12,34 @@ namespace Required\Traduttore;
 /**
  * Repository class.
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 class Repository {
 	/**
 	 * Unknown repository type.
+	 *
+	 * @since 3.0.0
 	 */
 	public const TYPE_UNKNOWN = 0;
 
 	/**
 	 * GitHub repository type.
+	 *
+	 * @since 3.0.0
 	 */
 	public const TYPE_GITHUB = 1;
 
 	/**
 	 * GitLab repository type.
+	 *
+	 * @since 3.0.0
 	 */
 	public const TYPE_GITLAB = 2;
 
 	/**
 	 * GlotPress project.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @var Project Project information.
 	 */
@@ -40,12 +48,16 @@ class Repository {
 	/**
 	 * Repository host name.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @var string Repository host name.
 	 */
 	protected $host;
 
 	/**
 	 * Repository type.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @var string Repository type.
 	 */
@@ -54,12 +66,16 @@ class Repository {
 	/**
 	 * Repository name.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @var string Repository name.
 	 */
 	protected $name;
 
 	/**
 	 * Loader constructor.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param Project $project Project information.
 	 */
@@ -73,6 +89,10 @@ class Repository {
 
 	/**
 	 * Returns the project.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return Project The project.
 	 */
 	public function get_project() : Project {
 		return $this->project;
@@ -80,6 +100,8 @@ class Repository {
 
 	/**
 	 * Returns the repository host name.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return string Repository host name.
 	 */
@@ -90,6 +112,8 @@ class Repository {
 	/**
 	 * Returns the repository type.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return int Repository type.
 	 */
 	public function get_type() : int {
@@ -98,6 +122,8 @@ class Repository {
 
 	/**
 	 * Returns the repository name.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return string Repository name.
 	 */
@@ -108,6 +134,8 @@ class Repository {
 	/**
 	 * Returns the repository slug.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return string Repository slug.
 	 */
 	public function get_slug() : string {
@@ -117,9 +145,11 @@ class Repository {
 	/**
 	 * Sets the repository host name.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @return string Repository host name.
 	 */
-	protected function set_host() {
+	protected function set_host() :? string {
 		$url = $this->project->get_source_url_template();
 
 		return wp_parse_url( $url, PHP_URL_HOST );
@@ -127,6 +157,8 @@ class Repository {
 
 	/**
 	 * Sets the repository type.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @return string Repository type.
 	 */
@@ -149,8 +181,8 @@ class Repository {
 	 */
 	protected function set_name() :? string {
 		switch ( $this->type ) {
-			case Repository::TYPE_GITHUB:
-			case Repository::TYPE_GITLAB:
+			case self::TYPE_GITHUB:
+			case self::TYPE_GITLAB:
 				$url   = $this->project->get_source_url_template();
 				$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
 				$path  = array_shift( $parts );

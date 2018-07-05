@@ -21,12 +21,16 @@ class ProjectLocator {
 	/**
 	 * Project instance.
 	 *
+	 * @since 2.0.0
+	 *
 	 * @var Project Project instance.
 	 */
 	protected $project;
 
 	/**
 	 * ProjectLocator constructor.
+	 *
+	 * @since 2.0.0
 	 *
 	 * @param string|int $project Possible GlotPress project ID or path or GitHub repository path.
 	 */
@@ -37,6 +41,8 @@ class ProjectLocator {
 	/**
 	 * Returns the found project.
 	 *
+	 * @since 2.0.0
+	 *
 	 * @return Project GlotPress project.
 	 */
 	public function get_project() :? Project {
@@ -45,6 +51,8 @@ class ProjectLocator {
 
 	/**
 	 * Attempts to find a GlotPress project.
+	 *
+	 * @since 2.0.0
 	 *
 	 * @param string|int $project Possible GlotPress project ID or path or GitHub repository path.
 	 * @return Project Project instance.
@@ -57,7 +65,7 @@ class ProjectLocator {
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_project_by_github_repository_url( $project );
+			$found = $this->find_by_github_repository_url( $project );
 		}
 
 		return $found ? new Project( $found ) : null;
@@ -71,7 +79,7 @@ class ProjectLocator {
 	 * @param string $project Possible GitHub repository path or URL.
 	 * @return false|GP_Project Project on success, false otherwise.
 	 */
-	protected function find_project_by_github_repository_url( $project ) {
+	protected function find_by_github_repository_url( $project ) {
 		global $wpdb;
 
 		$table = GP::$project->table;
