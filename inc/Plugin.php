@@ -45,13 +45,15 @@ class Plugin {
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
 		add_action(
-			'gp_init', function () {
+			'gp_init',
+			function () {
 				GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
 			}
 		);
 
 		add_action(
-			'gp_translation_saved', function ( GP_Translation $translation ) {
+			'gp_translation_saved',
+			function ( GP_Translation $translation ) {
 				// Regenerate ZIP file if not already scheduled.
 				if ( ! wp_next_scheduled( 'traduttore.generate_zip', [ $translation->translation_set_id ] ) ) {
 					wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore.generate_zip', [ $translation->translation_set_id ] );
@@ -60,7 +62,8 @@ class Plugin {
 		);
 
 		add_action(
-			'traduttore.generate_zip', function( $translation_set_id ) {
+			'traduttore.generate_zip',
+			function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
@@ -75,7 +78,8 @@ class Plugin {
 		);
 
 		add_action(
-			'traduttore.update', function ( $project_id ) {
+			'traduttore.update',
+			function ( $project_id ) {
 				$locator = new ProjectLocator( $project_id );
 				$project = $locator->get_project();
 
@@ -99,7 +103,8 @@ class Plugin {
 		);
 
 		add_filter(
-			'slack_get_events', function( $events ) {
+			'slack_get_events',
+			function( $events ) {
 				$events['traduttore.zip_generated'] = [
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
@@ -209,7 +214,8 @@ class Plugin {
 		 * @return bool Whether access should be restricted.
 		 */
 		add_filter(
-			'restricted_site_access_is_restricted', function( $is_restricted, $wp ) {
+			'restricted_site_access_is_restricted',
+			function( $is_restricted, $wp ) {
 				if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
 					$route = untrailingslashit( $wp->query_vars['rest_route'] );
 
