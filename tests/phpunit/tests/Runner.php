@@ -62,9 +62,24 @@ class Runner extends GP_UnitTestCase {
 		mkdir( $this->loader->get_local_path() );
 		touch( $this->loader->get_local_path() . '/foo.txt' );
 
-		$this->assertTrue( file_exists( $this->loader->get_local_path() . '/foo.txt' ) );
+		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
 		$this->assertTrue( $this->runner->delete_local_repository() );
-		$this->assertFalse( file_exists( $this->loader->get_local_path() . '/foo.txt' ) );
+		$this->assertFileNotExists( $this->loader->get_local_path() . '/foo.txt' );
+	}
+
+	public function test_delete_local_repository_without_filesystem() {
+		mkdir( $this->loader->get_local_path() );
+		touch( $this->loader->get_local_path() . '/foo.txt' );
+
+		unset( $GLOBALS['wp_filesystem'] );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result = $this->runner->delete_local_repository();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
+		$this->assertFalse( $result );
+		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
 	}
 
 	public function test_run() {

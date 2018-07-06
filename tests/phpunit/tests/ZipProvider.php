@@ -106,6 +106,16 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertFalse( $provider->generate_zip_file() );
 	}
 
+	public function test_generate_zip_file_no_filesystem() {
+		$provider = new Provider( $this->translation_set );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result = $provider->generate_zip_file();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFalse( $result );
+	}
+
 	public function test_generate_zip_file() {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
@@ -179,5 +189,37 @@ class ZipProvider extends GP_UnitTestCase {
 		$build_time = $provider->get_last_build_time();
 
 		$this->assertNull( $build_time );
+	}
+
+	public function test_remove_zip_file_does_not_exist() {
+		$provider = new Provider( $this->translation_set );
+
+		$result = $provider->remove_zip_file();
+
+		$this->assertFalse( $result );
+	}
+
+	public function test_remove_zip_file_no_filesystem() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		unset( $GLOBALS['wp_filesystem'] );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result = $provider->remove_zip_file();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFalse( $result );
 	}
 }
