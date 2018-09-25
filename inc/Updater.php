@@ -1,6 +1,6 @@
 <?php
 /**
- * Loader class.
+ * Updater class.
  *
  * @since 3.0.0
  *
@@ -13,7 +13,7 @@ use GP;
 use PO;
 
 /**
- * LoaderFactory class.
+ * Updater class.
  *
  * @since 3.0.0
  */
@@ -104,7 +104,7 @@ class Updater {
 		$stats = GP::$original->import_for_project( $this->project->get_project(), $translations );
 
 		/**
-		 * Fires after translations have been updated from GitHub.
+		 * Fires after translations have been updated.
 		 *
 		 * @since 3.0.0
 		 *
@@ -112,7 +112,7 @@ class Updater {
 		 * @param array   $stats        Stats about the number of imported translations.
 		 * @param PO      $translations PO object containing all the translations from the POT file.
 		 */
-		do_action( 'traduttore_updated', $this->project, $stats, $translations );
+		do_action( 'traduttore.updated', $this->project, $stats, $translations );
 
 		return true;
 	}
