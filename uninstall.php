@@ -7,6 +7,8 @@
 
 namespace Required\Traduttore;
 
+use WP_Filesystem_Base;
+
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 /* @var WP_Filesystem_Base $wp_filesystem */

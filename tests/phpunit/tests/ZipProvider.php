@@ -85,25 +85,35 @@ class ZipProvider extends GP_UnitTestCase {
 	public function test_get_zip_path() {
 		$provider = new Provider( $this->translation_set );
 
-		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE.zip', $provider->get_zip_path( $this->translation_set ) );
+		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE.zip', $provider->get_zip_path() );
 	}
 
 	public function test_get_zip_url() {
 		$provider = new Provider( $this->translation_set );
 
-		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE.zip' ), $provider->get_zip_url( $this->translation_set ) );
+		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE.zip' ), $provider->get_zip_url() );
 	}
 
 	public function test_get_last_build_time_for_new_set() {
-		$build_time = Provider::get_last_build_time( $this->translation_set );
+		$provider = new Provider( $this->translation_set );
 
-		$this->assertFalse( $build_time );
+		$this->assertNull( $provider->get_last_build_time() );
 	}
 
 	public function test_generate_zip_file_empty_set() {
 		$provider = new Provider( $this->translation_set );
 
 		$this->assertFalse( $provider->generate_zip_file() );
+	}
+
+	public function test_generate_zip_file_no_filesystem() {
+		$provider = new Provider( $this->translation_set );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result = $provider->generate_zip_file();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFalse( $result );
 	}
 
 	public function test_generate_zip_file() {
@@ -137,8 +147,79 @@ class ZipProvider extends GP_UnitTestCase {
 
 		$provider->generate_zip_file();
 
-		$build_time = Provider::get_last_build_time( $this->translation_set );
+		$build_time = $provider->get_last_build_time();
 
 		$this->assertInternalType( 'string', $build_time );
+	}
+
+	public function test_remove_zip_file() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		$this->assertTrue( $provider->remove_zip_file() );
+	}
+
+	public function test_remove_zip_file_resets_build_time() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+		$provider->remove_zip_file();
+
+		$build_time = $provider->get_last_build_time();
+
+		$this->assertNull( $build_time );
+	}
+
+	public function test_remove_zip_file_does_not_exist() {
+		$provider = new Provider( $this->translation_set );
+
+		$result = $provider->remove_zip_file();
+
+		$this->assertFalse( $result );
+	}
+
+	public function test_remove_zip_file_no_filesystem() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		unset( $GLOBALS['wp_filesystem'] );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result = $provider->remove_zip_file();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFalse( $result );
 	}
 }

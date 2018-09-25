@@ -22,6 +22,11 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	 */
 	protected $translation_set;
 
+	/**
+	 * @var \GP_Locale
+	 */
+	protected $locale;
+
 	public function setUp() {
 		parent::setUp();
 

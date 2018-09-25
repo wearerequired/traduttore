@@ -19,53 +19,73 @@ use GP_Project;
  */
 class ProjectLocator {
 	/**
-	 * Possible GlotPress project ID or path or GitHub repository path.
+	 * Project instance.
 	 *
-	 * @var string|int Project information.
+	 * @since 2.0.0
+	 *
+	 * @var Project Project instance.
 	 */
 	protected $project;
 
 	/**
 	 * ProjectLocator constructor.
 	 *
-	 * @param string|int $project Project information.
+	 * @since 2.0.0
+	 *
+	 * @param string|int $project Possible GlotPress project ID or path or GitHub repository path.
 	 */
 	public function __construct( $project ) {
-		$this->project = $project;
+		$this->project = $this->find_project( $project );
 	}
 
 	/**
 	 * Returns the found project.
 	 *
-	 * @return GP_Project|false GlotPress project on success, false otherwise.
+	 * @since 2.0.0
+	 *
+	 * @return Project GlotPress project.
 	 */
-	public function get_project() {
-		$project = GP::$project->by_path( $this->project );
+	public function get_project() :? Project {
+		return $this->project;
+	}
 
-		if ( is_numeric( $this->project ) ) {
-			$project = GP::$project->get( (int) $this->project );
+	/**
+	 * Attempts to find a GlotPress project.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string|int $project Possible GlotPress project ID or path or GitHub repository path.
+	 * @return Project Project instance.
+	 */
+	protected function find_project( $project ) :? Project {
+		$found = GP::$project->by_path( $project );
+
+		if ( ! $found && is_numeric( $project ) ) {
+			$found = GP::$project->get( (int) $project );
 		}
 
-		if ( ! $project ) {
-			$project = $this->find_by_github_repository_url();
+		if ( ! $found ) {
+			$found = $this->find_by_github_repository_url( $project );
 		}
 
-		return $project;
+		return $found ? new Project( $found ) : null;
 	}
 
 	/**
 	 * Finds a GlotPress project by a GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
 	 *
 	 * @since 2.0.0
+	 *
+	 * @param string $project Possible GitHub repository path or URL.
 	 * @return false|GP_Project Project on success, false otherwise.
 	 */
-	protected function find_by_github_repository_url() {
+	protected function find_by_github_repository_url( $project ) {
 		global $wpdb;
 
 		$table = GP::$project->table;
 
 		// phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
-		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $this->project ) . '%' );
+		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $project ) . '%' );
 
 		// phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
 		return GP::$project->coerce( $wpdb->get_row( $query ) );

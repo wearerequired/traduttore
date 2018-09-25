@@ -28,7 +28,7 @@ class TranslationApiRoute extends GP_Route_Main {
 	 *
 	 * @param string $project_path Project path.
 	 */
-	public function route_callback( $project_path ) {
+	public function route_callback( $project_path ) : void {
 		$this->header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
 		// Get the project object from the project path that was passed in.
@@ -57,7 +57,7 @@ class TranslationApiRoute extends GP_Route_Main {
 			$result[] = [
 				'language'     => $locale->wp_locale,
 				'version'      => '1.0',
-				'updated'      => ZipProvider::get_last_build_time( $set ),
+				'updated'      => $zip_provider->get_last_build_time(),
 				'english_name' => $locale->english_name,
 				'native_name'  => $locale->native_name,
 				'package'      => $zip_provider->get_zip_url(),

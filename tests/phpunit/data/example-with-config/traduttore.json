@@ -1,0 +1,8 @@
+{
+  "mergeWith": "foobar.pot",
+  "textDomain": "foo",
+  "exclude": [
+    "bar",
+    "bar/baz.php"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "wearerequired/traduttore-example-with-composer",
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=7.1"
+  },
+  "extra": {
+    "traduttore": {
+      "mergeWith": "foobar.pot",
+      "textDomain": "foo",
+      "exclude": [
+        "bar",
+        "bar/baz.php"
+      ]
+    }
+  }
+}

@@ -9,10 +9,10 @@
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\GitHubUpdater;
-use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\{ProjectLocator, LoaderFactory, Updater, Runner};
 use WP_CLI;
 use WP_CLI_Command;
+use function WP_CLI\Utils\get_flag_value;
 
 /**
  * Updates project translations from GitHub repository.
@@ -49,10 +49,13 @@ class UpdateCommand extends WP_CLI_Command {
 	 *
 	 * Automatically called by WP-CLI.
 	 *
+	 * @since 2.0.0
+	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
 	public function __invoke( $args, $assoc_args ) {
+		$delete  = get_flag_value( $assoc_args, 'delete', false );
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -60,13 +63,28 @@ class UpdateCommand extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$github_updater = new GitHubUpdater( $project );
-		$success        = $github_updater->fetch_and_update( isset( $assoc_args['delete'] ) );
+		$loader = ( new LoaderFactory() )->get_loader( $project );
+
+		if ( ! $loader ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$updater = new Updater( $project );
+
+		$runner = new Runner( $loader, $updater );
+
+		if ( $delete ) {
+			$runner->delete_local_repository();
+		}
+
+		$success = $runner->run();
 
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->id ) );
-		} else {
-			WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->id ) );
+
+			return;
 		}
+
+		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->id ) );
 	}
 }

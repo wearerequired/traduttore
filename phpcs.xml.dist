@@ -27,10 +27,14 @@
 		</properties>
 	</rule>
 
+	<!-- Allow . in hook names -->
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="."/>
+		</properties>
+	</rule>
+
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
-
-	<rule ref="PEAR.NamingConventions.ValidClassName.Invalid">
-		<exclude-pattern>/tests/*</exclude-pattern>
-	</rule>
+	<exclude-pattern>*/tests/phpunit/data/*</exclude-pattern>
 </ruleset>

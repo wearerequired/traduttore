@@ -30,7 +30,16 @@ class ZipProvider {
 	 *
 	 * @var string Cache directory for ZIP files.
 	 */
-	const CACHE_DIR = 'traduttore';
+	protected const CACHE_DIR = 'traduttore';
+
+	/**
+	 * Build time meta key.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string Build time meta key.
+	 */
+	protected const BUILD_TIME_KEY = '_traduttore_build_time';
 
 	/**
 	 * The GlotPress translation set.
@@ -40,15 +49,6 @@ class ZipProvider {
 	 * @var GP_Translation_Set The translation set.
 	 */
 	protected $translation_set;
-
-	/**
-	 * Build time meta key.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @var string Build time meta key.
-	 */
-	const BUILD_TIME_KEY = '_traduttore_build_time';
 
 	/**
 	 * ZipProvider constructor.
@@ -70,7 +70,7 @@ class ZipProvider {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function generate_zip_file() {
+	public function generate_zip_file() : bool {
 		if ( ! class_exists( '\ZipArchive' ) ) {
 			return false;
 		}
@@ -133,13 +133,13 @@ class ZipProvider {
 		/**
 		 * Fires after a ZIP file for a given translation set has been generated.
 		 *
-		 * @since 2.0.0
+		 * @since 3.0.0
 		 *
 		 * @param string             $zip_file        Path to the generated ZIP file.
 		 * @param string             $zip_url         URL to the generated ZIP file.
 		 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
 		 */
-		do_action( 'traduttore_zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set );
+		do_action( 'traduttore.zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set );
 
 		return true;
 	}
@@ -153,7 +153,7 @@ class ZipProvider {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function remove_zip_file() {
+	public function remove_zip_file() : bool {
 		if ( ! file_exists( $this->get_zip_path() ) ) {
 			return false;
 		}
@@ -185,7 +185,7 @@ class ZipProvider {
 	 *
 	 * @return string ZIP filename.
 	 */
-	protected function get_zip_filename() {
+	protected function get_zip_filename() : string {
 		/* @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
@@ -202,11 +202,12 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param \GP_Translation_Set $tranlsation_set Translation set.
-	 * @return string|false Build time on success, false otherwise.
+	 * @return string Last build time.
 	 */
-	public static function get_last_build_time( GP_Translation_Set $tranlsation_set ) {
-		return gp_get_meta( 'translation_set', $tranlsation_set->id, static::BUILD_TIME_KEY );
+	public function get_last_build_time() :? string {
+		$meta = gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
+
+		return $meta ?: null;
 	}
 
 	/**
@@ -216,7 +217,7 @@ class ZipProvider {
 	 *
 	 * @return string ZIP file URL.
 	 */
-	public function get_zip_url() {
+	public function get_zip_url() : string {
 		return sprintf(
 			'%1$s/%2$s/%3$s',
 			WP_CONTENT_URL,
@@ -232,7 +233,7 @@ class ZipProvider {
 	 *
 	 * @return string ZIP file path.
 	 */
-	public function get_zip_path() {
+	public function get_zip_path() : string {
 		return sprintf(
 			'%1$s/%2$s/%3$s',
 			WP_CONTENT_DIR,
@@ -248,7 +249,7 @@ class ZipProvider {
 	 *
 	 * @return string Cache directory path.
 	 */
-	public static function get_cache_dir() {
+	public static function get_cache_dir() : string {
 		return sprintf(
 			'%1$s/%2$s',
 			WP_CONTENT_DIR,

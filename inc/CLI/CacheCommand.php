@@ -9,7 +9,7 @@
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\GitHubUpdater;
+use Required\Traduttore\{LoaderFactory, Updater, Runner};
 use Required\Traduttore\ProjectLocator;
 use WP_CLI;
 use WP_CLI_Command;
@@ -46,6 +46,8 @@ class CacheCommand extends WP_CLI_Command {
 	 *     $ wp traduttore cache clear 123
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
+	 * @since 2.0.0
+	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
@@ -57,14 +59,21 @@ class CacheCommand extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$github_updater = new GitHubUpdater( $project );
+		$loader = ( new LoaderFactory() )->get_loader( $project );
 
-		$success = $github_updater->remove_local_repository();
-
-		if ( $success ) {
-			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->id ) );
-		} else {
-			WP_CLI::error( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->id ) );
+		if ( ! $loader ) {
+			WP_CLI::error( 'Invalid project type' );
 		}
+
+		$updater = new Updater( $project );
+		$runner  = new Runner( $loader, $updater );
+
+		if ( $runner->delete_local_repository() ) {
+			WP_CLI::success( sprintf( 'Removed cached Git repository for project (ID: %d)!', $project->get_id() ) );
+
+			return;
+		}
+
+		WP_CLI::error( sprintf( 'Could not remove cached Git repository for project (ID: %d)!', $project->get_id() ) );
 	}
 }
