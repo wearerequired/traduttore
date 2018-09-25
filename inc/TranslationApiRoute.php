@@ -18,13 +18,13 @@ use GP_Translation_Set;
 /**
  * Class used to add a simple translations API.
  *
- * @since 3.0.0
+ * @since 2.0.0
  */
 class TranslationApiRoute extends GP_Route_Main {
 	/**
 	 * Route callback handler.
 	 *
-	 * @since 3.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $project_path Project path.
 	 */
