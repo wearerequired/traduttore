@@ -25,7 +25,8 @@ if ( ! $wp_filesystem ) {
 array_map(
 	function ( $file_or_folder ) use ( $wp_filesystem ) {
 		$wp_filesystem->delete( $file_or_folder, true, is_dir( $file_or_folder ) ? 'd' : 'f' );
-	}, glob( get_temp_dir() . 'traduttore-*' )
+	},
+	glob( get_temp_dir() . 'traduttore-*' )
 );
 
 $wp_filesystem->rmdir( ZipProvider::get_cache_dir(), true );

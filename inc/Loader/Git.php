@@ -65,7 +65,9 @@ abstract class Git implements Loader {
 					escapeshellarg( $this->get_clone_url() ),
 					escapeshellarg( $target )
 				)
-			), $output, $status
+			),
+			$output,
+			$status
 		);
 
 		return 0 === $status ? $target : null;

@@ -233,7 +233,9 @@ class Plugin {
 				}
 
 				return $is_restricted;
-			}, 10, 2
+			},
+			10,
+			2
 		);
 	}
 
@@ -254,7 +256,9 @@ class Plugin {
 	 */
 	public function register_rest_routes(): void {
 		register_rest_route(
-			'github-webhook/v1', '/push-event', [
+			'github-webhook/v1',
+			'/push-event',
+			[
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'github_webhook_push' ],
 				'permission_callback' => [ $this, 'github_webhook_permission_push' ],
