@@ -22,6 +22,6 @@ To enable automatic string extraction from your GitHub projects, you need to cre
 
 Now, every time you push changes to GitHub, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
 
-**Note**: The `TRADUTTORE_GITHUB_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
+**Note:** The `TRADUTTORE_GITHUB_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
 
 Check out the [Configuration](configuration.md) section for a list of possible consstants.
