@@ -125,4 +125,26 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 			$response['translations'][0]
 		);
 	}
+
+	public function test_missing_build_time() {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		gp_delete_meta( $this->translation_set->id, '_traduttore_build_time', null, 'translation_set' );
+
+		$response = $this->get_route_callback( 'foo-project' );
+
+		$this->assertCount( 0, $response['translations'] );
+	}
 }
