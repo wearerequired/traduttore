@@ -25,8 +25,8 @@ env:
   - WP_VERSION=nightly WP_MULTISITE=0
   - WP_VERSION=nightly WP_MULTISITE=1
   global:
-    - PATH="$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
-    - WP_CLI_BIN_DIR="$TRAVIS_BUILD_DIR/vendor/bin"
+    - PATH="$(pwd):$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
+    - WP_CLI_BIN_DIR="$(pwd)"
 
 before_install:
   - |
@@ -38,8 +38,10 @@ before_install:
     fi
 
 install:
-  - composer require wp-cli/wp-cli:^1.5 # Also installs the existing dependencies.
-  - wp package install https://github.com/wp-cli/i18n-command/archive/master.zip
+  - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  - chmod +x wp-cli.phar
+  - mv wp-cli.phar wp
+  - composer install
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 before_script:

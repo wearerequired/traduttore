@@ -31,7 +31,7 @@
     "php": ">=7.1"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "dev-master",
+    "wp-coding-standards/wpcs": "^1.1",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
     "phpunit/phpunit": "^6.5.8"
   },

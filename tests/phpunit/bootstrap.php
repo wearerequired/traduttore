@@ -31,7 +31,8 @@ putenv( "WP_TESTS_DIR=$_tests_dir" );
 require_once $_tests_dir . '/includes/functions.php';
 
 tests_add_filter(
-	'muplugins_loaded', function() use ( $_gp_tests_dir ) {
+	'muplugins_loaded',
+	function() use ( $_gp_tests_dir ) {
 		require_once $_gp_tests_dir . '/includes/loader.php';
 
 		require dirname( dirname( __DIR__ ) ) . '/traduttore.php';
