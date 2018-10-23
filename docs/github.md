@@ -1,7 +1,4 @@
----
-id: github
-title: GitHub Repository Configuration
----
+#  GitHub Repository Configuration
 
 ## Repository Access
 

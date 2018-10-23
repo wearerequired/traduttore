@@ -1,7 +1,4 @@
----
-id: configuration
-title: Configuration
----
+# Configuration
 
 ## Constants
 

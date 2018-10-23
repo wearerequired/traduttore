@@ -1,7 +1,4 @@
----
-id: installation
-title: Installation
----
+# Installation
 
 The goal for Traduttore is to make it as easy as possible to supercharge your WordPress internationalization workflow.
 

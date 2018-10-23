@@ -1,8 +1,4 @@
----
-id: hooks
-title: Hooks and Filters
-sidebar_label: Available Hooks
----
+# Hooks and Filters
 
 All WordPress hooks and filters provided by Traduttore are prefixed with `traduttore.`.
 

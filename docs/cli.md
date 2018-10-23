@@ -1,7 +1,4 @@
----
-id: cli
-title: CLI Commands
----
+# CLI Commands
 
 Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer to be installed on the server.
 

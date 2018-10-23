@@ -1,11 +1,8 @@
----
-id: api
-title: REST API
----
+# REST API
 
 Traduttore adds new routes to both the WordPress REST API as well as the API provided by GlotPress.
 
-## REST API
+## API Endpoints
 
 ### `/github-webhook/v1/push-event`
 

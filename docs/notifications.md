@@ -1,8 +1,4 @@
----
-id: notifications
-title: Notifications
-sidebar_label: Notifications
----
+# Notifications
 
 Traduttore has built-in support for the unofficial [Slack WordPress plugin](https://wordpress.org/plugins/slack/).
 
