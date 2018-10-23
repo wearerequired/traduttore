@@ -147,7 +147,7 @@ class ZipProvider {
 	/**
 	 * Removes the ZIP file for a translation set.
 	 *
-	 * @since 2.0.3
+	 * @since 3.0.0
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem
 	 *
