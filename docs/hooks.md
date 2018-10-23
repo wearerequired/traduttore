@@ -77,7 +77,7 @@ Filters the credentials to be used for connecting to a Git repository via HTTPS.
 
 ### `traduttore.zip_generated_send_notification`
 
-**Since:** 2.0.3
+**Since:** 3.0.0
 
 Filters whether a Slack notification for translation updates from GitHub should be sent.
 
@@ -91,7 +91,7 @@ Filters whether a Slack notification for translation updates from GitHub should 
 
 ### `traduttore.zip_generated_notification_message`
 
-**Since:** 2.0.3
+**Since:** 3.0.0
 
 Filters the Slack notification message when a new translation ZIP file is built.
 
@@ -105,9 +105,11 @@ Filters the Slack notification message when a new translation ZIP file is built.
 
 ### `traduttore.updated_send_notification`
 
-**Since:** 2.0.3
+**Since:** 3.0.0
 
 Filters whether a Slack notification for translation updates from GitHub should be sent.
+
+Make sure to set up Slack notifications first, as outlined in the [Notifications](notifications.md) section.
 
 **Parameters:**
 
@@ -117,11 +119,11 @@ Filters whether a Slack notification for translation updates from GitHub should 
 
 ----
 
-### `traduttore_updated_from_github_notification_message`
+### `traduttore.updated_notification_message`
 
-**Since:** 2.0.3
+**Since:** 3.0.0
 
-Filters the Slack notification message when new translations are updated from GitHub.
+Filters the Slack notification message when new translations are updated.
 
 **Parameters:**
 

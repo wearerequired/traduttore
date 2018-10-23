@@ -116,7 +116,7 @@ class Plugin {
 						/**
 						 * Filters whether a Slack notification for translation updates from GitHub should be sent.
 						 *
-						 * @since 2.0.3
+						 * @since 3.0.0
 						 *
 						 * @param bool               $send_message    Whether to send a notification or not. Default true.
 						 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
@@ -139,7 +139,7 @@ class Plugin {
 						/**
 						 * Filters the Slack notification message when a new translation ZIP file is built.
 						 *
-						 * @since 2.0.3
+						 * @since 3.0.0
 						 *
 						 * @param string             $message         The notification message.
 						 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
@@ -164,9 +164,9 @@ class Plugin {
 						$send_message = $originals_added + $originals_fuzzied + $originals_obsoleted + $originals_error > 0;
 
 						/**
-						 * Filters whether a Slack notification for translation updates from GitHub should be sent.
+						 * Filters whether a Slack notification for translation updates should be sent.
 						 *
-						 * @since 2.0.3
+						 * @since 3.0.0
 						 *
 						 * @param bool       $send_message Whether to send a notification or not.
 						 *                                 Defaults to true, unless there were no string changes at all.
@@ -190,9 +190,9 @@ class Plugin {
 						);
 
 						/**
-						 * Filters the Slack notification message when new translations are updated from GitHub.
+						 * Filters the Slack notification message when new translations are updated.
 						 *
-						 * @since 2.0.3
+						 * @since 3.0.0
 						 *
 						 * @param string     $message The notification message.
 						 * @param GP_Project $project The GlotPress project that was updated.

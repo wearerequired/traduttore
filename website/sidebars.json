@@ -1,7 +1,7 @@
 {
   "docs": {
     "Getting Started": ["installation", "configuration"],
-    "Integration": ["github", "integration"],
+    "Integration": ["github", "integration", "notifications"],
     "API": ["cli", "hooks", "api"]
   }
 }
