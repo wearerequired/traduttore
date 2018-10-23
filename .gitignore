@@ -7,6 +7,3 @@ node_modules/
 
 # PHPUnit
 coverage.xml
-
-# Docs
-website/build
