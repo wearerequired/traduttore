@@ -15,6 +15,8 @@ Traduttore requires at least PHP 7.1, while the [Traduttore Registry](https://gi
 
 Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer to be installed on the server. [Learn more about the available CLI commands](cli.md).
 
+To send Slack notifications, Traduttore requires a separate WordPress plugin. [Learn more about setting up notifications](notifications.md).
+
 ## Installing Traduttore
 
 If you're using [Composer](https://getcomposer.org/) to manage dependencies, you can use the following command to add the plugin to your site:
