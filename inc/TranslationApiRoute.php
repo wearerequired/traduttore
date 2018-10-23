@@ -50,7 +50,7 @@ class TranslationApiRoute extends GP_Route_Main {
 
 			$zip_provider = new ZipProvider( $set );
 
-			if ( ! file_exists( $zip_provider->get_zip_path() ) ) {
+			if ( ! $zip_provider->get_last_build_time() || ! file_exists( $zip_provider->get_zip_path() ) ) {
 				continue;
 			}
 
