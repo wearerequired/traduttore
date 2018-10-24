@@ -32,7 +32,7 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string|int $project Possible GlotPress project ID or path or GitHub repository path.
+	 * @param string|int $project Possible GlotPress project ID or path or source code repository path.
 	 */
 	public function __construct( $project ) {
 		$this->project = $this->find_project( $project );
@@ -54,7 +54,7 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string|int $project Possible GlotPress project ID or path or GitHub repository path.
+	 * @param string|int $project Possible GlotPress project ID or path or source code repository path.
 	 * @return Project Project instance.
 	 */
 	protected function find_project( $project ) :? Project {
@@ -65,21 +65,24 @@ class ProjectLocator {
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_github_repository_url( $project );
+			$found = $this->find_by_source_url_template( $project );
 		}
 
 		return $found ? new Project( $found ) : null;
 	}
 
 	/**
-	 * Finds a GlotPress project by a GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia.
+	 * Finds a GlotPress project by a partially matching source_url_template setting.
 	 *
-	 * @since 2.0.0
+	 * Given a URL like https://github.com/wearerequired/required-valencia, this would match
+	 * a setting like https://github.com/wearerequired/required-valencia/blob/master/%file%#L%line%.
 	 *
-	 * @param string $project Possible GitHub repository path or URL.
+	 * @since 3.0.0
+	 *
+	 * @param string $project Possible source code repository path or URL.
 	 * @return false|GP_Project Project on success, false otherwise.
 	 */
-	protected function find_by_github_repository_url( $project ) {
+	protected function find_by_source_url_template( $project ) {
 		global $wpdb;
 
 		$table = GP::$project->table;

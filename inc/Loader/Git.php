@@ -116,7 +116,8 @@ abstract class Git implements Loader {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool       $use_https  Whether to use HTTPS or SSH. Defaults to HTTPS for public repositories.
+		 * @param bool       $use_https  Whether to use HTTPS instead of SSH for cloning repositories.
+		 *                               Defaults to true for public repositories.
 		 * @param Repository $repository The current repository.
 		 */
 		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->is_public_repository(), $this->repository );
