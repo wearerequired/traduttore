@@ -51,7 +51,7 @@ class Bitbucket extends Base {
 	 * @inheritdoc
 	 */
 	public function callback() {
-		$params     = $this->request->get_params();
+		$params = $this->request->get_params();
 
 		if ( ! isset( $params['repository']['links']['html']['href'] ) ) {
 			return new WP_Error( '400', 'Bad request' );

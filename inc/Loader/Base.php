@@ -7,8 +7,8 @@
 
 namespace Required\Traduttore\Loader;
 
-use Required\Traduttore\Repository;
 use Required\Traduttore\Loader;
+use Required\Traduttore\Repository;
 
 /**
  * Base loader.
@@ -48,18 +48,7 @@ abstract class Base implements Loader {
 			'%1$s-traduttore-%2$s-%3$s',
 			get_temp_dir(),
 			$this->repository->get_host(),
-			$this->repository->get_slug()
+			sanitize_title( $this->repository->get_name() )
 		);
-	}
-
-	/**
-	 * Indicates whether a Git repository is publicly accessible or not.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return bool Whether the repository is publicly accessible.
-	 */
-	protected function is_public_repository() : bool {
-		return false;
 	}
 }

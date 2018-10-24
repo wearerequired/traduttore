@@ -9,9 +9,7 @@
 
 namespace Required\Traduttore;
 
-use Required\Traduttore\Loader\{
-	Bitbucket, GitHub, GitLab
-};
+use Required\Traduttore\Loader\Git as GitLoader;
 
 /**
  * LoaderFactory class.
@@ -25,20 +23,36 @@ class LoaderFactory {
 	 * @since 3.0.0
 	 *
 	 * @param Project $project Project information.
-	 * @return Loader
+	 * @return Loader Loader instance.
 	 */
 	public function get_loader( Project $project ) :? Loader {
-		$repository = new Repository( $project );
+		$repository = ( new RepositoryFactory() )->get_repistory( $project );
 
-		switch ( $repository->get_type() ) {
-			case Repository::TYPE_GITHUB:
-				return new GitHub( $repository );
-			case Repository::TYPE_GITLAB:
-				return new GitLab( $repository );
-			case Repository::TYPE_BITBUCKET:
-				return new Bitbucket( $repository );
+		$loader = null;
+
+		if (
+			$repository &&
+			in_array(
+				$repository->get_type(),
+				[
+					Repository::TYPE_BITBUCKET,
+					Repository::TYPE_GIT,
+					Repository::TYPE_GITHUB,
+					Repository::TYPE_GITLAB,
+				],
+				true
+			)
+		) {
+			$loader = new GitLoader( $repository );
 		}
 
-		return null;
+		/**
+		 * Filters the loader instance for a given repository and project.
+		 *
+		 * @param Loader|null     $loader     Loader instance.
+		 * @param Repository|null $repository Repository instance.
+		 * @param Project         $project    Project information.
+		 */
+		return apply_filters( 'traduttore.loader', $loader, $repository, $project );
 	}
 }

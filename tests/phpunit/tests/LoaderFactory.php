@@ -8,11 +8,7 @@
 namespace Required\Traduttore\Tests;
 
 use \GP_UnitTestCase;
-use Required\Traduttore\Loader\{
-	Bitbucket,
-	GitHub,
-	GitLab
-};
+use Required\Traduttore\Loader\{Bitbucket, Git, GitHub, GitLab};
 use \Required\Traduttore\Project;
 use \Required\Traduttore\LoaderFactory as Factory;
 
@@ -88,18 +84,18 @@ class LoaderFactory extends GP_UnitTestCase {
 	public function test_get_github_repository() {
 		$factory = new Factory();
 
-		$this->assertInstanceOf( GitHub::class, $factory->get_loader( $this->github ) );
+		$this->assertInstanceOf( Git::class, $factory->get_loader( $this->github ) );
 	}
 
 	public function test_get_gitlab_repository() {
 		$factory = new Factory();
 
-		$this->assertInstanceOf( GitLab::class, $factory->get_loader( $this->gitlab ) );
+		$this->assertInstanceOf( Git::class, $factory->get_loader( $this->gitlab ) );
 	}
 
 	public function test_get_bitbucket_repository() {
 		$factory = new Factory();
 
-		$this->assertInstanceOf( Bitbucket::class, $factory->get_loader( $this->bitbucket ) );
+		$this->assertInstanceOf( Git::class, $factory->get_loader( $this->bitbucket ) );
 	}
 }

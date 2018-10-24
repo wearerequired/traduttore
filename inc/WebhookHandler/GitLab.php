@@ -49,7 +49,7 @@ class GitLab extends Base {
 	 * @inheritdoc
 	 */
 	public function callback() {
-		$params     = $this->request->get_params();
+		$params = $this->request->get_params();
 
 		if ( ! isset( $params['repository']['git_http_url'], $params['ref'] ) ) {
 			return new WP_Error( '400', 'Bad request' );

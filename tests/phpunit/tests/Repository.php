@@ -9,7 +9,7 @@ namespace Required\Traduttore\Tests;
 
 use \GP_UnitTestCase;
 use \Required\Traduttore\Project;
-use \Required\Traduttore\Repository as Repo;
+use \Required\Traduttore\Repository\Base as Repo;
 
 /**
  *  Test cases for \Required\Traduttore\Repository.

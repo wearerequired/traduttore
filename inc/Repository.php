@@ -1,8 +1,8 @@
 <?php
 /**
- * Repository class.
+ * Repository interface.
  *
- * @since 2.0.0
+ * @since 3.0.0
  *
  * @package Required\Traduttore
  */
@@ -10,89 +10,70 @@
 namespace Required\Traduttore;
 
 /**
- * Repository class.
+ * Repository interface.
  *
  * @since 3.0.0
  */
-class Repository {
+interface Repository {
 	/**
 	 * Unknown repository type.
 	 *
 	 * @since 3.0.0
 	 */
-	public const TYPE_UNKNOWN = 0;
+	public const TYPE_UNKNOWN = 'unknown';
+
+	/**
+	 * Custom repository type.
+	 *
+	 * @since 3.0.0
+	 */
+	public const TYPE_CUSTOM = 'custom';
+
+	/**
+	 * Git repository type.
+	 *
+	 * @since 3.0.0
+	 */
+	public const TYPE_GIT = 'git';
 
 	/**
 	 * GitHub repository type.
 	 *
 	 * @since 3.0.0
 	 */
-	public const TYPE_GITHUB = 1;
+	public const TYPE_GITHUB = 'github';
 
 	/**
 	 * GitLab repository type.
 	 *
 	 * @since 3.0.0
 	 */
-	public const TYPE_GITLAB = 2;
+	public const TYPE_GITLAB = 'gitlab';
 
 	/**
 	 * Bitbucket repository type.
 	 *
 	 * @since 3.0.0
 	 */
-	public const TYPE_BITBUCKET = 3;
+	public const TYPE_BITBUCKET = 'bitbucket';
 
 	/**
-	 * GlotPress project.
+	 * Returns the repository type.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Project Project information.
+	 * @return string Repository type.
 	 */
-	protected $project;
+	public function get_type(): string;
 
 	/**
-	 * Repository host name.
+	 * Indicates whether a repository is publicly accessible or not.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var string Repository host name.
+	 * @return bool Whether the repository is publicly accessible.
 	 */
-	protected $host;
-
-	/**
-	 * Repository type.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @var string Repository type.
-	 */
-	protected $type = self::TYPE_UNKNOWN;
-
-	/**
-	 * Repository name.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @var string Repository name.
-	 */
-	protected $name;
-
-	/**
-	 * Loader constructor.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @param Project $project Project information.
-	 */
-	public function __construct( Project $project ) {
-		$this->project = $project;
-
-		$this->host = $this->set_host();
-		$this->type = $this->set_type();
-		$this->name = $this->set_name();
-	}
+	public function is_public() : bool;
 
 	/**
 	 * Returns the project.
@@ -101,9 +82,7 @@ class Repository {
 	 *
 	 * @return Project The project.
 	 */
-	public function get_project() : Project {
-		return $this->project;
-	}
+	public function get_project() : Project;
 
 	/**
 	 * Returns the repository host name.
@@ -112,20 +91,7 @@ class Repository {
 	 *
 	 * @return string Repository host name.
 	 */
-	public function get_host() :? string {
-		return $this->host;
-	}
-
-	/**
-	 * Returns the repository type.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return int Repository type.
-	 */
-	public function get_type() : int {
-		return $this->type;
-	}
+	public function get_host() :? string;
 
 	/**
 	 * Returns the repository name.
@@ -134,79 +100,5 @@ class Repository {
 	 *
 	 * @return string Repository name.
 	 */
-	public function get_name() :? string {
-		return $this->name;
-	}
-
-	/**
-	 * Returns the repository slug.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string Repository slug.
-	 */
-	public function get_slug() : string {
-		return $this->project->get_slug();
-	}
-
-	/**
-	 * Sets the repository host name.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string Repository host name.
-	 */
-	protected function set_host() :? string {
-		$url = $this->project->get_source_url_template();
-
-		return wp_parse_url( $url, PHP_URL_HOST );
-	}
-
-	/**
-	 * Sets the repository type.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string Repository type.
-	 */
-	protected function set_type() : string {
-		if ( 'github.com' === $this->host ) {
-			return self::TYPE_GITHUB;
-		}
-
-		if ( 'gitlab.com' === $this->host ) {
-			return self::TYPE_GITLAB;
-		}
-
-		if ( 'bitbucket.org' === $this->host ) {
-			return self::TYPE_BITBUCKET;
-		}
-
-		return self::TYPE_UNKNOWN;
-	}
-
-	/**
-	 * Sets the repository name.
-	 *
-	 * @return string Repository name.
-	 */
-	protected function set_name() :? string {
-		switch ( $this->type ) {
-			case self::TYPE_GITHUB:
-			case self::TYPE_GITLAB:
-				$url   = $this->project->get_source_url_template();
-				$parts = explode( '/blob/', wp_parse_url( $url, PHP_URL_PATH ) );
-				$path  = array_shift( $parts );
-
-				return ltrim( $path, '/' );
-			case self::TYPE_BITBUCKET:
-				$url   = $this->project->get_source_url_template();
-				$parts = explode( '/src/', wp_parse_url( $url, PHP_URL_PATH ) );
-				$path  = array_shift( $parts );
-
-				return ltrim( $path, '/' );
-		}
-
-		return null;
-	}
+	public function get_name() :? string;
 }

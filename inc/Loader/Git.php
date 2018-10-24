@@ -7,8 +7,6 @@
 
 namespace Required\Traduttore\Loader;
 
-use Required\Traduttore\Repository;
-
 /**
  * Git loader.
  *
@@ -68,11 +66,11 @@ class Git extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool       $use_https  Whether to use HTTPS instead of SSH for cloning repositories.
+		 * @param bool $use_https        Whether to use HTTPS instead of SSH for cloning repositories.
 		 *                               Defaults to true for public repositories.
-		 * @param Repository $repository The current repository.
+		 * @param Git  $repository       The current repository.
 		 */
-		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->is_public_repository(), $this->repository );
+		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->repository->is_public(), $this->repository );
 
 		$clone_url = $this->get_ssh_url();
 
@@ -85,8 +83,8 @@ class Git extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string     $clone_url  The URL to clone a Git repository.
-		 * @param Repository $repository The current repository.
+		 * @param string $clone_url  The URL to clone a Git repository.
+		 * @param Git    $repository The current repository.
 		 */
 		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
 	}
@@ -115,8 +113,8 @@ class Git extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string     $credentials Git credentials in the form username:password. Default empty string.
-		 * @param Repository $repository  The current repository.
+		 * @param string $credentials Git credentials in the form username:password. Default empty string.
+		 * @param Git    $repository  The current repository.
 		 */
 		$credentials = apply_filters( 'traduttore.git_https_credentials', '', $this->repository );
 
