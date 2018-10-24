@@ -12,6 +12,11 @@ use Required\Traduttore\Updater;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * GitHub webhook handler class.
+ *
+ * @see https://developer.github.com/webhooks/
+ */
 class GitHub extends Base {
 	/**
 	 * @inheritdoc

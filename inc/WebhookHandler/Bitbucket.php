@@ -12,6 +12,11 @@ use Required\Traduttore\Updater;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * Bitbucket webhook handler class.
+ *
+ * @see https://confluence.atlassian.com/bitbucket/event-payloads-740262817.html
+ */
 class Bitbucket extends Base {
 	/**
 	 * @inheritdoc

@@ -29,21 +29,22 @@ class WebhookHandlerFactory {
 	 * @return WebhookHandler Webhook handler instance.
 	 */
 	public function get_handler( WP_REST_Request $request ): ?WebhookHandler {
-		// See https://developer.github.com/webhooks/
+		$handler = null;
+
 		if ( $request->get_header( 'x-github-event' ) ) {
-			return new GitHub( $request );
+			$handler = new GitHub( $request );
+		} elseif ( $request->get_header( 'x-gitlab-event' ) ) {
+			$handler = new GitLab( $request );
+		} elseif ( $request->get_header( 'x-event-key' ) ) {
+			$handler = new Bitbucket( $request );
 		}
 
-		// See https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
-		if ( $request->get_header( 'x-gitlab-event' ) ) {
-			return new GitLab( $request );
-		}
-
-		// See https://confluence.atlassian.com/bitbucket/event-payloads-740262817.html
-		if ( $request->get_header( 'x-event-key' ) ) {
-			return new Bitbucket( $request );
-		}
-
-		return null;
+		/**
+		 * Filters the determined incoming webhook handler.
+		 *
+		 * @param WebhookHandler|null $handler Webhook handler instance.
+		 * @param WP_REST_Request The current request object.
+		 */
+		return apply_filters( 'traduttore.webhook_handler', $handler, $request );
 	}
 }

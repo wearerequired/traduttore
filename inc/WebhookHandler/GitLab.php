@@ -12,6 +12,11 @@ use Required\Traduttore\Updater;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * GitLab webhook handler class.
+ *
+ * @see https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
+ */
 class GitLab extends Base {
 	/**
 	 * @inheritdoc
