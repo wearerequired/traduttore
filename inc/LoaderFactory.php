@@ -26,7 +26,7 @@ class LoaderFactory {
 	 * @return Loader Loader instance.
 	 */
 	public function get_loader( Project $project ) :? Loader {
-		$repository = ( new RepositoryFactory() )->get_repistory( $project );
+		$repository = ( new RepositoryFactory() )->get_repository( $project );
 
 		$loader = null;
 
@@ -36,7 +36,6 @@ class LoaderFactory {
 				$repository->get_type(),
 				[
 					Repository::TYPE_BITBUCKET,
-					Repository::TYPE_GIT,
 					Repository::TYPE_GITHUB,
 					Repository::TYPE_GITLAB,
 				],
