@@ -2,13 +2,15 @@
 /**
  * Git loader class.
  *
+ * @since 3.0.0
+ *
  * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Loader;
 
 /**
- * Git loader.
+ * Git loader class.
  *
  * @since 3.0.0
  */

@@ -2,6 +2,8 @@
 /**
  * GitHub webhook handler class.
  *
+ * @since 3.0.0
+ *
  * @package Required\Traduttore
  */
 
@@ -15,6 +17,8 @@ use WP_REST_Response;
 
 /**
  * GitHub webhook handler class.
+ *
+ * @since 3.0.0
  *
  * @see https://developer.github.com/webhooks/
  */

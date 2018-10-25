@@ -2,6 +2,8 @@
 /**
  * GitLab webhook handler class.
  *
+ * @since 3.0.0
+ *
  * @package Required\Traduttore
  */
 
@@ -15,6 +17,8 @@ use WP_REST_Response;
 
 /**
  * GitLab webhook handler class.
+ *
+ * @since 3.0.0
  *
  * @see https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
  */
