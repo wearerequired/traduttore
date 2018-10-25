@@ -8,7 +8,7 @@ The goal for Traduttore is to make it as easy as possible to supercharge your Wo
 
 Traduttore is a WordPress plugin that sits on top of the [GlotPress](https://glotpress.org/) plugin. That means you need to have both WordPress and GlotPress installed.
 
-GlotPress is available as a WordPress plugin through the plugin directory. Installing it is as simple as searching for “GlotPress” and installing it. After activating the plugin, GlotPress can be accessed via `https://<home_url>/glotpress/`.
+GlotPress is available as a WordPress plugin through the plugin directory. Installing it is as simple as searching for “GlotPress” and installing it. After activating the plugin, GlotPress can be accessed via `https://<home_url>/glotpress/`. There's also a [GlotPress manual](https://glotpress.blog/the-manual/) that you can follow.
 
 To send Slack notifications, Traduttore requires a separate WordPress plugin. [Learn more about setting up notifications](notifications.md).
 
