@@ -126,3 +126,29 @@ Filters the Slack notification message when new translations are updated.
 * `$message`: The notification message.
 * `$project`: The GlotPress project that was updated.
 * `$stats`: Stats about the number of imported translations.
+
+----
+
+### `traduttore.generate_zip_delay`
+
+**Since:** 3.0.0
+
+Filters the delay for scheduled language pack generation.
+
+**Parameters:**
+
+* `$delay`: Delay in minutes. Default is 5 minutes.
+* `$translation_set`: Translation set the ZIP generation will be scheduled for.
+
+----
+
+### `traduttore.update_delay`
+
+**Since:** 3.0.0
+
+Filters the delay for scheduled project updates.
+
+**Parameters:**
+
+* `$delay`: Delay in minutes. Default is 3 minutes.
+* `$project`: The current project.

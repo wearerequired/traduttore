@@ -4,7 +4,9 @@
 
 The following constants can be defined to configure Traduttore:
 
-* `TRADUTTORE_GITHUB_SYNC_SECRET`: Secret token for incoming GitHub webhook requests.
+* `TRADUTTORE_BITBUCKET_SYNC_SECRET`: Secret token for incoming Bitbucket webhook requests.
+* `TRADUTTORE_GITLAB_SYNC_SECRET`: Secret token for incoming GitHub webhook requests.
+* `TRADUTTORE_GITLAB_SYNC_SECRET`: Secret token for incoming GitLab webhook requests.
 * `TRADUTTORE_WP_BIN`: Path to the WP-CLI executable on the system.
 
 ## Restricted Site Access
@@ -14,6 +16,14 @@ Sometimes you might not want your translation platform to be publicly accessible
 For this case, it's recommended to use the free [Restricted Site Access](https://wordpress.org/plugins/restricted-site-access/) plugin. Traduttore integrates well with this plugin by making sure the REST API endpoints remain unaffected by it.
 
 There's no need for any manual configuration, everything happens in the background.
+
+## Task Scheduler
+
+Traduttore relies on WordPress' built-in cron functionality to schedule single events. This functionality relies on users visiting your WordPress site in order to execute scheduled events.
+
+To make sure your events are executed on time, we suggest setting up system cron jobs that run reliably every few minutes.
+
+[Learn more about hooking WP-Cron into the system task scheduler](https://developer.wordpress.org/plugins/cron/hooking-into-the-system-task-scheduler/).
 
 ## String Extraction
 
