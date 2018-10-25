@@ -8,6 +8,7 @@
 namespace Required\Traduttore\WebhookHandler;
 
 use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
 use WP_Error;
 use WP_REST_Response;
@@ -65,6 +66,16 @@ class GitLab extends Base {
 
 		if ( ! $project ) {
 			return new WP_Error( '404', 'Could not find project for this repository' );
+		}
+
+		$project->set_repository_url( $params['repository']['git_http_url'] );
+
+		if ( ! $project->get_repository_type() ) {
+			$project->set_repository_type( Repository::TYPE_GITLAB );
+		}
+
+		if ( ! $project->get_repository_vcs_type() ) {
+			$project->set_repository_vcs_type( 'git' );
 		}
 
 		( new Updater( $project ) )->schedule_update();
