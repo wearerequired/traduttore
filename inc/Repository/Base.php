@@ -49,7 +49,7 @@ class Base implements Repository {
 	 * @inheritdoc
 	 */
 	public function is_public() : bool {
-		return false;
+		return 'public' === $this->project->get_repository_visibility();
 	}
 
 	/**

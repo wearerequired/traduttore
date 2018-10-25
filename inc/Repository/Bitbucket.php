@@ -43,8 +43,16 @@ class Bitbucket extends Base {
 	 * @return bool Whether the repository is publicly accessible.
 	 */
 	public function is_public() : bool {
-		$response = wp_remote_head( 'https://api.bitbucket.org/2.0/repositories/' . rawurlencode( $this->get_name() ) );
+		$visibility = $this->project->get_repository_visibility();
 
-		return 200 === wp_remote_retrieve_response_code( $response );
+		if ( ! $visibility ) {
+			$response = wp_remote_head( 'https://api.bitbucket.org/2.0/repositories/' . rawurlencode( $this->get_name() ) );
+
+			$visibility = 200 === wp_remote_retrieve_response_code( $response ) ? 'public' : 'private';
+
+			$this->project->set_repository_visibility( $visibility );
+		}
+
+		return 'public' === $visibility;
 	}
 }
