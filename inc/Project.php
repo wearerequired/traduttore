@@ -36,6 +36,15 @@ class Project {
 	protected const REPOSITORY_URL_KEY = '_traduttore_repository_url';
 
 	/**
+	 * Project repository name meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Project repository name meta key.
+	 */
+	protected const REPOSITORY_NAME_KEY = '_traduttore_repository_name';
+
+	/**
 	 * Project repository visibility meta key.
 	 *
 	 * @since 3.0.0
@@ -183,9 +192,6 @@ class Project {
 			if ( false !== strpos( $url, '/blob/' ) ) {
 				$parts = explode( '/blob/', $url );
 				$url   = array_shift( $parts );
-			} elseif ( false !== strpos( $url, '/src/' ) ) {
-				$parts = explode( '/src/', $url );
-				$url   = array_shift( $parts );
 			}
 		}
 
@@ -202,6 +208,31 @@ class Project {
 	 */
 	public function set_repository_url( string $url ): bool {
 		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_URL_KEY, $url, 'project' );
+	}
+
+	/**
+	 * Returns the project's repository name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Repository name if stored, null otherwise.
+	 */
+	public function get_repository_name(): ?string {
+		$name = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_NAME_KEY );
+
+		return $name ?: null;
+	}
+
+	/**
+	 * Updates the project's repository name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $url The new name.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_repository_name( string $url ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_NAME_KEY, $url, 'project' );
 	}
 
 	/**

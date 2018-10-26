@@ -39,39 +39,59 @@ class Base implements Repository {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Returns the repository type.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Repository type.
 	 */
 	public function get_type() : string {
 		return Repository::TYPE_UNKNOWN;
 	}
 
 	/**
-	 * @inheritdoc
+	 * Indicates whether a repository is publicly accessible or not.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool Whether the repository is publicly accessible.
 	 */
 	public function is_public() : bool {
 		return 'public' === $this->project->get_repository_visibility();
 	}
 
 	/**
-	 * @inheritdoc
+	 * Returns the project.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return Project The project.
 	 */
 	public function get_project(): Project {
 		return $this->project;
 	}
 
 	/**
-	 * @inheritdoc
+	 * Returns the repository host name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Repository host name.
 	 */
 	public function get_host(): ?string {
-		$url = $this->project->get_source_url_template();
+		$url = $this->project->get_repository_url();
 
-		return wp_parse_url( $url, PHP_URL_HOST );
+		return $url ? wp_parse_url( $url, PHP_URL_HOST ) : null;
 	}
 
 	/**
-	 * @inheritdoc
+	 * Returns the repository name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Repository name.
 	 */
-	public function get_name(): string {
-		return $this->project->get_slug();
+	public function get_name(): ?string {
+		return $this->project->get_repository_name();
 	}
 }

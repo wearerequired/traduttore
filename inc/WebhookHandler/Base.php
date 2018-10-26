@@ -28,7 +28,11 @@ abstract class Base implements WebhookHandler {
 	protected $request;
 
 	/**
-	 * @inheritdoc
+	 * Class constructor.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param WP_REST_Request $request Request object.
 	 */
 	public function __construct( WP_REST_Request $request ) {
 		$this->request = $request;

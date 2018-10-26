@@ -24,7 +24,11 @@ use WP_REST_Response;
  */
 class GitLab extends Base {
 	/**
-	 * @inheritdoc
+	 * Permission callback for incoming GitLab webhooks.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool True if permission is granted, false otherwise.
 	 */
 	public function permission_callback(): ?bool {
 		$event_name = $this->request->get_header( 'x-gitlab-event' );
@@ -51,7 +55,11 @@ class GitLab extends Base {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Callback for incoming GitLab webhooks.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback() {
 		$params = $this->request->get_params();

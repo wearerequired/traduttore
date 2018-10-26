@@ -295,7 +295,7 @@ class Plugin {
 	/**
 	 * Permission callback for incoming webhooks.
 	 *
-	 * Tries
+	 * Picks a webhook handler based on the request information.
 	 *
 	 * @since 3.0.0
 	 *
@@ -313,6 +313,8 @@ class Plugin {
 		/**
 		 * Filters the result of the incoming webhook permission callback.
 		 *
+		 * @since 3.0.0
+		 *
 		 * @param bool                $result  Permission callback result. True if permission is granted, false otherwise.
 		 * @param WebhookHandler|null $handler The current webhook handler if found.
 		 * @param WP_REST_Request     $request The current request.
@@ -323,7 +325,7 @@ class Plugin {
 	/**
 	 * Callback for incoming webhooks.
 	 *
-	 * Tries
+	 * Picks a webhook handler based on the request information.
 	 *
 	 * @since 3.0.0
 	 *
@@ -339,7 +341,9 @@ class Plugin {
 		}
 
 		/**
-		 * Filters the result of the incoming webhook permission callback.
+		 * Filters the result of the incoming webhook callback.
+		 *
+		 * @since 3.0.0
 		 *
 		 * @param WP_Error|WP_REST_Response $result  REST response on success, error object on failure.
 		 * @param WebhookHandler|null       $handler The current webhook handler if found.

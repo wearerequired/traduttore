@@ -24,7 +24,11 @@ use WP_REST_Response;
  */
 class Bitbucket extends Base {
 	/**
-	 * @inheritdoc
+	 * Permission callback for incoming Bitbucket webhooks.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool True if permission is granted, false otherwise.
 	 */
 	public function permission_callback(): ?bool {
 		$event_name = $this->request->get_header( 'x-event-key' );
@@ -53,7 +57,11 @@ class Bitbucket extends Base {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Callback for incoming Bitbucket webhooks.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback() {
 		$params = $this->request->get_params();

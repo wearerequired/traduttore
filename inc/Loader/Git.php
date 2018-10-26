@@ -94,6 +94,8 @@ class Git extends Base {
 	/**
 	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
 	 *
+	 * @todo Use stored value from project meta.
+	 *
 	 * @since 3.0.0
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
@@ -104,6 +106,8 @@ class Git extends Base {
 
 	/**
 	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
+	 *
+	 * @todo Use stored value from project meta.
 	 *
 	 * @since 3.0.0
 	 *

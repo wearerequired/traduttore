@@ -29,9 +29,7 @@ interface WebhookHandler {
 	public function __construct( WP_REST_Request $request );
 
 	/**
-	 * Downloads a remote repository.
-	 *
-	 * If the repository has been downloaded before, the latest changes will be pulled.
+	 * Permission callback for incoming webhooks.
 	 *
 	 * @since 3.0.0
 	 *
@@ -40,7 +38,7 @@ interface WebhookHandler {
 	public function permission_callback(): ?bool;
 
 	/**
-	 * Returns the local repository path..
+	 * Callback for incoming webhooks.
 	 *
 	 * @since 3.0.0
 	 *
