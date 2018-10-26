@@ -56,7 +56,7 @@ class RepositoryFactory {
 		/**
 		 * Filters the determined repository instance for a given project.
 		 *
-		 * Can be used to set a custom handler for self-hosted repositories.
+		 * Can be used to set a custom handler for self-managed repositories.
 		 *
 		 * @param Repository|null $repository Repository instance.
 		 * @param Project         $project    Project information.

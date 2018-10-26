@@ -33,4 +33,4 @@ Depending on where your project is hosted, you need to follow different steps to
 * [Bitbucket Repository Configuration](bitbucket.md)
 * [GitHub Repository Configuration](github.md)
 * [GitLab Repository Configuration](gitlab.md)
-* [Self-hosted Repository Configuration](self-hosted.md)
+* [Self-managed Repository Configuration](self-managed.md)

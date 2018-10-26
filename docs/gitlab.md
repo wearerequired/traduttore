@@ -1,6 +1,6 @@
 #  GitLab Repository Configuration
 
-Traduttore supports both private and public Git repositories hosted on [GitLab.com](https://gitlab.com) as well as self-hosted GitLab instances.
+Traduttore supports both private and public Git repositories hosted on [GitLab.com](https://gitlab.com) as well as self-managed GitLab instances.
 
 ## Repository Access
 
@@ -25,11 +25,11 @@ Now, every time you push changes to GitLab, Traduttore will get notified and the
 
 Check out the [Configuration](configuration.md) section for a list of possible constants.
 
-## Self-hosted GitLab
+## Self-managed GitLab
 
 Some people prefer to install GitLab on their own system instead of using [GitLab.com](https://gitlab.com).
 
-Unfortunately, Traduttore does not yet automatically recognize self-hosted repositories, which means there is some manual configuration involved.
+Unfortunately, Traduttore does not yet automatically recognize self-managed repositories, which means there is some manual configuration involved.
 
 Let's say your GitLab instance is available via `gitlab.example.com`. To tell Traduttore this should be treated as such, you can hook into the `traduttore.repository` filter to do so. Here's an example:
 
@@ -50,7 +50,7 @@ class MySelfhostedGitLabRepository extends \Required\Traduttore\Repository\GitLa
 }
 
 /**
- * Filters the repository information Traduttore uses for self-hosted GitLab repositories.
+ * Filters the repository information Traduttore uses for self-managed GitLab repositories.
  *
  * @param \Required\Traduttore\Repository|null $repository Repository instance.
  * @param \Required\Traduttore\Project         $project    Project information.
