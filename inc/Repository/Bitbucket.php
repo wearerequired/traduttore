@@ -16,7 +16,7 @@ use Required\Traduttore\Repository;
  *
  * @since 3.0.0
  */
-class Bitbucket extends Git {
+class Bitbucket extends Base {
 	/**
 	 * Bitbucket API base URL.
 	 *
@@ -88,5 +88,61 @@ class Bitbucket extends Git {
 		}
 
 		return 'public' === $visibility;
+	}
+
+	/**
+	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
+	 */
+	public function get_ssh_url() : string {
+		if ( 'hg' === $this->project->get_repository_vcs_type() ) {
+			$ssh_url = $this->project->get_repository_ssh_url();
+
+			if ( $ssh_url ) {
+				return $ssh_url;
+			}
+
+			return sprintf( 'hg@%1$s/%2$s', $this->get_host(), $this->get_name() );
+		}
+
+		return parent::get_ssh_url();
+	}
+
+	/**
+	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
+	 */
+	public function get_https_url() : string {
+		if ( 'hg' === $this->project->get_repository_vcs_type() ) {
+			$https_url = $this->project->get_repository_https_url();
+
+			if ( ! $https_url ) {
+				$https_url = sprintf( 'https://%1$s/%2$s', $this->get_host(), $this->get_name() );
+			}
+
+			/**
+			 * Filters the credentials to be used for connecting to a Mercurial repository via HTTPS.
+			 *
+			 * @since 3.0.0
+			 *
+			 * @param string     $credentials HTTP authentication credentials in the form username:password. Default empty string.
+			 * @param Repository $repository  The current repository.
+			 */
+			$credentials = apply_filters( 'traduttore.hg_https_credentials', '', $this );
+
+			if ( ! empty( $credentials ) ) {
+				$https_url = str_replace( 'https://', 'https://' . $credentials . '@', $https_url );
+			}
+
+			return $https_url;
+		}
+
+		return parent::get_https_url();
 	}
 }

@@ -16,7 +16,7 @@ use Required\Traduttore\Repository;
  *
  * @since 3.0.0
  */
-class GitHub extends Git {
+class GitHub extends Base {
 	/**
 	 * GitHub API base URL.
 	 *

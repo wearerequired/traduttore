@@ -30,9 +30,12 @@ class LoaderFactory {
 
 		$loader = null;
 
-		if (
-			$repository &&
-			in_array(
+		if ( $repository ) {
+			if ( Repository::TYPE_BITBUCKET === $repository->get_type() &&
+			     'hg' === $repository->get_project()->get_repository_vcs_type()
+			) {
+				// Todo: Add Mercurial loader.
+			} elseif ( in_array(
 				$repository->get_type(),
 				[
 					Repository::TYPE_BITBUCKET,
@@ -40,9 +43,9 @@ class LoaderFactory {
 					Repository::TYPE_GITLAB,
 				],
 				true
-			)
-		) {
-			$loader = new GitLoader( $repository );
+			) ) {
+				$loader = new GitLoader( $repository );
+			}
 		}
 
 		/**

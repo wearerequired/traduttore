@@ -16,7 +16,7 @@ use Required\Traduttore\Repository;
  *
  * @since 3.0.0
  */
-class GitLab extends Git {
+class GitLab extends Base {
 	/**
 	 * GitLab API base URL.
 	 *

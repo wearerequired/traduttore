@@ -146,9 +146,13 @@ class Webhook extends GP_UnitTestCase {
 			[
 				'ref'        => 'refs/heads/master',
 				'repository' => [
+					'full_name'      => 'wearerequired/traduttore',
 					'default_branch' => 'master',
 					'html_url'       => 'https://github.com/wearerequired/traduttore',
+					'ssh_url'        => 'git@github.com:wearerequired/traduttore.git',
+					'clone_url'      => 'https://github.com/wearerequired/traduttore.git',
 					'url'            => 'https://github.com/wearerequired/traduttore',
+					'private'        => false,
 				],
 			]
 		);
