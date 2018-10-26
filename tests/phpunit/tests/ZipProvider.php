@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\Tests;
 
+use GP_Translation_Set;
 use \GP_UnitTestCase;
 use \Required\Traduttore\ZipProvider as Provider;
 
@@ -20,7 +21,7 @@ class ZipProvider extends GP_UnitTestCase {
 	protected $locale;
 
 	/**
-	 * @var \GP_Translation_Set
+	 * @var GP_Translation_Set
 	 */
 	protected $translation_set;
 
@@ -76,37 +77,37 @@ class ZipProvider extends GP_UnitTestCase {
 		parent::tearDown();
 	}
 
-	public function test_get_cache_dir() {
+	public function test_get_cache_dir(): void {
 		$dir = Provider::get_cache_dir();
 
 		$this->assertStringEndsWith( 'wp-content/traduttore', $dir );
 	}
 
-	public function test_get_zip_path() {
+	public function test_get_zip_path(): void {
 		$provider = new Provider( $this->translation_set );
 
 		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE.zip', $provider->get_zip_path() );
 	}
 
-	public function test_get_zip_url() {
+	public function test_get_zip_url(): void {
 		$provider = new Provider( $this->translation_set );
 
 		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE.zip' ), $provider->get_zip_url() );
 	}
 
-	public function test_get_last_build_time_for_new_set() {
+	public function test_get_last_build_time_for_new_set(): void {
 		$provider = new Provider( $this->translation_set );
 
 		$this->assertNull( $provider->get_last_build_time() );
 	}
 
-	public function test_generate_zip_file_empty_set() {
+	public function test_generate_zip_file_empty_set(): void {
 		$provider = new Provider( $this->translation_set );
 
 		$this->assertFalse( $provider->generate_zip_file() );
 	}
 
-	public function test_generate_zip_file_no_filesystem() {
+	public function test_generate_zip_file_no_filesystem(): void {
 		$provider = new Provider( $this->translation_set );
 
 		add_filter( 'filesystem_method', '__return_empty_string' );
@@ -116,7 +117,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertFalse( $result );
 	}
 
-	public function test_generate_zip_file() {
+	public function test_generate_zip_file(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(
@@ -132,7 +133,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertTrue( $provider->generate_zip_file() );
 	}
 
-	public function test_get_last_build_time_after_zip_generation() {
+	public function test_get_last_build_time_after_zip_generation(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(
@@ -152,7 +153,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertInternalType( 'string', $build_time );
 	}
 
-	public function test_remove_zip_file() {
+	public function test_remove_zip_file(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(
@@ -170,7 +171,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertTrue( $provider->remove_zip_file() );
 	}
 
-	public function test_remove_zip_file_resets_build_time() {
+	public function test_remove_zip_file_resets_build_time(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(
@@ -191,7 +192,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertNull( $build_time );
 	}
 
-	public function test_remove_zip_file_does_not_exist() {
+	public function test_remove_zip_file_does_not_exist(): void {
 		$provider = new Provider( $this->translation_set );
 
 		$result = $provider->remove_zip_file();
@@ -199,7 +200,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertFalse( $result );
 	}
 
-	public function test_remove_zip_file_no_filesystem() {
+	public function test_remove_zip_file_no_filesystem(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(

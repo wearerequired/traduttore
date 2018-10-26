@@ -75,25 +75,25 @@ class LoaderFactory extends GP_UnitTestCase {
 		);
 	}
 
-	public function test_get_unknown_repository() {
+	public function test_get_unknown_repository(): void {
 		$factory = new Factory();
 
 		$this->assertNull( $factory->get_loader( $this->unknown ) );
 	}
 
-	public function test_get_github_repository() {
+	public function test_get_github_repository(): void {
 		$factory = new Factory();
 
 		$this->assertInstanceOf( Git::class, $factory->get_loader( $this->github ) );
 	}
 
-	public function test_get_gitlab_repository() {
+	public function test_get_gitlab_repository(): void {
 		$factory = new Factory();
 
 		$this->assertInstanceOf( Git::class, $factory->get_loader( $this->gitlab ) );
 	}
 
-	public function test_get_bitbucket_repository() {
+	public function test_get_bitbucket_repository(): void {
 		$factory = new Factory();
 
 		$this->assertInstanceOf( Git::class, $factory->get_loader( $this->bitbucket ) );

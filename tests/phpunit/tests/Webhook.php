@@ -33,7 +33,7 @@ class Webhook extends GP_UnitTestCase {
 	/**
 	 * @see WP_Test_REST_TestCase
 	 */
-	protected function assertErrorResponse( $code, $response, $status = null ) {
+	protected function assertErrorResponse( $code, $response, $status = null ): void {
 		if ( is_a( $response, 'WP_REST_Response' ) ) {
 			$response = $response->as_error();
 		}
@@ -46,14 +46,14 @@ class Webhook extends GP_UnitTestCase {
 		}
 	}
 
-	public function test_missing_event_header() {
+	public function test_missing_event_header(): void {
 		$request  = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
-	public function test_invalid_event_header() {
+	public function test_invalid_event_header(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'x-github-event', 'pull' );
 		$response = rest_get_server()->dispatch( $request );
@@ -61,7 +61,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
-	public function test_ping_request() {
+	public function test_ping_request(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'x-github-event', 'ping' );
 		$response = rest_get_server()->dispatch( $request );
@@ -70,7 +70,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 	}
 
-	public function test_missing_signature() {
+	public function test_missing_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'x-github-event', 'push' );
 		$response = rest_get_server()->dispatch( $request );
@@ -78,7 +78,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
-	public function test_invalid_signature() {
+	public function test_invalid_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params( [] );
 		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'foo' );
@@ -89,7 +89,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
-	public function test_valid_signature_but_invalid_payload() {
+	public function test_valid_signature_but_invalid_payload(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params( [] );
 		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
@@ -100,7 +100,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertErrorResponse( 400, $response );
 	}
 
-	public function test_invalid_branch() {
+	public function test_invalid_branch(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params(
 			[
@@ -120,7 +120,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertSame( [ 'result' => 'Not the default branch' ], $response->get_data() );
 	}
 
-	public function test_invalid_project() {
+	public function test_invalid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params(
 			[
@@ -140,7 +140,7 @@ class Webhook extends GP_UnitTestCase {
 		$this->assertErrorResponse( 404, $response );
 	}
 
-	public function test_valid_project() {
+	public function test_valid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params(
 			[

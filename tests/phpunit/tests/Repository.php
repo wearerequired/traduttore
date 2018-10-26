@@ -74,97 +74,97 @@ class Repository extends GP_UnitTestCase {
 		);
 	}
 
-	public function test_get_project_unknown() {
+	public function test_get_project_unknown(): void {
 		$repository = new Repo( $this->unknown );
 
 		$this->assertSame( $this->unknown, $repository->get_project() );
 	}
 
-	public function test_get_host_unknown() {
+	public function test_get_host_unknown(): void {
 		$repository = new Repo( $this->unknown );
 
 		$this->assertNull( $repository->get_host() );
 	}
 
-	public function test_get_type_unknown() {
+	public function test_get_type_unknown(): void {
 		$repository = new Repo( $this->unknown );
 
 		$this->assertSame( Repo::TYPE_UNKNOWN, $repository->get_type() );
 	}
 
-	public function test_get_name_unknown() {
+	public function test_get_name_unknown(): void {
 		$repository = new Repo( $this->unknown );
 
 		$this->assertNull( $repository->get_name() );
 	}
 
-	public function test_get_project_github() {
+	public function test_get_project_github(): void {
 		$repository = new Repo( $this->github );
 
 		$this->assertSame( $this->github, $repository->get_project() );
 	}
 
-	public function test_get_host_github() {
+	public function test_get_host_github(): void {
 		$repository = new Repo( $this->github );
 
 		$this->assertSame( 'github.com', $repository->get_host() );
 	}
 
-	public function test_get_type_github() {
+	public function test_get_type_github(): void {
 		$repository = new Repo( $this->github );
 
 		$this->assertSame( Repo::TYPE_GITHUB, $repository->get_type() );
 	}
 
-	public function test_get_name_github() {
+	public function test_get_name_github(): void {
 		$repository = new Repo( $this->github );
 
 		$this->assertSame( 'github/traduttore', $repository->get_name() );
 	}
 
-	public function test_get_project_gitlab() {
+	public function test_get_project_gitlab(): void {
 		$repository = new Repo( $this->gitlab );
 
 		$this->assertSame( $this->gitlab, $repository->get_project() );
 	}
 
-	public function test_get_host_gitlab() {
+	public function test_get_host_gitlab(): void {
 		$repository = new Repo( $this->gitlab );
 
 		$this->assertSame( 'gitlab.com', $repository->get_host() );
 	}
 
-	public function test_get_type_gitlab() {
+	public function test_get_type_gitlab(): void {
 		$repository = new Repo( $this->gitlab );
 
 		$this->assertSame( Repo::TYPE_GITLAB, $repository->get_type() );
 	}
 
-	public function test_get_name_gitlab() {
+	public function test_get_name_gitlab(): void {
 		$repository = new Repo( $this->gitlab );
 
 		$this->assertSame( 'gitlab/traduttore', $repository->get_name() );
 	}
 
-	public function test_get_project_bitbucket() {
+	public function test_get_project_bitbucket(): void {
 		$repository = new Repo( $this->bitbucket );
 
 		$this->assertSame( $this->bitbucket, $repository->get_project() );
 	}
 
-	public function test_get_host_bitbucket() {
+	public function test_get_host_bitbucket(): void {
 		$repository = new Repo( $this->bitbucket );
 
 		$this->assertSame( 'bitbucket.org', $repository->get_host() );
 	}
 
-	public function test_get_type_bitbucket() {
+	public function test_get_type_bitbucket(): void {
 		$repository = new Repo( $this->bitbucket );
 
 		$this->assertSame( Repo::TYPE_BITBUCKET, $repository->get_type() );
 	}
 
-	public function test_get_name_bitbucket() {
+	public function test_get_name_bitbucket(): void {
 		$repository = new Repo( $this->bitbucket );
 
 		$this->assertSame( 'bitbucket/traduttore', $repository->get_name() );
