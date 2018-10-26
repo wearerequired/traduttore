@@ -37,7 +37,7 @@
     "wp-coding-standards/wpcs": "^1.1"
   },
   "suggest": {
-    "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
+    "wpackagist-plugin/slack": "Send Slack notifications for various events"
   },
   "extra": {
     "branch-alias": {
