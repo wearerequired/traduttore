@@ -31,8 +31,9 @@ class LoaderFactory {
 		$loader = null;
 
 		if ( $repository ) {
-			if ( Repository::TYPE_BITBUCKET === $repository->get_type() &&
-			     'hg' === $repository->get_project()->get_repository_vcs_type()
+			if (
+				Repository::TYPE_BITBUCKET === $repository->get_type() &&
+				'hg' === $repository->get_project()->get_repository_vcs_type()
 			) {
 				// Todo: Add Mercurial loader.
 			} elseif ( in_array(
