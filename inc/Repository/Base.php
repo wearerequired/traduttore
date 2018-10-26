@@ -1,6 +1,6 @@
 <?php
 /**
- * Git repository class.
+ * Base repository class.
  *
  * @since 3.0.0
  *
@@ -46,7 +46,9 @@ class Base implements Repository {
 	 * @return string Repository type.
 	 */
 	public function get_type() : string {
-		return Repository::TYPE_UNKNOWN;
+		$type = $this->project->get_repository_type();
+
+		return $type ?: Repository::TYPE_UNKNOWN;
 	}
 
 	/**
@@ -93,5 +95,33 @@ class Base implements Repository {
 	 */
 	public function get_name(): ?string {
 		return $this->project->get_repository_name();
+	}
+
+	/**
+	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
+	 */
+	public function get_ssh_url() : string {
+		$ssh_url = $this->project->get_repository_ssh_url();
+
+		if ( $ssh_url ) {
+			return $ssh_url;
+		}
+
+		return sprintf( 'git@%1$s:%2$s.git', $this->get_host(), $this->get_name() );
+	}
+
+	/**
+	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
+	 */
+	public function get_https_url() : ?string {
+		return $this->project->get_repository_https_url();
 	}
 }

@@ -53,13 +53,13 @@ class Git extends Base {
 	}
 
 	/**
-	 * Returns the repository's clone URL.
+	 * Returns the URL to clone the current repository.
 	 *
-	 * Supports either HTTPS or SSH.
+	 * Supports HTTPS and SSH URLs.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git
+	 * @return string URL to clone the repository, e.g. git@github.com:wearerequired/traduttore.git
 	 *                or https://github.com/wearerequired/traduttore.git.
 	 */
 	protected function get_clone_url() : string {
@@ -74,10 +74,10 @@ class Git extends Base {
 		 */
 		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->repository->is_public(), $this->repository );
 
-		$clone_url = $this->get_ssh_url();
+		$clone_url = $this->repository->get_ssh_url();
 
 		if ( $use_https ) {
-			$clone_url = $this->get_https_url();
+			$clone_url = $this->repository->get_https_url();
 		}
 
 		/**
@@ -89,45 +89,5 @@ class Git extends Base {
 		 * @param Git    $repository The current repository.
 		 */
 		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
-	}
-
-	/**
-	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
-	 *
-	 * @todo Use stored value from project meta.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
-	 */
-	protected function get_ssh_url() : string {
-		return sprintf( 'git@%1$s:%2$s.git', $this->repository->get_host(), $this->repository->get_name() );
-	}
-
-	/**
-	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
-	 *
-	 * @todo Use stored value from project meta.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
-	 */
-	protected function get_https_url() : string {
-		/**
-		 * Filters the credentials to be used for connecting to a Git repository via HTTPS.
-		 *
-		 * @since 3.0.0
-		 *
-		 * @param string $credentials Git credentials in the form username:password. Default empty string.
-		 * @param Git    $repository  The current repository.
-		 */
-		$credentials = apply_filters( 'traduttore.git_https_credentials', '', $this->repository );
-
-		if ( ! empty( $credentials ) ) {
-			return sprintf( 'https://%1$s@%2$s/%3$s.git', $credentials, $this->repository->get_host(), $this->repository->get_name() );
-		}
-
-		return sprintf( 'https://%1$s/%2$s.git', $this->repository->get_host(), $this->repository->get_name() );
 	}
 }

@@ -64,7 +64,7 @@ class GitLab extends Base {
 	public function callback() {
 		$params = $this->request->get_params();
 
-		if ( ! isset( $params['repository']['git_http_url'], $params['ref'] ) ) {
+		if ( ! isset( $params['project']['http_url'], $params['ref'] ) ) {
 			return new WP_Error( '400', 'Bad request' );
 		}
 
@@ -73,14 +73,18 @@ class GitLab extends Base {
 			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
 		}
 
-		$locator = new ProjectLocator( $params['repository']['git_http_url'] );
+		$locator = new ProjectLocator( $params['project']['http_url'] );
 		$project = $locator->get_project();
 
 		if ( ! $project ) {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		$project->set_repository_url( $params['repository']['git_http_url'] );
+		$project->set_repository_name( $params['project']['path_with_namespace'] );
+		$project->set_repository_url( $params['project']['homepage'] );
+		$project->set_repository_ssh_url( $params['project']['ssh_url'] );
+		$project->set_repository_https_url( $params['project']['http_url'] );
+		$project->set_repository_visibility( 0 === $params['project']['visibility_level'] ? 'public' : 'private' );
 
 		if ( ! $project->get_repository_type() ) {
 			$project->set_repository_type( Repository::TYPE_GITLAB );

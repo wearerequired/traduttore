@@ -63,6 +63,24 @@ class Project {
 	protected const REPOSITORY_VCS_TYPE_KEY = '_traduttore_repository_vcs_type';
 
 	/**
+	 * Project repository SSH URL meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Project repository SSH URL meta key.
+	 */
+	protected const REPOSITORY_SSH_URL_KEY = '_traduttore_repository_ssh_url';
+
+	/**
+	 * Project repository HTTPS URL meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Project repository HTTPS URL meta key.
+	 */
+	protected const REPOSITORY_HTTPS_URL_KEY = '_traduttore_repository_https_url';
+
+	/**
 	 * GlotPress project.
 	 *
 	 * @since 3.0.0
@@ -256,5 +274,55 @@ class Project {
 	 */
 	public function set_repository_visibility( string $visibility ): bool {
 		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_VISIBILITY_KEY, $visibility, 'project' );
+	}
+
+	/**
+	 * Returns the project's repository SSH URL.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Repository SSH URL if stored, null otherwise.
+	 */
+	public function get_repository_ssh_url(): ?string {
+		$url = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_SSH_URL_KEY );
+
+		return $url ?: null;
+	}
+
+	/**
+	 * Updates the project's repository SSH URL.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $url The new URL.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_repository_ssh_url( string $url ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_SSH_URL_KEY, $url, 'project' );
+	}
+
+	/**
+	 * Returns the project's repository HTTPS URL.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Repository HTTPS URL if stored, null otherwise.
+	 */
+	public function get_repository_https_url(): ?string {
+		$url = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_HTTPS_URL_KEY );
+
+		return $url ?: null;
+	}
+
+	/**
+	 * Updates the project's repository HTTPS URL.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $url The new URL.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_repository_https_url( string $url ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_HTTPS_URL_KEY, $url, 'project' );
 	}
 }

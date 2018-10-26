@@ -16,7 +16,7 @@ use Required\Traduttore\Repository;
  *
  * @since 3.0.0
  */
-class Bitbucket extends Base {
+class Bitbucket extends Git {
 	/**
 	 * Bitbucket API base URL.
 	 *

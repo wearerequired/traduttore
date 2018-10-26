@@ -101,4 +101,22 @@ interface Repository {
 	 * @return string Repository name.
 	 */
 	public function get_name() :? string;
+
+	/**
+	 * Returns the repository's SSH URL for cloning based on the project's source URL template.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string SSH URL to the repository.
+	 */
+	public function get_ssh_url() : string;
+
+	/**
+	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string HTTPS URL to the repository.
+	 */
+	public function get_https_url() : ?string;
 }

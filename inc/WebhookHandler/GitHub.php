@@ -91,11 +91,11 @@ class GitHub extends Base {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		if ( isset( $params['private'] ) ) {
-			$project->set_repository_visibility( false === $params['private'] ? 'public' : 'private' );
-		}
-
+		$project->set_repository_name( $params['repository']['full_name'] );
 		$project->set_repository_url( $params['repository']['html_url'] );
+		$project->set_repository_ssh_url( $params['repository']['ssh_url'] );
+		$project->set_repository_https_url( $params['repository']['clone_url'] );
+		$project->set_repository_visibility( false === $params['repository']['private'] ? 'public' : 'private' );
 
 		if ( ! $project->get_repository_type() ) {
 			$project->set_repository_type( Repository::TYPE_GITHUB );

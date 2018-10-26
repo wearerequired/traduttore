@@ -77,18 +77,28 @@ class Bitbucket extends Base {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		if ( isset( $params['repository']['is_private'] ) ) {
-			$project->set_repository_visibility( false === $params['repository']['is_private'] ? 'public' : 'private' );
+		if ( ! $project->get_repository_vcs_type() ) {
+			$project->set_repository_vcs_type( 'git' === $params['repository']['scm'] ? 'git' : 'hg' );
 		}
 
+		$project->set_repository_name( $params['repository']['full_name'] );
 		$project->set_repository_url( $params['repository']['links']['html']['href'] );
+
+		$ssh_url   = sprintf( 'git@bitbucket.org:%s.git', $project->get_repository_name() );
+		$https_url = sprintf( 'https://bitbucket.org/%s.git', $project->get_repository_name() );
+
+		if ( 'hg' === $project->get_repository_vcs_type() ) {
+			$ssh_url   = sprintf( 'hg@bitbucket.org/%s', $project->get_repository_name() );
+			$https_url = sprintf( 'https://bitbucket.org/%s', $project->get_repository_name() );
+		}
+
+		$project->set_repository_ssh_url( $ssh_url );
+		$project->set_repository_https_url( $https_url );
+
+		$project->set_repository_visibility( false === $params['repository']['is_private'] ? 'public' : 'private' );
 
 		if ( ! $project->get_repository_type() ) {
 			$project->set_repository_type( Repository::TYPE_BITBUCKET );
-		}
-
-		if ( ! $project->get_repository_vcs_type() ) {
-			$project->set_repository_vcs_type( 'git' === $params['repository']['scm'] ? 'git' : 'hg' );
 		}
 
 		( new Updater( $project ) )->schedule_update();
