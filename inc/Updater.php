@@ -58,6 +58,8 @@ class Updater {
 		/**
 		 * Filters the delay for scheduled project updates.
 		 *
+		 * @since 3.0.0
+		 *
 		 * @param int     $delay   Delay in minutes. Default is 3 minutes.
 		 * @param Project $project The current project.
 		 */

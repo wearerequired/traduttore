@@ -60,6 +60,8 @@ class Plugin {
 				/**
 				 * Filters the delay for scheduled language pack generation.
 				 *
+				 * @since 3.0.0
+				 *
 				 * @param int                $delay           Delay in minutes. Default is 5 minutes.
 				 * @param GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
 				 */
