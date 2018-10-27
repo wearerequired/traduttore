@@ -36,6 +36,17 @@ class GitHub extends Base {
 	}
 
 	/**
+	 * Returns the repository host name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Repository host name.
+	 */
+	public function get_host(): string {
+		return 'github.com';
+	}
+
+	/**
 	 * Returns the repository name.
 	 *
 	 * If the name is not stored in the database,
@@ -80,7 +91,7 @@ class GitHub extends Base {
 		$visibility = $this->project->get_repository_visibility();
 
 		if ( ! $visibility ) {
-			$response = wp_remote_head( self::API_BASE . '/repos/' . rawurlencode( $this->get_name() ) );
+			$response = wp_remote_head( self::API_BASE . '/repos/' . $this->get_name() );
 
 			$visibility = 200 === wp_remote_retrieve_response_code( $response ) ? 'public' : 'private';
 

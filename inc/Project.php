@@ -138,10 +138,12 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return string Source URL template.
+	 * @return string|null Source URL template if set, null otherwise.
 	 */
 	public function get_source_url_template(): ?string {
-		return $this->project->source_url_template();
+		$source_url_template = $this->project->source_url_template();
+
+		return $source_url_template ?: null;
 	}
 
 	/**
@@ -149,7 +151,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return null|string Repository type if stored, null otherwise.
+	 * @return string|null Repository type if stored, null otherwise.
 	 */
 	public function get_repository_type(): ?string {
 		$type = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_TYPE_KEY );
@@ -203,15 +205,6 @@ class Project {
 	 */
 	public function get_repository_url(): ?string {
 		$url = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_URL_KEY );
-
-		if ( ! $url ) {
-			$url = $this->project->source_url_template();
-
-			if ( false !== strpos( $url, '/blob/' ) ) {
-				$parts = explode( '/blob/', $url );
-				$url   = array_shift( $parts );
-			}
-		}
 
 		return $url ?: null;
 	}

@@ -23,20 +23,6 @@ interface Repository {
 	public const TYPE_UNKNOWN = 'unknown';
 
 	/**
-	 * Custom repository type.
-	 *
-	 * @since 3.0.0
-	 */
-	public const TYPE_CUSTOM = 'custom';
-
-	/**
-	 * Git repository type.
-	 *
-	 * @since 3.0.0
-	 */
-	public const TYPE_GIT = 'git';
-
-	/**
 	 * GitHub repository type.
 	 *
 	 * @since 3.0.0
@@ -109,7 +95,7 @@ interface Repository {
 	 *
 	 * @return string SSH URL to the repository.
 	 */
-	public function get_ssh_url() : string;
+	public function get_ssh_url() : ?string;
 
 	/**
 	 * Returns the repository's HTTPS URL for cloning based on the project's source URL template.

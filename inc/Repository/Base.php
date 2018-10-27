@@ -17,7 +17,7 @@ use Required\Traduttore\Repository;
  *
  * @since 3.0.0
  */
-class Base implements Repository {
+abstract class Base implements Repository {
 	/**
 	 * GlotPress project.
 	 *
@@ -104,14 +104,18 @@ class Base implements Repository {
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
-	public function get_ssh_url() : string {
+	public function get_ssh_url() : ?string {
 		$ssh_url = $this->project->get_repository_ssh_url();
 
 		if ( $ssh_url ) {
 			return $ssh_url;
 		}
 
-		return sprintf( 'git@%1$s:%2$s.git', $this->get_host(), $this->get_name() );
+		if ( $this->get_host() && $this->get_name() ) {
+			return sprintf( 'git@%1$s:%2$s.git', $this->get_host(), $this->get_name() );
+		}
+
+		return null;
 	}
 
 	/**
@@ -121,11 +125,15 @@ class Base implements Repository {
 	 *
 	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
 	 */
-	public function get_https_url() : string {
+	public function get_https_url() : ?string {
 		$https_url = $this->project->get_repository_https_url();
 
-		if ( ! $https_url ) {
+		if ( ! $https_url && $this->get_host() && $this->get_name() ) {
 			$https_url = sprintf( 'https://%1$s/%2$s.git', $this->get_host(), $this->get_name() );
+		}
+
+		if ( ! $https_url ) {
+			return null;
 		}
 
 		/**

@@ -28,7 +28,9 @@ class RepositoryFactory {
 	public function get_repository( Project $project ): ?Repository {
 		$repository = null;
 
-		switch ( $project->get_repository_type() ) {
+		$repository_type = $project->get_repository_type();
+
+		switch ( $repository_type ) {
 			case Repository::TYPE_BITBUCKET:
 				$repository = new Bitbucket( $project );
 				break;
@@ -40,16 +42,25 @@ class RepositoryFactory {
 				break;
 		}
 
-		if ( ! $repository ) {
+		if ( ! $repository && ! $repository_type ) {
 			$url  = $project->get_repository_url();
+
+			if ( ! $url ) {
+				$url = $project->get_source_url_template();
+			}
+
 			$host = $url ? wp_parse_url( $url, PHP_URL_HOST ) : null;
 
-			if ( 'github.com' === $host ) {
-				$repository = new GitHub( $project );
-			} elseif ( 'gitlab.com' === $host ) {
-				$repository = new GitLab( $project );
-			} elseif ( 'bitbucket.org' === $host ) {
-				$repository = new Bitbucket( $project );
+			switch( $host ) {
+				case 'github.com':
+					$repository = new GitHub( $project );
+					break;
+				case 'gitlab.com':
+					$repository = new GitLab( $project );
+					break;
+				case 'bitbucket.org':
+					$repository = new Bitbucket( $project );
+					break;
 			}
 		}
 

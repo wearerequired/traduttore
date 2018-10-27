@@ -36,10 +36,21 @@ class Bitbucket extends Base {
 	}
 
 	/**
+	 * Returns the repository host name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Repository host name.
+	 */
+	public function get_host(): string {
+		return 'bitbucket.org';
+	}
+
+	/**
 	 * Returns the repository name.
 	 *
 	 * If the name is not stored in the database,
-	 * it tries to determine it from the repository URL and the project path.
+	 * it tries to determine it from the repository URL and the project slug.
 	 *
 	 * @since 3.0.0
 	 *
@@ -80,7 +91,7 @@ class Bitbucket extends Base {
 		$visibility = $this->project->get_repository_visibility();
 
 		if ( ! $visibility ) {
-			$response = wp_remote_head( self::API_BASE . '/repositories/' . rawurlencode( $this->get_name() ) );
+			$response = wp_remote_head( self::API_BASE . '/repositories/' . $this->get_name() );
 
 			$visibility = 200 === wp_remote_retrieve_response_code( $response ) ? 'public' : 'private';
 
@@ -97,7 +108,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
-	public function get_ssh_url() : string {
+	public function get_ssh_url() : ?string {
 		if ( 'hg' === $this->project->get_repository_vcs_type() ) {
 			$ssh_url = $this->project->get_repository_ssh_url();
 
@@ -105,7 +116,9 @@ class Bitbucket extends Base {
 				return $ssh_url;
 			}
 
-			return sprintf( 'hg@%1$s/%2$s', $this->get_host(), $this->get_name() );
+			if ( $this->get_host() && $this->get_name() ) {
+				return sprintf( 'hg@%1$s/%2$s', $this->get_host(), $this->get_name() );
+			}
 		}
 
 		return parent::get_ssh_url();
@@ -118,12 +131,16 @@ class Bitbucket extends Base {
 	 *
 	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
 	 */
-	public function get_https_url() : string {
+	public function get_https_url() : ?string {
 		if ( 'hg' === $this->project->get_repository_vcs_type() ) {
 			$https_url = $this->project->get_repository_https_url();
 
-			if ( ! $https_url ) {
+			if ( ! $https_url && $this->get_host() ) {
 				$https_url = sprintf( 'https://%1$s/%2$s', $this->get_host(), $this->get_name() );
+			}
+
+			if ( ! $https_url ) {
+				return null;
 			}
 
 			/**
