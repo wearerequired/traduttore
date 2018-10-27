@@ -236,6 +236,10 @@ class Plugin {
 					if ( '/github-webhook/v1/push-event' === $route ) {
 						return false;
 					}
+
+					if ( '/traduttore/v1/incoming-webhook' === $route ) {
+						return false;
+					}
 				}
 
 				if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
