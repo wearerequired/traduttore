@@ -85,7 +85,7 @@ class GitLab extends GP_UnitTestCase {
 	 * @return array|false Response data.
 	 */
 	public function mock_repository_visibility_request( $preempt, $r, $url ) {
-		if ( $url === GitLabRepository::API_BASE . '/projects/wearerequired/traduttore' ) {
+		if ( GitLabRepository::API_BASE . '/projects/wearerequired/traduttore' === $url ) {
 			++ $this->http_request_count;
 
 			return [

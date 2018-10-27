@@ -43,7 +43,7 @@ class RepositoryFactory {
 		}
 
 		if ( ! $repository && ! $repository_type ) {
-			$url  = $project->get_repository_url();
+			$url = $project->get_repository_url();
 
 			if ( ! $url ) {
 				$url = $project->get_source_url_template();
@@ -51,7 +51,7 @@ class RepositoryFactory {
 
 			$host = $url ? wp_parse_url( $url, PHP_URL_HOST ) : null;
 
-			switch( $host ) {
+			switch ( $host ) {
 				case 'github.com':
 					$repository = new GitHub( $project );
 					break;

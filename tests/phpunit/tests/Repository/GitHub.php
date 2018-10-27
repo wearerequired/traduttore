@@ -85,7 +85,7 @@ class GitHub extends GP_UnitTestCase {
 	 * @return array|false Response data.
 	 */
 	public function mock_repository_visibility_request( $preempt, $r, $url ) {
-		if ( $url === GitHubRepository::API_BASE . '/repos/wearerequired/traduttore' ) {
+		if ( GitHubRepository::API_BASE . '/repos/wearerequired/traduttore' === $url ) {
 			++ $this->http_request_count;
 
 			return [

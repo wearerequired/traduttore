@@ -85,7 +85,7 @@ class Bitbucket extends GP_UnitTestCase {
 	 * @return array|false Response data.
 	 */
 	public function mock_repository_visibility_request( $preempt, $r, $url ) {
-		if ( $url === BitbucketRepository::API_BASE . '/repositories/wearerequired/traduttore' ) {
+		if ( BitbucketRepository::API_BASE . '/repositories/wearerequired/traduttore' === $url ) {
 			++ $this->http_request_count;
 
 			return [
