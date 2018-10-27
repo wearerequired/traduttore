@@ -148,7 +148,7 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_ssh_url_falls_back_to_host_and_determined_name_for_hg_repository(): void {
-		$this->project->set_repository_vcs_type( 'hg' );
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 
 		$repository = new BitbucketRepository( $this->project );
 
@@ -168,7 +168,7 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_ssh_url_falls_back_to_host_and_repository_name_for_hg_repository(): void {
-		$this->project->set_repository_vcs_type( 'hg' );
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 		$this->project->set_repository_name( 'wearerequired/traduttore' );
 
 		$repository = new BitbucketRepository( $this->project );
@@ -189,7 +189,7 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_ssh_url_uses_stored_data_for_hg_repository(): void {
-		$this->project->set_repository_vcs_type( 'hg' );
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 		$this->project->set_repository_ssh_url( 'hg@bitbucket.org:wearerequired/custom' );
 
 		$repository = new BitbucketRepository( $this->project );
@@ -208,7 +208,7 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_https_url_falls_back_to_host_and_determined_name_for_hg_repository(): void {
-		$this->project->set_repository_vcs_type( 'hg' );
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 
 		$repository = new BitbucketRepository( $this->project );
 
@@ -228,7 +228,7 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_https_url_falls_back_to_host_and_repository_name_for_hg_repository(): void {
-		$this->project->set_repository_vcs_type( 'hg' );
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 		$this->project->set_repository_name( 'wearerequired/traduttore' );
 
 		$repository = new BitbucketRepository( $this->project );
@@ -249,7 +249,7 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_https_url_uses_stored_data_for_hg_repository(): void {
-		$this->project->set_repository_vcs_type( 'hg' );
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 		$this->project->set_repository_https_url( 'https://bitbucket.org/wearerequired/custom' );
 
 		$repository = new BitbucketRepository( $this->project );
@@ -257,5 +257,40 @@ class Bitbucket extends GP_UnitTestCase {
 		$url = $repository->get_https_url();
 
 		$this->assertSame( 'https://bitbucket.org/wearerequired/custom', $url );
+	}
+
+	public function test_get_https_url_with_credentials(): void {
+		$this->project->set_repository_https_url( 'https://bitbucket.org/wearerequired/custom.git' );
+
+		$repository = new BitbucketRepository( $this->project );
+
+		add_filter(
+			'traduttore.git_https_credentials',
+			function() {
+				return 'foo:bar';
+			}
+		);
+
+		$url = $repository->get_https_url();
+
+		$this->assertSame( 'https://foo:bar@bitbucket.org/wearerequired/custom.git', $url );
+	}
+
+	public function test_get_https_url_with_credentials_for_ht_repository(): void {
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
+		$this->project->set_repository_https_url( 'https://bitbucket.org/wearerequired/custom' );
+
+		$repository = new BitbucketRepository( $this->project );
+
+		add_filter(
+			'traduttore.hg_https_credentials',
+			function() {
+				return 'foo:bar';
+			}
+		);
+
+		$url = $repository->get_https_url();
+
+		$this->assertSame( 'https://foo:bar@bitbucket.org/wearerequired/custom', $url );
 	}
 }

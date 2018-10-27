@@ -135,7 +135,7 @@ class Bitbucket extends Base {
 		if ( Repository::VCS_TYPE_HG === $this->project->get_repository_vcs_type() ) {
 			$https_url = $this->project->get_repository_https_url();
 
-			if ( ! $https_url && $this->get_host() ) {
+			if ( ! $https_url && $this->get_host() && $this->get_name() ) {
 				$https_url = sprintf( 'https://%1$s/%2$s', $this->get_host(), $this->get_name() );
 			}
 

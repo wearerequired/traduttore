@@ -43,6 +43,12 @@ class GitLab extends Base {
 	 * @return string Repository host name.
 	 */
 	public function get_host(): string {
+		$host = parent::get_host();
+
+		if ( $host ) {
+			return $host;
+		}
+
 		return 'gitlab.com';
 	}
 
