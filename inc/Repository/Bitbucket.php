@@ -109,7 +109,7 @@ class Bitbucket extends Base {
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
 	public function get_ssh_url() : ?string {
-		if ( 'hg' === $this->project->get_repository_vcs_type() ) {
+		if ( Repository::VCS_TYPE_HG === $this->project->get_repository_vcs_type() ) {
 			$ssh_url = $this->project->get_repository_ssh_url();
 
 			if ( $ssh_url ) {
@@ -132,7 +132,7 @@ class Bitbucket extends Base {
 	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
 	 */
 	public function get_https_url() : ?string {
-		if ( 'hg' === $this->project->get_repository_vcs_type() ) {
+		if ( Repository::VCS_TYPE_HG === $this->project->get_repository_vcs_type() ) {
 			$https_url = $this->project->get_repository_https_url();
 
 			if ( ! $https_url && $this->get_host() ) {

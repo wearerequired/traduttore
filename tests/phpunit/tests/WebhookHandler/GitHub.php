@@ -1,19 +1,21 @@
 <?php
 /**
- * Class Webhook
+ * Class GitHub
  *
  * @package Traduttore\Tests
  */
 
-namespace Required\Traduttore\Tests;
+namespace Required\Traduttore\Tests\WebhookHandler;
 
 use \GP_UnitTestCase;
+use WP_Error;
 use \WP_REST_Request;
+use \WP_REST_Response;
 
 /**
- *  Test cases for incoming webhooks from GitHub.
+ * Test cases for \Required\Traduttore\WebhookHandler\GitHub.
  */
-class Webhook extends GP_UnitTestCase {
+class GitHub extends GP_UnitTestCase {
 	/**
 	 * @var \GP_Project
 	 */
@@ -32,11 +34,16 @@ class Webhook extends GP_UnitTestCase {
 
 	/**
 	 * @see WP_Test_REST_TestCase
+	 *
+	 * @param mixed                     $code
+	 * @param WP_REST_Response|WP_Error $response
+	 * @param mixed                     $status
 	 */
 	protected function assertErrorResponse( $code, $response, $status = null ): void {
-		if ( is_a( $response, 'WP_REST_Response' ) ) {
+		if ( $response instanceof  WP_REST_Response ) {
 			$response = $response->as_error();
 		}
+
 		$this->assertInstanceOf( 'WP_Error', $response );
 		$this->assertEquals( $code, $response->get_error_code() );
 		if ( null !== $status ) {

@@ -12,7 +12,7 @@ use \GP_Project;
 use \Required\Traduttore\Project as TraduttoreProject;
 
 /**
- *  Test cases for \Required\Traduttore\Project.
+ * Test cases for \Required\Traduttore\Project.
  */
 class Project extends GP_UnitTestCase {
 	/**

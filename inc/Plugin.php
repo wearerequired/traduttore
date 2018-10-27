@@ -101,7 +101,13 @@ class Plugin {
 					return;
 				}
 
-				$loader = ( new LoaderFactory() )->get_loader( $project );
+				$repository = ( new RepositoryFactory() )->get_repository( $project );
+
+				if ( ! $repository ) {
+					return;
+				}
+
+				$loader = ( new LoaderFactory() )->get_loader( $repository );
 
 				if ( ! $loader ) {
 					return;

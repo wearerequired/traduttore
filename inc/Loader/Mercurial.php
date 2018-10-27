@@ -1,6 +1,6 @@
 <?php
 /**
- * Git loader class.
+ * Mercurial loader class.
  *
  * @since 3.0.0
  *
@@ -12,13 +12,13 @@ namespace Required\Traduttore\Loader;
 use Required\Traduttore\Repository;
 
 /**
- * Git loader class.
+ * Mercurial loader class.
  *
  * @since 3.0.0
  */
-class Git extends Base {
+class Mercurial extends Base {
 	/**
-	 * Downloads a remote Git repository.
+	 * Downloads a remote Mercurial repository.
 	 *
 	 * If the repository has been cloned before, the latest changes will be pulled.
 	 *
@@ -26,14 +26,14 @@ class Git extends Base {
 	 *
 	 * @return string Path to the downloaded repository on success.
 	 */
-	public function download() :? string {
+	public function download(): ?string {
 		$target = $this->get_local_path();
 
 		if ( is_dir( $target ) ) {
 			$current_dir = getcwd();
 			chdir( $target );
-			exec( escapeshellcmd( 'git reset --hard -q' ), $output, $status );
-			exec( escapeshellcmd( 'git pull -q' ), $output, $status );
+			exec( escapeshellcmd( 'hg update --clean -q' ), $output, $status );
+			exec( escapeshellcmd( 'hg pull -q' ), $output, $status );
 			chdir( $current_dir );
 
 			return 0 === $status ? $target : null;
@@ -42,7 +42,7 @@ class Git extends Base {
 		exec(
 			escapeshellcmd(
 				sprintf(
-					'git clone --depth=1 %1$s %2$s -q',
+					'hg clone %1$s %2$s -q',
 					escapeshellarg( $this->get_clone_url() ),
 					escapeshellarg( $target )
 				)
@@ -61,10 +61,10 @@ class Git extends Base {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return string URL to clone the repository, e.g. git@github.com:wearerequired/traduttore.git
-	 *                or https://github.com/wearerequired/traduttore.git.
+	 * @return string URL to clone the repository, e.g. hg@bitbucket.org/wearerequired/traduttore
+	 *                or https://bitbucket.org/wearerequired/traduttore.
 	 */
-	protected function get_clone_url() : string {
+	protected function get_clone_url(): string {
 		/**
 		 * Filters whether HTTPS or SSH should be used to clone a repository.
 		 *
@@ -74,7 +74,7 @@ class Git extends Base {
 		 *                               Defaults to true for public repositories.
 		 * @param Repository $repository The current repository.
 		 */
-		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->repository->is_public(), $this->repository );
+		$use_https = apply_filters( 'traduttore.hg_clone_use_https', $this->repository->is_public(), $this->repository );
 
 		$clone_url = $this->repository->get_ssh_url();
 
@@ -83,13 +83,13 @@ class Git extends Base {
 		}
 
 		/**
-		 * Filters the URL used to clone a Git repository.
+		 * Filters the URL used to clone a Mercurial repository.
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string $clone_url  The URL to clone a Git repository.
-		 * @param Repository    $repository The current repository.
+		 * @param string     $clone_url  The URL to clone a Mercurial repository.
+		 * @param Repository $repository The current repository.
 		 */
-		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
+		return apply_filters( 'traduttore.hg_clone_url', $clone_url, $this->repository );
 	}
 }

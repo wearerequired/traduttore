@@ -10,6 +10,7 @@
 namespace Required\Traduttore;
 
 use Required\Traduttore\Loader\Git as GitLoader;
+use Required\Traduttore\Loader\Mercurial as MercurialLoader;
 
 /**
  * LoaderFactory class.
@@ -18,35 +19,28 @@ use Required\Traduttore\Loader\Git as GitLoader;
  */
 class LoaderFactory {
 	/**
-	 * Returns a new loader instance for a given project.
+	 * Returns a new loader instance for a given repository.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Project $project Project information.
+	 * @param Repository $repository Repository instance.
 	 * @return Loader Loader instance.
 	 */
-	public function get_loader( Project $project ) :? Loader {
-		$repository = ( new RepositoryFactory() )->get_repository( $project );
-
+	public function get_loader( Repository $repository ): ?Loader {
 		$loader = null;
 
-		if ( $repository ) {
-			if (
-				Repository::TYPE_BITBUCKET === $repository->get_type() &&
-				'hg' === $repository->get_project()->get_repository_vcs_type()
-			) {
-				// Todo: Add Mercurial loader.
-			} elseif ( in_array(
-				$repository->get_type(),
-				[
-					Repository::TYPE_BITBUCKET,
-					Repository::TYPE_GITHUB,
-					Repository::TYPE_GITLAB,
-				],
-				true
-			) ) {
-				$loader = new GitLoader( $repository );
-			}
+		if ( Repository::VCS_TYPE_HG === $repository->get_project()->get_repository_vcs_type() ) {
+			$loader = new MercurialLoader( $repository );
+		} elseif ( in_array(
+			$repository->get_type(),
+			[
+				Repository::TYPE_BITBUCKET,
+				Repository::TYPE_GITHUB,
+				Repository::TYPE_GITLAB,
+			],
+			true
+		) ) {
+			$loader = new GitLoader( $repository );
 		}
 
 		/**
@@ -54,8 +48,7 @@ class LoaderFactory {
 		 *
 		 * @param Loader|null     $loader     Loader instance.
 		 * @param Repository|null $repository Repository instance.
-		 * @param Project         $project    Project information.
 		 */
-		return apply_filters( 'traduttore.loader', $loader, $repository, $project );
+		return apply_filters( 'traduttore.loader', $loader, $repository );
 	}
 }

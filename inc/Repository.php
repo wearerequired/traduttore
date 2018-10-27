@@ -16,6 +16,20 @@ namespace Required\Traduttore;
  */
 interface Repository {
 	/**
+	 * Mercurial repository VCS type.
+	 *
+	 * @since 3.0.0
+	 */
+	public const VCS_TYPE_HG = 'hg';
+
+	/**
+	 * Git repository VCS type.
+	 *
+	 * @since 3.0.0
+	 */
+	public const VCS_TYPE_GIT = 'git';
+
+	/**
 	 * Unknown repository type.
 	 *
 	 * @since 3.0.0

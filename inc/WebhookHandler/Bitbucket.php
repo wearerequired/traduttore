@@ -78,7 +78,7 @@ class Bitbucket extends Base {
 		}
 
 		if ( ! $project->get_repository_vcs_type() ) {
-			$project->set_repository_vcs_type( 'git' === $params['repository']['scm'] ? 'git' : 'hg' );
+			$project->set_repository_vcs_type( 'git' === $params['repository']['scm'] ? Repository::VCS_TYPE_GIT : Repository::VCS_TYPE_HG );
 		}
 
 		$project->set_repository_name( $params['repository']['full_name'] );
@@ -87,7 +87,7 @@ class Bitbucket extends Base {
 		$ssh_url   = sprintf( 'git@bitbucket.org:%s.git', $project->get_repository_name() );
 		$https_url = sprintf( 'https://bitbucket.org/%s.git', $project->get_repository_name() );
 
-		if ( 'hg' === $project->get_repository_vcs_type() ) {
+		if ( Repository::VCS_TYPE_HG === $project->get_repository_vcs_type() ) {
 			$ssh_url   = sprintf( 'hg@bitbucket.org/%s', $project->get_repository_name() );
 			$https_url = sprintf( 'https://bitbucket.org/%s', $project->get_repository_name() );
 		}
