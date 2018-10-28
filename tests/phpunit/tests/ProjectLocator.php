@@ -11,7 +11,7 @@ use \GP_UnitTestCase;
 use \Required\Traduttore\ProjectLocator as Locator;
 
 /**
- *  Test cases for \Required\Traduttore\ProjectLocator.
+ * Test cases for \Required\Traduttore\ProjectLocator.
  */
 class ProjectLocator extends GP_UnitTestCase {
 	/**

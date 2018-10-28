@@ -13,7 +13,7 @@ use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 
 /**
- *  Test cases for \Required\Traduttore\Repository\Bitbucket.
+ * Test cases for \Required\Traduttore\Repository\Bitbucket.
  */
 class Bitbucket extends GP_UnitTestCase {
 	/** @var Project */

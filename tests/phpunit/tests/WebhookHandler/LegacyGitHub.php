@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GitHub
+ * Class LegacyGitHub
  *
  * @package Traduttore\Tests
  */
@@ -15,7 +15,7 @@ use \WP_REST_Response;
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitHub.
  */
-class GitHub extends GP_UnitTestCase {
+class LegacyGitHub extends GP_UnitTestCase {
 	/**
 	 * @var \GP_Project
 	 */
@@ -40,7 +40,7 @@ class GitHub extends GP_UnitTestCase {
 	 * @param mixed                     $status
 	 */
 	protected function assertErrorResponse( $code, $response, $status = null ): void {
-		if ( $response instanceof WP_REST_Response ) {
+		if ( $response instanceof  WP_REST_Response ) {
 			$response = $response->as_error();
 		}
 
@@ -54,14 +54,14 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_missing_event_header(): void {
-		$request  = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request  = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
 	public function test_invalid_event_header(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'x-github-event', 'pull' );
 		$response = rest_get_server()->dispatch( $request );
 
@@ -69,7 +69,7 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_ping_request(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'x-github-event', 'ping' );
 		$response = rest_get_server()->dispatch( $request );
 
@@ -78,7 +78,7 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_missing_signature(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'x-github-event', 'push' );
 		$response = rest_get_server()->dispatch( $request );
 
@@ -86,7 +86,7 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_invalid_signature(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params( [] );
 		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'foo' );
 		$request->add_header( 'x-github-event', 'push' );
@@ -97,7 +97,7 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_invalid_branch(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params(
 			[
 				'ref'        => 'refs/heads/master',
@@ -117,7 +117,7 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_invalid_project(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params(
 			[
 				'ref'        => 'refs/heads/master',
@@ -141,7 +141,7 @@ class GitHub extends GP_UnitTestCase {
 	}
 
 	public function test_valid_project(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->set_body_params(
 			[
 				'ref'        => 'refs/heads/master',

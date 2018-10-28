@@ -14,7 +14,7 @@ use \Required\Traduttore\Project;
 use \Required\Traduttore\Updater as U;
 
 /**
- *  Test cases for \Required\Traduttore\Updater.
+ * Test cases for \Required\Traduttore\Updater.
  */
 class Updater extends GP_UnitTestCase {
 	/**

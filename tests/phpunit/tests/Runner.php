@@ -14,7 +14,7 @@ use \Required\Traduttore\Runner as R;
 use \Required\Traduttore\Loader\Git as Loader;
 
 /**
- *  Test cases for \Required\Traduttore\Runner.
+ * Test cases for \Required\Traduttore\Runner.
  */
 class Runner extends GP_UnitTestCase {
 	/**
@@ -28,7 +28,7 @@ class Runner extends GP_UnitTestCase {
 	protected $runner;
 
 	/**
-	 * @var Loader
+	 * @var Git
 	 */
 	protected $loader;
 

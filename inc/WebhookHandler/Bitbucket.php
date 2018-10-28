@@ -66,10 +66,6 @@ class Bitbucket extends Base {
 	public function callback() {
 		$params = $this->request->get_params();
 
-		if ( ! isset( $params['repository']['links']['html']['href'] ) ) {
-			return new WP_Error( '400', 'Bad request' );
-		}
-
 		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] );
 		$project = $locator->get_project();
 

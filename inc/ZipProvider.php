@@ -62,6 +62,33 @@ class ZipProvider {
 	}
 
 	/**
+	 * Schedules ZIP generation for the current translation set.
+	 *
+	 * Adds a single cron event to generate the ZIP archive after a short amount of time.
+	 *
+	 * @since 3.0.0
+	 */
+	public function schedule_generation(): void {
+		/**
+		 * Filters the delay for scheduled language pack generation.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param int                $delay           Delay in minutes. Default is 5 minutes.
+		 * @param GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
+		 */
+		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $this->translation_set->id );
+
+		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		if ( $next_schedule ) {
+			wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $this->translation_set->id ] );
+		}
+
+		wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $this->translation_set->id ] );
+	}
+
+	/**
 	 * Generates and caches a ZIP file for a translation set.
 	 *
 	 * @since 2.0.0
@@ -75,7 +102,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -91,7 +118,7 @@ class ZipProvider {
 			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
 		}
 
-		/* @var GP_Locale $locale */
+		/** @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
 		$entries = GP::$translation->for_export( $project, $this->translation_set, [ 'status' => 'current' ] );
@@ -102,7 +129,7 @@ class ZipProvider {
 
 		$files_for_zip = [];
 
-		/* @var GP_Format $format */
+		/** @var GP_Format $format */
 		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
 			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
 			$temp_file = wp_tempnam( $file_name );
@@ -158,7 +185,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -186,7 +213,7 @@ class ZipProvider {
 	 * @return string ZIP filename.
 	 */
 	protected function get_zip_filename() : string {
-		/* @var GP_Locale $locale */
+		/** @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
 

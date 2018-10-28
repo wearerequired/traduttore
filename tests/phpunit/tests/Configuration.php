@@ -11,7 +11,7 @@ use \GP_UnitTestCase;
 use \Required\Traduttore\Configuration as Config;
 
 /**
- *  Test cases for \Required\Traduttore\Configuration.
+ * Test cases for \Required\Traduttore\Configuration.
  */
 class Configuration extends GP_UnitTestCase {
 	public function test_get_path(): void {

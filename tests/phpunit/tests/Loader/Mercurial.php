@@ -8,14 +8,14 @@
 namespace Required\Traduttore\Tests;
 
 use \GP_UnitTestCase;
-use \Required\Traduttore\Loader\Git as GitLoader;
+use \Required\Traduttore\Loader\Mercurial as MercurialLoader;
 use \Required\Traduttore\Project;
-use Required\Traduttore\Repository\GitHub;
+use Required\Traduttore\Repository\Bitbucket;
 
 /**
- *  Test cases for \Required\Traduttore\Loader.
+ * Test cases for \Required\Traduttore\Loader\Mercurial.
  */
-class Loader extends GP_UnitTestCase {
+class Mercurial extends GP_UnitTestCase {
 	/**
 	 * @var Project
 	 */
@@ -29,35 +29,35 @@ class Loader extends GP_UnitTestCase {
 				[
 					'name'                => 'Sample Project',
 					'slug'                => 'sample-project',
-					'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+					'source_url_template' => 'https://bitbucket.org/wearerequired/traduttore/src/master/%file%#L%line%',
 				]
 			)
 		);
 	}
 
 	public function test_get_local_path(): void {
-		$loader = new GitLoader( new GitHub( $this->project ) );
+		$loader = new MercurialLoader( new Bitbucket( $this->project ) );
 
-		$this->assertStringEndsWith( 'traduttore-github.com-wearerequired-traduttore', $loader->get_local_path() );
+		$this->assertStringEndsWith( 'traduttore-bitbucket.org-wearerequired-traduttore', $loader->get_local_path() );
 	}
 
 	public function test_download_repository(): void {
-		$loader = new GitLoader( new GitHub( $this->project ) );
+		$loader = new MercurialLoader( new Bitbucket( $this->project ) );
 
-		add_filter( 'traduttore.git_clone_use_https', '__return_true' );
+		add_filter( 'traduttore.hg_clone_use_https', '__return_true' );
 		$result = $loader->download();
-		remove_filter( 'traduttore.git_clone_use_https', '__return_true' );
+		remove_filter( 'traduttore.hg_clone_use_https', '__return_true' );
 
 		$this->assertSame( $result, $loader->get_local_path() );
 	}
 
 	public function test_download_existing_repository(): void {
-		$loader = new GitLoader( new GitHub( $this->project ) );
+		$loader = new MercurialLoader( new Bitbucket( $this->project ) );
 
-		add_filter( 'traduttore.git_clone_use_https', '__return_true' );
+		add_filter( 'traduttore.hg_clone_use_https', '__return_true' );
 		$result1 = $loader->download();
 		$result2 = $loader->download();
-		remove_filter( 'traduttore.git_clone_use_https', '__return_true' );
+		remove_filter( 'traduttore.hg_clone_use_https', '__return_true' );
 
 		$this->assertSame( $result1, $loader->get_local_path() );
 		$this->assertSame( $result2, $loader->get_local_path() );

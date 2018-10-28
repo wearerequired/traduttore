@@ -12,7 +12,7 @@ use \Required\Traduttore\TranslationApiRoute as Route;
 use \Required\Traduttore\ZipProvider as Provider;
 
 /**
- *  Test cases for \Required\Traduttore\TranslationApiRoute.
+ * Test cases for \Required\Traduttore\TranslationApiRoute.
  */
 class TranslationApiRoute extends GP_UnitTestCase_Route {
 	public $route_class = Route::class;

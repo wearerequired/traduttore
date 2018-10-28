@@ -44,43 +44,24 @@ class Plugin {
 	public function register_hooks(): void {
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
-		add_action(
-			'gp_init',
-			function () {
-				GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
-			}
-		);
+		add_action(	'gp_init', [ $this, 'register_glotpress_api_routes' ] );
 
 		add_action(
 			'gp_translation_saved',
 			function ( GP_Translation $translation ) {
-				/* @var GP_Translation_Set $translation_set */
+				/** @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
-				/**
-				 * Filters the delay for scheduled language pack generation.
-				 *
-				 * @since 3.0.0
-				 *
-				 * @param int                $delay           Delay in minutes. Default is 5 minutes.
-				 * @param GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
-				 */
-				$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $translation_set->id );
+				$zip_provider = new ZipProvider( $translation_set );
 
-				$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set->id ] );
-
-				if ( $next_schedule ) {
-					wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $translation_set->id ] );
-				}
-
-				wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $translation_set->id ] );
+				$zip_provider->schedule_generation();
 			}
 		);
 
 		add_action(
 			'traduttore.generate_zip',
 			function( $translation_set_id ) {
-				/* @var GP_Translation_Set $translation_set */
+				/** @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
 				$zip_provider = new ZipProvider( $translation_set );
@@ -131,7 +112,7 @@ class Plugin {
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
-						/* @var GP_Locale $locale */
+						/** @var GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
 						$project = GP::$project->get( $translation_set->project_id );
 
@@ -273,6 +254,15 @@ class Plugin {
 	public static function on_plugin_deactivation(): void {
 		wp_unschedule_hook( 'traduttore.generate_zip' );
 		wp_unschedule_hook( 'traduttore.update' );
+	}
+
+	/**
+	 * Registers the translations API route in GlotPress.
+	 *
+	 * @since 3.0.0
+	 */
+	public function register_glotpress_api_routes(): void {
+		GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
 	}
 
 	/**

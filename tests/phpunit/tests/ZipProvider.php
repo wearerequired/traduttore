@@ -12,7 +12,7 @@ use \GP_UnitTestCase;
 use \Required\Traduttore\ZipProvider as Provider;
 
 /**
- *  Test cases for \Required\Traduttore\ZipProvider.
+ * Test cases for \Required\Traduttore\ZipProvider.
  */
 class ZipProvider extends GP_UnitTestCase {
 	/**

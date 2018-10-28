@@ -65,10 +65,50 @@ class ProjectLocator {
 		}
 
 		if ( ! $found ) {
+			$found = $this->find_by_repository_name( $project );
+		}
+
+		if ( ! $found ) {
+			$found = $this->find_by_repository_url( $project );
+		}
+
+		if ( ! $found ) {
 			$found = $this->find_by_source_url_template( $project );
 		}
 
 		return $found ? new Project( $found ) : null;
+	}
+
+	protected function find_by_repository_name( $project ):? GP_Project {
+		global $wpdb;
+
+		$meta_key = '_traduttore_repository_name';
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$query = $wpdb->prepare( "SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1", $meta_key, '%' . $wpdb->esc_like( $project ) . '%' );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$result = $wpdb->get_row( $query );
+
+		$project = GP::$project->get( (int) $result['object_id'] );
+
+		return $project ?: null;
+	}
+
+	protected function find_by_repository_url( $project ):? GP_Project {
+		global $wpdb;
+
+		$meta_key = '_traduttore_repository_url';
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$query = $wpdb->prepare( "SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1", $meta_key, '%' . $wpdb->esc_like( $project ) . '%' );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$result = $wpdb->get_row( $query );
+
+		$project = GP::$project->get( (int) $result['object_id'] );
+
+		return $project ?: null;
 	}
 
 	/**

@@ -13,7 +13,7 @@ use \Required\Traduttore\Project;
 use \Required\Traduttore\RepositoryFactory as Factory;
 
 /**
- *  Test cases for \Required\Traduttore\RepositoryFactory.
+ * Test cases for \Required\Traduttore\RepositoryFactory.
  */
 class RepositoryFactory extends GP_UnitTestCase {
 	public function test_get_unknown_repository(): void {

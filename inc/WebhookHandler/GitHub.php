@@ -75,10 +75,6 @@ class GitHub extends Base {
 			return new WP_REST_Response( [ 'result' => 'OK' ] );
 		}
 
-		if ( ! isset( $params['repository']['html_url'], $params['ref'] ) ) {
-			return new WP_Error( '400', 'Bad request' );
-		}
-
 		// We only care about the default branch but don't want to send an error still.
 		if ( 'refs/heads/' . $params['repository']['default_branch'] !== $params['ref'] ) {
 			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
@@ -102,7 +98,7 @@ class GitHub extends Base {
 		}
 
 		if ( ! $project->get_repository_vcs_type() ) {
-			$project->set_repository_vcs_type( 'git' );
+			$project->set_repository_vcs_type( Repository::VCS_TYPE_GIT );
 		}
 
 		( new Updater( $project ) )->schedule_update();

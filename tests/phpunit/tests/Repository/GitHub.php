@@ -13,7 +13,7 @@ use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 
 /**
- *  Test cases for \Required\Traduttore\Repository\GitHub.
+ * Test cases for \Required\Traduttore\Repository\GitHub.
  */
 class GitHub extends GP_UnitTestCase {
 	/** @var Project */

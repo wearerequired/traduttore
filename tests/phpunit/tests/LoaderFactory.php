@@ -17,7 +17,7 @@ use Required\Traduttore\Repository\GitHub;
 use Required\Traduttore\Repository\GitLab;
 
 /**
- *  Test cases for \Required\Traduttore\LoaderFactory.
+ * Test cases for \Required\Traduttore\LoaderFactory.
  */
 class LoaderFactory extends GP_UnitTestCase {
 	public function test_get_mercurial_loader(): void {

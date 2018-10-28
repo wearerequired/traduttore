@@ -64,16 +64,12 @@ class GitLab extends Base {
 	public function callback() {
 		$params = $this->request->get_params();
 
-		if ( ! isset( $params['project']['http_url'], $params['ref'] ) ) {
-			return new WP_Error( '400', 'Bad request' );
-		}
-
 		// We only care about the default branch but don't want to send an error still.
 		if ( 'refs/heads/' . $params['project']['default_branch'] !== $params['ref'] ) {
 			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
 		}
 
-		$locator = new ProjectLocator( $params['project']['http_url'] );
+		$locator = new ProjectLocator( $params['project']['homepage'] );
 		$project = $locator->get_project();
 
 		if ( ! $project ) {
@@ -91,7 +87,7 @@ class GitLab extends Base {
 		}
 
 		if ( ! $project->get_repository_vcs_type() ) {
-			$project->set_repository_vcs_type( 'git' );
+			$project->set_repository_vcs_type( Repository::VCS_TYPE_GIT );
 		}
 
 		( new Updater( $project ) )->schedule_update();
