@@ -90,11 +90,13 @@ class ProjectLocator extends GP_UnitTestCase {
 	}
 
 	public function test_find_project_by_repository_name(): void {
-		$project = new Project( $this->factory->project->create(
-			[
-				'name' => 'Foo Bar',
-			]
-		) );
+		$project = new Project(
+			$this->factory->project->create(
+				[
+					'name' => 'Foo Bar',
+				]
+			)
+		);
 
 		$project->set_repository_name( 'wearerequired/traduttore-registry' );
 
@@ -104,11 +106,13 @@ class ProjectLocator extends GP_UnitTestCase {
 	}
 
 	public function test_find_project_by_repository_url(): void {
-		$project = new Project( $this->factory->project->create(
-			[
-				'name' => 'Foo Bar',
-			]
-		) );
+		$project = new Project(
+			$this->factory->project->create(
+				[
+					'name' => 'Foo Bar',
+				]
+			)
+		);
 
 		$project->set_repository_url( 'https://github.com/wearerequired/traduttore-registry' );
 

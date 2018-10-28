@@ -209,7 +209,7 @@ class Plugin {
 			}
 		);
 
-		add_filter(	'restricted_site_access_is_restricted', [ $this, 'filter_restricted_site_access_is_restricted' ], 10, 2 );
+		add_filter( 'restricted_site_access_is_restricted', [ $this, 'filter_restricted_site_access_is_restricted' ], 10, 2 );
 	}
 
 	/**
