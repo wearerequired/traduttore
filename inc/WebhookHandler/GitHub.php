@@ -33,10 +33,6 @@ class GitHub extends Base {
 	public function permission_callback(): ?bool {
 		$event_name = $this->request->get_header( 'x-github-event' );
 
-		if ( ! $event_name ) {
-			return false;
-		}
-
 		if ( 'ping' === $event_name ) {
 			return true;
 		}

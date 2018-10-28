@@ -33,10 +33,6 @@ class GitLab extends Base {
 	public function permission_callback(): ?bool {
 		$event_name = $this->request->get_header( 'x-gitlab-event' );
 
-		if ( ! $event_name ) {
-			return false;
-		}
-
 		if ( 'Push Hook' !== $event_name ) {
 			return false;
 		}
