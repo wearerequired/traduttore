@@ -96,7 +96,7 @@ class Bitbucket extends GP_UnitTestCase {
 					'links'      => [
 						'html' => [
 							'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
-						]
+						],
 					],
 					'full_name'  => 'wearerequired/not-traduttore',
 					'scm'        => 'git',
@@ -121,7 +121,7 @@ class Bitbucket extends GP_UnitTestCase {
 					'links'      => [
 						'html' => [
 							'href' => 'https://bitbucket.org/wearerequired/traduttore',
-						]
+						],
 					],
 					'full_name'  => 'wearerequired/not-traduttore',
 					'scm'        => 'git',
