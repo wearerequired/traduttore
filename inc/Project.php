@@ -239,11 +239,11 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $url The new name.
+	 * @param string $name The new name.
 	 * @return bool Whether the data was successfully saved or not.
 	 */
-	public function set_repository_name( string $url ): bool {
-		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_NAME_KEY, $url, 'project' );
+	public function set_repository_name( string $name ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_NAME_KEY, $name, 'project' );
 	}
 
 	/**
