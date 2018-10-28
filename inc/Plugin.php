@@ -44,12 +44,12 @@ class Plugin {
 	public function register_hooks(): void {
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
-		add_action(	'gp_init', [ $this, 'register_glotpress_api_routes' ] );
+		add_action( 'gp_init', [ $this, 'register_glotpress_api_routes' ] );
 
 		add_action(
 			'gp_translation_saved',
 			function ( GP_Translation $translation ) {
-				/** @var GP_Translation_Set $translation_set */
+				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
 				$zip_provider = new ZipProvider( $translation_set );
@@ -61,7 +61,7 @@ class Plugin {
 		add_action(
 			'traduttore.generate_zip',
 			function( $translation_set_id ) {
-				/** @var GP_Translation_Set $translation_set */
+				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
 				$zip_provider = new ZipProvider( $translation_set );
@@ -112,7 +112,7 @@ class Plugin {
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
-						/** @var GP_Locale $locale */
+						/* @var GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
 						$project = GP::$project->get( $translation_set->project_id );
 

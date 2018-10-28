@@ -102,7 +102,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/** @var WP_Filesystem_Base $wp_filesystem */
+		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -118,7 +118,7 @@ class ZipProvider {
 			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
 		}
 
-		/** @var GP_Locale $locale */
+		/* @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
 		$entries = GP::$translation->for_export( $project, $this->translation_set, [ 'status' => 'current' ] );
@@ -129,7 +129,7 @@ class ZipProvider {
 
 		$files_for_zip = [];
 
-		/** @var GP_Format $format */
+		/* @var GP_Format $format */
 		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
 			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
 			$temp_file = wp_tempnam( $file_name );
@@ -185,7 +185,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/** @var WP_Filesystem_Base $wp_filesystem */
+		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -213,7 +213,7 @@ class ZipProvider {
 	 * @return string ZIP filename.
 	 */
 	protected function get_zip_filename() : string {
-		/** @var GP_Locale $locale */
+		/* @var GP_Locale $locale */
 		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
 		$project = GP::$project->get( $this->translation_set->project_id );
 

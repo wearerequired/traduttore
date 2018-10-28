@@ -79,6 +79,17 @@ class ProjectLocator {
 		return $found ? new Project( $found ) : null;
 	}
 
+	/**
+	 * Finds a GlotPress project by a partially matching repository name meta data.
+	 *
+	 * Given a path like required-valencia, this would match
+	 * a repository name like wearerequired/required-valencia.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $project Possible repository path or URL.
+	 * @return GP_Project|null Project on success, null otherwise.
+	 */
 	protected function find_by_repository_name( $project ):? GP_Project {
 		global $wpdb;
 
@@ -95,7 +106,18 @@ class ProjectLocator {
 		return $project ?: null;
 	}
 
-	protected function find_by_repository_url( $project ):? GP_Project {
+	/**
+	 * Finds a GlotPress project by a partially matching repository URL meta data.
+	 *
+	 * Given a path like wearerequired/required-valencia, this would match
+	 * a repository URL like https://github.com/wearerequired/required-valencia.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $project Possible repository path or URL.
+	 * @return GP_Project|null Project on success, null otherwise.
+	 */
+	protected function find_by_repository_url( $project ): ?GP_Project {
 		global $wpdb;
 
 		$meta_key = '_traduttore_repository_url';

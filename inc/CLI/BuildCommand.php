@@ -58,7 +58,7 @@ class BuildCommand extends WP_CLI_Command {
 
 		$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
-		/** @var GP_Translation_Set $translation_set */
+		/* @var GP_Translation_Set $translation_set */
 		foreach ( $translation_sets as $translation_set ) {
 			$zip_provider = new ZipProvider( $translation_set );
 

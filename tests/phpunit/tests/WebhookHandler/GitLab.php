@@ -25,12 +25,14 @@ class GitLab extends GP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->project = new Project( $this->factory->project->create(
-			[
-				'name'                => 'Sample Project',
-				'source_url_template' => 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%',
-			]
-		) );
+		$this->project = new Project(
+			$this->factory->project->create(
+				[
+					'name'                => 'Sample Project',
+					'source_url_template' => 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+				]
+			)
+		);
 
 		$this->project->set_repository_url( 'https://gitlab.com/wearerequired/traduttore' );
 	}
