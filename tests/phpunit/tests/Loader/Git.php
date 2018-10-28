@@ -42,6 +42,8 @@ class Git extends GP_UnitTestCase {
 	}
 
 	public function test_download_repository(): void {
+		$this->markTestSkipped( 'Need to mock shell command execution' );
+
 		$loader = new GitLoader( new GitHub( $this->project ) );
 
 		add_filter( 'traduttore.git_clone_use_https', '__return_true' );
@@ -52,6 +54,8 @@ class Git extends GP_UnitTestCase {
 	}
 
 	public function test_download_existing_repository(): void {
+		$this->markTestSkipped( 'Need to mock shell command execution' );
+
 		$loader = new GitLoader( new GitHub( $this->project ) );
 
 		add_filter( 'traduttore.git_clone_use_https', '__return_true' );

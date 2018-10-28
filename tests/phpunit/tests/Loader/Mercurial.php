@@ -14,6 +14,8 @@ use Required\Traduttore\Repository\Bitbucket;
 
 /**
  * Test cases for \Required\Traduttore\Loader\Mercurial.
+ *
+ * @todo Mock shell execution
  */
 class Mercurial extends GP_UnitTestCase {
 	/**
@@ -42,6 +44,8 @@ class Mercurial extends GP_UnitTestCase {
 	}
 
 	public function test_download_repository(): void {
+		$this->markTestSkipped( 'Need to mock shell command execution' );
+
 		$loader = new MercurialLoader( new Bitbucket( $this->project ) );
 
 		add_filter( 'traduttore.hg_clone_use_https', '__return_true' );
@@ -52,6 +56,8 @@ class Mercurial extends GP_UnitTestCase {
 	}
 
 	public function test_download_existing_repository(): void {
+		$this->markTestSkipped( 'Need to mock shell command execution' );
+
 		$loader = new MercurialLoader( new Bitbucket( $this->project ) );
 
 		add_filter( 'traduttore.hg_clone_use_https', '__return_true' );
