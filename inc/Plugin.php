@@ -209,41 +209,7 @@ class Plugin {
 			}
 		);
 
-		/**
-		 * Filter Restricted Site Access to allow external requests to Traduttore's endpoints.
-		 *
-		 * @param bool $is_restricted Whether access is restricted.
-		 * @param WP   $wp            The WordPress object. Only available on the front end.
-		 * @return bool Whether access should be restricted.
-		 */
-		add_filter(
-			'restricted_site_access_is_restricted',
-			function( $is_restricted, $wp ) {
-				if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
-					$route = untrailingslashit( $wp->query_vars['rest_route'] );
-
-					if ( '/github-webhook/v1/push-event' === $route ) {
-						return false;
-					}
-
-					if ( '/traduttore/v1/incoming-webhook' === $route ) {
-						return false;
-					}
-				}
-
-				if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
-					$route = GP::$router->request_uri();
-
-					if ( 0 === strpos( $route, '/api/translations/' ) ) {
-						return false;
-					}
-				}
-
-				return $is_restricted;
-			},
-			10,
-			2
-		);
+		add_filter(	'restricted_site_access_is_restricted', [ $this, 'filter_restricted_site_access_is_restricted' ], 10, 2 );
 	}
 
 	/**
@@ -292,6 +258,39 @@ class Plugin {
 				'permission_callback' => [ $this, 'incoming_webhook_permission_callback' ],
 			]
 		);
+	}
+
+	/**
+	 * Filter Restricted Site Access to allow external requests to Traduttore's endpoints.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param bool $is_restricted Whether access is restricted.
+	 * @param WP   $wp            The WordPress object. Only available on the front end.
+	 * @return bool Whether access should be restricted.
+	 */
+	public function filter_restricted_site_access_is_restricted( $is_restricted, $wp ): bool {
+		if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
+			$route = untrailingslashit( $wp->query_vars['rest_route'] );
+
+			if ( '/github-webhook/v1/push-event' === $route ) {
+				return false;
+			}
+
+			if ( '/traduttore/v1/incoming-webhook' === $route ) {
+				return false;
+			}
+		}
+
+		if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
+			$route = GP::$router->request_uri();
+
+			if ( 0 === strpos( $route, '/api/translations/' ) ) {
+				return false;
+			}
+		}
+
+		return $is_restricted;
 	}
 
 	/**
