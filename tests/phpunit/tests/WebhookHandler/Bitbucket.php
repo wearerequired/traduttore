@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GitHub
+ * Class Bitbucket
  *
  * @package Traduttore\Tests\WebhookHandler
  */
@@ -13,9 +13,9 @@ use \WP_REST_Request;
 use \WP_REST_Response;
 
 /**
- * Test cases for \Required\Traduttore\WebhookHandler\GitHub.
+ * Test cases for \Required\Traduttore\WebhookHandler\Bitbucket.
  */
-class GitHub extends GP_UnitTestCase {
+class Bitbucket extends GP_UnitTestCase {
 	/**
 	 * @var \GP_Project
 	 */
@@ -27,7 +27,7 @@ class GitHub extends GP_UnitTestCase {
 		$this->project = $this->factory->project->create(
 			[
 				'name'                => 'Sample Project',
-				'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+				'source_url_template' => 'https://bitbucket.org/wearerequired/traduttore/blob/master/%file%#L%line%',
 			]
 		);
 	}
@@ -62,24 +62,15 @@ class GitHub extends GP_UnitTestCase {
 
 	public function test_invalid_event_header(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->add_header( 'x-github-event', 'pull' );
+		$request->add_header( 'x-event-key', 'pull' );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
-	public function test_ping_request(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->add_header( 'x-github-event', 'ping' );
-		$response = rest_get_server()->dispatch( $request );
-
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
-	}
-
 	public function test_missing_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->add_header( 'x-github-event', 'push' );
+		$request->add_header( 'x-event-key', 'repo:push' );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
@@ -88,32 +79,12 @@ class GitHub extends GP_UnitTestCase {
 	public function test_invalid_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params( [] );
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'foo' );
-		$request->add_header( 'x-github-event', 'push' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'foo' );
+		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
-	}
-
-	public function test_invalid_branch(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->set_body_params(
-			[
-				'ref'        => 'refs/heads/master',
-				'repository' => [
-					'html_url'       => 'https://github.com/wearerequired/traduttore',
-					'default_branch' => 'develop',
-				],
-			]
-		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
-		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
-		$response = rest_get_server()->dispatch( $request );
-
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertSame( [ 'result' => 'Not the default branch' ], $response->get_data() );
 	}
 
 	public function test_invalid_project(): void {
@@ -122,18 +93,19 @@ class GitHub extends GP_UnitTestCase {
 			[
 				'ref'        => 'refs/heads/master',
 				'repository' => [
-					'default_branch' => 'master',
-					'full_name'      => 'wearerequired/not-traduttore',
-					'html_url'       => 'https://github.com/wearerequired/not-traduttore',
-					'ssh_url'        => 'git@github.com:wearerequired/not-traduttore.git',
-					'clone_url'      => 'https://github.com/wearerequired/not-traduttore.git',
-					'url'            => 'https://github.com/wearerequired/not-traduttore',
-					'private'        => false,
+					'links'      => [
+						'html' => [
+							'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
+						]
+					],
+					'full_name'  => 'wearerequired/not-traduttore',
+					'scm'        => 'git',
+					'is_private' => false,
 				],
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
-		$request->add_header( 'x-github-event', 'push' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
@@ -146,18 +118,19 @@ class GitHub extends GP_UnitTestCase {
 			[
 				'ref'        => 'refs/heads/master',
 				'repository' => [
-					'full_name'      => 'wearerequired/traduttore',
-					'default_branch' => 'master',
-					'html_url'       => 'https://github.com/wearerequired/traduttore',
-					'ssh_url'        => 'git@github.com:wearerequired/traduttore.git',
-					'clone_url'      => 'https://github.com/wearerequired/traduttore.git',
-					'url'            => 'https://github.com/wearerequired/traduttore',
-					'private'        => false,
+					'links'      => [
+						'html' => [
+							'href' => 'https://bitbucket.org/wearerequired/traduttore',
+						]
+					],
+					'full_name'  => 'wearerequired/not-traduttore',
+					'scm'        => 'git',
+					'is_private' => false,
 				],
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
-		$request->add_header( 'x-github-event', 'push' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 

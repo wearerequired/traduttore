@@ -2,7 +2,7 @@
 /**
  * Class GitLab
  *
- * @package Traduttore\Tests
+ * @package Traduttore\Tests\WebhookHandler
  */
 
 namespace Required\Traduttore\Tests\WebhookHandler;
