@@ -8,6 +8,7 @@
 namespace Required\Traduttore\Tests;
 
 use \GP_UnitTestCase;
+use \Required\Traduttore\Project;
 use \Required\Traduttore\ProjectLocator as Locator;
 
 /**
@@ -55,36 +56,64 @@ class ProjectLocator extends GP_UnitTestCase {
 	public function test_find_project_by_glotpress_path(): void {
 		$locator = new Locator( 'root' );
 
-		$this->assertEquals( $locator->get_project()->get_id(), $this->root->id );
+		$this->assertEquals( $this->root->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_subpath(): void {
 		$locator = new Locator( 'root/sub' );
 
-		$this->assertEquals( $locator->get_project()->get_id(), $this->sub->id );
+		$this->assertEquals( $this->sub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_subsubpath(): void {
 		$locator = new Locator( 'root/sub/subsub' );
 
-		$this->assertEquals( $locator->get_project()->get_id(), $this->subsub->id );
+		$this->assertEquals( $this->subsub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_id(): void {
 		$locator = new Locator( (int) $this->sub->id );
 
-		$this->assertEquals( $locator->get_project()->get_id(), $this->sub->id );
+		$this->assertEquals( $this->sub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_id_as_string(): void {
 		$locator = new Locator( (string) $this->sub->id );
 
-		$this->assertEquals( $locator->get_project()->get_id(), $this->sub->id );
+		$this->assertEquals( $this->sub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_github_url(): void {
 		$locator = new Locator( 'https://github.com/wearerequired/traduttore' );
 
-		$this->assertEquals( $locator->get_project()->get_id(), $this->subsub->id );
+		$this->assertEquals( $this->subsub->id, $locator->get_project()->get_id() );
+	}
+
+	public function test_find_project_by_repository_name(): void {
+		$project = new Project( $this->factory->project->create(
+			[
+				'name' => 'Foo Bar',
+			]
+		) );
+
+		$project->set_repository_name( 'wearerequired/traduttore-registry' );
+
+		$locator = new Locator( 'wearerequired/traduttore-registry' );
+
+		$this->assertEquals( $project->get_id(), $locator->get_project()->get_id() );
+	}
+
+	public function test_find_project_by_repository_url(): void {
+		$project = new Project( $this->factory->project->create(
+			[
+				'name' => 'Foo Bar',
+			]
+		) );
+
+		$project->set_repository_url( 'https://github.com/wearerequired/traduttore-registry' );
+
+		$locator = new Locator( 'wearerequired/traduttore-registry' );
+
+		$this->assertEquals( $project->get_id(), $locator->get_project()->get_id() );
 	}
 }

@@ -101,9 +101,13 @@ class ProjectLocator {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->get_row( $query );
 
-		$project = GP::$project->get( (int) $result['object_id'] );
+		if ( ! $result ) {
+			return null;
+		}
 
-		return $project ?: null;
+		$gp_project = GP::$project->get( (int) $result->object_id );
+
+		return $gp_project ?: null;
 	}
 
 	/**
@@ -111,6 +115,9 @@ class ProjectLocator {
 	 *
 	 * Given a path like wearerequired/required-valencia, this would match
 	 * a repository URL like https://github.com/wearerequired/required-valencia.
+	 *
+	 * Since there can be projects with the same repository name but different providers,
+	 * this can lead to false positives when not given enough information.
 	 *
 	 * @since 3.0.0
 	 *
@@ -128,9 +135,13 @@ class ProjectLocator {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->get_row( $query );
 
-		$project = GP::$project->get( (int) $result['object_id'] );
+		if ( ! $result ) {
+			return null;
+		}
 
-		return $project ?: null;
+		$gp_project = GP::$project->get( (int) $result->object_id );
+
+		return $gp_project ?: null;
 	}
 
 	/**
@@ -142,9 +153,9 @@ class ProjectLocator {
 	 * @since 3.0.0
 	 *
 	 * @param string $project Possible source code repository path or URL.
-	 * @return false|GP_Project Project on success, false otherwise.
+	 * @return GP_Project|null Project on success, null otherwise.
 	 */
-	protected function find_by_source_url_template( $project ) {
+	protected function find_by_source_url_template( $project ): ?GP_Project {
 		global $wpdb;
 
 		$table = GP::$project->table;
@@ -153,6 +164,9 @@ class ProjectLocator {
 		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $project ) . '%' );
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		return GP::$project->coerce( $wpdb->get_row( $query ) );
+		$gp_project = GP::$project->coerce( $wpdb->get_row( $query ) );
+
+		/* @var GP_Project $gp_project */
+		return $gp_project ?: null;
 	}
 }
