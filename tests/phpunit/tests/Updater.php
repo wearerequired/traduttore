@@ -18,7 +18,7 @@ use \Required\Traduttore\Updater as U;
  */
 class Updater extends GP_UnitTestCase {
 	/**
-	 * @var P
+	 * @var Project
 	 */
 	protected $project;
 
@@ -91,5 +91,46 @@ class Updater extends GP_UnitTestCase {
 		$this->updater->remove_lock();
 
 		$this->assertFalse( $this->updater->has_lock() );
+	}
+
+	public function test_schedule_update_unschedules_existing_event(): void {
+		$key             = md5( serialize( [ $this->project->get_id() ] ) );
+		$scheduled_count = 0;
+
+		$crons = _get_cron_array();
+
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
+				$scheduled_count ++;
+			}
+		}
+
+		$this->assertSame( 0, $scheduled_count );
+
+		$this->updater->schedule_update();
+
+		$crons = _get_cron_array();
+
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
+				$scheduled_count ++;
+			}
+		}
+
+		$this->assertSame( 1, $scheduled_count );
+
+		$scheduled_count = 0;
+
+		$this->updater->schedule_update();
+
+		$crons = _get_cron_array();
+
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
+				$scheduled_count ++;
+			}
+		}
+
+		$this->assertSame( 1, $scheduled_count );
 	}
 }
