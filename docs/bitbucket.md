@@ -17,7 +17,6 @@ To enable automatic string extraction from your Bitbucket projects, you need to 
 1. In your repository, go to Settings -> Webhooks. You might need to enter your password.
 2. Click on "Add webhook".
 3. Set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the payload URL.
-4. Choose `application/json` as the content type.
 5. Enter and remember a secret key.
 6. Keep "Repository push" as the trigger.
 
