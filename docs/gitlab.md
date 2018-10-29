@@ -15,7 +15,7 @@ To enable automatic string extraction from your GitLab projects, you need to cre
 1. In your repository, go to Settings -> Integrations. You might need to enter your password.
 2. Click on "Add webhook".
 3. Set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the payload URL.
-5. Enter and remember a secret key.
+5. Enter the secret token defined in `TRADUTTORE_GITLAB_SYNC_SECRET`.
 6. In the "Which events would you like to trigger this webhook?" section, select only the `push` event.
 
 Now, every time you push changes to GitLab, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
