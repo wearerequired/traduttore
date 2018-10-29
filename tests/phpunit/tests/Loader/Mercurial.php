@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Loader
+ * Class Mercurial
  *
  * @package Traduttore\Tests
  */

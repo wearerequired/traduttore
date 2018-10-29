@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Loader
+ * Class Git
  *
  * @package Traduttore\Tests
  */
