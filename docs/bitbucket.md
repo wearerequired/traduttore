@@ -19,7 +19,7 @@ To enable automatic string extraction from your Bitbucket projects, you need to 
 3. Set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the payload URL.
 4. Choose `application/json` as the content type.
 5. Enter and remember a secret key.
-6. In the "Which events would you like to trigger this webhook?" section, select only the `push` event.
+6. Keep "Repository push" as the trigger.
 
 Now, every time you push changes to GitLab, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
 
