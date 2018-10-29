@@ -8,6 +8,8 @@
 namespace Required\Traduttore\Tests\WebhookHandler;
 
 use \GP_UnitTestCase;
+use Required\Traduttore\Project;
+use Required\Traduttore\Repository;
 use WP_Error;
 use \WP_REST_Request;
 use \WP_REST_Response;
@@ -17,18 +19,20 @@ use \WP_REST_Response;
  */
 class GitHub extends GP_UnitTestCase {
 	/**
-	 * @var \GP_Project
+	 * @var Project
 	 */
 	protected $project;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->project = $this->factory->project->create(
-			[
-				'name'                => 'Sample Project',
-				'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
-			]
+		$this->project = new Project(
+			$this->factory->project->create(
+				[
+					'name'                => 'Sample Project',
+					'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+				]
+			)
 		);
 	}
 
@@ -163,5 +167,12 @@ class GitHub extends GP_UnitTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
+		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
+		$this->assertSame( Repository::TYPE_GITHUB, $this->project->get_repository_type() );
+		$this->assertSame( 'wearerequired/traduttore', $this->project->get_repository_name() );
+		$this->assertSame( 'https://github.com/wearerequired/traduttore', $this->project->get_repository_url() );
+		$this->assertSame( 'git@github.com:wearerequired/traduttore.git', $this->project->get_repository_ssh_url() );
+		$this->assertSame( 'https://github.com/wearerequired/traduttore.git', $this->project->get_repository_https_url() );
+		$this->assertSame( 'public', $this->project->get_repository_visibility() );
 	}
 }

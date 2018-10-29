@@ -9,6 +9,7 @@ namespace Required\Traduttore\Tests\WebhookHandler;
 
 use \GP_UnitTestCase;
 use Required\Traduttore\Project;
+use Required\Traduttore\Repository;
 use WP_Error;
 use \WP_REST_Request;
 use \WP_REST_Response;
@@ -33,8 +34,6 @@ class GitLab extends GP_UnitTestCase {
 				]
 			)
 		);
-
-		$this->project->set_repository_url( 'https://gitlab.com/wearerequired/traduttore' );
 	}
 
 	/**
@@ -142,7 +141,7 @@ class GitLab extends GP_UnitTestCase {
 					'path_with_namespace' => 'wearerequired/traduttore',
 					'homepage'            => 'https://gitlab.com/wearerequired/traduttore',
 					'http_url'            => 'https://gitlab.com/wearerequired/traduttore.git',
-					'ssh_url'             => 'git@gitlab.com/wearerequired/traduttore.git',
+					'ssh_url'             => 'git@gitlab.com:wearerequired/traduttore.git',
 					'visibility_level'    => 0,
 				],
 			]
@@ -153,5 +152,12 @@ class GitLab extends GP_UnitTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
+		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
+		$this->assertSame( Repository::TYPE_GITLAB, $this->project->get_repository_type() );
+		$this->assertSame( 'wearerequired/traduttore', $this->project->get_repository_name() );
+		$this->assertSame( 'https://gitlab.com/wearerequired/traduttore', $this->project->get_repository_url() );
+		$this->assertSame( 'git@gitlab.com:wearerequired/traduttore.git', $this->project->get_repository_ssh_url() );
+		$this->assertSame( 'https://gitlab.com/wearerequired/traduttore.git', $this->project->get_repository_https_url() );
+		$this->assertSame( 'public', $this->project->get_repository_visibility() );
 	}
 }
