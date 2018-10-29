@@ -12,9 +12,8 @@ You can learn more about this at [Connecting to GitHub with SSH](https://help.gi
 
 To enable automatic string extraction from your GitLab projects, you need to create a new webhook for each of them.
 
-1. In your repository, go to Settings -> Integrations. You might need to enter your password.
-2. Click on "Add webhook".
-3. Set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the payload URL.
+1. In your repository, go to Settings -> Integrations.
+3. Enter `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the URL.
 5. Enter the secret token defined in `TRADUTTORE_GITLAB_SYNC_SECRET`.
 6. In the "Trigger" section, select only `Push events`.
 
@@ -28,24 +27,20 @@ Check out the [Configuration](configuration.md) section for a list of possible c
 
 Some people prefer to install GitLab on their own system instead of using [GitLab.com](https://gitlab.com).
 
-Unfortunately, Traduttore does not yet automatically recognize self-managed repositories, which means there is some manual configuration involved.
+Traduttore tries to automatically recognize self-managed repositories to the best of its ability. As soon as it receives a webhook for a repository, it stores all needed information in the database for later use.
+
+If no incoming webhooks are set up or received, some manual configuration is still involved. Here's how you can tell Traduttore how to properly locate your repository in that case:
 
 Let's say your GitLab instance is available via `gitlab.example.com`. To tell Traduttore this should be treated as such, you can hook into the `traduttore.repository` filter to do so. Here's an example:
 
 ```php
 class MySelfhostedGitLabRepository extends \Required\Traduttore\Repository\GitLab {
 	/**
-	 * Indicates whether a GitLab repository is publicly accessible or not.
+	 * GitLab API base URL.
 	 *
-	 * @since 3.0.0
-	 *
-	 * @return bool Whether the repository is publicly accessible.
+	 * Used to access information about a repository's visibility level.
 	 */
-	public function is_public() : bool {
-		$response = wp_remote_head( 'https://gitlab.example.com/api/v4/projects/' . rawurlencode( $this->get_name() ) );
-
-		return 200 === wp_remote_retrieve_response_code( $response );
-	}
+	public const API_BASE = 'https://gitlab.example.com/api/v4';
 }
 
 /**
@@ -69,6 +64,10 @@ function myplugin_filter_traduttore_repository( \Required\Traduttore\Repository 
 add_filter( 'traduttore.repository', 'myplugin_filter_traduttore_repository', 10, 2 );
 ```
 
+That's all. This way Traduttore knows that `gitlab.example.com` hosts a GitLab instance and that it can download repositories hosted there using the built-in Git loader.
+
 Ideally, you put this code into a custom WordPress plugin in your WordPress site that runs Traduttore.
 
 [Learn more about developing WordPress plugins](https://developer.wordpress.org/plugins/).
+
+In the future, this step might be replaced by a WP-CLI command or an extended settings UI in GlotPress.
