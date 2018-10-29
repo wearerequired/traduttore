@@ -12,7 +12,7 @@ You can learn more about this at [Connecting to GitHub with SSH](https://help.gi
 
 To enable automatic string extraction from your GitLab projects, you need to create a new webhook for each of them.
 
-1. In your repository, go to Settings -> Webhooks. You might need to enter your password.
+1. In your repository, go to Settings -> Integrations. You might need to enter your password.
 2. Click on "Add webhook".
 3. Set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the payload URL.
 4. Choose `application/json` as the content type.
