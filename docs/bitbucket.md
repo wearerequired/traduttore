@@ -21,7 +21,7 @@ To enable automatic string extraction from your Bitbucket projects, you need to 
 5. Enter and remember a secret key.
 6. Keep "Repository push" as the trigger.
 
-Now, every time you push changes to GitLab, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
+Now, every time you push changes to Bitbucket, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
 
 **Note:** The `TRADUTTORE_BITBUCKET_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
 
