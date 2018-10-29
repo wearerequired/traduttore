@@ -5,7 +5,7 @@
 The following constants can be defined to configure Traduttore:
 
 * `TRADUTTORE_BITBUCKET_SYNC_SECRET`: Secret token for incoming Bitbucket webhook requests.
-* `TRADUTTORE_GITLAB_SYNC_SECRET`: Secret token for incoming GitHub webhook requests.
+* `TRADUTTORE_GITHUB_SYNC_SECRET`: Secret token for incoming GitHub webhook requests.
 * `TRADUTTORE_GITLAB_SYNC_SECRET`: Secret token for incoming GitLab webhook requests.
 * `TRADUTTORE_WP_BIN`: Path to the WP-CLI executable on the system.
 
