@@ -45,7 +45,7 @@ abstract class Base implements Loader {
 	 */
 	public function get_local_path() : string {
 		return sprintf(
-			'%1$s-traduttore-%2$s-%3$s',
+			'%1$straduttore-%2$s-%3$s',
 			get_temp_dir(),
 			$this->repository->get_host(),
 			sanitize_title( $this->repository->get_name() )
