@@ -16,12 +16,12 @@ To enable automatic string extraction from your Bitbucket projects, you need to 
 
 1. In your repository, go to Settings -> Webhooks. You might need to enter your password.
 2. Click on "Add webhook".
-3. Set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the payload URL.
-5. Enter and remember a secret key.
+3. Enter a descriptive title and set `https://<url-to-your-glotpress-site>.com/wp-json/traduttore/v1/incoming-webhook` as the URL.
+5. Make sure the `Status` is "Active"
 6. Keep "Repository push" as the trigger.
 
 Now, every time you push changes to Bitbucket, Traduttore will get notified and then attempts to update the project's translatable strings automatically.
 
-**Note:** The `TRADUTTORE_BITBUCKET_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
+**Note:** If you're using *Bitbucket Server*, you can optionally define a secret that should be sent with each request in the webhook settings. For this to work the `TRADUTTORE_BITBUCKET_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file with the same secret.
 
 Check out the [Configuration](configuration.md) section for a list of possible constants.

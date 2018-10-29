@@ -72,14 +72,6 @@ class Bitbucket extends GP_UnitTestCase {
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
-	public function test_missing_signature(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->add_header( 'x-event-key', 'repo:push' );
-		$response = rest_get_server()->dispatch( $request );
-
-		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
-	}
-
 	public function test_invalid_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params( [] );
@@ -89,6 +81,29 @@ class Bitbucket extends GP_UnitTestCase {
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
+	}
+
+	public function test_missing_signature_is_valid(): void {
+		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request->set_body_params(
+			[
+				'ref'        => 'refs/heads/master',
+				'repository' => [
+					'links'      => [
+						'html' => [
+							'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
+						],
+					],
+					'full_name'  => 'wearerequired/not-traduttore',
+					'scm'        => 'git',
+					'is_private' => false,
+				],
+			]
+		);
+		$request->add_header( 'x-event-key', 'repo:push' );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertErrorResponse( 404, $response );
 	}
 
 	public function test_invalid_project(): void {

@@ -20,7 +20,7 @@ use WP_REST_Response;
  *
  * @since 3.0.0
  *
- * @see https://confluence.atlassian.com/bitbucket/event-payloads-740262817.html
+ * @see https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html
  */
 class Bitbucket extends Base {
 	/**
@@ -37,19 +37,19 @@ class Bitbucket extends Base {
 			return false;
 		}
 
-		if ( ! defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
-			return false;
-		}
-
 		$token = $this->request->get_header( 'x-hub-signature' );
 
-		if ( ! $token ) {
-			return false;
+		if ( $token ) {
+			if ( ! defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
+				return false;
+			}
+
+			$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), TRADUTTORE_BITBUCKET_SYNC_SECRET );
+
+			return hash_equals( $token, $payload_signature );
 		}
 
-		$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), TRADUTTORE_BITBUCKET_SYNC_SECRET );
-
-		return hash_equals( $token, $payload_signature );
+		return true;
 	}
 
 	/**
