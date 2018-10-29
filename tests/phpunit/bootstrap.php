@@ -35,7 +35,7 @@ tests_add_filter(
 	function() use ( $_gp_tests_dir ) {
 		require_once $_gp_tests_dir . '/includes/loader.php';
 
-		require dirname( dirname( __DIR__ ) ) . '/traduttore.php';
+		require dirname( __DIR__, 2 ) . '/traduttore.php';
 	}
 );
 
