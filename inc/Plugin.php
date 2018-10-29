@@ -42,6 +42,8 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function register_hooks(): void {
+		add_action( 'init', [ $this, 'setup_translations' ] );
+
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
 		add_action( 'gp_init', [ $this, 'register_glotpress_api_routes' ] );
@@ -220,6 +222,19 @@ class Plugin {
 	public static function on_plugin_deactivation(): void {
 		wp_unschedule_hook( 'traduttore.generate_zip' );
 		wp_unschedule_hook( 'traduttore.update' );
+	}
+
+	/**
+	 * Sets up translation loading for this plugin using Traduttore Registry.
+	 *
+	 * @since 3.0.0
+	 */
+	public function setup_translations(): void {
+		\Required\Traduttore_Registry\add_project(
+			'plugin',
+			'traduttore',
+			'https://translate.required.com/api/translations/required/traduttore'
+		);
 	}
 
 	/**

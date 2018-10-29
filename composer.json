@@ -29,7 +29,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "ext-zip": "*"
+    "ext-zip": "*",
+    "wearerequired/traduttore-registry": "^1.0"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
