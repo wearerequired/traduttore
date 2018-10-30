@@ -9,7 +9,7 @@
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\{LoaderFactory, Updater, Runner};
+use Required\Traduttore\{LoaderFactory, RepositoryFactory, Updater, Runner};
 use Required\Traduttore\ProjectLocator;
 use WP_CLI;
 use WP_CLI_Command;
@@ -51,7 +51,7 @@ class CacheCommand extends WP_CLI_Command {
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
-	public function clear( $args, $assoc_args ) {
+	public function clear( $args, $assoc_args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -59,7 +59,13 @@ class CacheCommand extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$loader = ( new LoaderFactory() )->get_loader( $project );
+		$repository = ( new RepositoryFactory() )->get_repository( $project );
+
+		if ( ! $repository ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$loader = ( new LoaderFactory() )->get_loader( $repository );
 
 		if ( ! $loader ) {
 			WP_CLI::error( 'Invalid project type' );

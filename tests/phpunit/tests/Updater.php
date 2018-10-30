@@ -14,11 +14,11 @@ use \Required\Traduttore\Project;
 use \Required\Traduttore\Updater as U;
 
 /**
- *  Test cases for \Required\Traduttore\Updater.
+ * Test cases for \Required\Traduttore\Updater.
  */
 class Updater extends GP_UnitTestCase {
 	/**
-	 * @var P
+	 * @var Project
 	 */
 	protected $project;
 
@@ -43,7 +43,7 @@ class Updater extends GP_UnitTestCase {
 		$this->updater = new U( $this->project );
 	}
 
-	public function test_update_without_config() {
+	public function test_update_without_config(): void {
 		$config = new Configuration( dirname( __DIR__ ) . '/data/example-no-config' );
 
 		$result = $this->updater->update( $config );
@@ -54,7 +54,7 @@ class Updater extends GP_UnitTestCase {
 		$this->assertNotEmpty( $originals );
 	}
 
-	public function test_update_with_composer_config() {
+	public function test_update_with_composer_config(): void {
 		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-composer' );
 
 		$result = $this->updater->update( $config );
@@ -65,7 +65,7 @@ class Updater extends GP_UnitTestCase {
 		$this->assertNotEmpty( $originals );
 	}
 
-	public function test_update_with_config_file() {
+	public function test_update_with_config_file(): void {
 		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-composer' );
 
 		$result = $this->updater->update( $config );
@@ -76,20 +76,61 @@ class Updater extends GP_UnitTestCase {
 		$this->assertNotEmpty( $originals );
 	}
 
-	public function test_has_no_lock_initially() {
+	public function test_has_no_lock_initially(): void {
 		$this->assertFalse( $this->updater->has_lock() );
 	}
 
-	public function test_has_lock_after_adding() {
+	public function test_has_lock_after_adding(): void {
 		$this->updater->add_lock();
 
 		$this->assertTrue( $this->updater->has_lock() );
 	}
 
-	public function test_has_no_lock_after_removal() {
+	public function test_has_no_lock_after_removal(): void {
 		$this->updater->add_lock();
 		$this->updater->remove_lock();
 
 		$this->assertFalse( $this->updater->has_lock() );
+	}
+
+	public function test_schedule_update_unschedules_existing_event(): void {
+		$key             = md5( serialize( [ $this->project->get_id() ] ) );
+		$scheduled_count = 0;
+
+		$crons = _get_cron_array();
+
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
+				$scheduled_count ++;
+			}
+		}
+
+		$this->assertSame( 0, $scheduled_count );
+
+		$this->updater->schedule_update();
+
+		$crons = _get_cron_array();
+
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
+				$scheduled_count ++;
+			}
+		}
+
+		$this->assertSame( 1, $scheduled_count );
+
+		$scheduled_count = 0;
+
+		$this->updater->schedule_update();
+
+		$crons = _get_cron_array();
+
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
+				$scheduled_count ++;
+			}
+		}
+
+		$this->assertSame( 1, $scheduled_count );
 	}
 }

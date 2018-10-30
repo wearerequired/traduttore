@@ -48,6 +48,33 @@ class Updater {
 	}
 
 	/**
+	 * Schedules an update for the current project.
+	 *
+	 * Adds a single cron event to update the project after a short amount of time.
+	 *
+	 * @since 3.0.0
+	 */
+	public function schedule_update(): void {
+		/**
+		 * Filters the delay for scheduled project updates.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param int     $delay   Delay in minutes. Default is 3 minutes.
+		 * @param Project $project The current project.
+		 */
+		$delay = (int) apply_filters( 'traduttore.update_delay', MINUTE_IN_SECONDS * 3, $this->project );
+
+		$next_schedule = wp_next_scheduled( 'traduttore.update', [ $this->project->get_id() ] );
+
+		if ( $next_schedule ) {
+			wp_unschedule_event( 'traduttore.update', $next_schedule, [ $this->project->get_id() ] );
+		}
+
+		wp_schedule_single_event( time() + $delay, 'traduttore.update', [ $this->project->get_id() ] );
+	}
+
+	/**
 	 * Adds a lock to the current project to prevent two simultaneous imports.
 	 *
 	 * @since 3.0.0

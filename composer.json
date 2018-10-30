@@ -2,6 +2,11 @@
   "name": "wearerequired/traduttore",
   "type": "wordpress-plugin",
   "description": "WordPress.org-style translation API for your WordPress projects.",
+  "keywords": [
+    "wordpress",
+    "glotpress",
+    "translations"
+  ],
   "homepage": "https://github.com/wearerequired/traduttore",
   "license": "GPL-2.0-or-later",
   "authors": [
@@ -22,26 +27,23 @@
       "role": "Developer"
     }
   ],
-  "keywords": [
-    "wordpress",
-    "glotpress",
-    "translations"
-  ],
   "require": {
-    "php": ">=7.1"
+    "php": ">=7.1",
+    "ext-zip": "*",
+    "wearerequired/traduttore-registry": "^1.0"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "^1.1",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-    "phpunit/phpunit": "^6.5.8"
-  },
-  "scripts": {
-    "format": "vendor/bin/phpcbf --report-summary --report-source .",
-    "lint": "vendor/bin/phpcs --report-summary --report-source .",
-    "test": "vendor/bin/phpunit"
+    "phpunit/phpunit": "^6.5.8",
+    "wp-coding-standards/wpcs": "^1.1"
   },
   "suggest": {
-    "wpackagist-plugin/slack": "Send Slack notifications upon ZIP file generation"
+    "wpackagist-plugin/slack": "Send Slack notifications for various events"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "3.0.x-dev"
+    }
   },
   "autoload": {
     "psr-4": {
@@ -53,9 +55,9 @@
       "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "3.0.x-dev"
-    }
+  "scripts": {
+    "format": "vendor/bin/phpcbf --report-summary --report-source .",
+    "lint": "vendor/bin/phpcs --report-summary --report-source .",
+    "test": "vendor/bin/phpunit"
   }
 }

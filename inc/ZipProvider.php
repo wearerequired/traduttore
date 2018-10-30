@@ -62,6 +62,33 @@ class ZipProvider {
 	}
 
 	/**
+	 * Schedules ZIP generation for the current translation set.
+	 *
+	 * Adds a single cron event to generate the ZIP archive after a short amount of time.
+	 *
+	 * @since 3.0.0
+	 */
+	public function schedule_generation(): void {
+		/**
+		 * Filters the delay for scheduled language pack generation.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param int                $delay           Delay in minutes. Default is 5 minutes.
+		 * @param GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
+		 */
+		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $this->translation_set->id );
+
+		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		if ( $next_schedule ) {
+			wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $this->translation_set->id ] );
+		}
+
+		wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $this->translation_set->id ] );
+	}
+
+	/**
 	 * Generates and caches a ZIP file for a translation set.
 	 *
 	 * @since 2.0.0

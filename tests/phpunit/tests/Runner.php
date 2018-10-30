@@ -11,10 +11,10 @@ use \GP_UnitTestCase;
 use \Required\Traduttore\Project;
 use \Required\Traduttore\Updater;
 use \Required\Traduttore\Runner as R;
-use \Required\Traduttore\Loader\GitHub as Loader;
+use \Required\Traduttore\Loader\Git as Loader;
 
 /**
- *  Test cases for \Required\Traduttore\Runner.
+ * Test cases for \Required\Traduttore\Runner.
  */
 class Runner extends GP_UnitTestCase {
 	/**
@@ -28,7 +28,7 @@ class Runner extends GP_UnitTestCase {
 	protected $runner;
 
 	/**
-	 * @var Loader
+	 * @var Git
 	 */
 	protected $loader;
 
@@ -58,7 +58,7 @@ class Runner extends GP_UnitTestCase {
 		$this->runner->delete_local_repository();
 	}
 
-	public function test_delete_local_repository() {
+	public function test_delete_local_repository(): void {
 		mkdir( $this->loader->get_local_path() );
 		touch( $this->loader->get_local_path() . '/foo.txt' );
 
@@ -67,7 +67,7 @@ class Runner extends GP_UnitTestCase {
 		$this->assertFileNotExists( $this->loader->get_local_path() . '/foo.txt' );
 	}
 
-	public function test_delete_local_repository_without_filesystem() {
+	public function test_delete_local_repository_without_filesystem(): void {
 		mkdir( $this->loader->get_local_path() );
 		touch( $this->loader->get_local_path() . '/foo.txt' );
 
@@ -82,13 +82,13 @@ class Runner extends GP_UnitTestCase {
 		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
 	}
 
-	public function test_run() {
+	public function test_run(): void {
 		$result = $this->runner->run();
 
 		$this->assertTrue( $result );
 	}
 
-	public function test_run_with_existing_repository() {
+	public function test_run_with_existing_repository(): void {
 		$result1 = $this->runner->run();
 		$result2 = $this->runner->run();
 
@@ -96,7 +96,7 @@ class Runner extends GP_UnitTestCase {
 		$this->assertTrue( $result2 );
 	}
 
-	public function test_run_and_delete_existing_repository() {
+	public function test_run_and_delete_existing_repository(): void {
 		$result1 = $this->runner->run();
 		$this->runner->delete_local_repository();
 		$result2 = $this->runner->run();
@@ -105,7 +105,7 @@ class Runner extends GP_UnitTestCase {
 		$this->assertTrue( $result2 );
 	}
 
-	public function test_run_stops_when_project_is_locked() {
+	public function test_run_stops_when_project_is_locked(): void {
 		$updater = $this->createMock( Updater::class );
 		$updater->method( 'has_lock' )->willReturn( true );
 
@@ -116,7 +116,7 @@ class Runner extends GP_UnitTestCase {
 		$this->assertFalse( $result );
 	}
 
-	public function test_run_stops_when_download_fails() {
+	public function test_run_stops_when_download_fails(): void {
 		$loader = $this->createMock( Loader::class );
 		$loader->method( 'download' )->willReturn( null );
 		$updater = $this->createMock( Updater::class );

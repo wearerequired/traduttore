@@ -4,15 +4,21 @@ The goal for Traduttore is to make it as easy as possible to supercharge your Wo
 
 ## System Requirements
 
+### WordPress
+
 Traduttore is a WordPress plugin that sits on top of the [GlotPress](https://glotpress.org/) plugin. That means you need to have both WordPress and GlotPress installed.
 
-GlotPress is available as a WordPress plugin through the plugin directory. Installing it is as simple as searching for “GlotPress” and installing it. After activating the plugin, GlotPress can be accessed via `https://<home_url>/glotpress/`.
+GlotPress is available as a WordPress plugin through the plugin directory. Installing it is as simple as searching for “GlotPress” and installing it. After activating the plugin, GlotPress can be accessed via `https://<home_url>/glotpress/`. There's also a [GlotPress manual](https://glotpress.blog/the-manual/) that you can follow.
+
+To send Slack notifications, Traduttore requires a separate WordPress plugin. [Learn more about setting up notifications](notifications.md).
+
+### Server
 
 Traduttore requires at least PHP 7.1, while the [Traduttore Registry](https://github.com/wearerequired/traduttore-registry) also supports PHP 7.0.
 
-Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer to be installed on the server. [Learn more about the available CLI commands](cli.md).
+To download the latest code from your source code repositories, Traduttore requires Git to be installed on the server. For string extraction Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer. [Learn more about the available CLI commands](cli.md).
 
-To send Slack notifications, Traduttore requires a separate WordPress plugin. [Learn more about setting up notifications](notifications.md).
+If you're not sure whether Git or WP-CLI are available on your system, please contact your hosting provider.
 
 ## Installing Traduttore
 

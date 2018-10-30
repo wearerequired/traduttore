@@ -9,9 +9,8 @@
 
 namespace Required\Traduttore;
 
-use Required\Traduttore\Loader\{
-	Bitbucket, GitHub, GitLab
-};
+use Required\Traduttore\Loader\Git as GitLoader;
+use Required\Traduttore\Loader\Mercurial as MercurialLoader;
 
 /**
  * LoaderFactory class.
@@ -20,25 +19,36 @@ use Required\Traduttore\Loader\{
  */
 class LoaderFactory {
 	/**
-	 * Returns a new loader instance for a given project.
+	 * Returns a new loader instance for a given repository.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Project $project Project information.
-	 * @return Loader
+	 * @param Repository $repository Repository instance.
+	 * @return Loader Loader instance.
 	 */
-	public function get_loader( Project $project ) :? Loader {
-		$repository = new Repository( $project );
+	public function get_loader( Repository $repository ): ?Loader {
+		$loader = null;
 
-		switch ( $repository->get_type() ) {
-			case Repository::TYPE_GITHUB:
-				return new GitHub( $repository );
-			case Repository::TYPE_GITLAB:
-				return new GitLab( $repository );
-			case Repository::TYPE_BITBUCKET:
-				return new Bitbucket( $repository );
+		if ( Repository::VCS_TYPE_HG === $repository->get_project()->get_repository_vcs_type() ) {
+			$loader = new MercurialLoader( $repository );
+		} elseif ( in_array(
+			$repository->get_type(),
+			[
+				Repository::TYPE_BITBUCKET,
+				Repository::TYPE_GITHUB,
+				Repository::TYPE_GITLAB,
+			],
+			true
+		) ) {
+			$loader = new GitLoader( $repository );
 		}
 
-		return null;
+		/**
+		 * Filters the loader instance for a given repository and project.
+		 *
+		 * @param Loader|null     $loader     Loader instance.
+		 * @param Repository|null $repository Repository instance.
+		 */
+		return apply_filters( 'traduttore.loader', $loader, $repository );
 	}
 }

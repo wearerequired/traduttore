@@ -9,7 +9,7 @@
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\{ProjectLocator, LoaderFactory, Updater, Runner};
+use Required\Traduttore\{ProjectLocator, LoaderFactory, RepositoryFactory, Updater, Runner};
 use WP_CLI;
 use WP_CLI_Command;
 use function WP_CLI\Utils\get_flag_value;
@@ -63,7 +63,13 @@ class UpdateCommand extends WP_CLI_Command {
 			WP_CLI::error( 'Project not found' );
 		}
 
-		$loader = ( new LoaderFactory() )->get_loader( $project );
+		$repository = ( new RepositoryFactory() )->get_repository( $project );
+
+		if ( ! $repository ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$loader = ( new LoaderFactory() )->get_loader( $repository );
 
 		if ( ! $loader ) {
 			WP_CLI::error( 'Invalid project type' );

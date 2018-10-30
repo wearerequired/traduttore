@@ -12,7 +12,7 @@ use \Required\Traduttore\TranslationApiRoute as Route;
 use \Required\Traduttore\ZipProvider as Provider;
 
 /**
- *  Test cases for \Required\Traduttore\TranslationApiRoute.
+ * Test cases for \Required\Traduttore\TranslationApiRoute.
  */
 class TranslationApiRoute extends GP_UnitTestCase_Route {
 	public $route_class = Route::class;
@@ -82,7 +82,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		return json_decode( $response, true );
 	}
 
-	public function test_invalid_project() {
+	public function test_invalid_project(): void {
 		$response = $this->get_route_callback( 'foo' );
 
 		$this->assertArrayHasKey( 'error', $response );
@@ -90,13 +90,13 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		$this->assert404();
 	}
 
-	public function test_no_zip_files() {
+	public function test_no_zip_files(): void {
 		$response = $this->get_route_callback( 'foo-project' );
 
 		$this->assertSame( [ 'translations' => [] ], $response );
 	}
 
-	public function test_one_zip_file() {
+	public function test_one_zip_file(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(
@@ -126,7 +126,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		);
 	}
 
-	public function test_missing_build_time() {
+	public function test_missing_build_time(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(

@@ -42,22 +42,21 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function register_hooks(): void {
+		add_action( 'init', [ $this, 'setup_translations' ] );
+
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
-		add_action(
-			'gp_init',
-			function () {
-				GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
-			}
-		);
+		add_action( 'gp_init', [ $this, 'register_glotpress_api_routes' ] );
 
 		add_action(
 			'gp_translation_saved',
 			function ( GP_Translation $translation ) {
-				// Regenerate ZIP file if not already scheduled.
-				if ( ! wp_next_scheduled( 'traduttore.generate_zip', [ $translation->translation_set_id ] ) ) {
-					wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 5, 'traduttore.generate_zip', [ $translation->translation_set_id ] );
-				}
+				/* @var GP_Translation_Set $translation_set */
+				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
+
+				$zip_provider = new ZipProvider( $translation_set );
+
+				$zip_provider->schedule_generation();
 			}
 		);
 
@@ -87,7 +86,13 @@ class Plugin {
 					return;
 				}
 
-				$loader = ( new LoaderFactory() )->get_loader( $project );
+				$repository = ( new RepositoryFactory() )->get_repository( $project );
+
+				if ( ! $repository ) {
+					return;
+				}
+
+				$loader = ( new LoaderFactory() )->get_loader( $repository );
 
 				if ( ! $loader ) {
 					return;
@@ -206,37 +211,7 @@ class Plugin {
 			}
 		);
 
-		/**
-		 * Filter Restricted Site Access to allow external requests to Traduttore's endpoints.
-		 *
-		 * @param bool $is_restricted Whether access is restricted.
-		 * @param WP   $wp            The WordPress object. Only available on the front end.
-		 * @return bool Whether access should be restricted.
-		 */
-		add_filter(
-			'restricted_site_access_is_restricted',
-			function( $is_restricted, $wp ) {
-				if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
-					$route = untrailingslashit( $wp->query_vars['rest_route'] );
-
-					if ( '/github-webhook/v1/push-event' === $route ) {
-						return false;
-					}
-				}
-
-				if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
-					$route = GP::$router->request_uri();
-
-					if ( 0 === strpos( $route, '/api/translations/' ) ) {
-						return false;
-					}
-				}
-
-				return $is_restricted;
-			},
-			10,
-			2
-		);
+		add_filter( 'restricted_site_access_is_restricted', [ $this, 'filter_restricted_site_access_is_restricted' ], 10, 2 );
 	}
 
 	/**
@@ -250,96 +225,146 @@ class Plugin {
 	}
 
 	/**
+	 * Sets up translation loading for this plugin using Traduttore Registry.
+	 *
+	 * @since 3.0.0
+	 */
+	public function setup_translations(): void {
+		\Required\Traduttore_Registry\add_project(
+			'plugin',
+			'traduttore',
+			'https://translate.required.com/api/translations/required/traduttore'
+		);
+	}
+
+	/**
+	 * Registers the translations API route in GlotPress.
+	 *
+	 * @since 3.0.0
+	 */
+	public function register_glotpress_api_routes(): void {
+		GP::$router->add( '/api/translations/(.+?)', [ TranslationApiRoute::class, 'route_callback' ] );
+	}
+
+	/**
 	 * Registers new REST API routes.
 	 *
 	 * @since 2.0.0
 	 */
 	public function register_rest_routes(): void {
+		// Legacy GitHub-only route for incoming webhooks.
 		register_rest_route(
 			'github-webhook/v1',
 			'/push-event',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'github_webhook_push' ],
-				'permission_callback' => [ $this, 'github_webhook_permission_push' ],
+				'callback'            => [ $this, 'incoming_webhook_callback' ],
+				'permission_callback' => [ $this, 'incoming_webhook_permission_callback' ],
+			]
+		);
+
+		// General catch-all route for incoming webhooks.
+		register_rest_route(
+			'traduttore/v1',
+			'/incoming-webhook',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'incoming_webhook_callback' ],
+				'permission_callback' => [ $this, 'incoming_webhook_permission_callback' ],
 			]
 		);
 	}
 
 	/**
-	 * GitHub webhook callback function.
+	 * Filter Restricted Site Access to allow external requests to Traduttore's endpoints.
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
+	 *
+	 * @param bool $is_restricted Whether access is restricted.
+	 * @param WP   $wp            The WordPress object. Only available on the front end.
+	 * @return bool Whether access should be restricted.
+	 */
+	public function filter_restricted_site_access_is_restricted( $is_restricted, $wp ): bool {
+		if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
+			$route = untrailingslashit( $wp->query_vars['rest_route'] );
+
+			if ( '/github-webhook/v1/push-event' === $route ) {
+				return false;
+			}
+
+			if ( '/traduttore/v1/incoming-webhook' === $route ) {
+				return false;
+			}
+		}
+
+		if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
+			$route = GP::$router->request_uri();
+
+			if ( 0 === strpos( $route, '/api/translations/' ) ) {
+				return false;
+			}
+		}
+
+		return $is_restricted;
+	}
+
+	/**
+	 * Permission callback for incoming webhooks.
+	 *
+	 * Picks a webhook handler based on the request information.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 * @return bool True if permission is granted, false otherwise.
+	 */
+	public function incoming_webhook_permission_callback( WP_REST_Request $request ) : bool {
+		$result  = false;
+		$handler = ( new WebhookHandlerFactory() )->get_handler( $request );
+
+		if ( $handler ) {
+			$result = $handler->permission_callback();
+		}
+
+		/**
+		 * Filters the result of the incoming webhook permission callback.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param bool                $result  Permission callback result. True if permission is granted, false otherwise.
+		 * @param WebhookHandler|null $handler The current webhook handler if found.
+		 * @param WP_REST_Request     $request The current request.
+		 */
+		return apply_filters( 'traduttore.incoming_webhook_permission_callback', $result, $handler, $request );
+	}
+
+	/**
+	 * Callback for incoming webhooks.
+	 *
+	 * Picks a webhook handler based on the request information.
+	 *
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function github_webhook_push( WP_REST_Request $request ) {
-		$params     = $request->get_params();
-		$event_name = $request->get_header( 'x-github-event' );
+	public function incoming_webhook_callback( WP_REST_Request $request ) {
+		$result  = new WP_Error( '400', 'Bad request' );
+		$handler = ( new WebhookHandlerFactory() )->get_handler( $request );
 
-		if ( 'ping' === $event_name ) {
-			return new WP_REST_Response( [ 'result' => 'OK' ] );
+		if ( $handler ) {
+			$result = $handler->callback();
 		}
 
-		if ( ! isset( $params['repository']['html_url'], $params['ref'] ) ) {
-			return new WP_Error( '400', 'Bad request' );
-		}
-
-		// We only care about the default branch but don't want to send an error still.
-		if ( 'refs/heads/' . $params['repository']['default_branch'] !== $params['ref'] ) {
-			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
-		}
-
-		$locator = new ProjectLocator( $params['repository']['html_url'] );
-		$project = $locator->get_project();
-
-		if ( ! $project ) {
-			return new WP_Error( '404', 'Could not find project for this repository' );
-		}
-
-		if ( ! wp_next_scheduled( 'traduttore.update', [ $project->get_id() ] ) ) {
-			wp_schedule_single_event( time() + MINUTE_IN_SECONDS * 3, 'traduttore.update', [ $project->get_id() ] );
-		}
-
-		return new WP_REST_Response( [ 'result' => 'OK' ] );
-	}
-
-	/**
-	 * Permission callback for the incoming webhook REST route.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param WP_REST_Request $request Request object.
-	 * @return True if permission is granted, false otherwise.
-	 */
-	public function github_webhook_permission_push( $request ) : bool {
-		$event_name = $request->get_header( 'x-github-event' );
-
-		if ( ! $event_name ) {
-			return false;
-		}
-
-		if ( 'ping' === $event_name ) {
-			return true;
-		}
-
-		if ( 'push' !== $event_name ) {
-			return false;
-		}
-
-		if ( ! defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
-			return false;
-		}
-
-		$github_signature = $request->get_header( 'x-hub-signature' );
-
-		if ( ! $github_signature ) {
-			return false;
-		}
-
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), TRADUTTORE_GITHUB_SYNC_SECRET );
-
-		return hash_equals( $github_signature, $payload_signature );
+		/**
+		 * Filters the result of the incoming webhook callback.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param WP_Error|WP_REST_Response $result  REST response on success, error object on failure.
+		 * @param WebhookHandler|null       $handler The current webhook handler if found.
+		 * @param WP_REST_Request           $request The current request.
+		 */
+		return apply_filters( 'traduttore.incoming_webhook_callback', $result, $handler, $request );
 	}
 }
