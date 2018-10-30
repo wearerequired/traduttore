@@ -62,6 +62,10 @@ if ( ! defined( 'TRADUTTORE_GITLAB_SYNC_SECRET' ) ) {
 	define( 'TRADUTTORE_GITLAB_SYNC_SECRET', 'traduttore-test' );
 }
 
+if ( ! defined( 'TRADUTTORE_SOURCEFORGE_SYNC_SECRET' ) ) {
+	define( 'TRADUTTORE_SOURCEFORGE_SYNC_SECRET', 'traduttore-test' );
+}
+
 if ( ! defined( 'TRADUTTORE_WP_BIN' ) && getenv( 'WP_CLI_BIN_DIR' ) ) {
 	define( 'TRADUTTORE_WP_BIN', getenv( 'WP_CLI_BIN_DIR' ) . '/wp' );
 }

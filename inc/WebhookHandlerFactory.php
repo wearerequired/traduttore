@@ -10,7 +10,7 @@
 namespace Required\Traduttore;
 
 use Required\Traduttore\WebhookHandler\{
-	Bitbucket, GitHub, GitLab
+	Bitbucket, GitHub, GitLab, SourceForge
 };
 use WP_REST_Request;
 
@@ -37,6 +37,8 @@ class WebhookHandlerFactory {
 			$handler = new GitLab( $request );
 		} elseif ( $request->get_header( 'x-event-key' ) ) {
 			$handler = new Bitbucket( $request );
+		} elseif ( $request->get_header( 'x-allura-signature' ) ) {
+			$handler = new SourceForge( $request );
 		}
 
 		/**

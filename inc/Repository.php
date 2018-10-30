@@ -58,6 +58,13 @@ interface Repository {
 	public const TYPE_BITBUCKET = 'bitbucket';
 
 	/**
+	 * SourceForge repository type.
+	 *
+	 * @since 3.0.0
+	 */
+	public const TYPE_SOURCEFORGE = 'sourceforge';
+
+	/**
 	 * Returns the repository type.
 	 *
 	 * @since 3.0.0
