@@ -4,7 +4,7 @@ Traduttore adds new routes to both the WordPress REST API as well as the API pro
 
 ## API Endpoints
 
-### `/github-webhook/v1/push-event`
+### `/traduttore/v1/incoming-webhook`
 
 **Methods:**
 
@@ -13,6 +13,16 @@ Traduttore adds new routes to both the WordPress REST API as well as the API pro
 Traduttore can be set up to listen to incoming webhooks from GitHub. This way, translations can be updated every time you push changes to your GitHub repository.
 
 Check out the [Getting Started](installation.md) guide to learn how to set up webhooks.
+
+### `/github-webhook/v1/push-event`
+
+For backward compatibility reasons this deprecated REST API route works the same way as `/traduttore/v1/incoming-webhook`, but only works for GitHub repositories.
+
+Users are encouraged to use the `/traduttore/v1/incoming-webhook` route for webhooks all the time.
+
+**Methods:**
+
+* `POST`
 
 ## `/api/translations/<project>`
 
