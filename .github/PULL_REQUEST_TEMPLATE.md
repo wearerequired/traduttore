@@ -7,7 +7,7 @@
 <!-- your change affects other areas of the code, etc. -->
 
 **Screenshots**
-If applicable, add screenshots that verify the behavior of your changes
+If applicable, add screenshots to show the visual change.
 
 
 **Types of changes**
