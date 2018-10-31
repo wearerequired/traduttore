@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.0
+
+* Heavy architectural changes to make the plugin more modular
+* Added support for Bitbucket.org repositories (Mercurial and Git)
+* Added support for GitLab repositories
+* Added support for self-managed repositories (GitLab and others)
+* Added new REST API route for incoming webhooks ( `traduttore/v1/incoming-webhook`)
+* Changed all filters and hooks to use `.` as separators instead of `_`
+* Greatly improved documentation
+
 ## 2.0.3
 
 * Uses HTTPS instead of SSH for cloning repositories if possible
