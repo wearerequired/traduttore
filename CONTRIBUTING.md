@@ -25,4 +25,4 @@ When contributing code...
     * Ideally write unit tests for any code changes and verify them using `composer test`
 * Commit and push changes to your fork and [submit a pull request](https://github.com/wearerequired/traduttore/compare) to the `master` branch
 
-We try to review incoming pull requests as soon as possible and either merg them or make suggestions for some further improvements. 
+We try to review incoming pull requests as soon as possible and either merge them or make suggestions for some further improvements. 
