@@ -18,7 +18,7 @@ Check out the [Getting Started](installation.md) guide to learn how to set up we
 
 For backward compatibility reasons this deprecated REST API route works the same way as `/traduttore/v1/incoming-webhook`, but only works for GitHub repositories.
 
-Users are encouraged to use the `/traduttore/v1/incoming-webhook` route for webhooks all the time.
+Users are encouraged to use the `/traduttore/v1/incoming-webhook` route for webhooks for all of the providers.
 
 **Methods:**
 
