@@ -116,7 +116,7 @@ class Plugin {
 					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
 						/* @var GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
-						$project = GP::$project->get( $translation_set->project_id );
+						$project = new Project( GP::$project->get( $translation_set->project_id ) );
 
 						/**
 						 * Filters whether a Slack notification for translation updates from GitHub should be sent.
@@ -125,7 +125,7 @@ class Plugin {
 						 *
 						 * @param bool               $send_message    Whether to send a notification or not. Default true.
 						 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
-						 * @param GP_Project         $project         The GlotPress project that was updated.
+						 * @param Project            $project         The project that was updated.
 						 */
 						$send_message = apply_filters( 'traduttore.zip_generated_send_notification', true, $translation_set, $project );
 
@@ -136,7 +136,7 @@ class Plugin {
 						$message = sprintf(
 							'<%1$s|%2$s>: ZIP file updated for *%3$s*. (<%4$s|Download>)',
 							home_url( gp_url_project( $project ) ),
-							$project->name,
+							$project->get_name(),
 							$locale->english_name,
 							$zip_url
 						);
@@ -157,7 +157,7 @@ class Plugin {
 				$events['traduttore.updated'] = [
 					'action'      => 'traduttore.updated',
 					'description' => __( 'When new translations are updated for a project', 'traduttore' ),
-					'message'     => function( GP_Project $project, array $stats ) {
+					'message'     => function( Project $project, array $stats ) {
 						[
 							$originals_added,
 							$originals_existing,
@@ -173,10 +173,10 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param bool       $send_message Whether to send a notification or not.
-						 *                                 Defaults to true, unless there were no string changes at all.
-						 * @param GP_Project $project      The GlotPress project that was updated.
-						 * @param array      $stats        Stats about the number of imported translations.
+						 * @param bool    $send_message Whether to send a notification or not.
+						 *                              Defaults to true, unless there were no string changes at all.
+						 * @param Project $project      The Project that was updated.
+						 * @param array   $stats        Stats about the number of imported translations.
 						 */
 						$send_message = apply_filters( 'traduttore.updated_send_notification', $send_message, $project, $stats );
 
@@ -187,7 +187,7 @@ class Plugin {
 						$message = sprintf(
 							'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
 							home_url( gp_url_project( $project ) ),
-							$project->name,
+							$project->get_name(),
 							$originals_added,
 							$originals_fuzzied,
 							$originals_obsoleted,
@@ -199,9 +199,9 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param string     $message The notification message.
-						 * @param GP_Project $project The GlotPress project that was updated.
-						 * @param array      $stats   Stats about the number of imported translations.
+						 * @param string  $message The notification message.
+						 * @param Project $project The project that was updated.
+						 * @param array   $stats   Stats about the number of imported translations.
 						 */
 						return apply_filters( 'traduttore.updated_notification_message', $message, $project, $stats );
 					},

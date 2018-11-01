@@ -12,7 +12,7 @@ Fires after translations have been updated.
 
 **Parameters:**
 
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 * `$stats`: Stats about the number of imported translations.
 * `$translations`: PO object containing all the translations from the POT file.
 
@@ -81,7 +81,7 @@ Filters whether a Slack notification for translation updates from GitHub should 
 
 * `$send_message`: Whether to send a notification or not. Default true.
 * `$translation_set`: Translation set the ZIP is for.
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 
 ----
 
@@ -95,7 +95,7 @@ Filters the Slack notification message when a new translation ZIP file is built.
 
 * `$message`: The notification message.
 * `$translation_set`: Translation set the ZIP is for.
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 
 ----
 
@@ -110,7 +110,7 @@ Make sure to set up Slack notifications first, as outlined in the [Notifications
 **Parameters:**
 
 * `$send_message`: Whether to send a notification or not. Defaults to true, unless there were no string changes at all.
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 * `$stats`: Stats about the number of imported translations.
 
 ----
@@ -124,7 +124,7 @@ Filters the Slack notification message when new translations are updated.
 **Parameters:**
 
 * `$message`: The notification message.
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 * `$stats`: Stats about the number of imported translations.
 
 ----
