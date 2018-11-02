@@ -8,6 +8,7 @@
 * Added support for self-managed repositories (GitLab and others)
 * Added new REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`) which replaces the deprecated route (`github-webhook/v1/push-event`)
 * Changed all filters and actions to use `.` as the separator between the prefix and hook name instead of `_`
+* Improved scheduling of cron events to reduce number of unnecessary builds and updates
 * Greatly improved documentation
 
 ## 2.0.3
