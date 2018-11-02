@@ -9,9 +9,11 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
+use Required\Traduttore\WebhookHandler;
 use WP_Error;
 use WP_REST_Response;
 
@@ -37,14 +39,18 @@ class Bitbucket extends Base {
 			return false;
 		}
 
-		$token = $this->request->get_header( 'x-hub-signature' );
+		$token   = $this->request->get_header( 'x-hub-signature' );
+		$params  = $this->request->get_params();
+		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] ?? null );
+		$project = $locator->get_project();
+		$secret  = $this->get_secret( $project );
 
 		if ( $token ) {
-			if ( ! defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
+			if ( ! $secret ) {
 				return false;
 			}
 
-			$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), TRADUTTORE_BITBUCKET_SYNC_SECRET );
+			$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), $secret );
 
 			return hash_equals( $token, $payload_signature );
 		}
@@ -96,5 +102,33 @@ class Bitbucket extends Base {
 		( new Updater( $project ) )->schedule_update();
 
 		return new WP_REST_Response( [ 'result' => 'OK' ] );
+	}
+
+	/**
+	 * Returns the webhook sync secret.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param Project|null $project The current project if found.
+	 *
+	 * @return string Secret if set, null otherwise.
+	 */
+	protected function get_secret( Project $project = null ): ?string {
+		$secret = $project ? $project->get_repository_webhook_secret() : null;
+
+		if ( defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
+			$secret = TRADUTTORE_BITBUCKET_SYNC_SECRET;
+		}
+
+		/**
+		 * Filters the sync secret for an incoming webhook request.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string         $secret  Webhook sync secret.
+		 * @param WebhookHandler $handler The current webhook handler instance.
+		 * @param Project|null   $project The current project if found.
+		 */
+		return apply_filters( 'traduttore.webhook_secret', $secret, $this, $project );
 	}
 }

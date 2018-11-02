@@ -9,9 +9,11 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
+use Required\Traduttore\WebhookHandler;
 use WP_Error;
 use WP_REST_Response;
 
@@ -47,7 +49,13 @@ class GitLab extends Base {
 			return false;
 		}
 
-		return hash_equals( $token, TRADUTTORE_GITLAB_SYNC_SECRET );
+		$params  = $this->request->get_params();
+		$locator = new ProjectLocator( $params['project']['homepage'] ?? null );
+		$project = $locator->get_project();
+
+		$secret = $this->get_secret( $project );
+
+		return hash_equals( $token, $secret );
 	}
 
 	/**
@@ -89,5 +97,33 @@ class GitLab extends Base {
 		( new Updater( $project ) )->schedule_update();
 
 		return new WP_REST_Response( [ 'result' => 'OK' ] );
+	}
+
+	/**
+	 * Returns the webhook sync secret.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param Project|null $project The current project if found.
+	 *
+	 * @return string Secret if set, null otherwise.
+	 */
+	protected function get_secret( Project $project = null ): ?string {
+		$secret = $project ? $project->get_repository_webhook_secret() : null;
+
+		if ( defined( 'TRADUTTORE_GITLAB_SYNC_SECRET' ) ) {
+			$secret = TRADUTTORE_GITLAB_SYNC_SECRET;
+		}
+
+		/**
+		 * Filters the sync secret for an incoming webhook request.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string         $secret  Webhook sync secret.
+		 * @param WebhookHandler $handler The current webhook handler instance.
+		 * @param Project|null   $project The current project if found.
+		 */
+		return apply_filters( 'traduttore.webhook_secret', $secret, $this, $project );
 	}
 }

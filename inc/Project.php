@@ -81,6 +81,15 @@ class Project {
 	protected const REPOSITORY_HTTPS_URL_KEY = '_traduttore_repository_https_url';
 
 	/**
+	 * Project repository webhook sync secret meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Project repository name meta key.
+	 */
+	protected const REPOSITORY_WEBHOOK_SECRET_KEY = '_traduttore_repository_webhook_secret';
+
+	/**
 	 * GlotPress project.
 	 *
 	 * @since 3.0.0
@@ -328,5 +337,30 @@ class Project {
 	 */
 	public function set_repository_https_url( string $url ): bool {
 		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_HTTPS_URL_KEY, $url, 'project' );
+	}
+
+	/**
+	 * Returns the project's repository webhook sync secret.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Webhook sync secret if stored, null otherwise.
+	 */
+	public function get_repository_webhook_secret(): ?string {
+		$name = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY );
+
+		return $name ?: null;
+	}
+
+	/**
+	 * Updates the project's repository webhook sync secret.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $name The new secret.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_repository_webhook_secret( string $name ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY, $name, 'project' );
 	}
 }
