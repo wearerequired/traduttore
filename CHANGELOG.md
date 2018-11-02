@@ -7,7 +7,7 @@
 * Added support for GitLab repositories
 * Added support for self-managed repositories (GitLab and others)
 * Added new REST API route for incoming webhooks ( `traduttore/v1/incoming-webhook`)
-* Changed all filters and hooks to use `.` as separators instead of `_`
+* Changed all filters and actions to use `.` as the separator between the prefix and hook name instead of `_`
 * Greatly improved documentation
 
 ## 2.0.3
