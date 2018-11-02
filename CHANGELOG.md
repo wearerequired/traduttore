@@ -6,7 +6,7 @@
 * Added support for Bitbucket.org repositories (Mercurial and Git)
 * Added support for GitLab repositories
 * Added support for self-managed repositories (GitLab and others)
-* Added new REST API route for incoming webhooks ( `traduttore/v1/incoming-webhook`)
+* Added new REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`) which replaces the deprecated route (`github-webhook/v1/push-event`)
 * Changed all filters and actions to use `.` as the separator between the prefix and hook name instead of `_`
 * Greatly improved documentation
 
