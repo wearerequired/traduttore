@@ -32,7 +32,7 @@ class SourceForge extends Base {
 	 * @return string Repository type.
 	 */
 	public function get_type() : string {
-		return Repository::TYPE_GITLAB;
+		return Repository::TYPE_SOURCEFORGE;
 	}
 
 	/**
