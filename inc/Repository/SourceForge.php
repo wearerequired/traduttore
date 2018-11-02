@@ -49,7 +49,7 @@ class SourceForge extends Base {
 			return $host;
 		}
 
-		return 'gitlab.com';
+		return 'sourceforge.net';
 	}
 
 	/**
