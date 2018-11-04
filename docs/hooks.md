@@ -152,3 +152,17 @@ Filters the delay for scheduled project updates.
 
 * `$delay`: Delay in minutes. Default is 3 minutes.
 * `$project`: The current project.
+
+----
+
+### `traduttore.webhook_secret`
+
+**Since:** 3.0.0
+
+Filters the sync secret for an incoming webhook request.
+
+**Parameters:**
+
+* `$secret`: Webhook sync secret.
+* `$handler`: The current webhook handler instance.
+* `$project`: The current project if found.
