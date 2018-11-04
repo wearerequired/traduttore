@@ -24,3 +24,9 @@ Now, every time you push changes to SourceForge, Traduttore will get notified an
 **Note:** The `TRADUTTORE_SOURCEFORGE_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
 
 Check out the [Configuration](configuration.md) section for a list of possible constants.
+
+## Source Code Loader
+
+Since SourceForge supports multiple version control systems without properly exposing which ones apply to a given repository, it is up to you to define that.
+
+To do so, hook into the `traduttore.loader` filter to return your preferred `Loader` instance for a given `Repository` object.

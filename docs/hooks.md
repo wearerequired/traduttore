@@ -152,3 +152,42 @@ Filters the delay for scheduled project updates.
 
 * `$delay`: Delay in minutes. Default is 3 minutes.
 * `$project`: The current project.
+
+----
+
+### `traduttore.loader`
+
+**Since:** 3.0.0
+
+Filters the loader instance for a given repository and project.
+
+**Parameters:**
+
+* `$loader`: Loader instance.
+* `$repository`: Repository instance.
+
+----
+
+### `traduttore.webhook_handler`
+
+**Since:** 3.0.0
+
+Filters the determined incoming webhook handler.
+
+**Parameters:**
+
+* `$handler`: Webhook handler instance.
+* `$request`: The current request object.
+
+----
+
+### `traduttore.repository`
+
+**Since:** 3.0.0
+
+Filters the determined repository instance for a given project.
+
+**Parameters:**
+
+* `$repository`: Repository instance.
+* `$project`: Project instance.

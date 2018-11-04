@@ -76,7 +76,7 @@ class RepositoryFactory {
 		 * Can be used to set a custom handler for self-managed repositories.
 		 *
 		 * @param Repository|null $repository Repository instance.
-		 * @param Project         $project    Project information.
+		 * @param Project         $project    Project instance.
 		 */
 		return apply_filters( 'traduttore.repository', $repository, $project );
 	}
