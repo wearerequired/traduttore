@@ -105,32 +105,4 @@ class GitHub extends Base {
 
 		return new WP_REST_Response( [ 'result' => 'OK' ] );
 	}
-
-	/**
-	 * Returns the webhook sync secret.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @param Project|null $project The current project if found.
-	 *
-	 * @return string Secret if set, null otherwise.
-	 */
-	protected function get_secret( Project $project = null ): ?string {
-		$secret = $project ? $project->get_repository_webhook_secret() : null;
-
-		if ( defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
-			$secret = TRADUTTORE_GITHUB_SYNC_SECRET;
-		}
-
-		/**
-		 * Filters the sync secret for an incoming webhook request.
-		 *
-		 * @since 3.0.0
-		 *
-		 * @param string         $secret  Webhook sync secret.
-		 * @param WebhookHandler $handler The current webhook handler instance.
-		 * @param Project|null   $project The current project if found.
-		 */
-		return apply_filters( 'traduttore.webhook_secret', $secret, $this, $project );
-	}
 }
