@@ -71,20 +71,21 @@ class Runner {
 	}
 
 	/**
-	 * Fetches the GitHub repository and updates the translations based on the source code.
+	 * Updates the project's translations based on the source code.
 	 *
 	 * @since 3.0.0
 	 *
+	 * @param bool $cached Whether to use cached source code instead of updated one.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function run() : bool {
+	public function run( $cached = false ): bool {
 		if ( $this->updater->has_lock() ) {
 			return false;
 		}
 
 		$this->updater->add_lock();
 
-		$local_repository = $this->loader->download();
+		$local_repository = $cached ? $this->loader->get_local_path() : $this->loader->download();
 
 		if ( ! $local_repository ) {
 			$this->updater->remove_lock();
