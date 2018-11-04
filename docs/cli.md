@@ -4,7 +4,7 @@ Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer to be installed o
 
 You can define `TRADUTTORE_WP_BIN` in your `wp-config.php` file to tell Traduttore where the WP-CLI executable is. The default is `wp`.
 
-## Generate ZIP files
+## Generate language packs
 
 Create ZIP files containing the translations for all translation sets of a project.
 
@@ -12,7 +12,7 @@ Create ZIP files containing the translations for all translation sets of a proje
 wp traduttore build <project>
 ```
 
-ZIP files will automatically be updated when the translations change. This WP-CLI command is mostly for debugging / testing.
+Language packs will automatically be updated when the translations change. This WP-CLI command is mostly for debugging / testing.
 
 ## Update translations from GitHub
 
