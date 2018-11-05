@@ -38,7 +38,7 @@ use WP_CLI_Command;
  *     Git binary path:        /usr/bin/git
  *     Mercurial binary path:  (not found)
  *     Subversion binary path: (not found)
- *     Cache directory:        /var/www/network.required.com/wordpress/content/traduttore
+ *     Cache directory:        /var/www/network.required.com/wp-content/traduttore
  *
  * @since 3.0.0
  */
