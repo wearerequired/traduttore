@@ -78,7 +78,7 @@ abstract class Base implements WebhookHandler {
 		 *
 		 * @param string         $secret  Webhook sync secret.
 		 * @param WebhookHandler $handler The current webhook handler instance.
-		 * @param Project|null   $project The current project if found.
+		 * @param Project|null   $project The current project if passed through.
 		 */
 		return apply_filters( 'traduttore.webhook_secret', $secret, $this, $project );
 	}
