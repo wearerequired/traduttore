@@ -43,6 +43,7 @@ if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
 	return;
 }
 
+define( __NAMESPACE__ . '\VERSION', '3.0.0-alpha' );
 define( __NAMESPACE__ . '\PLUGIN_FILE', __FILE__ );
 
 register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' ] );
@@ -60,6 +61,7 @@ function init() {
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init', 1 );
 
 if ( class_exists( '\WP_CLI' ) ) {
+	WP_CLI::add_command( 'traduttore info', CLI\InfoCommand::class );
 	WP_CLI::add_command( 'traduttore build', CLI\BuildCommand::class );
 	WP_CLI::add_command( 'traduttore cache', CLI\CacheCommand::class );
 	WP_CLI::add_command( 'traduttore update', CLI\UpdateCommand::class );
