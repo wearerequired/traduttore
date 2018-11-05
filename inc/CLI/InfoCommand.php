@@ -82,11 +82,11 @@ class InfoCommand extends WP_CLI_Command {
 		} else {
 			WP_CLI::line( "Traduttore version:\t" . $plugin_version );
 			WP_CLI::line( "WordPress version:\t" . $wp_version );
-			WP_CLI::line( "WP-CLI version:\t" . $wp_cli_version );
+			WP_CLI::line( "WP-CLI version:\t\t" . $wp_cli_version );
 			WP_CLI::line( "WP-CLI binary path:\t" . $wp_cli_binary );
-			WP_CLI::line( "Git binary path:\t" . $git_binary );
-			WP_CLI::line( "Mercurial binary path:\t" . $hg_binary );
-			WP_CLI::line( "Subversion binary path:\t" . $svn_binary );
+			WP_CLI::line( "Git binary path:\t" . ( $git_binary ?: '(not found)' ) );
+			WP_CLI::line( "Mercurial binary path:\t" . ( $hg_binary ?: '(not found)' ) );
+			WP_CLI::line( "Subversion binary path:\t" . ( $svn_binary ?: '(not found)' ) );
 			WP_CLI::line( "Cache directory:\t" . $cache_dir );
 		}
 	}
@@ -105,7 +105,7 @@ class InfoCommand extends WP_CLI_Command {
 			$status
 		);
 
-		return 0 === $status ? $output : null;
+		return 0 === $status ? $output[0] : null;
 	}
 
 	/**
@@ -122,7 +122,7 @@ class InfoCommand extends WP_CLI_Command {
 			$status
 		);
 
-		return 0 === $status ? $output : null;
+		return 0 === $status ? $output[0] : null;
 	}
 
 	/**
@@ -139,7 +139,7 @@ class InfoCommand extends WP_CLI_Command {
 			$status
 		);
 
-		return 0 === $status ? $output : null;
+		return 0 === $status ? $output[0] : null;
 	}
 
 	/**
@@ -160,6 +160,6 @@ class InfoCommand extends WP_CLI_Command {
 			$status
 		);
 
-		return 0 === $status ? $output : null;
+		return 0 === $status ? $output[0] : null;
 	}
 }
