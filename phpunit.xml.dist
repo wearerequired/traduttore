@@ -13,7 +13,7 @@
 		</testsuite>
 	</testsuites>
 	<filter>
-		<whitelist addUncoveredFilesFromWhitelist="true">
+		<whitelist addUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">inc</directory>
 		</whitelist>
 	</filter>
