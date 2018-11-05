@@ -1,0 +1,16 @@
+.github
+bin
+build
+docs
+features
+tests
+.distignore
+.editorconfig
+.gitattributes
+.gitignore
+.travis.yml
+composer.lock
+CONTRIBUTING.md
+coverage.xml
+phpcs.xml.dist
+phpunit.xml.dist

@@ -33,12 +33,19 @@
     "wearerequired/traduttore-registry": "^1.0"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4",
     "phpunit/phpunit": "^6.5",
+    "wp-cli/dist-archive-command": "^0.1",
+    "wp-cli/extension-command": "^2.0",
+    "wp-cli/wp-cli-tests": "dev-plugin-tests",
     "wp-coding-standards/wpcs": "^1.2"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
+  },
+  "config": {
+    "process-timeout": 7200,
+    "sort-packages": true
   },
   "extra": {
     "branch-alias": {
@@ -55,9 +62,46 @@
       "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:wp-cli/dist-archive-command"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "scripts": {
-    "format": "vendor/bin/phpcbf --report-summary --report-source .",
-    "lint": "vendor/bin/phpcs --report-summary --report-source .",
-    "test": "vendor/bin/phpunit"
+    "behat": [
+      "run-behat-tests"
+    ],
+    "behat-rerun": "rerun-behat-tests",
+    "build": [
+      "composer install --no-dev",
+      "wp dist-archive . $(pwd)/build/traduttore.zip",
+      "rm -rf vendor",
+      "composer install"
+    ],
+    "format": "phpcbf --report-summary --report-source .",
+    "lint": "phpcs --report-summary --report-source .",
+    "phpunit": "phpunit",
+    "prepare-tests": "install-package-tests",
+    "test": [
+      "@lint",
+      "@phpunit",
+      "@behat"
+    ]
+  },
+  "scripts-descriptions": {
+    "behat": "Run functional tests",
+    "behat-rerun": "Run Behat tests with the option to re-run failed tests",
+    "build": "Build a ZIP archive containing the plugin files",
+    "format": "Detect and automatically fix most coding standards issues",
+    "lint": "Detect coding standards issues",
+    "phpunit": "Run unit tests",
+    "prepare-tests": "Prepare the plugin test suite",
+    "test": "Run all tests at once"
+  },
+  "support": {
+    "issues": "https://github.com/wearerequired/traduttore/issues"
   }
 }

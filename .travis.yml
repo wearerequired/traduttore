@@ -36,6 +36,9 @@ before_install:
     else
       echo "xdebug.ini does not exist"
     fi
+  - |
+    # Raise PHP memory limit to 2048MB
+    echo 'memory_limit = 2048M' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 install:
   - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -47,7 +50,9 @@ install:
 before_script:
   - composer validate
 
-script: composer test
+script:
+  - composer phpunit
+  - composer behat || composer behat-rerun
 
 jobs:
   fast_finish: true
@@ -69,4 +74,3 @@ stages:
   - lint
   - test
   - coverage
-  - deploy

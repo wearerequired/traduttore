@@ -7,3 +7,9 @@ node_modules/
 
 # PHPUnit
 coverage.xml
+
+# Behat
+*.log
+
+# Build process
+/build
