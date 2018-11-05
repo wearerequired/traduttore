@@ -40,7 +40,7 @@ use WP_CLI_Command;
  *     Subversion binary path: (not found)
  *     Cache directory:        /var/www/network.required.com/wordpress/content/traduttore
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 class InfoCommand extends WP_CLI_Command {
 	/**
