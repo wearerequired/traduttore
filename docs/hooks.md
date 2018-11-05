@@ -177,7 +177,7 @@ Filters the determined incoming webhook handler.
 **Parameters:**
 
 * `$handler`: WebhookHandler instance or null.
-* `$request`: The current request object.
+* `$request`: The current WP_REST_Request object.
 
 ----
 
