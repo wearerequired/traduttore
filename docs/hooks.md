@@ -161,6 +161,8 @@ Filters the delay for scheduled project updates.
 
 Filters the loader instance for a given repository and project.
 
+Since the loader is responsible for downloading the source code for a repository, you can use this filter to change the determined VCS.
+
 **Parameters:**
 
 * `$loader`: Loader instance.
@@ -186,6 +188,8 @@ Filters the determined incoming webhook handler.
 **Since:** 3.0.0
 
 Filters the determined repository instance for a given project.
+
+Can be used to set a custom handler for self-managed repositories.
 
 **Parameters:**
 
