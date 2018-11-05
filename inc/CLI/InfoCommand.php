@@ -31,14 +31,14 @@ use WP_CLI_Command;
  *
  *     # Display various data about the Traduttore environment
  *     $ wp traduttore info
- *     Traduttore version:	3.0.0-alpha
- *     WordPress version:	4.9.8
- *     WP-CLI version:		2.0.1
- *     WP-CLI binary path:	/usr/local/bin/wp
- *     Git binary path:	/usr/bin/git
- *     Mercurial binary path:	(not found)
- *     Subversion binary path:	(not found)
- *     Cache directory:	/var/www/network.required.com/wordpress/content/traduttore
+ *     Traduttore version:     3.0.0-alpha
+ *     WordPress version:      4.9.8
+ *     WP-CLI version:         2.0.1
+ *     WP-CLI binary path:     /usr/local/bin/wp
+ *     Git binary path:        /usr/bin/git
+ *     Mercurial binary path:  (not found)
+ *     Subversion binary path: (not found)
+ *     Cache directory:        /var/www/network.required.com/wordpress/content/traduttore
  *
  * @since 2.0.0
  */
