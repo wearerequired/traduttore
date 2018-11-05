@@ -176,7 +176,7 @@ Filters the determined incoming webhook handler.
 
 **Parameters:**
 
-* `$handler`: Webhook handler instance.
+* `$handler`: WebhookHandler instance or null.
 * `$request`: The current request object.
 
 ----
