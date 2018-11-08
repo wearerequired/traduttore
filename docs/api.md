@@ -1,6 +1,6 @@
 # REST API
 
-Traduttore adds new routes to both the WordPress REST API as well as the API provided by GlotPress.
+Traduttore adds new routes to both the WordPress REST API (https://example.com/wp-json) as well as the API provided by GlotPress.
 
 ## API Endpoints
 
