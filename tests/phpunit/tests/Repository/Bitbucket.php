@@ -53,9 +53,16 @@ class Bitbucket extends GP_UnitTestCase {
 	}
 
 	public function test_get_name_falls_back_to_source_url_template(): void {
-		$this->project->get_project()->source_url_template = 'https://bitbucket.org/wearerequired/traduttore/src/master/%file%#L%line%';
+		$project = new Project(
+			$this->factory->project->create(
+				[
+					'name'                => 'Project',
+					'source_url_template' => 'https://bitbucket.org/wearerequired/traduttore/src/master/%file%#L%line%',
+				]
+			)
+		);
 
-		$repository = new BitbucketRepository( $this->project );
+		$repository = new BitbucketRepository( $project );
 
 		$this->assertSame( 'wearerequired/traduttore', $repository->get_name() );
 	}

@@ -70,16 +70,13 @@ class GitLab extends Base {
 
 			if ( ! $url ) {
 				$url = $this->project->get_source_url_template();
-
-				if ( false !== strpos( $url, '/blob/' ) ) {
-					$parts = explode( '/blob/', $url );
-					$url   = array_shift( $parts );
-				}
 			}
 
 			if ( $url ) {
-				$path = wp_parse_url( $url, PHP_URL_PATH );
-				$name = trim( $path, '/' );
+				// Assumes that GitLab is not running in a sub folder.
+				$path  = trim( wp_parse_url( $url, PHP_URL_PATH ), '/' );
+				$parts = explode( '/', $path );
+				$name  = implode( '/', array_splice( $parts, 0, 2 ) );
 			}
 		}
 
