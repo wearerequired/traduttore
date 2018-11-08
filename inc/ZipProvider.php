@@ -18,7 +18,7 @@ use WP_Filesystem_Base;
 use ZipArchive;
 
 /**
- * Class used to generate ZIP files for translations.
+ * Class used to generate language packs for translations.
  *
  * @since 2.0.0
  */
@@ -158,13 +158,13 @@ class ZipProvider {
 		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $this->translation_set->last_modified(), 'translation_set' );
 
 		/**
-		 * Fires after a ZIP file for a given translation set has been generated.
+		 * Fires after a language pack for a given translation set has been generated.
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string             $zip_file        Path to the generated ZIP file.
-		 * @param string             $zip_url         URL to the generated ZIP file.
-		 * @param GP_Translation_Set $translation_set Translation set the ZIP is for.
+		 * @param string             $file            Path to the generated language pack.
+		 * @param string             $url             URL to the generated language pack.
+		 * @param GP_Translation_Set $translation_set Translation set the language pack is for.
 		 */
 		do_action( 'traduttore.zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set );
 

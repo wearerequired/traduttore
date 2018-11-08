@@ -22,13 +22,13 @@ Fires after translations have been updated.
 
 **Since:** 3.0.0
 
-Fires after a ZIP file for a given translation set has been generated.
+Fires after a language pack for a given translation set has been generated.
 
 **Parameters:**
 
-* `$zip_file`: Path to the generated ZIP file.
-* `$zip_url`: URL to the generated ZIP file.
-* `$translation_set`: Translation set the ZIP is for.
+* `$file`: Path to the generated language pack.
+* `$url`: URL to the generated language pack.
+* `$translation_set`: Translation set the language pack is for.
 
 ## Filters
 
@@ -80,7 +80,7 @@ Filters whether a Slack notification for translation updates from GitHub should 
 **Parameters:**
 
 * `$send_message`: Whether to send a notification or not. Default true.
-* `$translation_set`: Translation set the ZIP is for.
+* `$translation_set`: Translation set the language pack is for.
 * `$project`: The project that was updated.
 
 ----
@@ -89,12 +89,12 @@ Filters whether a Slack notification for translation updates from GitHub should 
 
 **Since:** 3.0.0
 
-Filters the Slack notification message when a new translation ZIP file is built.
+Filters the Slack notification message for when a new language pack has been built.
 
 **Parameters:**
 
 * `$message`: The notification message.
-* `$translation_set`: Translation set the ZIP is for.
+* `$translation_set`: Translation set the language pack is for.
 * `$project`: The project that was updated.
 
 ----

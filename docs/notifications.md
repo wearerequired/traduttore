@@ -12,7 +12,7 @@ After you activate the plugin, head over to the new Slack top level menu item in
 
 Traduttore adds two types of notifications:
 
-* When a new translation ZIP file is built
+* When a new language pack is built
 * When new translations are updated for a project
 
 ### Example
