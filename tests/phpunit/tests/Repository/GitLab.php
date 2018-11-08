@@ -53,9 +53,16 @@ class GitLab extends GP_UnitTestCase {
 	}
 
 	public function test_get_name_falls_back_to_source_url_template(): void {
-		$this->project->get_project()->source_url_template = 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%';
+		$project = new Project(
+			$this->factory->project->create(
+				[
+					'name'                => 'Project',
+					'source_url_template' => 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%',
+				]
+			)
+		);
 
-		$repository = new GitLabRepository( $this->project );
+		$repository = new GitLabRepository( $project );
 
 		$this->assertSame( 'wearerequired/traduttore', $repository->get_name() );
 	}
