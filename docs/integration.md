@@ -23,13 +23,13 @@ Here's an example of how you can use `add_project()` in your plugin or theme:
 ```php
 \Required\Traduttore_Registry\add_project(
 	'plugin',
-	'example-plugin',
+	'acme-plugin',
 	'https://<home-url>/api/translations/acme/acme-plugin/'
 );
 
 \Required\Traduttore_Registry\add_project(
 	'theme',
-	'example-theme',
+	'acme-theme',
 	'https://<home-url>/api/translations/acme/acme-theme/'
 );
 ```
