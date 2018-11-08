@@ -33,6 +33,7 @@ use WP_CLI_Command;
  *     $ wp traduttore info
  *     Traduttore version:     3.0.0-alpha
  *     WordPress version:      4.9.8
+ *     GlotPress version:      2.3.1
  *     WP-CLI version:         2.0.1
  *     WP-CLI binary path:     /usr/local/bin/wp
  *     Git binary path:        /usr/bin/git
@@ -56,6 +57,7 @@ class InfoCommand extends WP_CLI_Command {
 	public function __invoke( $args, $assoc_args ) {
 		$plugin_version = \Required\Traduttore\VERSION;
 		$wp_version     = get_bloginfo( 'version' );
+		$gp_version     = GP_VERSION;
 
 		$wp_cli_version = WP_CLI_VERSION;
 		$git_binary     = $this->get_git_binary_path();
@@ -68,6 +70,7 @@ class InfoCommand extends WP_CLI_Command {
 			$info = array(
 				'traduttore_version' => $plugin_version,
 				'wp_version'         => $wp_version,
+				'gp_version'         => $gp_version,
 				'wp_cli_version'     => $wp_cli_version,
 				'wp_cli_path'        => $wp_cli_binary,
 				'git_path'           => $git_binary,
@@ -80,6 +83,7 @@ class InfoCommand extends WP_CLI_Command {
 		} else {
 			WP_CLI::line( "Traduttore version:\t" . $plugin_version );
 			WP_CLI::line( "WordPress version:\t" . $wp_version );
+			WP_CLI::line( "GlotPress version:\t" . $gp_version );
 			WP_CLI::line( "WP-CLI version:\t\t" . $wp_cli_version );
 			WP_CLI::line( "WP-CLI binary path:\t" . $wp_cli_binary );
 			WP_CLI::line( "Git binary path:\t" . ( $git_binary ?: '(not found)' ) );
