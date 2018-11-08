@@ -12,7 +12,7 @@ Fires after translations have been updated.
 
 **Parameters:**
 
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 * `$stats`: Stats about the number of imported translations.
 * `$translations`: PO object containing all the translations from the POT file.
 
@@ -22,13 +22,13 @@ Fires after translations have been updated.
 
 **Since:** 3.0.0
 
-Fires after a ZIP file for a given translation set has been generated.
+Fires after a language pack for a given translation set has been generated.
 
 **Parameters:**
 
-* `$zip_file`: Path to the generated ZIP file.
-* `$zip_url`: URL to the generated ZIP file.
-* `$translation_set`: Translation set the ZIP is for.
+* `$file`: Path to the generated language pack.
+* `$url`: URL to the generated language pack.
+* `$translation_set`: Translation set the language pack is for.
 
 ## Filters
 
@@ -80,8 +80,8 @@ Filters whether a Slack notification for translation updates from GitHub should 
 **Parameters:**
 
 * `$send_message`: Whether to send a notification or not. Default true.
-* `$translation_set`: Translation set the ZIP is for.
-* `$project`: The GlotPress project that was updated.
+* `$translation_set`: Translation set the language pack is for.
+* `$project`: The project that was updated.
 
 ----
 
@@ -89,13 +89,13 @@ Filters whether a Slack notification for translation updates from GitHub should 
 
 **Since:** 3.0.0
 
-Filters the Slack notification message when a new translation ZIP file is built.
+Filters the Slack notification message for when a new language pack has been built.
 
 **Parameters:**
 
 * `$message`: The notification message.
-* `$translation_set`: Translation set the ZIP is for.
-* `$project`: The GlotPress project that was updated.
+* `$translation_set`: Translation set the language pack is for.
+* `$project`: The project that was updated.
 
 ----
 
@@ -110,7 +110,7 @@ Make sure to set up Slack notifications first, as outlined in the [Notifications
 **Parameters:**
 
 * `$send_message`: Whether to send a notification or not. Defaults to true, unless there were no string changes at all.
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 * `$stats`: Stats about the number of imported translations.
 
 ----
@@ -124,7 +124,7 @@ Filters the Slack notification message when new translations are updated.
 **Parameters:**
 
 * `$message`: The notification message.
-* `$project`: The GlotPress project that was updated.
+* `$project`: The project that was updated.
 * `$stats`: Stats about the number of imported translations.
 
 ----

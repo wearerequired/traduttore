@@ -44,6 +44,10 @@ class Project extends GP_UnitTestCase {
 		$this->assertSame( $this->gp_project->id, $this->project->get_id() );
 	}
 
+	public function test_get_name(): void {
+		$this->assertSame( 'Project', $this->project->get_name() );
+	}
+
 	public function test_get_slug(): void {
 		$this->assertSame( $this->gp_project->slug, $this->project->get_slug() );
 	}

@@ -135,7 +135,7 @@ class Updater {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param Project $project      The GlotPress project that was updated.
+		 * @param Project $project      The project that was updated.
 		 * @param array   $stats        Stats about the number of imported translations.
 		 * @param PO      $translations PO object containing all the translations from the POT file.
 		 */

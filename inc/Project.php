@@ -123,6 +123,17 @@ class Project {
 	}
 
 	/**
+	 * Returns the project's name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Project name.
+	 */
+	public function get_name(): string {
+		return $this->project->name;
+	}
+
+	/**
 	 * Returns the project's slug.
 	 *
 	 * @since 3.0.0

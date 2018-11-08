@@ -53,8 +53,11 @@ jobs:
   fast_finish: true
   include:
     - stage: lint
+      before_script:
+        - composer global require localheinz/composer-normalize
       script:
         - composer lint
+        - composer normalize --dry-run
     - stage: coverage
       before_install: skip
       script:

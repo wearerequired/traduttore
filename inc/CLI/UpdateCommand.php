@@ -86,11 +86,11 @@ class UpdateCommand extends WP_CLI_Command {
 		$success = $runner->run();
 
 		if ( $success ) {
-			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->id ) );
+			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->get_id() ) );
 
 			return;
 		}
 
-		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->id ) );
+		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->get_id() ) );
 	}
 }
