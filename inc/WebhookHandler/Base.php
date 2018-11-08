@@ -49,7 +49,7 @@ abstract class Base implements WebhookHandler {
 	 * @return string Secret if set, null otherwise.
 	 */
 	protected function get_secret( Project $project = null ): ?string {
-		$secret = $project ? $project->get_repository_webhook_secret() : null;
+		$secret = null;
 
 		switch ( get_class( $this ) ) {
 			case Bitbucket::class:
@@ -68,6 +68,10 @@ abstract class Base implements WebhookHandler {
 				}
 				break;
 		}
+
+		$project_secret = $project ? $project->get_repository_webhook_secret() : null;
+
+		$secret = $project_secret ?? $secret;
 
 		/**
 		 * Filters the sync secret for an incoming webhook request.
