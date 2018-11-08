@@ -61,13 +61,11 @@ abstract class Base implements WebhookHandler {
 				if ( defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
 					$secret = TRADUTTORE_GITHUB_SYNC_SECRET;
 				}
-
 				break;
 			case GitLab::class:
 				if ( defined( 'TRADUTTORE_GITLAB_SYNC_SECRET' ) ) {
 					$secret = TRADUTTORE_GITLAB_SYNC_SECRET;
 				}
-
 				break;
 		}
 
