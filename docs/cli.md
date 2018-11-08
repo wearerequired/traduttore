@@ -24,6 +24,8 @@ Pulls the latest changes from GitHub, extracts translatable strings and imports 
 wp traduttore update <project|repository_url>
 ```
 
+Use the `--delete` flag to first delete the existing local repository.
+
 ## Clearing the cached Git repository
 
 Traduttore pulls the remote Git repository from GitHub and uses that for importing translatable strings.
