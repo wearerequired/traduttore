@@ -30,7 +30,7 @@ class CacheCommand extends WP_CLI_Command {
 	 * ## OPTIONS
 	 *
 	 * <project|url>
-	 * : Project path / ID or GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
 	 * ## EXAMPLES
 	 *
@@ -52,6 +52,10 @@ class CacheCommand extends WP_CLI_Command {
 	 * @param array $assoc_args Associative args.
 	 */
 	public function clear( $args, $assoc_args ): void {
+		if ( ! $args[0] ) {
+			WP_CLI::error( 'You need to pass a project ID or path or source code repository URL' );
+		}
+
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 

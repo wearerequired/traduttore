@@ -49,6 +49,10 @@ class BuildCommand extends WP_CLI_Command {
 	 * @param array $assoc_args Associative args.
 	 */
 	public function __invoke( $args, $assoc_args ) {
+		if ( ! $args[0] ) {
+			WP_CLI::error( 'You need to pass a project ID or path or source code repository URL' );
+		}
+
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
