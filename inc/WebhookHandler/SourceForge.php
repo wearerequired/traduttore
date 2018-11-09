@@ -31,17 +31,17 @@ class SourceForge extends Base {
 	 * @return bool True if permission is granted, false otherwise.
 	 */
 	public function permission_callback(): ?bool {
-		if ( ! defined( 'TRADUTTORE_SOURCEFORGE_SYNC_SECRET' ) ) {
-			return false;
-		}
-
-		$token = $this->request->get_header( 'x-allura-signature' );
+		$token   = $this->request->get_header( 'x-allura-signature' );
+		$params  = $this->request->get_params();
+		$locator = new ProjectLocator( $params['repository']['url'] ?? null );
+		$project = $locator->get_project();
+		$secret  = $this->get_secret( $project );
 
 		if ( ! $token ) {
 			return false;
 		}
 
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), TRADUTTORE_SOURCEFORGE_SYNC_SECRET );
+		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), $secret );
 
 		return hash_equals( $token, $payload_signature );
 	}

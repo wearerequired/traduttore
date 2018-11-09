@@ -195,3 +195,17 @@ Can be used to set a custom handler for self-managed repositories.
 
 * `$repository`: Repository instance.
 * `$project`: Project instance.
+
+----
+
+### `traduttore.webhook_secret`
+
+**Since:** 3.0.0
+
+Filters the sync secret for an incoming webhook request.
+
+**Parameters:**
+
+* `$secret`: Webhook sync secret.
+* `$handler`: The current webhook handler instance.
+* `$project`: The current project if found.
