@@ -32,7 +32,7 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string|int $project Possible GlotPress project ID or path or source code repository path.
+	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
 	 */
 	public function __construct( $project ) {
 		$this->project = $this->find_project( $project );
@@ -54,10 +54,23 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string|int $project Possible GlotPress project ID or path or source code repository path.
+	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
+	 *
 	 * @return Project Project instance.
 	 */
 	protected function find_project( $project ) :? Project {
+		if ( ! $project ) {
+			return null;
+		}
+
+		if ( $project instanceof Project ) {
+			return $project;
+		}
+
+		if ( $project instanceof GP_Project ) {
+			return new Project( $project );
+		}
+
 		$found = GP::$project->by_path( $project );
 
 		if ( ! $found && is_numeric( $project ) ) {

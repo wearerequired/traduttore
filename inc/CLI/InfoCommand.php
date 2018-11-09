@@ -14,40 +14,38 @@ use WP_CLI;
 use WP_CLI_Command;
 
 /**
- * Print various details about the environment.
- *
- * ## OPTIONS
- *
- * [--format=<format>]
- * : Render output in a particular format.
- * ---
- * default: list
- * options:
- *   - list
- *   - json
- * ---
- *
- * ## EXAMPLES
- *
- *     # Display various data about the Traduttore environment
- *     $ wp traduttore info
- *     Traduttore version:     3.0.0-alpha
- *     WordPress version:      4.9.8
- *     GlotPress version:      2.3.1
- *     WP-CLI version:         2.0.1
- *     WP-CLI binary path:     /usr/local/bin/wp
- *     Git binary path:        /usr/bin/git
- *     Mercurial binary path:  (not found)
- *     Subversion binary path: (not found)
- *     Cache directory:        /var/www/network.required.com/wp-content/traduttore
+ * Environment information command.
  *
  * @since 3.0.0
  */
 class InfoCommand extends WP_CLI_Command {
 	/**
-	 * Class constructor.
+	 * Print various details about the environment.
 	 *
-	 * Automatically called by WP-CLI.
+	 * ## OPTIONS
+	 *
+	 * [--format=<format>]
+	 * : Render output in a particular format.
+	 * ---
+	 * default: list
+	 * options:
+	 *   - list
+	 *   - json
+	 * ---
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Display various data about the Traduttore environment
+	 *     $ wp traduttore info
+	 *     Traduttore version:     3.0.0-alpha
+	 *     WordPress version:      4.9.8
+	 *     GlotPress version:      2.3.1
+	 *     WP-CLI version:         2.0.1
+	 *     WP-CLI binary path:     /usr/local/bin/wp
+	 *     Git binary path:        /usr/bin/git
+	 *     Mercurial binary path:  (not found)
+	 *     Subversion binary path: (not found)
+	 *     Cache directory:        /var/www/network.required.com/wp-content/traduttore
 	 *
 	 * @since 3.0.0
 	 *
