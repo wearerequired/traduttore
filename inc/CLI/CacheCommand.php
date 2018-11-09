@@ -15,7 +15,7 @@ use WP_CLI;
 use WP_CLI_Command;
 
 /**
- * Manages the Traduttore cache.
+ * Cache management command.
  *
  * @since 2.0.0
  */
@@ -52,10 +52,6 @@ class CacheCommand extends WP_CLI_Command {
 	 * @param array $assoc_args Associative args.
 	 */
 	public function clear( $args, $assoc_args ): void {
-		if ( ! $args[0] ) {
-			WP_CLI::error( 'You need to pass a project ID or path or source code repository URL' );
-		}
-
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 

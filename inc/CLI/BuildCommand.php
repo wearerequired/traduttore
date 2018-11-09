@@ -17,31 +17,29 @@ use WP_CLI_Command;
 use function WP_CLI\Utils\get_flag_value;
 
 /**
- * Generate translation ZIP files for a project.
- *
- * ## OPTIONS
- *
- * <project>
- * : Path or ID of the project to generate ZIP files for.
- *
- * [--force]
- * : Force ZIP file generation, even if there were no changes since the last build.
- *
- * ## EXAMPLES
- *
- *     # Generate ZIP files for the project with ID 123.
- *     $ wp traduttore build 123
- *     ZIP file generated for translation set (ID: 1)
- *     ZIP file generated for translation set (ID: 3)
- *     ZIP file generated for translation set (ID: 7)
+ * Language pack builder command.
  *
  * @since 2.0.0
  */
 class BuildCommand extends WP_CLI_Command {
 	/**
-	 * Class constructor.
+	 * Generate translation ZIP files for a project.
 	 *
-	 * Automatically called by WP-CLI.
+	 * ## OPTIONS
+	 *
+	 * <project>
+	 * : Path or ID of the project to generate ZIP files for.
+	 *
+	 * [--force]
+	 * : Force ZIP file generation, even if there were no changes since the last build.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Generate ZIP files for the project with ID 123.
+	 *     $ wp traduttore build 123
+	 *     ZIP file generated for translation set (ID: 1)
+	 *     ZIP file generated for translation set (ID: 3)
+	 *     ZIP file generated for translation set (ID: 7)
 	 *
 	 * @since 2.0.0
 	 *
@@ -49,10 +47,6 @@ class BuildCommand extends WP_CLI_Command {
 	 * @param array $assoc_args Associative args.
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		if ( ! $args[0] ) {
-			WP_CLI::error( 'You need to pass a project ID or path or source code repository URL' );
-		}
-
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
