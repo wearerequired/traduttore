@@ -8,7 +8,6 @@
 namespace Required\Traduttore;
 
 use WP_Filesystem_Base;
-use wpdb;
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
@@ -32,12 +31,11 @@ if ( $wp_filesystem ) {
 	$wp_filesystem->rmdir( ZipProvider::get_cache_dir(), true );
 }
 
-/* @var wpdb $wpdb */
+/* @var \wpdb $wpdb */
 global $wpdb;
 
 $meta_key_prefix = '_traduttore_';
 
-// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 $query = $wpdb->prepare( "DELETE FROM `$wpdb->gp_meta` WHERE `meta_key` LIKE %s ", $wpdb->esc_like( $meta_key_prefix ) . '%' );
 
 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
