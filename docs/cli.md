@@ -33,3 +33,13 @@ If this local repository somehow gets broken, you can remove it via WP-CLI as fo
 ```bash
 wp traduttore cache clear <project|repository_url>
 ````
+
+## Show various details about the environment
+
+There's a command to print some helpful debug information about Traduttore.
+
+This includes things like the plugin version and path to the cache directory.
+
+```bash
+wp traduttore info
+```
