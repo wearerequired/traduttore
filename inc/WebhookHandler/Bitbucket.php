@@ -9,9 +9,11 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
+use Required\Traduttore\WebhookHandler;
 use WP_Error;
 use WP_REST_Response;
 
@@ -37,14 +39,18 @@ class Bitbucket extends Base {
 			return false;
 		}
 
-		$token = $this->request->get_header( 'x-hub-signature' );
+		$token   = $this->request->get_header( 'x-hub-signature' );
+		$params  = $this->request->get_params();
+		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] ?? null );
+		$project = $locator->get_project();
+		$secret  = $this->get_secret( $project );
 
 		if ( $token ) {
-			if ( ! defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
+			if ( ! $secret ) {
 				return false;
 			}
 
-			$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), TRADUTTORE_BITBUCKET_SYNC_SECRET );
+			$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), $secret );
 
 			return hash_equals( $token, $payload_signature );
 		}

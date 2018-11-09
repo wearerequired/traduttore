@@ -9,9 +9,11 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
+use Required\Traduttore\WebhookHandler;
 use WP_Error;
 use WP_REST_Response;
 
@@ -47,7 +49,13 @@ class GitLab extends Base {
 			return false;
 		}
 
-		return hash_equals( $token, TRADUTTORE_GITLAB_SYNC_SECRET );
+		$params  = $this->request->get_params();
+		$locator = new ProjectLocator( $params['project']['homepage'] ?? null );
+		$project = $locator->get_project();
+
+		$secret = $this->get_secret( $project );
+
+		return hash_equals( $token, $secret );
 	}
 
 	/**
