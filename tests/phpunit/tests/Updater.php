@@ -66,7 +66,7 @@ class Updater extends GP_UnitTestCase {
 	}
 
 	public function test_update_with_config_file(): void {
-		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-composer' );
+		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-config' );
 
 		$result = $this->updater->update( $config );
 
