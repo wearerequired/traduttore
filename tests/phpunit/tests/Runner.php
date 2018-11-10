@@ -82,13 +82,14 @@ class Runner extends GP_UnitTestCase {
 		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
 	}
 
-	public function test_run(): void {
+	public function test_run_missing_local_repository(): void {
 		$result = $this->runner->run();
 
-		$this->assertTrue( $result );
+		$this->assertFalse( $result );
 	}
 
 	public function test_run_with_existing_repository(): void {
+		mkdir( $this->loader->get_local_path() );
 		$result1 = $this->runner->run();
 		$result2 = $this->runner->run();
 
@@ -98,10 +99,10 @@ class Runner extends GP_UnitTestCase {
 
 	public function test_run_and_delete_existing_repository(): void {
 		$result1 = $this->runner->run();
-		$this->runner->delete_local_repository();
+		mkdir( $this->loader->get_local_path() );
 		$result2 = $this->runner->run();
 
-		$this->assertTrue( $result1 );
+		$this->assertFalse( $result1 );
 		$this->assertTrue( $result2 );
 	}
 
@@ -126,5 +127,24 @@ class Runner extends GP_UnitTestCase {
 		$result = $this->runner->run();
 
 		$this->assertFalse( $result );
+	}
+
+	public function test_run_cached_missing_local_repository(): void {
+		$result = $this->runner->run( true );
+		$this->assertFalse( $result );
+	}
+
+	public function test_run_cached_does_not_download_repository(): void {
+		$test_path = get_temp_dir() . 'traduttore-test-dir';
+
+		$loader = $this->createMock( Loader::class );
+		$loader->expects( $this->once() )->method( 'get_local_path' )->willReturn( $test_path );
+		$loader->expects( $this->never() )->method( 'download' )->willReturn( false );
+
+		mkdir( $loader->get_local_path() );
+
+		$result = $this->runner->run( true );
+
+		$this->assertTrue( $result );
 	}
 }
