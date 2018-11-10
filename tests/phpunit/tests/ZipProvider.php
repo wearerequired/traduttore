@@ -9,6 +9,7 @@ namespace Required\Traduttore\Tests;
 
 use GP_Translation_Set;
 use \GP_UnitTestCase;
+use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
 use ZipArchive;
 
@@ -226,7 +227,7 @@ class ZipProvider extends GP_UnitTestCase {
 	}
 
 	public function test_use_text_domain_for_translation_files(): void {
-		$project  = ( new \Required\Traduttore\ProjectLocator( $this->translation_set->project_id ) )->get_project();
+		$project  = ( new ProjectLocator( $this->translation_set->project_id ) )->get_project();
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory->translation->create(
