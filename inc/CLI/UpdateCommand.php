@@ -15,6 +15,7 @@ use WP_CLI_Command;
 use function WP_CLI\Utils\get_flag_value;
 
 /**
+ * Translation update command class.
  *
  * @since 2.0.0
  */
