@@ -250,6 +250,7 @@ class ZipProvider extends GP_UnitTestCase {
 
 		$zip->open( $provider->get_zip_path() );
 
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 		for ( $i = 0; $i < $zip->numFiles; $i ++ ) {
 			$stat           = $zip->statIndex( $i );
 			$actual_files[] = $stat['name'];
