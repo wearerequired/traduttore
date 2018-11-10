@@ -107,7 +107,7 @@ class BuildCommand extends WP_CLI_Command {
 	 *
 	 * @return array Same as $args if not all, otherwise all slugs.
 	 */
-	protected function check_optional_args_and_all( $args, $all ) {
+	protected function check_optional_args_and_all( $args, $all ): array {
 		if ( $all ) {
 			$args = $this->get_all_projects();
 		}
@@ -120,11 +120,14 @@ class BuildCommand extends WP_CLI_Command {
 			WP_CLI::success( 'No projects found' );
 		}
 
-		$args = array_map( function ( $project ) {
-			$locator = new ProjectLocator( $project );
+		$args = array_map(
+			function ( $project ) {
+				$locator = new ProjectLocator( $project );
 
-			return $locator->get_project();
-		}, $args );
+				return $locator->get_project();
+			},
+			$args
+		);
 
 		return $args;
 	}
