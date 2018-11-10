@@ -53,6 +53,38 @@ class ProjectLocator extends GP_UnitTestCase {
 		);
 	}
 
+	public function test_empty_string(): void {
+		$locator = new Locator( '' );
+
+		$this->assertNull( $locator->get_project() );
+	}
+
+	public function test_false(): void {
+		$locator = new Locator( false );
+
+		$this->assertNull( $locator->get_project() );
+	}
+
+	public function test_invalid_project_id(): void {
+		$locator = new Locator( 0 );
+
+		$this->assertNull( $locator->get_project() );
+	}
+
+	public function test_existing_project_instance(): void {
+		$project = new Project( $this->root );
+		$locator = new Locator( $project );
+
+		$this->assertSame( $project, $locator->get_project() );
+	}
+
+	public function test_existing_glotpress_project_instance(): void {
+		$project = $this->root;
+		$locator = new Locator( $project );
+
+		$this->assertEquals( $this->root->id, $locator->get_project()->get_id() );
+	}
+
 	public function test_find_project_by_glotpress_path(): void {
 		$locator = new Locator( 'root' );
 

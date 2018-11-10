@@ -15,42 +15,36 @@ use WP_CLI_Command;
 use function WP_CLI\Utils\get_flag_value;
 
 /**
- * Updates project translations from source code repository.
- *
- * Finds the project the repository belongs to and updates the translations accordingly.
- *
- * ## OPTIONS
- *
- * <project|url>
- * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
- *
- * [--cached]
- * : Used cached repository information and do not try to download code from remote.
- *
- * [--delete]
- * : Whether to first delete the existing local repository or not.
- *
- * ## EXAMPLES
- *
- *     # Update translations from repository URL.
- *     $ wp traduttore update https://github.com/wearerequired/required-valencia
- *     Success: Updated translations for project (ID: 123)!
- *
- *     # Update translations from project path.
- *     $ wp traduttore update required/required-valencia
- *     Success: Updated translations for project (ID: 123)!
- *
- *     # Update translations from project ID.
- *     $ wp traduttore update 123
- *     Success: Updated translations for project (ID: 123)!
  *
  * @since 2.0.0
  */
 class UpdateCommand extends WP_CLI_Command {
 	/**
-	 * Class constructor.
+	 * Updates project translations from source code repository.
 	 *
-	 * Automatically called by WP-CLI.
+	 * Finds the project the repository belongs to and updates the translations accordingly.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <project|url>
+	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 *
+	 * [--delete]
+	 * : Whether to first delete the existing local repository or not.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Update translations from repository URL.
+	 *     $ wp traduttore update https://github.com/wearerequired/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 *     # Update translations from project path.
+	 *     $ wp traduttore update required/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 *     # Update translations from project ID.
+	 *     $ wp traduttore update 123
+	 *     Success: Updated translations for project (ID: 123)!
 	 *
 	 * @since 2.0.0
 	 *

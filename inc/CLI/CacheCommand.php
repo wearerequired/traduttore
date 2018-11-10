@@ -15,7 +15,7 @@ use WP_CLI;
 use WP_CLI_Command;
 
 /**
- * Manages the Traduttore cache.
+ * Cache management command.
  *
  * @since 2.0.0
  */
@@ -30,7 +30,7 @@ class CacheCommand extends WP_CLI_Command {
 	 * ## OPTIONS
 	 *
 	 * <project|url>
-	 * : Project path / ID or GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
 	 * ## EXAMPLES
 	 *

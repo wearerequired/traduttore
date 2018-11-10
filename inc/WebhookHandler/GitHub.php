@@ -9,9 +9,11 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
+use Required\Traduttore\WebhookHandler;
 use WP_Error;
 use WP_REST_Response;
 
@@ -41,17 +43,19 @@ class GitHub extends Base {
 			return false;
 		}
 
-		if ( ! defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
-			return false;
-		}
-
 		$token = $this->request->get_header( 'x-hub-signature' );
 
 		if ( ! $token ) {
 			return false;
 		}
 
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), TRADUTTORE_GITHUB_SYNC_SECRET );
+		$params  = $this->request->get_params();
+		$locator = new ProjectLocator( $params['repository']['html_url'] ?? null );
+		$project = $locator->get_project();
+
+		$secret = $this->get_secret( $project );
+
+		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), $secret );
 
 		return hash_equals( $token, $payload_signature );
 	}
