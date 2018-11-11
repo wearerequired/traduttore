@@ -65,4 +65,7 @@ if ( class_exists( '\WP_CLI' ) ) {
 	WP_CLI::add_command( 'traduttore build', CLI\BuildCommand::class );
 	WP_CLI::add_command( 'traduttore cache', CLI\CacheCommand::class );
 	WP_CLI::add_command( 'traduttore update', CLI\UpdateCommand::class );
+	WP_CLI::add_command( 'traduttore project', CLI\ProjectCommand::class );
+	WP_CLI::add_command( 'traduttore project build', CLI\BuildCommand::class );
+	WP_CLI::add_command( 'traduttore project update', CLI\UpdateCommand::class );
 }
