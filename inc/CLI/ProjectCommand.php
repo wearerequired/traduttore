@@ -47,7 +47,7 @@ class ProjectCommand extends WP_CLI_Command {
 	 *
 	 *     # Display various data about the project
 	 *     $ wp traduttore project info foo
-	 *     Project ID:	          1
+	 *     Project ID:            1
 	 *     Project name:          Foo Project
 	 *     Project slug:          foo
 	 *     Repository Cache:      /tmp/traduttore-github.com-wearerequired-foo
@@ -80,14 +80,14 @@ class ProjectCommand extends WP_CLI_Command {
 		$project_name          = $project->get_name();
 		$project_slug          = $project->get_slug();
 		$local_path            = $loader ? $loader->get_local_path() : '';
-		$repository_url        = $project->get_repository_url()?? '(unknown)';
+		$repository_url        = $project->get_repository_url() ?? '(unknown)';
 		$repository_type       = $repository ? $repository->get_type() : $project->get_repository_type();
 		$repository_vcs_type   = $project->get_repository_vcs_type() ?? '(unknown)';
-		$repository_visibility = $project->get_repository_visibility()?? '(unknown)';
+		$repository_visibility = $project->get_repository_visibility() ?? '(unknown)';
 		$repository_ssh_url    = $repository ? $repository->get_ssh_url() : '(unknown)';
 		$repository_https_url  = $repository ? $repository->get_https_url() : '(unknown)';
 		$repository_instance   = $repository ? get_class( $repository ) : '(unknown)';
-		$loader_instance = $loader ? get_class( $loader ) : '';
+		$loader_instance       = $loader ? get_class( $loader ) : '';
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'json' ) {
 			$info = array(
@@ -215,7 +215,7 @@ class ProjectCommand extends WP_CLI_Command {
 				'Updated',
 				'English Name',
 				'Native Name',
-				'Package'
+				'Package',
 			]
 		);
 
