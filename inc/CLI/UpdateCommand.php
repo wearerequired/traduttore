@@ -31,7 +31,7 @@ class UpdateCommand extends WP_CLI_Command {
 	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
 	 * [--cached]
-	 * : Used cached repository information and do not try to download code from remote.
+	 * : Use cached repository information and do not try to download code from remote.
 	 *
 	 * [--delete]
 	 * : Whether to first delete the existing local repository or not.
