@@ -193,7 +193,7 @@ class ProjectCommand extends WP_CLI_Command {
 			$zip_provider = new ZipProvider( $set );
 
 			$language_packs[] = [
-				'Language'     => $locale->wp_locale,
+				'Locale'     => $locale->wp_locale,
 				// Adding 0 removes trailing zeros.
 				'Completed' => sprintf( '%s%%', number_format( $set->percent_translated(), 1 ) + 0 ),
 				'Updated'      => $zip_provider->get_last_build_time(),
