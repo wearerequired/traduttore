@@ -191,16 +191,12 @@ class ProjectCommand extends WP_CLI_Command {
 
 			$zip_provider = new ZipProvider( $set );
 
-			if ( ! $zip_provider->get_last_build_time() || ! file_exists( $zip_provider->get_zip_path() ) ) {
-				continue;
-			}
-
 			$language_packs[] = [
 				'Language'     => $locale->wp_locale,
 				'Updated'      => $zip_provider->get_last_build_time(),
 				'English Name' => $locale->english_name,
 				'Native Name'  => $locale->native_name,
-				'Package'      => $zip_provider->get_zip_url(),
+				'Package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : 'n/a',
 			];
 		}
 
