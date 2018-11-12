@@ -121,13 +121,13 @@ class Updater {
 		$translations = new PO();
 		$result       = $translations->import_from_file( $pot_file );
 
-		$this->project->set_text_domain( sanitize_text_field( $translations->headers['X-Domain'] ) );
-
 		unlink( $pot_file );
 
 		if ( ! $result ) {
 			return false;
 		}
+
+		$this->project->set_text_domain( sanitize_text_field( $translations->headers['X-Domain'] ) );
 
 		$stats = GP::$original->import_for_project( $this->project->get_project(), $translations );
 
