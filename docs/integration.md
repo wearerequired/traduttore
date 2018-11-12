@@ -16,6 +16,10 @@ After that, you can use `Required\Traduttore_Registry\add_project( $type, $slug,
 
 **Note:** Alternatively, you could copy the library's code to your project.
 
+`$type` can either be `plugin` or `theme`
+`$slug` must match the theme/plugin directory slug
+`$api_url` is the URL to the Traduttore project translation api
+
 ### Example
 
 Here's an example of how you can use `add_project()` in your plugin or theme:
@@ -23,13 +27,13 @@ Here's an example of how you can use `add_project()` in your plugin or theme:
 ```php
 \Required\Traduttore_Registry\add_project(
 	'plugin',
-	'acme-plugin',
+	'example-plugin',
 	'https://<home-url>/api/translations/acme/acme-plugin/'
 );
 
 \Required\Traduttore_Registry\add_project(
 	'theme',
-	'acme-theme',
+	'example-theme',
 	'https://<home-url>/api/translations/acme/acme-theme/'
 );
 ```
@@ -40,12 +44,11 @@ Ideally you call `add_project()` in a function hooked to `init`, e.g. like this:
 
 ```php
 function myplugin_init_traduttore() {
-	Required\Traduttore_Registry\add_project(
+	\Required\Traduttore_Registry\add_project(
 		'plugin',
 		'example-plugin',
 		'https://<home-url>/api/translations/acme/acme-plugin/'
 	);
 }
-
 add_action( 'init', 'myplugin_init_traduttore' );
 ```
