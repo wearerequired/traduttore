@@ -30,6 +30,9 @@ class UpdateCommand extends WP_CLI_Command {
 	 * <project|url>
 	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
+	 * [--cached]
+	 * : Use cached repository information and do not try to download code from remote.
+	 *
 	 * [--delete]
 	 * : Whether to first delete the existing local repository or not.
 	 *
@@ -54,6 +57,7 @@ class UpdateCommand extends WP_CLI_Command {
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		$delete  = get_flag_value( $assoc_args, 'delete', false );
+		$cached  = get_flag_value( $assoc_args, 'cached', false );
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -81,7 +85,7 @@ class UpdateCommand extends WP_CLI_Command {
 			$runner->delete_local_repository();
 		}
 
-		$success = $runner->run();
+		$success = $runner->run( $cached );
 
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->get_id() ) );
