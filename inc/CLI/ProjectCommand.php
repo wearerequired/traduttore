@@ -1,6 +1,6 @@
 <?php
 /**
- * Command for printing project information.
+ * Command for managing projects.
  *
  * @since 3.0.0
  *
@@ -13,15 +13,13 @@ use GP;
 use GP_Locale;
 use GP_Locales;
 use GP_Translation_Set;
-use Required\Traduttore\LoaderFactory;
-use Required\Traduttore\ProjectLocator;
-use Required\Traduttore\RepositoryFactory;
-use Required\Traduttore\ZipProvider;
 use WP_CLI;
 use WP_CLI_Command;
+use Required\Traduttore\{ProjectLocator, LoaderFactory, RepositoryFactory, ZipProvider, Updater, Runner};
+use function WP_CLI\Utils\get_flag_value;
 
 /**
- * Project information command.
+ * Project command class.
  *
  * @since 3.0.0
  */
@@ -169,14 +167,12 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     | de_DE    | https://translate.example.com/content/traduttore/foo-de_DE.zip |
 	 *     +----------+----------------------------------------------------------------+
 	 *
-	 * @subcommand list-language-packs
-	 *
 	 * @since 3.0.0
 	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
-	public function list_language_packs( $args, $assoc_args ): void {
+	public function list( $args, $assoc_args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -220,5 +216,133 @@ class ProjectCommand extends WP_CLI_Command {
 		);
 
 		$formatter->display_items( $language_packs );
+	}
+
+	/**
+	 * Generate translation ZIP files for a project.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <project>
+	 * : Path or ID of the project to generate ZIP files for.
+	 *
+	 * [--force]
+	 * : Force ZIP file generation, even if there were no changes since the last build.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Generate ZIP files for the project with ID 123.
+	 *     $ wp traduttore build 123
+	 *     ZIP file generated for translation set (ID: 1)
+	 *     ZIP file generated for translation set (ID: 3)
+	 *     ZIP file generated for translation set (ID: 7)
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $args Command args.
+	 * @param array $assoc_args Associative args.
+	 */
+	public function build( $args, $assoc_args ): void {
+		$locator = new ProjectLocator( $args[0] );
+		$project = $locator->get_project();
+
+		if ( ! $project ) {
+			WP_CLI::error( 'Project not found' );
+		}
+
+		$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
+
+		/* @var GP_Translation_Set $translation_set */
+		foreach ( $translation_sets as $translation_set ) {
+			$zip_provider = new ZipProvider( $translation_set );
+
+			if ( ! get_flag_value( $assoc_args, 'force' ) && $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
+				WP_CLI::log( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
+
+				continue;
+			}
+
+			if ( $zip_provider->generate_zip_file() ) {
+				WP_CLI::success( sprintf( 'ZIP file generated for translation set (ID: %d)', $translation_set->id ) );
+
+				continue;
+			}
+
+			WP_CLI::warning( sprintf( 'Error generating ZIP file for translation set (ID: %d)', $translation_set->id ) );
+		}
+
+		WP_CLI::success( 'ZIP file generation finished' );
+	}
+
+	/**
+	 * Updates project translations from source code repository.
+	 *
+	 * Finds the project the repository belongs to and updates the translations accordingly.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <project|url>
+	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 *
+	 * [--delete]
+	 * : Whether to first delete the existing local repository or not.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Update translations from repository URL.
+	 *     $ wp traduttore update https://github.com/wearerequired/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 *     # Update translations from project path.
+	 *     $ wp traduttore update required/required-valencia
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 *     # Update translations from project ID.
+	 *     $ wp traduttore update 123
+	 *     Success: Updated translations for project (ID: 123)!
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $args Command args.
+	 * @param array $assoc_args Associative args.
+	 */
+	public function update( $args, $assoc_args ): void {
+		$delete  = get_flag_value( $assoc_args, 'delete', false );
+		$locator = new ProjectLocator( $args[0] );
+		$project = $locator->get_project();
+
+		if ( ! $project ) {
+			WP_CLI::error( 'Project not found' );
+		}
+
+		$repository = ( new RepositoryFactory() )->get_repository( $project );
+
+		if ( ! $repository ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$loader = ( new LoaderFactory() )->get_loader( $repository );
+
+		if ( ! $loader ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$updater = new Updater( $project );
+
+		$runner = new Runner( $loader, $updater );
+
+		if ( $delete ) {
+			$runner->delete_local_repository();
+		}
+
+		$success = $runner->run();
+
+		if ( $success ) {
+			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->get_id() ) );
+
+			return;
+		}
+
+		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->get_id() ) );
 	}
 }
