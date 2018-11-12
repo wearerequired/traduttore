@@ -195,7 +195,7 @@ class ProjectCommand extends WP_CLI_Command {
 			$language_packs[] = [
 				'Language'     => $locale->wp_locale,
 				// Adding 0 removes trailing zeros.
-				'Completeness' => sprintf( '%s%%', number_format( $set->percent_translated(), 1 ) + 0 ),
+				'Completed' => sprintf( '%s%%', number_format( $set->percent_translated(), 1 ) + 0 ),
 				'Updated'      => $zip_provider->get_last_build_time(),
 				'English Name' => $locale->english_name,
 				'Native Name'  => $locale->native_name,
