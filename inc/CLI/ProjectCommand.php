@@ -150,8 +150,8 @@ class ProjectCommand extends WP_CLI_Command {
 	 *
 	 * These fields will be displayed by default for each translation:
 	 *
-	 * * Language
-	 * * Completeness
+	 * * Locale
+	 * * Completed
 	 * * Updated
 	 * * English Name
 	 * * Native Name
@@ -160,13 +160,13 @@ class ProjectCommand extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     # Display available language packs for the given project
-	 *     $ wp traduttore project list-language-packs 1 --fields=Language,Package
-	 *     +----------+----------------------------------------------------------------+
-	 *     | Language | Package                                                        |
-	 *     +----------+----------------------------------------------------------------+
-	 *     | fr_FR    | https://translate.example.com/content/traduttore/foo-fr_FR.zip |
-	 *     | de_DE    | https://translate.example.com/content/traduttore/foo-de_DE.zip |
-	 *     +----------+----------------------------------------------------------------+
+	 *     $ wp traduttore project list-language-packs 1 --fields=Locale,Package
+	 *     +--------+----------------------------------------------------------------+
+	 *     | Locale | Package                                                        |
+	 *     +--------+----------------------------------------------------------------+
+	 *     | fr_FR  | https://translate.example.com/content/traduttore/foo-fr_FR.zip |
+	 *     | de_DE  | https://translate.example.com/content/traduttore/foo-de_DE.zip |
+	 *     +--------+----------------------------------------------------------------+
 	 *
 	 * @since 3.0.0
 	 *
@@ -206,8 +206,8 @@ class ProjectCommand extends WP_CLI_Command {
 		$formatter = new WP_CLI\Formatter(
 			$assoc_args,
 			[
-				'Language',
-				'Completeness',
+				'Locale',
+				'Completed',
 				'Updated',
 				'English Name',
 				'Native Name',
