@@ -151,10 +151,10 @@ class ProjectCommand extends WP_CLI_Command {
 	 * These fields will be displayed by default for each translation:
 	 *
 	 * * Locale
-	 * * Completed
-	 * * Updated
 	 * * English Name
 	 * * Native Name
+	 * * Completed
+	 * * Updated
 	 * * Package
 	 *
 	 * ## EXAMPLES
@@ -194,11 +194,11 @@ class ProjectCommand extends WP_CLI_Command {
 
 			$language_packs[] = [
 				'Locale'       => $locale->wp_locale,
+				'English Name' => $locale->english_name,
+				'Native Name'  => $locale->native_name,
 				// Adding 0 removes trailing zeros.
 				'Completed'    => sprintf( '%s%%', number_format( $set->percent_translated(), 1 ) + 0 ),
 				'Updated'      => $zip_provider->get_last_build_time(),
-				'English Name' => $locale->english_name,
-				'Native Name'  => $locale->native_name,
 				'Package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : 'n/a',
 			];
 		}
@@ -207,10 +207,10 @@ class ProjectCommand extends WP_CLI_Command {
 			$assoc_args,
 			[
 				'Locale',
-				'Completed',
-				'Updated',
 				'English Name',
 				'Native Name',
+				'Completed',
+				'Updated',
 				'Package',
 			]
 		);
