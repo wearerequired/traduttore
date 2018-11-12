@@ -13,7 +13,9 @@ use GP;
 use GP_Format;
 use GP_Locale;
 use GP_Locales;
+use GP_Project;
 use GP_Translation_Set;
+use Translation_Entry;
 use WP_Filesystem_Base;
 use ZipArchive;
 
