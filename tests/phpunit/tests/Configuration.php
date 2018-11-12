@@ -38,7 +38,7 @@ class Configuration extends GP_UnitTestCase {
 		$this->assertEqualSets(
 			[
 				'mergeWith'  => 'foobar.pot',
-				'textDomain' => 'foo',
+				'textDomain' => 'baz',
 				'exclude'    => [
 					'bar',
 					'bar/baz.php',

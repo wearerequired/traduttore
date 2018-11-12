@@ -52,6 +52,7 @@ class Updater extends GP_UnitTestCase {
 
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
+		$this->assertSame( 'foo-plugin', $this->project->get_text_domain() );
 	}
 
 	public function test_update_with_composer_config(): void {
@@ -63,10 +64,11 @@ class Updater extends GP_UnitTestCase {
 
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
+		$this->assertSame( 'baz', $this->project->get_text_domain() );
 	}
 
 	public function test_update_with_config_file(): void {
-		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-composer' );
+		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-config' );
 
 		$result = $this->updater->update( $config );
 
@@ -74,6 +76,7 @@ class Updater extends GP_UnitTestCase {
 
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
+		$this->assertSame( 'foo', $this->project->get_text_domain() );
 	}
 
 	public function test_has_no_lock_initially(): void {
