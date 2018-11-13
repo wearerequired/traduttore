@@ -274,6 +274,12 @@ class ProjectCommand extends WP_CLI_Command {
 
 			/* @var GP_Translation_Set $translation_set */
 			foreach ( $translation_sets as $translation_set ) {
+				if ( 0 === $translation_set->current_count() ) {
+					WP_CLI::log( sprintf( 'No language pack generated for translation set as there are no entries (ID: %d)', $translation_set->id ) );
+
+					continue;
+				}
+
 				$zip_provider = new ZipProvider( $translation_set );
 
 				if ( ! $force && $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
