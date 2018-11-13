@@ -153,7 +153,7 @@ class ZipProvider extends GP_UnitTestCase {
 		$provider = new Provider( $this->translation_set );
 
 		add_filter( 'filesystem_method', '__return_empty_string' );
-		$result   = $provider->generate_zip_file();
+		$result = $provider->generate_zip_file();
 		remove_filter( 'filesystem_method', '__return_empty_string' );
 
 		$this->assertFalse( $result );
