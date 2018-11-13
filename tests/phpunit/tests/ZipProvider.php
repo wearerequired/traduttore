@@ -261,4 +261,36 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertTrue( $result );
 		$this->assertEqualSets( $expected_files, $actual_files );
 	}
+
+	public function test_schedule_generation_schedules_event(): void {
+		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$provider = new Provider( $this->translation_set );
+		$provider->schedule_generation();
+
+		$after = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$this->assertFalse( $before );
+		$this->assertInternalType( 'int', $after );
+	}
+
+	public function test_schedule_generation_removes_existing_event(): void {
+		$provider = new Provider( $this->translation_set );
+		$provider->schedule_generation();
+		$provider->schedule_generation();
+		$provider->schedule_generation();
+
+		$expected_count = 1;
+		$actual_count   = 0;
+
+		$crons = _get_cron_array();
+		$key   = md5( serialize( [ $this->translation_set->id ] ) );
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.generate_zip'][ $key ] ) ) {
+				$actual_count ++;
+			}
+		}
+
+		$this->assertSame( $expected_count, $actual_count );
+	}
 }
