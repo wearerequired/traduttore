@@ -135,6 +135,30 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertTrue( $provider->generate_zip_file() );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_generate_zip_file_missing_wp_filesystem(): void {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result   = $provider->generate_zip_file();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFalse( $result );
+	}
+
 	public function test_get_last_build_time_after_zip_generation(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
