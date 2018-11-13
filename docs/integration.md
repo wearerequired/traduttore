@@ -12,13 +12,15 @@ If you're using [Composer](https://getcomposer.org/) to manage dependencies, you
 composer require wearerequired/traduttore
 ```
 
-After that, you can use `Required\Traduttore_Registry\add_project( $type, $slug, $api_url )` in your theme or plugin. On a multisite install, it's recommend to use it in a must-use plugin instead.
+After that, you can use `Required\Traduttore_Registry\add_project( $type, $slug, $api_url )` in your theme or plugin.
 
-**Note:** Alternatively, you could copy the library's code to your project.
+**Note:** Alternatively, you could copy the library's code to your project. Also, on a multisite install it's recommended to use it in a must-use plugin.
 
-`$type` can either be `plugin` or `theme`
-`$slug` must match the theme/plugin directory slug
-`$api_url` is the URL to the Traduttore project translation api
+**Parameters:**
+
+* `$type`: either `plugin` or `theme`.
+* `$slug`: must match the theme/plugin directory slug.
+* `$api_url`: the URL to the Traduttore project translation API.
 
 ### Example
 
