@@ -9,7 +9,9 @@ namespace Required\Traduttore\Tests;
 
 use GP_Translation_Set;
 use \GP_UnitTestCase;
+use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
+use ZipArchive;
 
 /**
  * Test cases for \Required\Traduttore\ZipProvider.
@@ -222,5 +224,41 @@ class ZipProvider extends GP_UnitTestCase {
 		remove_filter( 'filesystem_method', '__return_empty_string' );
 
 		$this->assertFalse( $result );
+	}
+
+	public function test_use_text_domain_for_translation_files(): void {
+		$project  = ( new ProjectLocator( $this->translation_set->project_id ) )->get_project();
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$project->set_text_domain( 'foo-bar-baz' );
+
+		$provider = new Provider( $this->translation_set );
+		$result   = $provider->generate_zip_file();
+
+		$expected_files = [ 'foo-bar-baz.po', 'foo-bar-baz.mo' ];
+		$actual_files   = [];
+
+		$zip = new ZipArchive();
+
+		$zip->open( $provider->get_zip_path() );
+
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+		for ( $i = 0; $i < $zip->numFiles; $i ++ ) {
+			$stat           = $zip->statIndex( $i );
+			$actual_files[] = $stat['name'];
+		}
+
+		$zip->close();
+
+		$this->assertTrue( $result );
+		$this->assertEqualSets( $expected_files, $actual_files );
 	}
 }

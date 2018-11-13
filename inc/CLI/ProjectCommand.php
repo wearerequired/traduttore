@@ -237,7 +237,7 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     ZIP file generated for translation set (ID: 3)
 	 *     ZIP file generated for translation set (ID: 7)
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
@@ -284,6 +284,9 @@ class ProjectCommand extends WP_CLI_Command {
 	 * <project|url>
 	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
+	 * [--cached]
+	 * : Use cached repository information and do not try to download code from remote.
+	 *
 	 * [--delete]
 	 * : Whether to first delete the existing local repository or not.
 	 *
@@ -301,13 +304,14 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     $ wp traduttore update 123
 	 *     Success: Updated translations for project (ID: 123)!
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.0
 	 *
 	 * @param array $args Command args.
 	 * @param array $assoc_args Associative args.
 	 */
 	public function update( $args, $assoc_args ): void {
 		$delete  = get_flag_value( $assoc_args, 'delete', false );
+		$cached  = get_flag_value( $assoc_args, 'cached', false );
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -335,7 +339,7 @@ class ProjectCommand extends WP_CLI_Command {
 			$runner->delete_local_repository();
 		}
 
-		$success = $runner->run();
+		$success = $runner->run( $cached );
 
 		if ( $success ) {
 			WP_CLI::success( sprintf( 'Updated translations for project (ID: %d)!', $project->get_id() ) );
