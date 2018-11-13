@@ -48,6 +48,7 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     Project ID:            1
 	 *     Project name:          Foo Project
 	 *     Project slug:          foo
+	 *     Text domain:           foo-plugin
 	 *     Repository Cache:      /tmp/traduttore-github.com-wearerequired-foo
 	 *     Repository URL:        (unknown)
 	 *     Repository Type:       github
@@ -77,6 +78,7 @@ class ProjectCommand extends WP_CLI_Command {
 		$project_id            = $project->get_id();
 		$project_name          = $project->get_name();
 		$project_slug          = $project->get_slug();
+		$project_text_domain   = $project->get_text_domain();
 		$local_path            = $loader ? $loader->get_local_path() : '';
 		$repository_url        = $project->get_repository_url() ?? '(unknown)';
 		$repository_type       = $repository ? $repository->get_type() : $project->get_repository_type();
@@ -92,6 +94,7 @@ class ProjectCommand extends WP_CLI_Command {
 				'id'                    => $project_id,
 				'name'                  => $project_name,
 				'slug'                  => $project_slug,
+				'text_domain'           => $project_text_domain,
 				'repository_cache'      => $local_path,
 				'repository_url'        => $repository_url,
 				'repository_type'       => $repository_type,
@@ -108,6 +111,7 @@ class ProjectCommand extends WP_CLI_Command {
 			WP_CLI::line( "Project ID:\t\t" . $project_id );
 			WP_CLI::line( "Project name:\t\t" . $project_name );
 			WP_CLI::line( "Project slug:\t\t" . $project_slug );
+			WP_CLI::line( "Text domain:\t\t" . $project_text_domain );
 			WP_CLI::line( "Repository Cache:\t" . $local_path );
 			WP_CLI::line( "Repository URL:\t\t" . $repository_url );
 			WP_CLI::line( "Repository Type:\t" . $repository_type );
