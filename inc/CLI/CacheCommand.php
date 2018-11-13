@@ -21,9 +21,7 @@ use WP_CLI_Command;
  */
 class CacheCommand extends WP_CLI_Command {
 	/**
-	 * Removes the cached Git repository for a given project.
-	 *
-	 * Finds the project the repository belongs to and removes the checked out Git repository completely.
+	 * Removes the cached source code repository for a given project.
 	 *
 	 * Useful when the local repository was somehow corrupted.
 	 *
