@@ -164,7 +164,7 @@ class ProjectCommand extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     # Display available language packs for the given project
-	 *     $ wp traduttore project list-language-packs 1 --fields=Locale,Package
+	 *     $ wp traduttore project list 1 --fields=Locale,Package
 	 *     +--------+----------------------------------------------------------------+
 	 *     | Locale | Package                                                        |
 	 *     +--------+----------------------------------------------------------------+
@@ -239,14 +239,14 @@ class ProjectCommand extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     # Generate language packs for the project with ID 123.
-	 *     $ wp traduttore build 123
+	 *     $ wp traduttore project build 123
 	 *     Language pack generated for translation set (ID: 1)
 	 *     Language pack generated for translation set (ID: 3)
 	 *     Language pack generated for translation set (ID: 7)
 	 *     Success: Language pack generation finished
 	 *
 	 *     # Generate language packs for all projects.
-	 *     $ wp traduttore build --all
+	 *     $ wp traduttore project build --all
 	 *     Language pack generated for translation set (ID: 1)
 	 *     Language pack generated for translation set (ID: 2)
 	 *     Language pack generated for translation set (ID: 3)
@@ -324,15 +324,15 @@ class ProjectCommand extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     # Update translations from repository URL.
-	 *     $ wp traduttore update https://github.com/wearerequired/required-valencia
+	 *     $ wp traduttore project update https://github.com/wearerequired/required-valencia
 	 *     Success: Updated translations for project (ID: 123)!
 	 *
 	 *     # Update translations from project path.
-	 *     $ wp traduttore update required/required-valencia
+	 *     $ wp traduttore project update required/required-valencia
 	 *     Success: Updated translations for project (ID: 123)!
 	 *
 	 *     # Update translations from project ID.
-	 *     $ wp traduttore update 123
+	 *     $ wp traduttore project update 123
 	 *     Success: Updated translations for project (ID: 123)!
 	 *
 	 * @since 3.0.0
