@@ -12,7 +12,7 @@ Create ZIP files containing the translations for all translation sets of a proje
 wp traduttore build <project>
 ```
 
-Language packs will automatically be updated when the translations change. This WP-CLI command is mostly for debugging / testing.
+Language packs will automatically be updated when the translations change. This WP-CLI command is mostly for debugging / testing. Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
 
 ## Update translations from GitHub
 
@@ -23,6 +23,8 @@ Pulls the latest changes from GitHub, extracts translatable strings and imports 
 ```bash
 wp traduttore update <project|repository_url>
 ```
+
+Use the `--delete` flag to first delete the existing local repository.
 
 ## Clearing the cached Git repository
 
