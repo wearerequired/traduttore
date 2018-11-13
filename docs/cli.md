@@ -6,35 +6,50 @@ You can define `TRADUTTORE_WP_BIN` in your `wp-config.php` file to tell Tradutto
 
 ## Generate language packs
 
-Create ZIP files containing the translations for all translation sets of a project.
+Generate language packs for one or more projects.
 
 ```bash
-wp traduttore build <project>
+wp traduttore project build <project>
 ```
 
-Language packs will automatically be updated when the translations change. This WP-CLI command is mostly for debugging / testing. Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
+Language packs will automatically be updated upon translation changes.
 
-## Update translations from GitHub
+This WP-CLI command is mostly useful for debugging / testing.
 
-Update a project's translatable string from a GitHub repository.
+Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
 
-Pulls the latest changes from GitHub, extracts translatable strings and imports them into GitHub.
+## Update translations from remote
+
+Updates project translations from source code repository.
+
+Pulls the latest changes, extracts translatable strings and imports them into GlotPress.
 
 ```bash
-wp traduttore update <project|repository_url>
+wp traduttore project update <project|repository_url>
 ```
 
 Use the `--delete` flag to first delete the existing local repository.
 
-## Clearing the cached Git repository
+## Clearing the cached source code repository
 
-Traduttore pulls the remote Git repository from GitHub and uses that for importing translatable strings.
+Removes the cached source code repository for a given project.
 
-If this local repository somehow gets broken, you can remove it via WP-CLI as follows:
+Useful when the local repository was somehow corrupted.
 
 ```bash
 wp traduttore cache clear <project|repository_url>
 ````
+
+## Show various details about a project
+
+There's a command to print some helpful debug information about a given project.
+
+This includes things like the text domain and repository URLs.
+
+```bash
+wp traduttore project info <project|repository_url>
+```
+
 
 ## Show various details about the environment
 

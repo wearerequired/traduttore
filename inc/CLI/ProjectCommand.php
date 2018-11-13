@@ -223,23 +223,37 @@ class ProjectCommand extends WP_CLI_Command {
 	}
 
 	/**
-	 * Generate translation ZIP files for a project.
+	 * Generate language packs for one or more projects.
 	 *
 	 * ## OPTIONS
 	 *
-	 * <project>
-	 * : Path or ID of the project to generate ZIP files for.
+	 * [<project>...]
+	 * : One or more project paths or IDs.
 	 *
 	 * [--force]
-	 * : Force ZIP file generation, even if there were no changes since the last build.
+	 * : Force language pack generation, even if there were no changes since the last build.
+	 *
+	 * [--all]
+	 * : If set, language packs will be generated for all projects.
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     # Generate ZIP files for the project with ID 123.
+	 *     # Generate language packs for the project with ID 123.
 	 *     $ wp traduttore build 123
-	 *     ZIP file generated for translation set (ID: 1)
-	 *     ZIP file generated for translation set (ID: 3)
-	 *     ZIP file generated for translation set (ID: 7)
+	 *     Language pack generated for translation set (ID: 1)
+	 *     Language pack generated for translation set (ID: 3)
+	 *     Language pack generated for translation set (ID: 7)
+	 *     Success: Language pack generation finished
+	 *
+	 *     # Generate language packs for all projects.
+	 *     $ wp traduttore build --all
+	 *     Language pack generated for translation set (ID: 1)
+	 *     Language pack generated for translation set (ID: 2)
+	 *     Language pack generated for translation set (ID: 3)
+	 *     Language pack generated for translation set (ID: 4)
+	 *     Language pack generated for translation set (ID: 5)
+	 *     Language pack generated for translation set (ID: 7)
+	 *     Success: Language pack generation finished
 	 *
 	 * @since 3.0.0
 	 *
@@ -247,35 +261,48 @@ class ProjectCommand extends WP_CLI_Command {
 	 * @param array $assoc_args Associative args.
 	 */
 	public function build( $args, $assoc_args ): void {
-		$locator = new ProjectLocator( $args[0] );
-		$project = $locator->get_project();
+		$all      = get_flag_value( $assoc_args, 'all', false );
+		$force    = get_flag_value( $assoc_args, 'force', false );
+		$projects = $this->check_optional_args_and_all( $args, $all );
 
-		if ( ! $project ) {
-			WP_CLI::error( 'Project not found' );
+		if ( ! $projects ) {
+			return;
 		}
 
-		$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
-
-		/* @var GP_Translation_Set $translation_set */
-		foreach ( $translation_sets as $translation_set ) {
-			$zip_provider = new ZipProvider( $translation_set );
-
-			if ( ! get_flag_value( $assoc_args, 'force' ) && $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
-				WP_CLI::log( sprintf( 'No ZIP file generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
-
+		foreach ( $projects as $project ) {
+			if ( ! $project ) {
 				continue;
 			}
 
-			if ( $zip_provider->generate_zip_file() ) {
-				WP_CLI::success( sprintf( 'ZIP file generated for translation set (ID: %d)', $translation_set->id ) );
+			$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
-				continue;
+			/* @var GP_Translation_Set $translation_set */
+			foreach ( $translation_sets as $translation_set ) {
+				if ( 0 === $translation_set->current_count() ) {
+					WP_CLI::log( sprintf( 'No language pack generated for translation set as there are no entries (ID: %d)', $translation_set->id ) );
+
+					continue;
+				}
+
+				$zip_provider = new ZipProvider( $translation_set );
+
+				if ( ! $force && $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
+					WP_CLI::log( sprintf( 'No language pack generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
+
+					continue;
+				}
+
+				if ( $zip_provider->generate_zip_file() ) {
+					WP_CLI::log( sprintf( 'Language pack generated for translation set (ID: %d)', $translation_set->id ) );
+
+					continue;
+				}
+
+				WP_CLI::warning( sprintf( 'Error generating Language pack for translation set (ID: %d)', $translation_set->id ) );
 			}
-
-			WP_CLI::warning( sprintf( 'Error generating ZIP file for translation set (ID: %d)', $translation_set->id ) );
 		}
 
-		WP_CLI::success( 'ZIP file generation finished' );
+		WP_CLI::success( 'Language pack generation finished' );
 	}
 
 	/**
@@ -352,5 +379,51 @@ class ProjectCommand extends WP_CLI_Command {
 		}
 
 		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->get_id() ) );
+	}
+
+	/**
+	 * If there are optional args ([<project>...]) and an all option, then check if we have something to do.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $args Passed arguments.
+	 * @param bool  $all  All flag.
+	 *
+	 * @return array Same as $args if not all, otherwise all slugs.
+	 */
+	protected function check_optional_args_and_all( $args, $all ): array {
+		if ( $all ) {
+			$args = $this->get_all_projects();
+		}
+
+		if ( empty( $args ) ) {
+			if ( ! $all ) {
+				WP_CLI::error( 'Please specify one or more projects, or use --all.' );
+			}
+
+			WP_CLI::success( 'No projects found' );
+		}
+
+		$args = array_map(
+			function ( $project ) {
+				$locator = new ProjectLocator( $project );
+
+				return $locator->get_project();
+			},
+			$args
+		);
+
+		return $args;
+	}
+
+	/**
+	 * Returns all active GlotPress projects.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return \GP_Project[] GlotPress projects
+	 */
+	protected function get_all_projects(): array {
+		return GP::$project->many( GP::$project->select_all_from_conditions_and_order( [ 'active' => 1 ] ) );
 	}
 }
