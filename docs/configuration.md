@@ -68,4 +68,4 @@ Here's an example `traduttore.json` file:
 }
 ```
 
-In the future, more options might be suported.
+In the future, more options might be supported.

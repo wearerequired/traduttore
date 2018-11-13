@@ -16,6 +16,8 @@ Language packs will automatically be updated upon translation changes.
 
 This WP-CLI command is mostly useful for debugging / testing.
 
+Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
+
 ## Update translations from remote
 
 Updates project translations from source code repository.
@@ -25,6 +27,8 @@ Pulls the latest changes, extracts translatable strings and imports them into Gl
 ```bash
 wp traduttore project update <project|repository_url>
 ```
+
+Use the `--delete` flag to first delete the existing local repository.
 
 ## Clearing the cached source code repository
 
