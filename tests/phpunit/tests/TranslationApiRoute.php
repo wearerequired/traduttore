@@ -50,23 +50,21 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	}
 
 	public function tearDown() {
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/* @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
 			require_once ABSPATH . '/wp-admin/includes/admin.php';
-
-			if ( ! \WP_Filesystem() ) {
-				return false;
-			}
 		}
 
-		$wp_filesystem->rmdir( Provider::get_cache_dir(), true );
+		if ( \WP_Filesystem() ) {
+			$wp_filesystem->rmdir( Provider::get_cache_dir(), true );
+		}
 
 		parent::tearDown();
 	}
 
-	public function assert404() {
+	public function assert404(): void {
 		$this->assertSame( 404, $this->route->http_status );
 	}
 
@@ -75,13 +73,17 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 
 		$response = get_echo(
 			function() use ( $route, $project_path ) {
-					return $route->route_callback( $project_path );
+				/** @var Route $route */
+				return $route->route_callback( $project_path );
 			}
 		);
 
 		return json_decode( $response, true );
 	}
 
+	/**
+	 * @covers \Required\Traduttore\Plugin::register_glotpress_api_routes
+	 */
 	public function test_invalid_project(): void {
 		$response = $this->get_route_callback( 'foo' );
 
