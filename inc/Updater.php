@@ -9,6 +9,8 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP;
 use PO;
 
@@ -130,6 +132,10 @@ class Updater {
 		$this->project->set_text_domain( sanitize_text_field( $translations->headers['X-Domain'] ) );
 
 		$stats = GP::$original->import_for_project( $this->project->get_project(), $translations );
+
+		$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+
+		$this->project->set_last_updated_time( $now->format( DATE_MYSQL ) );
 
 		/**
 		 * Fires after translations have been updated.
