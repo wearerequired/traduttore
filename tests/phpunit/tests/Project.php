@@ -145,4 +145,12 @@ class Project extends TestCase {
 
 		$this->assertSame( $url, $this->project->get_repository_https_url() );
 	}
+
+	public function test_get_repository_webhook_secret(): void {
+		$secret = 'Sup3rS3cr3tPassw0rd';
+
+		$this->project->set_repository_webhook_secret( $secret );
+
+		$this->assertSame( $secret, $this->project->get_repository_webhook_secret() );
+	}
 }
