@@ -7,13 +7,12 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase;
 use \Required\Traduttore\Configuration as Config;
 
 /**
  * Test cases for \Required\Traduttore\Configuration.
  */
-class Configuration extends GP_UnitTestCase {
+class Configuration extends TestCase {
 	public function test_get_path(): void {
 		$config = new Config( dirname( __DIR__ ) . '/data/example-no-config' );
 

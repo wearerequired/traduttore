@@ -7,17 +7,15 @@
 
 namespace Required\Traduttore\Tests\WebhookHandler;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
-use WP_Error;
+use Required\Traduttore\Tests\TestCase;
 use \WP_REST_Request;
-use \WP_REST_Response;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitLab.
  */
-class GitLab extends GP_UnitTestCase {
+class GitLab extends TestCase {
 	/**
 	 * @var Project
 	 */
@@ -34,27 +32,6 @@ class GitLab extends GP_UnitTestCase {
 				]
 			)
 		);
-	}
-
-	/**
-	 * @see WP_Test_REST_TestCase
-	 *
-	 * @param mixed                     $code
-	 * @param WP_REST_Response|WP_Error $response
-	 * @param mixed                     $status
-	 */
-	protected function assertErrorResponse( $code, $response, $status = null ): void {
-		if ( $response instanceof WP_REST_Response ) {
-			$response = $response->as_error();
-		}
-
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( $code, $response->get_error_code() );
-		if ( null !== $status ) {
-			$data = $response->get_error_data();
-			$this->assertArrayHasKey( 'status', $data );
-			$this->assertEquals( $status, $data['status'] );
-		}
 	}
 
 	public function test_missing_event_header(): void {

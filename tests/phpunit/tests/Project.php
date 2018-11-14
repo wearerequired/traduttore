@@ -7,14 +7,13 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase;
 use \GP_Project;
 use \Required\Traduttore\Project as TraduttoreProject;
 
 /**
  * Test cases for \Required\Traduttore\Project.
  */
-class Project extends GP_UnitTestCase {
+class Project extends TestCase {
 	/**
 	 * @var GP_Project
 	 */

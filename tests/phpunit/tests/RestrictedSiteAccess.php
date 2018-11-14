@@ -7,13 +7,12 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Plugin;
 
 /**
  * Test cases for Restricted Site Access integration in \Required\Traduttore\Plugin.
  */
-class RestrictedSiteAccess extends GP_UnitTestCase {
+class RestrictedSiteAccess extends TestCase {
 	public function test_does_not_change_restriction_by_default(): void {
 		global $wp;
 

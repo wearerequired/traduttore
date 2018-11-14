@@ -8,7 +8,6 @@
 namespace Required\Traduttore\Tests;
 
 use \GP;
-use \GP_UnitTestCase;
 use \Required\Traduttore\Configuration;
 use \Required\Traduttore\Project;
 use \Required\Traduttore\Updater as U;
@@ -16,7 +15,7 @@ use \Required\Traduttore\Updater as U;
 /**
  * Test cases for \Required\Traduttore\Updater.
  */
-class Updater extends GP_UnitTestCase {
+class Updater extends TestCase {
 	/**
 	 * @var Project
 	 */

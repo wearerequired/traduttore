@@ -11,11 +11,12 @@ use \GP_UnitTestCase;
 use Required\Traduttore\Repository\GitLab as GitLabRepository;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;
+use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Repository\GitLab.
  */
-class GitLab extends GP_UnitTestCase {
+class GitLab extends TestCase {
 	/** @var Project */
 	protected $project;
 

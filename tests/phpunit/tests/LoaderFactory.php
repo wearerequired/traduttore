@@ -7,7 +7,6 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Loader\{Git, Mercurial};
 use \Required\Traduttore\Project;
 use \Required\Traduttore\Repository;
@@ -19,7 +18,7 @@ use Required\Traduttore\Repository\GitLab;
 /**
  * Test cases for \Required\Traduttore\LoaderFactory.
  */
-class LoaderFactory extends GP_UnitTestCase {
+class LoaderFactory extends TestCase {
 	public function test_get_mercurial_loader(): void {
 		$factory = new Factory();
 		$project = new Project(
