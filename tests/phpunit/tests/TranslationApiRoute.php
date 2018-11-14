@@ -7,9 +7,11 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase_Route;
-use \Required\Traduttore\TranslationApiRoute as Route;
-use \Required\Traduttore\ZipProvider as Provider;
+use ReflectionClass;
+use GP;
+use GP_UnitTestCase_Route;
+use Required\Traduttore\TranslationApiRoute as Route;
+use Required\Traduttore\ZipProvider as Provider;
 
 /**
  * Test cases for \Required\Traduttore\TranslationApiRoute.
@@ -84,6 +86,15 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	/**
 	 * @covers \Required\Traduttore\Plugin::register_glotpress_api_routes
 	 */
+	public function test_route_exists(): void {
+		$class = new ReflectionClass( GP::$router );
+
+		$property = $class->getProperty( 'urls' );
+		$property->setAccessible( true );
+
+		$this->assertTrue( isset( $property->getValue( GP::$router )['get:/api/translations/(.+?)'] ) );
+	}
+
 	public function test_invalid_project(): void {
 		$response = $this->get_route_callback( 'foo' );
 
