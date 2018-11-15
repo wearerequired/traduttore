@@ -7,7 +7,6 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase;
 use \Required\Traduttore\Project;
 use \Required\Traduttore\Updater;
 use \Required\Traduttore\Runner as R;
@@ -16,7 +15,7 @@ use \Required\Traduttore\Loader\Git as Loader;
 /**
  * Test cases for \Required\Traduttore\Runner.
  */
-class Runner extends GP_UnitTestCase {
+class Runner extends TestCase {
 	/**
 	 * @var Project
 	 */

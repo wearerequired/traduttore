@@ -366,11 +366,11 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $name The new secret.
+	 * @param string $secret The new secret.
 	 * @return bool Whether the data was successfully saved or not.
 	 */
-	public function set_repository_webhook_secret( string $name ): bool {
-		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY, $name, 'project' );
+	public function set_repository_webhook_secret( string $secret ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY, $secret, 'project' );
 	}
 
 	/**

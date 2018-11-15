@@ -11,11 +11,12 @@ use \GP_UnitTestCase;
 use Required\Traduttore\Repository\GitLab as GitLabRepository;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;
+use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Repository\GitLab.
  */
-class GitLab extends GP_UnitTestCase {
+class GitLab extends TestCase {
 	/** @var Project */
 	protected $project;
 
@@ -81,6 +82,20 @@ class GitLab extends GP_UnitTestCase {
 		$repository = new GitLabRepository( $this->project );
 
 		$this->assertSame( 'wearerequired/traduttore', $repository->get_name() );
+	}
+
+	public function test_get_host_falls_back_to_repository_url(): void {
+		$this->project->set_repository_url( 'https://gitlab.example.com/wearerequired/traduttore/' );
+
+		$repository = new GitLabRepository( $this->project );
+
+		$this->assertSame( 'gitlab.example.com', $repository->get_host() );
+	}
+
+	public function test_get_host(): void {
+		$repository = new GitLabRepository( $this->project );
+
+		$this->assertSame( 'gitlab.com', $repository->get_host() );
 	}
 
 	/**

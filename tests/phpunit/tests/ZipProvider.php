@@ -8,7 +8,6 @@
 namespace Required\Traduttore\Tests;
 
 use GP_Translation_Set;
-use \GP_UnitTestCase;
 use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
 use ZipArchive;
@@ -16,7 +15,7 @@ use ZipArchive;
 /**
  * Test cases for \Required\Traduttore\ZipProvider.
  */
-class ZipProvider extends GP_UnitTestCase {
+class ZipProvider extends TestCase {
 	/**
 	 * @var \GP_Locale
 	 */

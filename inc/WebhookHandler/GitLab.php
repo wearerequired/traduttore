@@ -39,10 +39,6 @@ class GitLab extends Base {
 			return false;
 		}
 
-		if ( ! defined( 'TRADUTTORE_GITLAB_SYNC_SECRET' ) ) {
-			return false;
-		}
-
 		$token = $this->request->get_header( 'x-gitlab-token' );
 
 		if ( ! $token ) {

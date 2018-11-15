@@ -7,14 +7,13 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase;
 use \GP_Project;
 use \Required\Traduttore\Project as TraduttoreProject;
 
 /**
  * Test cases for \Required\Traduttore\Project.
  */
-class Project extends GP_UnitTestCase {
+class Project extends TestCase {
 	/**
 	 * @var GP_Project
 	 */
@@ -145,5 +144,13 @@ class Project extends GP_UnitTestCase {
 		$this->project->set_repository_https_url( $url );
 
 		$this->assertSame( $url, $this->project->get_repository_https_url() );
+	}
+
+	public function test_get_repository_webhook_secret(): void {
+		$secret = 'Sup3rS3cr3tPassw0rd';
+
+		$this->project->set_repository_webhook_secret( $secret );
+
+		$this->assertSame( $secret, $this->project->get_repository_webhook_secret() );
 	}
 }
