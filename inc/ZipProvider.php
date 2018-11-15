@@ -257,7 +257,7 @@ class ZipProvider {
 		/**
 		 * Filters the path to Traduttore's cache directory.
 		 *
-		 * Useful when language packs should be store somewhere else.
+		 * Useful when language packs should be stored somewhere else.
 		 *
 		 * @since 3.0.0
 		 *
@@ -304,7 +304,7 @@ class ZipProvider {
 		/**
 		 * Filters the path to Traduttore's cache directory.
 		 *
-		 * Useful when language packs should be store somewhere else.
+		 * Useful when language packs should be stored somewhere else.
 		 *
 		 * @since 3.0.0
 		 *
