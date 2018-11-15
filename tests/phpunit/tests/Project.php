@@ -146,6 +146,18 @@ class Project extends TestCase {
 		$this->assertSame( $url, $this->project->get_repository_https_url() );
 	}
 
+	public function test_get_last_updated_time_returns_null_if_missing(): void {
+		$this->assertNull( $this->project->get_repository_https_url() );
+	}
+
+	public function test_get_last_updated_time(): void {
+		$time = date( DATE_MYSQL );
+
+		$this->project->set_last_updated_time( $time );
+
+		$this->assertSame( $time, $this->project->get_last_updated_time() );
+	}
+
 	public function test_get_repository_webhook_secret(): void {
 		$secret = 'Sup3rS3cr3tPassw0rd';
 

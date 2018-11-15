@@ -49,6 +49,7 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     Project name:          Foo Project
 	 *     Project slug:          foo
 	 *     Text domain:           foo-plugin
+	 *     Last updated:          2018-11-11 11:11:11
 	 *     Repository Cache:      /tmp/traduttore-github.com-wearerequired-foo
 	 *     Repository URL:        (unknown)
 	 *     Repository Type:       github
@@ -79,6 +80,7 @@ class ProjectCommand extends WP_CLI_Command {
 		$project_name          = $project->get_name();
 		$project_slug          = $project->get_slug();
 		$project_text_domain   = $project->get_text_domain();
+		$last_updated          = $project->get_last_updated_time();
 		$local_path            = $loader ? $loader->get_local_path() : '';
 		$repository_url        = $project->get_repository_url() ?? '(unknown)';
 		$repository_type       = $repository ? $repository->get_type() : $project->get_repository_type();
@@ -87,7 +89,7 @@ class ProjectCommand extends WP_CLI_Command {
 		$repository_ssh_url    = $repository ? $repository->get_ssh_url() : '(unknown)';
 		$repository_https_url  = $repository ? $repository->get_https_url() : '(unknown)';
 		$repository_instance   = $repository ? get_class( $repository ) : '(unknown)';
-		$loader_instance       = $loader ? get_class( $loader ) : '';
+		$loader_instance       = $loader ? get_class( $loader ) : '(unknown)';
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'json' ) {
 			$info = array(
@@ -95,6 +97,7 @@ class ProjectCommand extends WP_CLI_Command {
 				'name'                  => $project_name,
 				'slug'                  => $project_slug,
 				'text_domain'           => $project_text_domain,
+				'last_updated'          => $last_updated,
 				'repository_cache'      => $local_path,
 				'repository_url'        => $repository_url,
 				'repository_type'       => $repository_type,
@@ -112,6 +115,7 @@ class ProjectCommand extends WP_CLI_Command {
 			WP_CLI::line( "Project name:\t\t" . $project_name );
 			WP_CLI::line( "Project slug:\t\t" . $project_slug );
 			WP_CLI::line( "Text domain:\t\t" . $project_text_domain );
+			WP_CLI::line( "Last updated:\t\t" . $last_updated );
 			WP_CLI::line( "Repository Cache:\t" . $local_path );
 			WP_CLI::line( "Repository URL:\t\t" . $repository_url );
 			WP_CLI::line( "Repository Type:\t" . $repository_type );
