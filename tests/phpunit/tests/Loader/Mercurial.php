@@ -5,19 +5,20 @@
  * @package Traduttore\Tests
  */
 
-namespace Required\Traduttore\Tests;
+namespace Required\Traduttore\Tests\Loader;
 
 use \GP_UnitTestCase;
 use \Required\Traduttore\Loader\Mercurial as MercurialLoader;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository\Bitbucket;
+use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Loader\Mercurial.
  *
  * @todo Mock shell execution
  */
-class Mercurial extends GP_UnitTestCase {
+class Mercurial extends TestCase {
 	/**
 	 * @var Project
 	 */

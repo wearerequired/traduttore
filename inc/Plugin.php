@@ -298,9 +298,9 @@ class Plugin {
 		}
 
 		if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
-			$route = GP::$router->request_uri();
+			$route = untrailingslashit( GP::$router->request_uri() );
 
-			if ( 0 === strpos( $route, '/api/translations/' ) ) {
+			if ( 0 === strpos( $route, '/api/translations' ) ) {
 				return false;
 			}
 		}

@@ -5,19 +5,19 @@
  * @package Traduttore\Tests
  */
 
-namespace Required\Traduttore\Tests;
+namespace Required\Traduttore\Tests\Loader;
 
-use \GP_UnitTestCase;
 use \Required\Traduttore\Loader\Subversion as SubversionLoader;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository\Bitbucket;
+use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Loader\Subversion.
  *
  * @todo Mock shell execution
  */
-class Subversion extends GP_UnitTestCase {
+class Subversion extends TestCase {
 	/**
 	 * @var Project
 	 */

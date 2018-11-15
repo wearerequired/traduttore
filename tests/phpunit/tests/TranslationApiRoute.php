@@ -7,9 +7,11 @@
 
 namespace Required\Traduttore\Tests;
 
-use \GP_UnitTestCase_Route;
-use \Required\Traduttore\TranslationApiRoute as Route;
-use \Required\Traduttore\ZipProvider as Provider;
+use ReflectionClass;
+use GP;
+use GP_UnitTestCase_Route;
+use Required\Traduttore\TranslationApiRoute as Route;
+use Required\Traduttore\ZipProvider as Provider;
 
 /**
  * Test cases for \Required\Traduttore\TranslationApiRoute.
@@ -50,23 +52,21 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	}
 
 	public function tearDown() {
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/* @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
 			require_once ABSPATH . '/wp-admin/includes/admin.php';
-
-			if ( ! \WP_Filesystem() ) {
-				return false;
-			}
 		}
 
-		$wp_filesystem->rmdir( Provider::get_cache_dir(), true );
+		if ( \WP_Filesystem() ) {
+			$wp_filesystem->rmdir( Provider::get_cache_dir(), true );
+		}
 
 		parent::tearDown();
 	}
 
-	public function assert404() {
+	public function assert404(): void {
 		$this->assertSame( 404, $this->route->http_status );
 	}
 
@@ -75,11 +75,24 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 
 		$response = get_echo(
 			function() use ( $route, $project_path ) {
-					return $route->route_callback( $project_path );
+				/** @var Route $route */
+				return $route->route_callback( $project_path );
 			}
 		);
 
 		return json_decode( $response, true );
+	}
+
+	/**
+	 * @covers \Required\Traduttore\Plugin::register_glotpress_api_routes
+	 */
+	public function test_route_exists(): void {
+		$class = new ReflectionClass( GP::$router );
+
+		$property = $class->getProperty( 'urls' );
+		$property->setAccessible( true );
+
+		$this->assertTrue( isset( $property->getValue( GP::$router )['get:/api/translations/(.+?)'] ) );
 	}
 
 	public function test_invalid_project(): void {

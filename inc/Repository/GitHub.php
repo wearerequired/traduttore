@@ -47,36 +47,6 @@ class GitHub extends Base {
 	}
 
 	/**
-	 * Returns the repository name.
-	 *
-	 * If the name is not stored in the database,
-	 * it tries to determine it from the repository URL and the project path.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string Repository name.
-	 */
-	public function get_name(): string {
-		$name = $this->project->get_repository_name();
-
-		if ( ! $name ) {
-			$url = $this->project->get_repository_url();
-
-			if ( ! $url ) {
-				$url = $this->project->get_source_url_template();
-			}
-
-			if ( $url ) {
-				$path  = trim( wp_parse_url( $url, PHP_URL_PATH ), '/' );
-				$parts = explode( '/', $path );
-				$name  = implode( '/', array_splice( $parts, 0, 2 ) );
-			}
-		}
-
-		return $name ?: $this->project->get_project()->slug;
-	}
-
-	/**
 	 * Indicates whether a GitHub repository is publicly accessible or not.
 	 *
 	 * @since 3.0.0
@@ -94,6 +64,6 @@ class GitHub extends Base {
 			$this->project->set_repository_visibility( $visibility );
 		}
 
-		return 'public' === $visibility;
+		return parent::is_public();
 	}
 }

@@ -5,17 +5,20 @@
  * @package Traduttore\Tests
  */
 
-namespace Required\Traduttore\Tests;
+namespace Required\Traduttore\Tests\Loader;
 
 use \GP_UnitTestCase;
 use \Required\Traduttore\Loader\Git as GitLoader;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository\GitHub;
+use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Loader\Git.
+ *
+ * @todo Mock shell execution
  */
-class Git extends GP_UnitTestCase {
+class Git extends TestCase {
 	/**
 	 * @var Project
 	 */
