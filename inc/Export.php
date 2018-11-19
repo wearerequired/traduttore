@@ -10,7 +10,6 @@
 namespace Required\Traduttore;
 
 use GP;
-use GP_Locale;
 use GP_Locales;
 use GP_Translation_Set;
 use Translation_Entry;
@@ -53,7 +52,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	protected $files;
 
@@ -66,15 +65,6 @@ class Export {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $translation_set->locale );
 		$this->project         = new Project( GP::$project->get( $translation_set->project_id ) );
-
-		/* @var \WP_Filesystem_Base $wp_filesystem */
-		global $wp_filesystem;
-
-		if ( ! $wp_filesystem ) {
-			require_once ABSPATH . '/wp-admin/includes/admin.php';
-
-			\WP_Filesystem();
-		}
 	}
 
 	/**
@@ -106,6 +96,31 @@ class Export {
 	}
 
 	/**
+	 * Writes content to a file using the WordPress Filesystem Abstraction interface.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $file     File path.
+	 * @param string $contents File contents.
+	 *
+	 * @return bool True on success, false otherwise.
+	 */
+	protected function write_to_file( string $file, string $contents ): bool {
+		/* @var \WP_Filesystem_Base $wp_filesystem */
+		global $wp_filesystem;
+
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . '/wp-admin/includes/admin.php';
+
+			if ( ! \WP_Filesystem() ) {
+				return false;
+			}
+		}
+
+		return $wp_filesystem->put_contents( $file, $contents, FS_CHMOD_FILE );
+	}
+
+	/**
 	 * Returns the base name for translation files.
 	 *
 	 * @since 3.0.0
@@ -113,9 +128,6 @@ class Export {
 	 * @return string Base file name without extension.
 	 */
 	protected function get_base_file_name(): string {
-		/* @var GP_Locale $locale */
-		$locale = GP_Locales::by_slug( $this->translation_set->locale );
-
 		$slug        = $this->project->get_slug();
 		$text_domain = $this->project->get_text_domain();
 
@@ -123,11 +135,7 @@ class Export {
 			$slug = $text_domain;
 		}
 
-		if ( ! $locale ) {
-			return $slug;
-		}
-
-		return "{$slug}-{$locale->wp_locale}";
+		return "{$slug}-{$this->locale->wp_locale}";
 	}
 
 	/**
@@ -187,8 +195,6 @@ class Export {
 	 * @param array $mapping A mapping of files to translation entries.
 	 */
 	protected function build_json_files( $mapping ): void {
-		global $wp_filesystem;
-
 		/* @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'jed1x' );
 
@@ -199,12 +205,11 @@ class Export {
 
 			$hash      = md5( $file );
 			$file_name = "{$base_file_name}-{$hash}.json";
-
 			$temp_file = wp_tempnam( $file_name );
 
-			$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
-
-			$this->files[ $file_name ] = $temp_file;
+			if ( $this->write_to_file( $temp_file, $contents ) ) {
+				$this->files[ $file_name ] = $temp_file;
+			}
 		}
 	}
 
@@ -216,8 +221,6 @@ class Export {
 	 * @param Translation_Entry[] $entries The translation entries.
 	 */
 	protected function build_po_file( $entries ): void {
-		global $wp_filesystem;
-
 		/* @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'po' );
 
@@ -227,9 +230,9 @@ class Export {
 
 		$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
-		$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
-
-		$this->files[ $file_name ] = $temp_file;
+		if ( $this->write_to_file( $temp_file, $contents ) ) {
+			$this->files[ $file_name ] = $temp_file;
+		}
 	}
 
 	/**
@@ -240,8 +243,6 @@ class Export {
 	 * @param Translation_Entry[] $entries The translation entries.
 	 */
 	protected function build_mo_file( $entries ): void {
-		global $wp_filesystem;
-
 		/* @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'mo' );
 
@@ -251,8 +252,8 @@ class Export {
 
 		$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
-		$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
-
-		$this->files[ $file_name ] = $temp_file;
+		if ( $this->write_to_file( $temp_file, $contents ) ) {
+			$this->files[ $file_name ] = $temp_file;
+		}
 	}
 }
