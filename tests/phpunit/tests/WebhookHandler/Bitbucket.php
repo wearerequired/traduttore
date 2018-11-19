@@ -7,17 +7,15 @@
 
 namespace Required\Traduttore\Tests\WebhookHandler;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
-use \WP_Error;
+use Required\Traduttore\Tests\TestCase;
 use \WP_REST_Request;
-use \WP_REST_Response;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\Bitbucket.
  */
-class Bitbucket extends GP_UnitTestCase {
+class Bitbucket extends TestCase {
 	/**
 	 * @var Project
 	 */
@@ -34,27 +32,6 @@ class Bitbucket extends GP_UnitTestCase {
 				]
 			)
 		);
-	}
-
-	/**
-	 * @see WP_Test_REST_TestCase
-	 *
-	 * @param mixed                     $code
-	 * @param WP_REST_Response|WP_Error $response
-	 * @param mixed                     $status
-	 */
-	protected function assertErrorResponse( $code, $response, $status = null ): void {
-		if ( $response instanceof WP_REST_Response ) {
-			$response = $response->as_error();
-		}
-
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( $code, $response->get_error_code() );
-		if ( null !== $status ) {
-			$data = $response->get_error_data();
-			$this->assertArrayHasKey( 'status', $data );
-			$this->assertEquals( $status, $data['status'] );
-		}
 	}
 
 	public function test_missing_event_header(): void {
@@ -161,6 +138,41 @@ class Bitbucket extends GP_UnitTestCase {
 		$this->assertSame( 'https://bitbucket.org/wearerequired/traduttore', $this->project->get_repository_url() );
 		$this->assertSame( 'git@bitbucket.org:wearerequired/traduttore.git', $this->project->get_repository_ssh_url() );
 		$this->assertSame( 'https://bitbucket.org/wearerequired/traduttore.git', $this->project->get_repository_https_url() );
+		$this->assertSame( 'public', $this->project->get_repository_visibility() );
+	}
+
+	public function test_valid_mercurial_project(): void {
+		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
+
+		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request->set_body_params(
+			[
+				'ref'        => 'refs/heads/master',
+				'repository' => [
+					'links'      => [
+						'html' => [
+							'href' => 'https://bitbucket.org/wearerequired/traduttore',
+						],
+					],
+					'full_name'  => 'wearerequired/traduttore',
+					'scm'        => 'git',
+					'is_private' => false,
+				],
+			]
+		);
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-event-key', 'repo:push' );
+		$request->add_header( 'x-hub-signature', $signature );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
+		$this->assertSame( Repository::VCS_TYPE_HG, $this->project->get_repository_vcs_type() );
+		$this->assertSame( Repository::TYPE_BITBUCKET, $this->project->get_repository_type() );
+		$this->assertSame( 'wearerequired/traduttore', $this->project->get_repository_name() );
+		$this->assertSame( 'https://bitbucket.org/wearerequired/traduttore', $this->project->get_repository_url() );
+		$this->assertSame( 'hg@bitbucket.org/wearerequired/traduttore', $this->project->get_repository_ssh_url() );
+		$this->assertSame( 'https://bitbucket.org/wearerequired/traduttore', $this->project->get_repository_https_url() );
 		$this->assertSame( 'public', $this->project->get_repository_visibility() );
 	}
 }

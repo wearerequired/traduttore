@@ -7,17 +7,15 @@
 
 namespace Required\Traduttore\Tests\WebhookHandler;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
-use WP_Error;
+use Required\Traduttore\Tests\TestCase;
 use \WP_REST_Request;
-use \WP_REST_Response;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitHub.
  */
-class LegacyGitHub extends GP_UnitTestCase {
+class LegacyGitHub extends TestCase {
 	/**
 	 * @var Project
 	 */
@@ -34,27 +32,6 @@ class LegacyGitHub extends GP_UnitTestCase {
 				]
 			)
 		);
-	}
-
-	/**
-	 * @see WP_Test_REST_TestCase
-	 *
-	 * @param mixed                     $code
-	 * @param WP_REST_Response|WP_Error $response
-	 * @param mixed                     $status
-	 */
-	protected function assertErrorResponse( $code, $response, $status = null ): void {
-		if ( $response instanceof  WP_REST_Response ) {
-			$response = $response->as_error();
-		}
-
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( $code, $response->get_error_code() );
-		if ( null !== $status ) {
-			$data = $response->get_error_data();
-			$this->assertArrayHasKey( 'status', $data );
-			$this->assertEquals( $status, $data['status'] );
-		}
 	}
 
 	public function test_missing_event_header(): void {
@@ -161,6 +138,42 @@ class LegacyGitHub extends GP_UnitTestCase {
 			]
 		);
 		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-github-event', 'push' );
+		$request->add_header( 'x-hub-signature', $signature );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
+		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
+		$this->assertSame( Repository::TYPE_GITHUB, $this->project->get_repository_type() );
+		$this->assertSame( 'wearerequired/traduttore', $this->project->get_repository_name() );
+		$this->assertSame( 'https://github.com/wearerequired/traduttore', $this->project->get_repository_url() );
+		$this->assertSame( 'git@github.com:wearerequired/traduttore.git', $this->project->get_repository_ssh_url() );
+		$this->assertSame( 'https://github.com/wearerequired/traduttore.git', $this->project->get_repository_https_url() );
+		$this->assertSame( 'public', $this->project->get_repository_visibility() );
+	}
+
+	public function test_valid_project_custom_webhook_secret(): void {
+		$secret = 'Sup3rS3cr3tPassw0rd';
+
+		$this->project->set_repository_webhook_secret( $secret );
+
+		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
+		$request->set_body_params(
+			[
+				'ref'        => 'refs/heads/master',
+				'repository' => [
+					'full_name'      => 'wearerequired/traduttore',
+					'default_branch' => 'master',
+					'html_url'       => 'https://github.com/wearerequired/traduttore',
+					'ssh_url'        => 'git@github.com:wearerequired/traduttore.git',
+					'clone_url'      => 'https://github.com/wearerequired/traduttore.git',
+					'url'            => 'https://github.com/wearerequired/traduttore',
+					'private'        => false,
+				],
+			]
+		);
+		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), $secret );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );

@@ -23,4 +23,4 @@ Now, every time you push changes to GitHub, Traduttore will get notified and the
 
 **Note:** The `TRADUTTORE_GITHUB_SYNC_SECRET` constant needs to be defined in your `wp-config.php` file to enable webhooks. Use the secret from step 5 for this.
 
-Check out the [Configuration](configuration.md) section for a list of possible consstants.
+Check out the [Configuration](configuration.md) section for a list of possible constants.
