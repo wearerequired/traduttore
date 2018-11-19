@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration class.
+ * Configuration class
  *
  * @since 3.0.0
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * TranslationApi class.
+ * TranslationApi class
  *
  * @since 2.0.0
  *

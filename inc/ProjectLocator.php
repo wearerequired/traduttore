@@ -1,6 +1,6 @@
 <?php
 /**
- * ProjectLocator class.
+ * ProjectLocator class
  *
  * @since 2.0.0
  *

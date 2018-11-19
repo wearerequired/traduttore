@@ -1,6 +1,6 @@
 <?php
 /**
- * WebhookHandler interface.
+ * Webhook handler interface
  *
  * @since 3.0.0
  *

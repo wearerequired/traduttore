@@ -1,6 +1,6 @@
 <?php
 /**
- * RepositoryFactory class.
+ * Repository factory
  *
  * @since 3.0.0
  *

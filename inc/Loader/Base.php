@@ -1,6 +1,6 @@
 <?php
 /**
- * Base loader class.
+ * Base source code loader implementation
  *
  * @package Required\Traduttore
  */

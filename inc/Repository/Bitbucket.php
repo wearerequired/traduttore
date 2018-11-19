@@ -1,6 +1,6 @@
 <?php
 /**
- * Bitbucket repository class.
+ * Bitbucket repository implementation
  *
  * @since 3.0.0
  *

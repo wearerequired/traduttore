@@ -1,6 +1,6 @@
 <?php
 /**
- * Mercurial loader class.
+ * Mercurial source code loader
  *
  * @since 3.0.0
  *
