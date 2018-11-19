@@ -61,6 +61,32 @@ class Plugin {
 		);
 
 		add_action(
+			'gp_originals_imported',
+			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error ) {
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
+
+				if ( ! $project ) {
+					return;
+				}
+
+				if ( 0 === max( $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error ) ) {
+					return;
+				}
+
+				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
+
+				/* @var GP_Translation_Set $translation_set */
+				foreach ( $translation_sets as $translation_set ) {
+					$zip_provider = new ZipProvider( $translation_set );
+
+					$zip_provider->schedule_generation();
+				}
+			},
+			10,
+			6
+		);
+
+		add_action(
 			'traduttore.generate_zip',
 			function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
@@ -79,8 +105,7 @@ class Plugin {
 		add_action(
 			'traduttore.update',
 			function ( $project_id ) {
-				$locator = new ProjectLocator( $project_id );
-				$project = $locator->get_project();
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project ) {
 					return;
