@@ -1,6 +1,6 @@
 <?php
 /**
- * Translation export class.
+ * Translation export class
  *
  * @since 3.0.0
  *
@@ -16,27 +16,43 @@ use GP_Translation_Set;
 use Translation_Entry;
 
 /**
- * Class used to export strings to translation files
+ * Export strings to translation files in PO, MO, and JSON format.
  *
  * @since 3.0.0
  */
 class Export {
 	/**
+	 * The current translation set.
+	 *
+	 * @since 3.0.0
+	 *
 	 * @var \GP_Translation_Set
 	 */
 	protected $translation_set;
 
 	/**
+	 * The current locale.
+	 *
+	 * @since 3.0.0
+	 *
 	 * @var \GP_Locale
 	 */
 	protected $locale;
 
 	/**
+	 * The current Project instance.
+	 *
+	 * @since 3.0.0
+	 *
 	 * @var Project
 	 */
 	protected $project;
 
 	/**
+	 * List of generated files.
+	 *
+	 * @since 3.0.0
+	 *
 	 * @var array
 	 */
 	protected $files;
@@ -62,6 +78,10 @@ class Export {
 	}
 
 	/**
+	 * Saves strings to different file formats and returns a list of generated files.
+	 *
+	 * @since 3.0.0
+	 *
 	 * @return array List of files with names as key and temporary file location as value.
 	 */
 	public function export_strings(): ?array {
@@ -86,11 +106,13 @@ class Export {
 	}
 
 	/**
+	 * Returns the base name for translation files.
+	 *
 	 * @since 3.0.0
 	 *
-	 * @return string
+	 * @return string Base file name without extension.
 	 */
-	protected function get_base_filename(): string {
+	protected function get_base_file_name(): string {
 		/* @var GP_Locale $locale */
 		$locale = GP_Locales::by_slug( $this->translation_set->locale );
 
@@ -167,10 +189,10 @@ class Export {
 	protected function build_json_files( $mapping ): void {
 		global $wp_filesystem;
 
-		/** @var \GP_Format $format */
+		/* @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'jed1x' );
 
-		$base_file_name = $this->get_base_filename();
+		$base_file_name = $this->get_base_file_name();
 
 		foreach ( $mapping as $file => $entries ) {
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
@@ -196,10 +218,10 @@ class Export {
 	protected function build_po_file( $entries ): void {
 		global $wp_filesystem;
 
-		/** @var \GP_Format $format */
+		/* @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'po' );
 
-		$base_file_name = $this->get_base_filename();
+		$base_file_name = $this->get_base_file_name();
 		$file_name      = "{$base_file_name}.po";
 		$temp_file      = wp_tempnam( $file_name );
 
@@ -220,10 +242,10 @@ class Export {
 	protected function build_mo_file( $entries ): void {
 		global $wp_filesystem;
 
-		/** @var \GP_Format $format */
+		/* @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'mo' );
 
-		$base_file_name = $this->get_base_filename();
+		$base_file_name = $this->get_base_file_name();
 		$file_name      = "{$base_file_name}.mo";
 		$temp_file      = wp_tempnam( $file_name );
 
