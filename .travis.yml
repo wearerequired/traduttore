@@ -39,6 +39,9 @@ before_install:
   - |
     # Raise PHP memory limit to 2048MB
     echo 'memory_limit = 2048M' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - |
+    # Make sure the build directory exists
+    mkdir -p $(pwd)/build
 
 install:
   - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -52,6 +55,7 @@ before_script:
 
 script:
   - composer phpunit
+  - composer build
   - composer behat || composer behat-rerun
 
 jobs:
