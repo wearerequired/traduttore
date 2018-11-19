@@ -1,6 +1,6 @@
 <?php
 /**
- * Runner class.
+ * Runner class
  *
  * @since 3.0.0
  *
@@ -12,7 +12,7 @@ namespace Required\Traduttore;
 use WP_Filesystem_Base;
 
 /**
- * Runner class.
+ * Project update runner
  *
  * Used to update a project's strings given a specific loader and an updater.
  *
