@@ -77,13 +77,13 @@
     "behat-rerun": "rerun-behat-tests",
     "build": [
       "composer install --no-dev",
-      "wp dist-archive . $(pwd)/build/traduttore.zip",
+      "vendor/bin/wp dist-archive . $(pwd)/build/traduttore.zip",
       "rm -rf vendor",
       "composer install"
     ],
-    "format": "phpcbf --report-summary --report-source .",
-    "lint": "phpcs --report-summary --report-source .",
-    "phpunit": "phpunit",
+    "format": "vendor/bin/phpcbf --report-summary --report-source .",
+    "lint": "vendor/bin/phpcs --report-summary --report-source .",
+    "phpunit": "vendor/bin/phpunit",
     "prepare-tests": "install-package-tests",
     "test": [
       "@lint",
