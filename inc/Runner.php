@@ -12,7 +12,7 @@ namespace Required\Traduttore;
 use WP_Filesystem_Base;
 
 /**
- * Project update runner
+ * Project update runner.
  *
  * Used to update a project's strings given a specific loader and an updater.
  *
