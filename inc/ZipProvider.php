@@ -252,10 +252,22 @@ class ZipProvider {
 	 * @return string ZIP file URL.
 	 */
 	public function get_zip_url() : string {
+		$url = content_url( self::CACHE_DIR );
+
+		/**
+		 * Filters the path to Traduttore's cache directory.
+		 *
+		 * Useful when language packs should be stored somewhere else.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string $url Cache directory URL.
+		 */
+		$url = apply_filters( 'traduttore.content_url', $url );
+
 		return sprintf(
-			'%1$s/%2$s/%3$s',
-			WP_CONTENT_URL,
-			self::CACHE_DIR,
+			'%1$s/%2$s',
+			$url,
 			$this->get_zip_filename()
 		);
 	}
@@ -269,25 +281,35 @@ class ZipProvider {
 	 */
 	public function get_zip_path() : string {
 		return sprintf(
-			'%1$s/%2$s/%3$s',
-			WP_CONTENT_DIR,
-			self::CACHE_DIR,
+			'%1$s/%2$s',
+			static::get_cache_dir(),
 			$this->get_zip_filename()
 		);
 	}
 
 	/**
-	 * Returns the full path to the cache directory.
+	 * Returns the full path to the directory where language packs are stored.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return string Cache directory path.
 	 */
 	public static function get_cache_dir() : string {
-		return sprintf(
+		$dir = sprintf(
 			'%1$s/%2$s',
 			WP_CONTENT_DIR,
 			self::CACHE_DIR
 		);
+
+		/**
+		 * Filters the path to Traduttore's cache directory.
+		 *
+		 * Useful when language packs should be stored somewhere else.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string $dir Cache directory path.
+		 */
+		return apply_filters( 'traduttore.content_dir', $dir );
 	}
 }
