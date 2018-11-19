@@ -1,8 +1,8 @@
 <?php
 /**
- * Project class.
+ * Runner class.
  *
- * @since 2.0.0
+ * @since 3.0.0
  *
  * @package Required\Traduttore
  */
@@ -12,7 +12,7 @@ namespace Required\Traduttore;
 use WP_Filesystem_Base;
 
 /**
- * Project class.
+ * Runner class.
  *
  * @since 3.0.0
  */
