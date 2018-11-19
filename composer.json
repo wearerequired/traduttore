@@ -79,13 +79,13 @@
       "composer install --no-dev",
       "composer dump-autoload --optimize",
       "@prepare-build",
-      "wp dist-archive . $(pwd)/build/traduttore.zip"
+      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\""
     ],
     "dev-build": [
       "rm -rf vendor/autoload.php",
       "composer dump-autoload",
       "@prepare-build",
-      "wp dist-archive . $(pwd)/build/traduttore.zip",
+      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\"",
       "rm -rf vendor/autoload.php",
       "composer dump-autoload"
     ],
