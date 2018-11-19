@@ -14,6 +14,10 @@ use WP_Filesystem_Base;
 /**
  * Runner class.
  *
+ * Used to update a project's strings given a specific loader and an updater.
+ *
+ * By using a simple locking mechanism, only a single update is performed at a time.
+ *
  * @since 3.0.0
  */
 class Runner {
