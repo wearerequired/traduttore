@@ -319,7 +319,7 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_schedules_generation_after_saving_translation(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original           = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 		$translation_set_id = (int) $this->translation_set->id;
 
 		/** @var \GP_Translation $translation */
