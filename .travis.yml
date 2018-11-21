@@ -49,12 +49,11 @@ install:
   - mv wp-cli.phar wp
   - wp package install git@github.com:wp-cli/dist-archive-command.git
   - composer install
-  - zip -v
-  - wp dist-archive "$(pwd)" "$(pwd)/build/traduttore.zip" || true
-  - wp dist-archive . "$(pwd)/build/traduttore.zip" || true
-  - wp dist-archive . build/traduttore.zip || true
-  - wp dist-archive "$(pwd)" build/traduttore.zip || true
-  - wp dist-archive $TRAVIS_BUILD_DIR build/traduttore.zip || true
+  - wp dist-archive "$(pwd)" "$(pwd)/build/traduttore.zip" --debug || true
+  - wp dist-archive . "$(pwd)/build/traduttore.zip" --debug || true
+  - wp dist-archive . build/traduttore.zip --debug || true
+  - wp dist-archive "$(pwd)" build/traduttore.zip --debug || true
+  - wp dist-archive $TRAVIS_BUILD_DIR build/traduttore.zip --debug || true
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 before_script:
