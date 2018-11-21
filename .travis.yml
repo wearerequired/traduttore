@@ -48,10 +48,11 @@ install:
   - chmod +x wp-cli.phar
   - mv wp-cli.phar wp
   - wp package install git@github.com:wp-cli/dist-archive-command.git
-  - composer install
   - cd ..
   - wp dist-archive $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/build/traduttore.zip --debug || true
   - cd $TRAVIS_BUILD_DIR
+  - composer install
+  - composer prepare-tests
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 before_script:
