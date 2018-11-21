@@ -449,9 +449,9 @@ class Project {
 	 * @return null|string Version number if stored, null otherwise.
 	 */
 	public function get_version(): ?string {
-		$time = gp_get_meta( 'project', $this->project->id, static::VERSION_KEY );
+		$version = gp_get_meta( 'project', $this->project->id, static::VERSION_KEY );
 
-		return $time ?: null;
+		return $version ?: null;
 	}
 
 	/**
