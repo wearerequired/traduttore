@@ -32,14 +32,17 @@ class TranslationApiRoute extends GP_Route_Main {
 		$this->header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
 		// Get the project object from the project path that was passed in.
-		$project = GP::$project->by_path( $project_path );
-		if ( ! $project ) {
+		$gp_project = GP::$project->by_path( $project_path );
+
+		if ( ! $gp_project ) {
 			$this->status_header( 404 );
 			echo wp_json_encode( [ 'error' => 'Project not found.' ] );
 			return;
 		}
 
-		$translation_sets = (array) GP::$translation_set->by_project_id( $project->id );
+		$project = new Project( $gp_project );
+
+		$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
 		$result = [];
 
@@ -56,7 +59,7 @@ class TranslationApiRoute extends GP_Route_Main {
 
 			$result[] = [
 				'language'     => $locale->wp_locale,
-				'version'      => '1.0',
+				'version'      => $project->get_version() ?? '1.0',
 				'updated'      => $zip_provider->get_last_build_time(),
 				'english_name' => $locale->english_name,
 				'native_name'  => $locale->native_name,
