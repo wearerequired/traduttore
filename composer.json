@@ -78,8 +78,8 @@
       "rm -rf vendor/autoload.php",
       "composer dump-autoload",
       "cd ..",
-      "wp dist-archive $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/build/traduttore.zip",
-      "cd $TRAVIS_BUILD_DIR",
+      "wp dist-archive traduttore traduttore/build/traduttore.zip",
+      "cd traduttore",
       "rm -rf vendor/autoload.php",
       "composer dump-autoload"
     ],
