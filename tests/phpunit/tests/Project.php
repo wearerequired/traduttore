@@ -165,4 +165,12 @@ class Project extends TestCase {
 
 		$this->assertSame( $secret, $this->project->get_repository_webhook_secret() );
 	}
+
+	public function test_get_version(): void {
+		$version = '1.2.3';
+
+		$this->project->set_version( $version );
+
+		$this->assertSame( $version, $this->project->get_version() );
+	}
 }
