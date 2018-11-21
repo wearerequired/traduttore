@@ -3,7 +3,7 @@
  * Plugin Name: Foo Plugin
  * Plugin URI:  https://example.com
  * Description:
- * Version:     0.1.0
+ * Version:     1.0.0
  * Author:
  * Author URI:
  * License:     GPL-2.0+
