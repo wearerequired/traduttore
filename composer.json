@@ -35,7 +35,7 @@
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4",
     "phpunit/phpunit": "^6.5",
-    "wp-cli/dist-archive-command": "^0.1",
+    "wp-cli/dist-archive-command": "^2.0",
     "wp-cli/extension-command": "^2.0",
     "wp-cli/wp-cli-tests": "dev-plugin-tests",
     "wp-coding-standards/wpcs": "^1.2"
@@ -62,12 +62,6 @@
       "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   },
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/wp-cli/dist-archive-command.git"
-    }
-  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
@@ -78,21 +72,18 @@
     "build": [
       "composer install --no-dev",
       "composer dump-autoload --optimize",
-      "@prepare-build",
-      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\""
+      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\" --create-target-dir"
     ],
     "dev-build": [
       "rm -rf vendor/autoload.php",
       "composer dump-autoload",
-      "@prepare-build",
-      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\"",
+      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\" --create-target-dir",
       "rm -rf vendor/autoload.php",
       "composer dump-autoload"
     ],
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
     "phpunit": "vendor/bin/phpunit",
-    "prepare-build": "mkdir -p $(pwd)/build",
     "prepare-tests": "install-package-tests",
     "test": [
       "@lint",
