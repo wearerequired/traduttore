@@ -77,9 +77,7 @@
     "build-ci": [
       "rm -rf vendor/autoload.php",
       "composer dump-autoload",
-      "cd ..",
-      "wp dist-archive traduttore traduttore/build/traduttore.zip",
-      "cd traduttore",
+      "wp dist-archive ./ build/traduttore.zip",
       "rm -rf vendor/autoload.php",
       "composer dump-autoload"
     ],
