@@ -74,10 +74,10 @@
       "composer dump-autoload --optimize",
       "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\" --create-target-dir"
     ],
-    "dev-build": [
+    "build-ci": [
       "rm -rf vendor/autoload.php",
       "composer dump-autoload",
-      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\" --create-target-dir",
+      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\"",
       "rm -rf vendor/autoload.php",
       "composer dump-autoload"
     ],
