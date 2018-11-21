@@ -144,7 +144,9 @@ class ZipProvider {
 
 		$zip = new ZipArchive();
 
-		if ( $zip->open( $this->get_zip_path(), ZipArchive::CREATE ) === true ) {
+		$temp_zip_file = wp_tempnam( $this->get_zip_filename() );
+
+		if ( $zip->open( $temp_zip_file, ZipArchive::CREATE ) === true ) {
 			foreach ( $files_for_zip as $temp_file => $file_name ) {
 				$zip->addFile( $temp_file, $file_name );
 			}
@@ -152,8 +154,10 @@ class ZipProvider {
 			$zip->close();
 		}
 
+		$wp_filesystem->move( $temp_zip_file, $this->get_zip_path(), true );
+
 		foreach ( $files_for_zip as $temp_file => $file_name ) {
-			unlink( $temp_file );
+			$wp_filesystem->delete( $temp_file );
 		}
 
 		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $this->translation_set->last_modified(), 'translation_set' );
