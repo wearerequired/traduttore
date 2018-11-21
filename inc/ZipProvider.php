@@ -128,16 +128,10 @@ class ZipProvider {
 		}
 
 		$files_for_zip = [];
-		$project       = new Project( $gp_project );
-		$text_domain   = $project->get_text_domain();
 
 		/* @var GP_Format $format */
 		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
-			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
-
-			if ( $text_domain ) {
-				$file_name = $text_domain . '.' . $format->extension;
-			}
+			$file_name = sprintf( '%1$s.%2$s', $this->get_base_file_name(), $format->extension );
 
 			$temp_file = wp_tempnam( $file_name );
 
@@ -210,6 +204,26 @@ class ZipProvider {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Returns the base name for translation files.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Base file name without extension.
+	 */
+	private function get_base_file_name(): string {
+		$locale      = GP_Locales::by_slug( $this->translation_set->locale );
+		$project     = new Project( GP::$project->get( $this->translation_set->project_id ) );
+		$slug        = $project->get_slug();
+		$text_domain = $project->get_text_domain();
+
+		if ( $text_domain ) {
+			$slug = $text_domain;
+		}
+
+		return "{$slug}-{$locale->wp_locale}";
 	}
 
 	/**

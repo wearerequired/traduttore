@@ -266,7 +266,7 @@ class ZipProvider extends TestCase {
 		$provider = new Provider( $this->translation_set );
 		$result   = $provider->generate_zip_file();
 
-		$expected_files = [ 'foo-bar-baz.po', 'foo-bar-baz.mo' ];
+		$expected_files = [ 'foo-bar-baz-de_DE.po', 'foo-bar-baz-de_DE.mo' ];
 		$actual_files   = [];
 
 		$zip = new ZipArchive();
