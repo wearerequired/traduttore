@@ -158,6 +158,40 @@ class ZipProvider extends TestCase {
 		$this->assertFalse( $result );
 	}
 
+	public function test_replaces_existing_zip_file(): void {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		$zip_before = new ZipArchive();
+		$zip_before->open( $provider->get_zip_path() );
+		$zip_before->addFromString( 'foo.txt', 'bar' );
+
+		$file_before = $zip_before->statName( 'foo.txt' );
+
+		$zip_before->close();
+
+		$provider->generate_zip_file();
+
+		$zip_after = new ZipArchive();
+		$zip_after->open( $provider->get_zip_path() );
+
+		$file_after = $zip_after->statName( 'foo.txt' );
+
+		$this->assertInternalType( 'array', $file_before );
+		$this->assertFalse( $file_after );
+	}
+
 	public function test_get_last_build_time_after_zip_generation(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
