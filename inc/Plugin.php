@@ -62,14 +62,14 @@ class Plugin {
 
 		add_action(
 			'gp_originals_imported',
-			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error ) {
+			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
 				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project ) {
 					return;
 				}
 
-				if ( 0 === max( $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error ) ) {
+				if ( 0 === max( $originals_existing, $originals_obsoleted, $originals_fuzzied ) ) {
 					return;
 				}
 
@@ -83,7 +83,7 @@ class Plugin {
 				}
 			},
 			10,
-			6
+			5
 		);
 
 		add_action(
