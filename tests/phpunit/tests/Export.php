@@ -66,6 +66,8 @@ class Export extends TestCase {
 
 		$actual = $export->export_strings();
 
+		array_map( 'unlink', $actual );
+
 		$this->assertEqualSets(
 			[
 				'foo-project-de_DE.po',
@@ -116,6 +118,8 @@ class Export extends TestCase {
 
 		$json_1 = file_get_contents( $actual[ $json_filename_1 ] );
 		$json_2 = file_get_contents( $actual[ $json_filename_2 ] );
+
+		array_map( 'unlink', $actual );
 
 		$this->assertJson( $json_1 );
 		$this->assertJson( $json_2 );
@@ -186,6 +190,8 @@ class Export extends TestCase {
 
 		$json_1 = json_decode( file_get_contents( $actual[ $json_filename_1 ] ), true );
 		$json_2 = json_decode( file_get_contents( $actual[ $json_filename_2 ] ), true );
+
+		array_map( 'unlink', $actual );
 
 		$this->assertCount( 1, $translations->entries );
 		$this->assertCount( 2, $json_1['locale_data']['messages'] );
