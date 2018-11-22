@@ -84,13 +84,13 @@ class Export {
 		// Build a mapping based on where the translation entries occur and separate the po entries.
 		$mapping = $this->map_entries_to_source( $entries );
 
-		$po_entries = array_key_exists( 'po', $mapping ) ? $mapping['po'] : [];
+		$php_entries = array_key_exists( 'php', $mapping ) ? $mapping['php'] : [];
 
-		unset( $mapping['po'] );
+		unset( $mapping['php'] );
 
 		$this->build_json_files( $mapping );
-		$this->build_po_file( $po_entries );
-		$this->build_mo_file( $po_entries );
+		$this->build_po_file( $php_entries );
+		$this->build_mo_file( $php_entries );
 
 		return $this->files;
 	}
@@ -141,7 +141,7 @@ class Export {
 	/**
 	 * Build a mapping of JS files to translation entries occurring in those files.
 	 *
-	 * Translation entries occurring in other files are added to the 'po' key.
+	 * Translation entries occurring in other files are added to the 'php' key.
 	 *
 	 * @since 3.0.0
 	 *
@@ -167,13 +167,10 @@ class Export {
 						return $file;
 					}
 
-					return 'po';
+					return 'php';
 				},
 				$entry->references
 			);
-
-			// Always add all entries to the PO file.
-			$sources[] = 'po';
 
 			$sources = array_unique( $sources );
 
