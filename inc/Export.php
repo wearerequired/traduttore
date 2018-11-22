@@ -200,11 +200,6 @@ class Export {
 		foreach ( $mapping as $file => $entries ) {
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
-			// Translations are always based on the unminified filename.
-			if ( substr( $file, -7 ) === '.min.js' ) {
-				$file = substr( $file, 0, -7 ) . '.js';
-			}
-
 			$hash      = md5( $file );
 			$file_name = "{$base_file_name}-{$hash}.json";
 			$temp_file = wp_tempnam( $file_name );
