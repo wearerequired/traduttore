@@ -71,8 +71,8 @@ class SourceForge extends Base {
 			if ( ! $url ) {
 				$url = $this->project->get_source_url_template();
 
-				if ( false !== strpos( $url, '/blob/' ) ) {
-					$parts = explode( '/blob/', $url );
+				if ( false !== strpos( $url, '/code/' ) ) {
+					$parts = explode( '/code/', $url );
 					$url   = array_shift( $parts );
 				}
 			}

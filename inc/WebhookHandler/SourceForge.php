@@ -68,11 +68,21 @@ class SourceForge extends Base {
 			return new WP_Error( '404', 'Could not find project for this repository' );
 		}
 
-		$project->set_repository_name( $params['repository']['full_name'] );
+		$repository_name = $params['repository']['full_name'];
+
+		if ( 0 === strpos( $repository_name, '/p/' ) ) {
+			$repository_name = substr( $repository_name, 3 );
+		}
+
+		$project->set_repository_name( $repository_name );
 		$project->set_repository_url( $params['repository']['url'] );
 
 		if ( ! $project->get_repository_type() ) {
 			$project->set_repository_type( Repository::TYPE_SOURCEFORGE );
+		}
+
+		if ( ! $project->get_repository_visibility() ) {
+			$project->set_repository_visibility( 'public' );
 		}
 
 		( new Updater( $project ) )->schedule_update();
