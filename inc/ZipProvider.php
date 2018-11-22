@@ -131,7 +131,9 @@ class ZipProvider {
 			$zip->close();
 		}
 
-		array_map( 'unlink', $files_for_zip );
+		foreach( $files_for_zip as $temp_file ) {
+			$wp_filesystem->delete( $temp_file );
+		}
 
 		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $this->translation_set->last_modified(), 'translation_set' );
 
