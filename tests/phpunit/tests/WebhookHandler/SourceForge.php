@@ -42,14 +42,14 @@ class SourceForge extends TestCase {
 	}
 
 	public function test_invalid_event_header(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request  = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
 	public function test_missing_token(): void {
-		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request  = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
@@ -68,11 +68,11 @@ class SourceForge extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params(
 			[
-				'ref'     => 'refs/heads/develop',
+				'ref'        => 'refs/heads/develop',
 				'repository' => [
 					'full_name' => '/p/wearerequired/',
-					'name' => 'Traduttore',
-					'url' => 'https://sourceforge.net/p/traduttore'
+					'name'      => 'Traduttore',
+					'url'       => 'https://sourceforge.net/p/traduttore',
 				],
 			]
 		);
@@ -88,11 +88,11 @@ class SourceForge extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params(
 			[
-				'ref'     => 'refs/heads/master',
+				'ref'        => 'refs/heads/master',
 				'repository' => [
 					'full_name' => '/p/wearerequired/not-traduttore',
-					'name' => 'Not Traduttore',
-					'url' => 'https://sourceforge.net/p/not-traduttore'
+					'name'      => 'Not Traduttore',
+					'url'       => 'https://sourceforge.net/p/not-traduttore',
 				],
 			]
 		);
@@ -107,11 +107,11 @@ class SourceForge extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params(
 			[
-				'ref'     => 'refs/heads/master',
+				'ref'        => 'refs/heads/master',
 				'repository' => [
 					'full_name' => '/p/wearerequired/traduttore',
-					'name' => 'Traduttore',
-					'url' => 'https://sourceforge.net/p/traduttore'
+					'name'      => 'Traduttore',
+					'url'       => 'https://sourceforge.net/p/traduttore',
 				],
 			]
 		);
@@ -138,11 +138,11 @@ class SourceForge extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params(
 			[
-				'ref'     => 'refs/heads/master',
+				'ref'        => 'refs/heads/master',
 				'repository' => [
 					'full_name' => '/p/wearerequired/traduttore',
-					'name' => 'Traduttore',
-					'url' => 'https://sourceforge.net/p/traduttore'
+					'name'      => 'Traduttore',
+					'url'       => 'https://sourceforge.net/p/traduttore',
 				],
 			]
 		);
