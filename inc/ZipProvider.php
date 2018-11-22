@@ -123,13 +123,17 @@ class ZipProvider {
 
 		$zip = new ZipArchive();
 
-		if ( $zip->open( $this->get_zip_path(), ZipArchive::CREATE ) === true ) {
+		$temp_zip_file = wp_tempnam( $this->get_zip_filename() );
+
+		if ( $zip->open( $temp_zip_file, ZipArchive::CREATE ) === true ) {
 			foreach ( $files_for_zip as $file_name => $temp_file ) {
 				$zip->addFile( $temp_file, $file_name );
 			}
 
 			$zip->close();
 		}
+
+		$wp_filesystem->move( $temp_zip_file, $this->get_zip_path(), true );
 
 		foreach ( $files_for_zip as $temp_file ) {
 			$wp_filesystem->delete( $temp_file );
