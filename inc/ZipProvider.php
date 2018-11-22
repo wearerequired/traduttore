@@ -119,9 +119,9 @@ class ZipProvider {
 		}
 
 		/* @var GP_Locale $locale */
-		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
-		$project = GP::$project->get( $this->translation_set->project_id );
-		$entries = GP::$translation->for_export( $project, $this->translation_set, [ 'status' => 'current' ] );
+		$locale     = GP_Locales::by_slug( $this->translation_set->locale );
+		$gp_project = GP::$project->get( $this->translation_set->project_id );
+		$entries    = GP::$translation->for_export( $gp_project, $this->translation_set, [ 'status' => 'current' ] );
 
 		if ( ! $entries ) {
 			return false;
@@ -131,10 +131,11 @@ class ZipProvider {
 
 		/* @var GP_Format $format */
 		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
-			$file_name = str_replace( '.zip', '.' . $format->extension, $this->get_zip_filename() );
+			$file_name = sprintf( '%1$s.%2$s', $this->get_base_file_name(), $format->extension );
+
 			$temp_file = wp_tempnam( $file_name );
 
-			$contents = $format->print_exported_file( $project, $locale, $this->translation_set, $entries );
+			$contents = $format->print_exported_file( $gp_project, $locale, $this->translation_set, $entries );
 
 			$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
 
@@ -143,7 +144,9 @@ class ZipProvider {
 
 		$zip = new ZipArchive();
 
-		if ( $zip->open( $this->get_zip_path(), ZipArchive::CREATE ) === true ) {
+		$temp_zip_file = wp_tempnam( $this->get_zip_filename() );
+
+		if ( $zip->open( $temp_zip_file, ZipArchive::CREATE ) === true ) {
 			foreach ( $files_for_zip as $temp_file => $file_name ) {
 				$zip->addFile( $temp_file, $file_name );
 			}
@@ -151,8 +154,10 @@ class ZipProvider {
 			$zip->close();
 		}
 
+		$wp_filesystem->move( $temp_zip_file, $this->get_zip_path(), true );
+
 		foreach ( $files_for_zip as $temp_file => $file_name ) {
-			unlink( $temp_file );
+			$wp_filesystem->delete( $temp_file );
 		}
 
 		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $this->translation_set->last_modified(), 'translation_set' );
@@ -206,6 +211,26 @@ class ZipProvider {
 	}
 
 	/**
+	 * Returns the base name for translation files.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Base file name without extension.
+	 */
+	private function get_base_file_name(): string {
+		$locale      = GP_Locales::by_slug( $this->translation_set->locale );
+		$project     = new Project( GP::$project->get( $this->translation_set->project_id ) );
+		$slug        = $project->get_slug();
+		$text_domain = $project->get_text_domain();
+
+		if ( $text_domain ) {
+			$slug = $text_domain;
+		}
+
+		return "{$slug}-{$locale->wp_locale}";
+	}
+
+	/**
 	 * Returns the name of the ZIP file without the path.
 	 *
 	 * @since 2.0.0
@@ -245,10 +270,22 @@ class ZipProvider {
 	 * @return string ZIP file URL.
 	 */
 	public function get_zip_url() : string {
+		$url = content_url( self::CACHE_DIR );
+
+		/**
+		 * Filters the path to Traduttore's cache directory.
+		 *
+		 * Useful when language packs should be stored somewhere else.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string $url Cache directory URL.
+		 */
+		$url = apply_filters( 'traduttore.content_url', $url );
+
 		return sprintf(
-			'%1$s/%2$s/%3$s',
-			WP_CONTENT_URL,
-			self::CACHE_DIR,
+			'%1$s/%2$s',
+			$url,
 			$this->get_zip_filename()
 		);
 	}
@@ -262,25 +299,35 @@ class ZipProvider {
 	 */
 	public function get_zip_path() : string {
 		return sprintf(
-			'%1$s/%2$s/%3$s',
-			WP_CONTENT_DIR,
-			self::CACHE_DIR,
+			'%1$s/%2$s',
+			static::get_cache_dir(),
 			$this->get_zip_filename()
 		);
 	}
 
 	/**
-	 * Returns the full path to the cache directory.
+	 * Returns the full path to the directory where language packs are stored.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return string Cache directory path.
 	 */
 	public static function get_cache_dir() : string {
-		return sprintf(
+		$dir = sprintf(
 			'%1$s/%2$s',
 			WP_CONTENT_DIR,
 			self::CACHE_DIR
 		);
+
+		/**
+		 * Filters the path to Traduttore's cache directory.
+		 *
+		 * Useful when language packs should be stored somewhere else.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string $dir Cache directory path.
+		 */
+		return apply_filters( 'traduttore.content_dir', $dir );
 	}
 }

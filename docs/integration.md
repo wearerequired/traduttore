@@ -12,9 +12,15 @@ If you're using [Composer](https://getcomposer.org/) to manage dependencies, you
 composer require wearerequired/traduttore
 ```
 
-After that, you can use `Required\Traduttore_Registry\add_project( $type, $slug, $api_url )` in your theme or plugin. On a multisite install, it's recommend to use it in a must-use plugin instead.
+After that, you can use `Required\Traduttore_Registry\add_project( $type, $slug, $api_url )` in your theme or plugin.
 
-**Note:** Alternatively, you could copy the library's code to your project.
+**Note:** Alternatively, you could copy the library's code to your project. Also, on a multisite install it's recommended to use it in a must-use plugin.
+
+**Parameters:**
+
+* `$type`: either `plugin` or `theme`.
+* `$slug`: must match the theme/plugin directory slug.
+* `$api_url`: the URL to the Traduttore project translation API.
 
 ### Example
 
@@ -40,12 +46,11 @@ Ideally you call `add_project()` in a function hooked to `init`, e.g. like this:
 
 ```php
 function myplugin_init_traduttore() {
-	Required\Traduttore_Registry\add_project(
+	\Required\Traduttore_Registry\add_project(
 		'plugin',
 		'example-plugin',
 		'https://<home-url>/api/translations/acme/acme-plugin/'
 	);
 }
-
 add_action( 'init', 'myplugin_init_traduttore' );
 ```

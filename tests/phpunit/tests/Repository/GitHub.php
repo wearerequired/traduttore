@@ -11,11 +11,12 @@ use \GP_UnitTestCase;
 use Required\Traduttore\Repository\GitHub as GitHubRepository;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;
+use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Repository\GitHub.
  */
-class GitHub extends GP_UnitTestCase {
+class GitHub extends TestCase {
 	/** @var Project */
 	protected $project;
 

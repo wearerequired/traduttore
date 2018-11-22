@@ -15,22 +15,20 @@ use WP_CLI;
 use WP_CLI_Command;
 
 /**
- * Manages the Traduttore cache.
+ * Cache management command.
  *
  * @since 2.0.0
  */
 class CacheCommand extends WP_CLI_Command {
 	/**
-	 * Removes the cached Git repository for a given project.
-	 *
-	 * Finds the project the repository belongs to and removes the checked out Git repository completely.
+	 * Removes the cached source code repository for a given project.
 	 *
 	 * Useful when the local repository was somehow corrupted.
 	 *
 	 * ## OPTIONS
 	 *
 	 * <project|url>
-	 * : Project path / ID or GitHub repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
 	 *
 	 * ## EXAMPLES
 	 *

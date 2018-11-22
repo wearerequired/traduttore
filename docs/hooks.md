@@ -209,3 +209,31 @@ Filters the sync secret for an incoming webhook request.
 * `$secret`: Webhook sync secret.
 * `$handler`: The current webhook handler instance.
 * `$project`: The current project if found.
+
+----
+
+### `traduttore.content_url`
+
+**Since:** 3.0.0
+
+Filters the URL to Traduttore's cache directory.
+
+Useful when language packs should be stored somewhere else.
+
+**Parameters:**
+
+* `$url`: Cache directory URL.
+
+----
+
+### `traduttore.content_dir`
+
+**Since:** 3.0.0
+
+Filters the path to Traduttore's cache directory.
+
+Useful when language packs should be stored somewhere else.
+
+**Parameters:**
+
+* `$dir`: Cache directory path.

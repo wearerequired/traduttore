@@ -135,7 +135,7 @@ class Plugin {
 
 						$message = sprintf(
 							'<%1$s|%2$s>: ZIP file updated for *%3$s*. (<%4$s|Download>)',
-							home_url( gp_url_project( $project ) ),
+							home_url( gp_url_project( $project->get_project() ) ),
 							$project->get_name(),
 							$locale->english_name,
 							$zip_url
@@ -186,7 +186,7 @@ class Plugin {
 
 						$message = sprintf(
 							'<%1$s|%2$s>: *%3$d* new strings were added, *%4$d* were fuzzied, and *%5$d* were obsoleted. There were *%6$d* errors.',
-							home_url( gp_url_project( $project ) ),
+							home_url( gp_url_project( $project->get_project() ) ),
 							$project->get_name(),
 							$originals_added,
 							$originals_fuzzied,
@@ -298,9 +298,9 @@ class Plugin {
 		}
 
 		if ( $wp instanceof WP && isset( $wp->query_vars['gp_route'] ) && class_exists( '\GP' ) ) {
-			$route = GP::$router->request_uri();
+			$route = untrailingslashit( GP::$router->request_uri() );
 
-			if ( 0 === strpos( $route, '/api/translations/' ) ) {
+			if ( 0 === strpos( $route, '/api/translations' ) ) {
 				return false;
 			}
 		}

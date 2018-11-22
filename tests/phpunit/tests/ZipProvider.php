@@ -8,13 +8,14 @@
 namespace Required\Traduttore\Tests;
 
 use GP_Translation_Set;
-use \GP_UnitTestCase;
+use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
+use ZipArchive;
 
 /**
  * Test cases for \Required\Traduttore\ZipProvider.
  */
-class ZipProvider extends GP_UnitTestCase {
+class ZipProvider extends TestCase {
 	/**
 	 * @var \GP_Locale
 	 */
@@ -133,6 +134,64 @@ class ZipProvider extends GP_UnitTestCase {
 		$this->assertTrue( $provider->generate_zip_file() );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_generate_zip_file_missing_wp_filesystem(): void {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		add_filter( 'filesystem_method', '__return_empty_string' );
+		$result = $provider->generate_zip_file();
+		remove_filter( 'filesystem_method', '__return_empty_string' );
+
+		$this->assertFalse( $result );
+	}
+
+	public function test_replaces_existing_zip_file(): void {
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		$zip_before = new ZipArchive();
+		$zip_before->open( $provider->get_zip_path() );
+		$zip_before->addFromString( 'foo.txt', 'bar' );
+
+		$file_before = $zip_before->statName( 'foo.txt' );
+
+		$zip_before->close();
+
+		$provider->generate_zip_file();
+
+		$zip_after = new ZipArchive();
+		$zip_after->open( $provider->get_zip_path() );
+
+		$file_after = $zip_after->statName( 'foo.txt' );
+
+		$this->assertInternalType( 'array', $file_before );
+		$this->assertFalse( $file_after );
+	}
+
 	public function test_get_last_build_time_after_zip_generation(): void {
 		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
@@ -222,5 +281,73 @@ class ZipProvider extends GP_UnitTestCase {
 		remove_filter( 'filesystem_method', '__return_empty_string' );
 
 		$this->assertFalse( $result );
+	}
+
+	public function test_use_text_domain_for_translation_files(): void {
+		$project  = ( new ProjectLocator( $this->translation_set->project_id ) )->get_project();
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$project->set_text_domain( 'foo-bar-baz' );
+
+		$provider = new Provider( $this->translation_set );
+		$result   = $provider->generate_zip_file();
+
+		$expected_files = [ 'foo-bar-baz-de_DE.po', 'foo-bar-baz-de_DE.mo' ];
+		$actual_files   = [];
+
+		$zip = new ZipArchive();
+
+		$zip->open( $provider->get_zip_path() );
+
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+		for ( $i = 0; $i < $zip->numFiles; $i ++ ) {
+			$stat           = $zip->statIndex( $i );
+			$actual_files[] = $stat['name'];
+		}
+
+		$zip->close();
+
+		$this->assertTrue( $result );
+		$this->assertEqualSets( $expected_files, $actual_files );
+	}
+
+	public function test_schedule_generation_schedules_event(): void {
+		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$provider = new Provider( $this->translation_set );
+		$provider->schedule_generation();
+
+		$after = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$this->assertFalse( $before );
+		$this->assertInternalType( 'int', $after );
+	}
+
+	public function test_schedule_generation_removes_existing_event(): void {
+		$provider = new Provider( $this->translation_set );
+		$provider->schedule_generation();
+		$provider->schedule_generation();
+		$provider->schedule_generation();
+
+		$expected_count = 1;
+		$actual_count   = 0;
+
+		$crons = _get_cron_array();
+		$key   = md5( serialize( [ $this->translation_set->id ] ) );
+		foreach ( $crons as $timestamp => $cron ) {
+			if ( isset( $cron['traduttore.generate_zip'][ $key ] ) ) {
+				$actual_count ++;
+			}
+		}
+
+		$this->assertSame( $expected_count, $actual_count );
 	}
 }

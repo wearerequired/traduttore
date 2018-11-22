@@ -85,9 +85,27 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var string Project repository name meta key.
+	 * @var string Webhook sync secret meta key.
 	 */
 	protected const REPOSITORY_WEBHOOK_SECRET_KEY = '_traduttore_repository_webhook_secret';
+
+	/**
+	 * Text domain meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Text domain meta key.
+	 */
+	protected const TEXT_DOMAIN_KEY = '_traduttore_text_domain';
+
+	/**
+	 * Last update time meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Last update meta key.
+	 */
+	protected const UPDATE_TIME_KEY = '_traduttore_update_time';
 
 	/**
 	 * GlotPress project.
@@ -357,10 +375,60 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $name The new secret.
+	 * @param string $secret The new secret.
 	 * @return bool Whether the data was successfully saved or not.
 	 */
-	public function set_repository_webhook_secret( string $name ): bool {
-		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY, $name, 'project' );
+	public function set_repository_webhook_secret( string $secret ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY, $secret, 'project' );
+	}
+
+	/**
+	 * Returns the project's text domain.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Text domain if stored, null otherwise.
+	 */
+	public function get_text_domain(): ?string {
+		$name = gp_get_meta( 'project', $this->project->id, static::TEXT_DOMAIN_KEY );
+
+		return $name ?: null;
+	}
+
+	/**
+	 * Updates the project's text domain.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $name The new text domain.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_text_domain( string $name ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::TEXT_DOMAIN_KEY, $name, 'project' );
+	}
+
+	/**
+	 * Returns the time for when the project was last updated.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Last updated time if stored, null otherwise.
+	 */
+	public function get_last_updated_time(): ?string {
+		$time = gp_get_meta( 'project', $this->project->id, static::UPDATE_TIME_KEY );
+
+		return $time ?: null;
+	}
+
+	/**
+	 * Updates the time for when the project was last updated.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $time The new updated time.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_last_updated_time( string $time ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::UPDATE_TIME_KEY, $time, 'project' );
 	}
 }

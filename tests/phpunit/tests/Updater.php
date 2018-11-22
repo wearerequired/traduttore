@@ -8,7 +8,6 @@
 namespace Required\Traduttore\Tests;
 
 use \GP;
-use \GP_UnitTestCase;
 use \Required\Traduttore\Configuration;
 use \Required\Traduttore\Project;
 use \Required\Traduttore\Updater as U;
@@ -16,7 +15,7 @@ use \Required\Traduttore\Updater as U;
 /**
  * Test cases for \Required\Traduttore\Updater.
  */
-class Updater extends GP_UnitTestCase {
+class Updater extends TestCase {
 	/**
 	 * @var Project
 	 */
@@ -52,6 +51,8 @@ class Updater extends GP_UnitTestCase {
 
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
+		$this->assertSame( 'foo-plugin', $this->project->get_text_domain() );
+		$this->assertNotEmpty( $this->project->get_last_updated_time() );
 	}
 
 	public function test_update_with_composer_config(): void {
@@ -63,10 +64,12 @@ class Updater extends GP_UnitTestCase {
 
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
+		$this->assertSame( 'baz', $this->project->get_text_domain() );
+		$this->assertNotEmpty( $this->project->get_last_updated_time() );
 	}
 
 	public function test_update_with_config_file(): void {
-		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-composer' );
+		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-config' );
 
 		$result = $this->updater->update( $config );
 
@@ -74,6 +77,8 @@ class Updater extends GP_UnitTestCase {
 
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
+		$this->assertSame( 'foo', $this->project->get_text_domain() );
+		$this->assertNotEmpty( $this->project->get_last_updated_time() );
 	}
 
 	public function test_has_no_lock_initially(): void {
