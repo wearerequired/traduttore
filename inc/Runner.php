@@ -12,9 +12,7 @@ namespace Required\Traduttore;
 use WP_Filesystem_Base;
 
 /**
- * Project update runner.
- *
- * Used to update a project's strings given a specific loader and an updater.
+ * Update runner class to update a project's strings given a specific loader and an updater.
  *
  * By using a simple locking mechanism, only a single update is performed at a time.
  *
