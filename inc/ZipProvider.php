@@ -131,7 +131,7 @@ class ZipProvider {
 			$zip->close();
 		}
 
-		foreach( $files_for_zip as $temp_file ) {
+		foreach ( $files_for_zip as $temp_file ) {
 			$wp_filesystem->delete( $temp_file );
 		}
 

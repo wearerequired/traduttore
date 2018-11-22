@@ -49,10 +49,12 @@ class Export extends TestCase {
 	}
 
 	public function test_creates_only_po_and_mo_files(): void {
-		$original = $this->factory->original->create( [
-			'project_id' => $this->translation_set->project_id,
-			'references' => 'my-plugin.php',
-		] );
+		$original = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => 'my-plugin.php',
+			]
+		);
 
 		$this->factory->translation->create(
 			[
@@ -82,16 +84,20 @@ class Export extends TestCase {
 		$filename_2 = 'my-super-minified-script';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create( [
-			'project_id' => $this->translation_set->project_id,
-			'references' => $filename_1 . '.js',
-		] );
+		$original_1 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_1 . '.js',
+			]
+		);
 
 		/* @var \GP_Original $original_2 */
-		$original_2 = $this->factory->original->create( [
-			'project_id' => $this->translation_set->project_id,
-			'references' => $filename_2 . '.min.js',
-		] );
+		$original_2 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_2 . '.min.js',
+			]
+		);
 
 		$this->factory->translation->create(
 			[
@@ -139,22 +145,28 @@ class Export extends TestCase {
 		$filename_2 = 'my-super-minified-script';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create( [
-			'project_id' => $this->translation_set->project_id,
-			'references' => $filename_1 . '.js',
-		] );
+		$original_1 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_1 . '.js',
+			]
+		);
 
 		/* @var \GP_Original $original_2 */
-		$original_2 = $this->factory->original->create( [
-			'project_id' => $this->translation_set->project_id,
-			'references' => $filename_2 . '.min.js',
-		] );
+		$original_2 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_2 . '.min.js',
+			]
+		);
 
 		/* @var \GP_Original $original_2 */
-		$original_3 = $this->factory->original->create( [
-			'project_id' => $this->translation_set->project_id,
-			'references' => 'foo.php',
-		] );
+		$original_3 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => 'foo.php',
+			]
+		);
 
 		$this->factory->translation->create(
 			[
