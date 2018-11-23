@@ -131,6 +131,10 @@ class Updater {
 
 		$this->project->set_text_domain( sanitize_text_field( $translations->headers['X-Domain'] ) );
 
+		if ( $translations->headers['Project-Id-Version'] ) {
+			$this->project->set_version( $this->extract_version( $translations->headers['Project-Id-Version'] ) );
+		}
+
 		$stats = GP::$original->import_for_project( $this->project->get_project(), $translations );
 
 		$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
@@ -149,6 +153,24 @@ class Updater {
 		do_action( 'traduttore.updated', $this->project, $stats, $translations );
 
 		return true;
+	}
+
+	/**
+	 * Extracts the version number from the Project-Id-Version POT header.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $project_id_version Project-Id-Version header string.
+	 * @return null|string Version number on success, null otherwise.
+	 */
+	protected function extract_version( string $project_id_version ): ?string {
+		if ( false === strpos( $project_id_version, ' ' ) ) {
+			return null;
+		}
+
+		$parts = explode( ' ', $project_id_version );
+
+		return array_pop( $parts );
 	}
 
 	/**

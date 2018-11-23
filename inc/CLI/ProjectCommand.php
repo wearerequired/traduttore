@@ -48,6 +48,7 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     Project ID:            1
 	 *     Project name:          Foo Project
 	 *     Project slug:          foo
+	 *     Version:               1.0.1
 	 *     Text domain:           foo-plugin
 	 *     Last updated:          2018-11-11 11:11:11
 	 *     Repository Cache:      /tmp/traduttore-github.com-wearerequired-foo
@@ -79,6 +80,7 @@ class ProjectCommand extends WP_CLI_Command {
 		$project_id            = $project->get_id();
 		$project_name          = $project->get_name();
 		$project_slug          = $project->get_slug();
+		$project_version       = $project->get_version();
 		$project_text_domain   = $project->get_text_domain();
 		$last_updated          = $project->get_last_updated_time();
 		$local_path            = $loader ? $loader->get_local_path() : '';
@@ -92,10 +94,11 @@ class ProjectCommand extends WP_CLI_Command {
 		$loader_instance       = $loader ? get_class( $loader ) : '(unknown)';
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'json' ) {
-			$info = array(
+			$info = [
 				'id'                    => $project_id,
 				'name'                  => $project_name,
 				'slug'                  => $project_slug,
+				'version'               => $project_version,
 				'text_domain'           => $project_text_domain,
 				'last_updated'          => $last_updated,
 				'repository_cache'      => $local_path,
@@ -107,13 +110,14 @@ class ProjectCommand extends WP_CLI_Command {
 				'repository_https_url'  => $repository_https_url,
 				'repository_instance'   => $repository_instance,
 				'loader_instance'       => $loader_instance,
-			);
+			];
 
 			WP_CLI::line( json_encode( $info ) );
 		} else {
 			WP_CLI::line( "Project ID:\t\t" . $project_id );
 			WP_CLI::line( "Project name:\t\t" . $project_name );
 			WP_CLI::line( "Project slug:\t\t" . $project_slug );
+			WP_CLI::line( "Version:\t\t" . $project_version );
 			WP_CLI::line( "Text domain:\t\t" . $project_text_domain );
 			WP_CLI::line( "Last updated:\t\t" . $last_updated );
 			WP_CLI::line( "Repository Cache:\t" . $local_path );

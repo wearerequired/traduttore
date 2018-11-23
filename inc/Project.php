@@ -108,6 +108,15 @@ class Project {
 	protected const UPDATE_TIME_KEY = '_traduttore_update_time';
 
 	/**
+	 * Version number meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Version number meta key.
+	 */
+	protected const VERSION_KEY = '_traduttore_version';
+
+	/**
 	 * GlotPress project.
 	 *
 	 * @since 3.0.0
@@ -430,5 +439,30 @@ class Project {
 	 */
 	public function set_last_updated_time( string $time ): bool {
 		return (bool) gp_update_meta( $this->project->id, static::UPDATE_TIME_KEY, $time, 'project' );
+	}
+
+	/**
+	 * Returns the project's version number.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Version number if stored, null otherwise.
+	 */
+	public function get_version(): ?string {
+		$version = gp_get_meta( 'project', $this->project->id, static::VERSION_KEY );
+
+		return $version ?: null;
+	}
+
+	/**
+	 * Updates the project's version number.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $version The new version number.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_version( string $version ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::VERSION_KEY, $version, 'project' );
 	}
 }
