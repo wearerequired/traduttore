@@ -1,6 +1,6 @@
 <?php
 /**
- * Git loader class.
+ * Git source code loader
  *
  * @since 3.0.0
  *

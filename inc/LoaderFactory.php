@@ -1,6 +1,6 @@
 <?php
 /**
- * LoaderFactory class.
+ * Source code loader factory
  *
  * @since 3.0.0
  *

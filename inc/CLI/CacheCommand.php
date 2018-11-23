@@ -1,6 +1,6 @@
 <?php
 /**
- * Command for managing the Traduttore cache.
+ * Command for managing the Traduttore cache
  *
  * @since 2.0.0
  *

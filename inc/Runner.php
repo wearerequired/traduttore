@@ -1,8 +1,8 @@
 <?php
 /**
- * Project class.
+ * Runner class
  *
- * @since 2.0.0
+ * @since 3.0.0
  *
  * @package Required\Traduttore
  */
@@ -12,7 +12,9 @@ namespace Required\Traduttore;
 use WP_Filesystem_Base;
 
 /**
- * Project class.
+ * Update runner class to update a project's strings given a specific loader and an updater.
+ *
+ * By using a simple locking mechanism, only a single update is performed at a time.
  *
  * @since 3.0.0
  */

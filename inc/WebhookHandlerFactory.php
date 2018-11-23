@@ -1,6 +1,6 @@
 <?php
 /**
- * WebhookHandlerFactory class.
+ * Webhook handler factory
  *
  * @since 3.0.0
  *

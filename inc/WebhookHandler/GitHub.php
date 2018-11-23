@@ -1,6 +1,6 @@
 <?php
 /**
- * GitHub webhook handler class.
+ * GitHub webhook handler
  *
  * @since 3.0.0
  *

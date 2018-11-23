@@ -1,6 +1,6 @@
 <?php
 /**
- * GitHub repository class.
+ * GitHub repository implementation
  *
  * @since 3.0.0
  *

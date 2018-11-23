@@ -1,6 +1,6 @@
 <?php
 /**
- * Base repository class.
+ * Base repository implementation
  *
  * @since 3.0.0
  *

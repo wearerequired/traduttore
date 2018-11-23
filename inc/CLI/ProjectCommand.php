@@ -1,6 +1,6 @@
 <?php
 /**
- * Command for managing projects.
+ * Command for managing projects
  *
  * @since 3.0.0
  *

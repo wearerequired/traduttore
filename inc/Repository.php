@@ -1,6 +1,6 @@
 <?php
 /**
- * Repository interface.
+ * Repository interface
  *
  * @since 3.0.0
  *

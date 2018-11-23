@@ -1,6 +1,6 @@
 <?php
 /**
- * Subversion loader class.
+ * Subversion source code loader
  *
  * @since 3.0.0
  *

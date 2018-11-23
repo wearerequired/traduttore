@@ -1,6 +1,6 @@
 <?php
 /**
- * Base webhook handler class.
+ * Base webhook handler implementation
  *
  * @since 3.0.0
  *

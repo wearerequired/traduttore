@@ -1,6 +1,6 @@
 <?php
 /**
- * GitLab webhook handler class.
+ * GitLab webhook handler
  *
  * @since 3.0.0
  *
@@ -9,11 +9,9 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
-use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
-use Required\Traduttore\WebhookHandler;
 use WP_Error;
 use WP_REST_Response;
 

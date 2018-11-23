@@ -1,6 +1,6 @@
 <?php
 /**
- * Command for printing various details about the environment.
+ * Command for printing various details about the environment
  *
  * @since 3.0.0
  *

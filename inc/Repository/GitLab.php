@@ -1,6 +1,6 @@
 <?php
 /**
- * GitLab repository class.
+ * GitLab repository implementation
  *
  * @since 3.0.0
  *

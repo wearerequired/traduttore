@@ -1,6 +1,6 @@
 <?php
 /**
- * Updater class.
+ * Updater class
  *
  * @since 3.0.0
  *

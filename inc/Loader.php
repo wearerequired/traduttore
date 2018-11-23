@@ -1,6 +1,8 @@
 <?php
 /**
- * Loader interface.
+ * Source code loader interface
+ *
+ * @since 3.0.0
  *
  * @package Required\Traduttore
  */

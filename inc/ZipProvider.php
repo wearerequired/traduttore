@@ -1,6 +1,6 @@
 <?php
 /**
- * ZipProvider class.
+ * Language pack provider implementation
  *
  * @since 2.0.0
  *

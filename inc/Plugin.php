@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin class.
+ * Main plugin entry file
  *
  * @since 1.0.0
  *

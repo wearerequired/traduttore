@@ -1,6 +1,6 @@
 <?php
 /**
- * Project class.
+ * Project class
  *
  * @since 2.0.0
  *
