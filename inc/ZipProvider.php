@@ -10,7 +10,6 @@
 namespace Required\Traduttore;
 
 use GP;
-use GP_Format;
 use GP_Locale;
 use GP_Locales;
 use GP_Translation_Set;
@@ -98,10 +97,6 @@ class ZipProvider {
 	 * @return bool True on success, false on failure.
 	 */
 	public function generate_zip_file() : bool {
-		if ( ! class_exists( '\ZipArchive' ) ) {
-			return false;
-		}
-
 		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
@@ -118,28 +113,12 @@ class ZipProvider {
 			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
 		}
 
-		/* @var GP_Locale $locale */
-		$locale     = GP_Locales::by_slug( $this->translation_set->locale );
-		$gp_project = GP::$project->get( $this->translation_set->project_id );
-		$entries    = GP::$translation->for_export( $gp_project, $this->translation_set, [ 'status' => 'current' ] );
+		$export = new Export( $this->translation_set );
 
-		if ( ! $entries ) {
+		$files_for_zip = $export->export_strings();
+
+		if ( ! $files_for_zip ) {
 			return false;
-		}
-
-		$files_for_zip = [];
-
-		/* @var GP_Format $format */
-		foreach ( [ GP::$formats['po'], GP::$formats['mo'] ] as $format ) {
-			$file_name = sprintf( '%1$s.%2$s', $this->get_base_file_name(), $format->extension );
-
-			$temp_file = wp_tempnam( $file_name );
-
-			$contents = $format->print_exported_file( $gp_project, $locale, $this->translation_set, $entries );
-
-			$wp_filesystem->put_contents( $temp_file, $contents, FS_CHMOD_FILE );
-
-			$files_for_zip[ $temp_file ] = $file_name;
 		}
 
 		$zip = new ZipArchive();
@@ -147,7 +126,7 @@ class ZipProvider {
 		$temp_zip_file = wp_tempnam( $this->get_zip_filename() );
 
 		if ( $zip->open( $temp_zip_file, ZipArchive::CREATE ) === true ) {
-			foreach ( $files_for_zip as $temp_file => $file_name ) {
+			foreach ( $files_for_zip as $file_name => $temp_file ) {
 				$zip->addFile( $temp_file, $file_name );
 			}
 
@@ -156,7 +135,7 @@ class ZipProvider {
 
 		$wp_filesystem->move( $temp_zip_file, $this->get_zip_path(), true );
 
-		foreach ( $files_for_zip as $temp_file => $file_name ) {
+		foreach ( $files_for_zip as $temp_file ) {
 			$wp_filesystem->delete( $temp_file );
 		}
 
@@ -208,26 +187,6 @@ class ZipProvider {
 		}
 
 		return $success;
-	}
-
-	/**
-	 * Returns the base name for translation files.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return string Base file name without extension.
-	 */
-	private function get_base_file_name(): string {
-		$locale      = GP_Locales::by_slug( $this->translation_set->locale );
-		$project     = new Project( GP::$project->get( $this->translation_set->project_id ) );
-		$slug        = $project->get_slug();
-		$text_domain = $project->get_text_domain();
-
-		if ( $text_domain ) {
-			$slug = $text_domain;
-		}
-
-		return "{$slug}-{$locale->wp_locale}";
 	}
 
 	/**
