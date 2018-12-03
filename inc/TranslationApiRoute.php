@@ -9,6 +9,7 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
 use GP;
 use GP_Locale;
 use GP_Locales;
@@ -60,7 +61,7 @@ class TranslationApiRoute extends GP_Route_Main {
 			$result[] = [
 				'language'     => $locale->wp_locale,
 				'version'      => $project->get_version() ?? '1.0',
-				'updated'      => $zip_provider->get_last_build_time(),
+				'updated'      => ( new DateTime( $zip_provider->get_last_build_time() ) )->format( DATE_ATOM ),
 				'english_name' => $locale->english_name,
 				'native_name'  => $locale->native_name,
 				'package'      => $zip_provider->get_zip_url(),

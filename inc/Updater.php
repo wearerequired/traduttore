@@ -139,7 +139,7 @@ class Updater {
 
 		$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 
-		$this->project->set_last_updated_time( $now->format( DATE_MYSQL ) );
+		$this->project->set_last_updated_time( $now->format( DATE_ATOM ) );
 
 		/**
 		 * Fires after translations have been updated.
