@@ -82,7 +82,7 @@ class ProjectCommand extends WP_CLI_Command {
 		$project_slug          = $project->get_slug();
 		$project_version       = $project->get_version();
 		$project_text_domain   = $project->get_text_domain();
-		$last_updated          = $project->get_last_updated_time();
+		$last_updated          = $project->get_last_updated_time() ? $project->get_last_updated_time()->format( DATE_ATOM ) : '';
 		$local_path            = $loader ? $loader->get_local_path() : '';
 		$repository_url        = $project->get_repository_url() ?? '(unknown)';
 		$repository_type       = $repository ? $repository->get_type() : $project->get_repository_type();

@@ -9,6 +9,7 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
 use GP;
 use GP_Locale;
 use GP_Locales;
@@ -213,12 +214,12 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return string Last build time.
+	 * @return DateTime Last build time.
 	 */
-	public function get_last_build_time() :? string {
+	public function get_last_build_time() :? DateTime {
 		$meta = gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
 
-		return $meta ?: null;
+		return $meta ? new DateTime( $meta ) : null;
 	}
 
 	/**
