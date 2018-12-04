@@ -154,7 +154,7 @@ class Project extends TestCase {
 	public function test_get_last_updated_time(): void {
 		$time = new DateTime( 'now' );
 
-		$this->project->set_last_updated_time( $time->format( DATE_ATOM ) );
+		$this->project->set_last_updated_time( $time );
 
 		$this->assertInstanceOf( DateTime::class, $this->project->get_last_updated_time() );
 		$this->assertEquals( $time, $this->project->get_last_updated_time(), 'Last updated time is not identical', 1 );
