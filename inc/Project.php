@@ -9,6 +9,8 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP_Project;
 
 /**
@@ -421,12 +423,12 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return null|string Last updated time if stored, null otherwise.
+	 * @return null|DateTime Last updated time if stored, null otherwise.
 	 */
-	public function get_last_updated_time(): ?string {
+	public function get_last_updated_time(): ?DateTime {
 		$time = gp_get_meta( 'project', $this->project->id, static::UPDATE_TIME_KEY );
 
-		return $time ?: null;
+		return $time ? new DateTime( $time, new DateTimeZone( 'UTC' ) ) : null;
 	}
 
 	/**
@@ -434,11 +436,11 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $time The new updated time.
+	 * @param DateTime $time The new updated time.
 	 * @return bool Whether the data was successfully saved or not.
 	 */
-	public function set_last_updated_time( string $time ): bool {
-		return (bool) gp_update_meta( $this->project->id, static::UPDATE_TIME_KEY, $time, 'project' );
+	public function set_last_updated_time( DateTime $time ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::UPDATE_TIME_KEY, $time->format( DATE_ATOM ), 'project' );
 	}
 
 	/**

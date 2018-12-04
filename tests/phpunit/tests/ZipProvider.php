@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\Tests;
 
+use DateTime;
 use GP_Translation_Set;
 use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
@@ -207,9 +208,7 @@ class ZipProvider extends TestCase {
 
 		$provider->generate_zip_file();
 
-		$build_time = $provider->get_last_build_time();
-
-		$this->assertInternalType( 'string', $build_time );
+		$this->assertInstanceOf( DateTime::class, $provider->get_last_build_time() );
 	}
 
 	public function test_remove_zip_file(): void {

@@ -9,6 +9,8 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP;
 use GP_Locale;
 use GP_Locales;
@@ -139,7 +141,15 @@ class ZipProvider {
 			$wp_filesystem->delete( $temp_file );
 		}
 
-		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $this->translation_set->last_modified(), 'translation_set' );
+		$last_modified = $this->translation_set->last_modified();
+
+		if ( $last_modified ) {
+			$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+		} else {
+			$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		}
+
+		gp_update_meta( $this->translation_set->id, static::BUILD_TIME_KEY, $last_modified->format( DATE_ATOM ), 'translation_set' );
 
 		/**
 		 * Fires after a language pack for a given translation set has been generated.
@@ -213,12 +223,12 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return string Last build time.
+	 * @return DateTime Last build time.
 	 */
-	public function get_last_build_time() :? string {
+	public function get_last_build_time() :? DateTime {
 		$meta = gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
 
-		return $meta ?: null;
+		return $meta ? new DateTime( $meta, new DateTimeZone( 'UTC' ) ) : null;
 	}
 
 	/**
