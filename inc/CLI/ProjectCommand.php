@@ -9,6 +9,8 @@
 
 namespace Required\Traduttore\CLI;
 
+use DateTime;
+use DateTimeZone;
 use GP;
 use GP_Locale;
 use GP_Locales;
@@ -292,9 +294,16 @@ class ProjectCommand extends WP_CLI_Command {
 					continue;
 				}
 
-				$zip_provider = new ZipProvider( $translation_set );
+				$zip_provider  = new ZipProvider( $translation_set );
+				$last_modified = $translation_set->last_modified();
 
-				if ( ! $force && $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
+				if ( $last_modified ) {
+					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+				} else {
+					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				}
+
+				if ( ! $force && $last_modified <= $zip_provider->get_last_build_time() ) {
 					WP_CLI::log( sprintf( 'No language pack generated for translation set as there were no changes (ID: %d)', $translation_set->id ) );
 
 					continue;

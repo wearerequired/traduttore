@@ -9,6 +9,8 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP;
 use GP_Locale;
 use GP_Locales;
@@ -65,10 +67,17 @@ class Plugin {
 			function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
+				$last_modified   = $translation_set->last_modified();
+
+				if ( $last_modified ) {
+					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+				} else {
+					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				}
 
 				$zip_provider = new ZipProvider( $translation_set );
 
-				if ( $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
+				if ( $last_modified <= $zip_provider->get_last_build_time() ) {
 					return;
 				}
 
