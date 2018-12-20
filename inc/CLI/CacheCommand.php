@@ -32,15 +32,15 @@ class CacheCommand extends WP_CLI_Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     # Update translations from repository URL.
+	 *     # Remove cached repository
 	 *     $ wp traduttore cache clear https://github.com/wearerequired/required-valencia
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
-	 *     # Update translations from project path.
+	 *     # Remove cached repository for given project path.
 	 *     $ wp traduttore cache clear required/required-valencia
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
-	 *     # Update translations from project ID.
+	 *     # Remove cached repository for given project ID.
 	 *     $ wp traduttore cache clear 123
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
