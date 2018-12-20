@@ -14,7 +14,7 @@ namespace Required\Traduttore\CLI;
  *
  * ## EXAMPLES
  *
- *     # Display various data about the Traduttore environment
+ *     # Display various data about the Traduttore environment.
  *     $ wp traduttore info
  *     Traduttore version:     3.0.0-alpha
  *     WordPress version:      4.9.8
@@ -26,7 +26,7 @@ namespace Required\Traduttore\CLI;
  *     Subversion binary path: (not found)
  *     Cache directory:        /var/www/network.required.com/wp-content/traduttore
  *
- *     # Display various data about a given project
+ *     # Display various data about a given project.
  *     $ wp traduttore project info foo
  *     Project ID:            1
  *     Project name:          Foo Project
