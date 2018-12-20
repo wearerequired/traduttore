@@ -70,6 +70,8 @@ class ZipProvider {
 	 * @since 3.0.0
 	 */
 	public function schedule_generation(): void {
+		$translation_set_id = (int) $this->translation_set->id;
+
 		/**
 		 * Filters the delay for scheduled language pack generation.
 		 *
@@ -78,15 +80,15 @@ class ZipProvider {
 		 * @param int                $delay           Delay in minutes. Default is 5 minutes.
 		 * @param GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
 		 */
-		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $this->translation_set->id );
+		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $translation_set_id );
 
-		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
 
 		if ( $next_schedule ) {
-			wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $this->translation_set->id ] );
+			wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $translation_set_id ] );
 		}
 
-		wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $this->translation_set->id ] );
+		wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $translation_set_id ] );
 	}
 
 	/**
