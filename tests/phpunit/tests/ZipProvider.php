@@ -8,6 +8,7 @@
 namespace Required\Traduttore\Tests;
 
 use DateTime;
+use GP;
 use GP_Translation_Set;
 use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
@@ -31,6 +32,11 @@ class ZipProvider extends TestCase {
 	 * @var GP_Translation_Set
 	 */
 	protected $sub_translation_set;
+
+	/**
+	 * @var \Required\Traduttore\Project
+	 */
+	protected $project;
 
 	public function setUp() {
 		parent::setUp();
@@ -60,6 +66,8 @@ class ZipProvider extends TestCase {
 				'parent_project_id' => $this->translation_set->project->id,
 			]
 		);
+
+		$this->project = new \Required\Traduttore\Project( GP::$project->get( $this->translation_set->project_id ) );
 	}
 
 	public function tearDown() {
@@ -91,10 +99,26 @@ class ZipProvider extends TestCase {
 		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE.zip', $provider->get_zip_path() );
 	}
 
+	public function test_get_zip_path_with_version(): void {
+		$this->project->set_version( '2.0' );
+
+		$provider = new Provider( $this->translation_set );
+
+		$this->assertStringEndsWith( 'wp-content/traduttore/foo-project-de_DE-2.0.zip', $provider->get_zip_path() );
+	}
+
 	public function test_get_zip_url(): void {
 		$provider = new Provider( $this->translation_set );
 
 		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE.zip' ), $provider->get_zip_url() );
+	}
+
+	public function test_get_zip_url_with_version(): void {
+		$this->project->set_version( '2.0' );
+
+		$provider = new Provider( $this->translation_set );
+
+		$this->assertSame( home_url( 'wp-content/traduttore/foo-project-de_DE-2.0.zip' ), $provider->get_zip_url() );
 	}
 
 	public function test_get_last_build_time_for_new_set(): void {
