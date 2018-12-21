@@ -12,6 +12,7 @@ use GP;
 use GP_Translation_Set;
 use Required\Traduttore\ProjectLocator;
 use \Required\Traduttore\ZipProvider as Provider;
+use Translations;
 use ZipArchive;
 
 /**
@@ -372,5 +373,93 @@ class ZipProvider extends TestCase {
 		}
 
 		$this->assertSame( $expected_count, $actual_count );
+	}
+
+	public function test_does_not_schedule_generation_after_saving_translation_for_inactive_project(): void {
+		$original           = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$translation_set_id = (int) $this->translation_set->id;
+
+		/** @var \GP_Translation $translation */
+		$translation = $this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+				'translation_0'      => 'Before',
+			]
+		);
+
+		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
+
+		// Triggers scheduling.
+		$result = $translation->save( [ 'translation_0' => 'After' ] );
+
+		$after = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
+
+		$this->assertFalse( $before );
+		$this->assertTrue( $result );
+		$this->assertFalse( $after );
+	}
+
+	public function test_schedules_generation_after_saving_translation(): void {
+		$this->project->get_project()->save( [ 'active' => 1 ] );
+
+		$original           = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$translation_set_id = (int) $this->translation_set->id;
+
+		/** @var \GP_Translation $translation */
+		$translation = $this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+				'translation_0'      => 'Before',
+			]
+		);
+
+		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
+
+		// Triggers scheduling.
+		$result = $translation->save( [ 'translation_0' => 'After' ] );
+
+		$after = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
+
+		$this->assertFalse( $before );
+		$this->assertTrue( $result );
+		$this->assertInternalType( 'int', $after );
+	}
+
+	public function test_does_not_schedule_generation_after_importing_originals_for_inactive_project(): void {
+		/** @var \GP_Original $original */
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$original->import_for_project( $this->translation_set->project, new Translations() );
+
+		$originals_for_project = $original->by_project_id( $this->translation_set->project_id );
+		$after                 = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$this->assertFalse( $before );
+		$this->assertFalse( $after );
+		$this->assertCount( 0, $originals_for_project );
+	}
+
+	public function test_schedules_generation_after_importing_originals(): void {
+		$this->project->get_project()->save( [ 'active' => 1 ] );
+
+		/** @var \GP_Original $original */
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$original->import_for_project( $this->translation_set->project, new Translations() );
+
+		$originals_for_project = $original->by_project_id( $this->translation_set->project_id );
+		$after                 = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
+
+		$this->assertFalse( $before );
+		$this->assertInternalType( 'int', $after );
+		$this->assertCount( 0, $originals_for_project );
 	}
 }

@@ -9,6 +9,8 @@
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP;
 use GP_Locale;
 use GP_Locales;
@@ -54,6 +56,10 @@ class Plugin {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
+				$project = ( new ProjectLocator( $translation_set->project_id ) )->get_project();
+				if ( ! $project || ! $project->is_active() ) {
+					return;
+				}
 				$zip_provider = new ZipProvider( $translation_set );
 
 				$zip_provider->schedule_generation();
@@ -61,14 +67,47 @@ class Plugin {
 		);
 
 		add_action(
+			'gp_originals_imported',
+			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
+
+				if ( ! $project || ! $project->is_active() ) {
+					return;
+				}
+
+				if ( 0 === max( $originals_existing, $originals_obsoleted, $originals_fuzzied ) ) {
+					return;
+				}
+
+				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
+
+				/* @var GP_Translation_Set $translation_set */
+				foreach ( $translation_sets as $translation_set ) {
+					$zip_provider = new ZipProvider( $translation_set );
+
+					$zip_provider->schedule_generation();
+				}
+			},
+			10,
+			5
+		);
+
+		add_action(
 			'traduttore.generate_zip',
 			function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
+				$last_modified   = $translation_set->last_modified();
+
+				if ( $last_modified ) {
+					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+				} else {
+					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				}
 
 				$zip_provider = new ZipProvider( $translation_set );
 
-				if ( $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
+				if ( $last_modified <= $zip_provider->get_last_build_time() ) {
 					return;
 				}
 
@@ -79,8 +118,7 @@ class Plugin {
 		add_action(
 			'traduttore.update',
 			function ( $project_id ) {
-				$locator = new ProjectLocator( $project_id );
-				$project = $locator->get_project();
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project ) {
 					return;
