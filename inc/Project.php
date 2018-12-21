@@ -190,10 +190,7 @@ class Project {
 	 * @return bool Whether project is active.
 	 */
 	public function is_active(): bool {
-		if ( '1' === $this->project->active ) {
-			return true;
-		}
-		return false;
+		return '1' === $this->project->active;
 	}
 
 	/**
