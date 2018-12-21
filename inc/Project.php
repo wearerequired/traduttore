@@ -183,6 +183,20 @@ class Project {
 	}
 
 	/**
+	 * Return project if project is active.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool Whether project is active.
+	 */
+	public function is_active(): bool {
+		if ( '1' === $this->project->active ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the project's source URL template.
 	 *
 	 * @since 3.0.0

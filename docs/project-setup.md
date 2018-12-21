@@ -26,6 +26,8 @@ For projects hosted on Bitbucket, the format is slightly different:
 https://bitbucket.org/acme/my-awesome-plugin/src/master/%file%#%file%-%line%
 ```
 
+Mark the project as "Active" for the language packs to be created. The translation strings will continue to be updated with code changes even when the project is set as inactive.
+
 ## Repository Configuration
 
 Depending on where your project is hosted, you need to follow different steps to support automatic translation updates. Please read the according documentation:

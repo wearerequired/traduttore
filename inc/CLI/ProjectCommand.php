@@ -423,9 +423,12 @@ class ProjectCommand extends WP_CLI_Command {
 
 		$args = array_map(
 			function ( $project ) {
-				$locator = new ProjectLocator( $project );
-
-				return $locator->get_project();
+				$project = ( new ProjectLocator( $project ) )->get_project();
+				if ( $project->is_active() ) {
+					return $project;
+				}
+				WP_CLI::log( sprintf( 'Project (ID: %d) is inactive.', $project->get_id() ) );
+				return null;
 			},
 			$args
 		);
