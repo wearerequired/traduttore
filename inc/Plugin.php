@@ -56,6 +56,10 @@ class Plugin {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
+				$project = ( new ProjectLocator( $translation_set->project_id ) )->get_project();
+				if ( ! $project || ! $project->is_active() ) {
+					return;
+				}
 				$zip_provider = new ZipProvider( $translation_set );
 
 				$zip_provider->schedule_generation();
@@ -67,7 +71,7 @@ class Plugin {
 			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
 				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
-				if ( ! $project ) {
+				if ( ! $project || ! $project->is_active() ) {
 					return;
 				}
 
