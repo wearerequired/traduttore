@@ -183,11 +183,11 @@ class Project {
 	}
 
 	/**
-	 * Return project if project is active.
+ 	 * Determines whether the project is active.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return bool Whether project is active.
+ 	 * @return bool Whether the project is active.
 	 */
 	public function is_active(): bool {
 		return '1' === $this->project->active;
