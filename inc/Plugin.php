@@ -71,11 +71,7 @@ class Plugin {
 			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
 				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
-				if ( ! $project ) {
-					return;
-				}
-
-				if ( ! $project->is_active() ) {
+				if ( ! $project || ! $project->is_active() ) {
 					return;
 				}
 
