@@ -46,6 +46,9 @@ class LoaderFactory {
 		/**
 		 * Filters the loader instance for a given repository and project.
 		 *
+		 * Since the loader is responsible for downloading the source code for a repository,
+		 * you can use this filter to change the determined VCS.
+		 *
 		 * @param Loader|null     $loader     Loader instance.
 		 * @param Repository|null $repository Repository instance.
 		 */

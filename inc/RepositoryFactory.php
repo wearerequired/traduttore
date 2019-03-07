@@ -9,7 +9,7 @@
 
 namespace Required\Traduttore;
 
-use Required\Traduttore\Repository\{Bitbucket, GitHub, GitLab};
+use Required\Traduttore\Repository\{Bitbucket, GitHub, GitLab, SourceForge};
 
 /**
  * RepositoryFactory class.
@@ -40,6 +40,9 @@ class RepositoryFactory {
 			case Repository::TYPE_GITLAB:
 				$repository = new GitLab( $project );
 				break;
+			case Repository::TYPE_SOURCEFORGE:
+				$repository = new SourceForge( $project );
+				break;
 		}
 
 		if ( ! $repository && ! $repository_type ) {
@@ -61,6 +64,9 @@ class RepositoryFactory {
 				case 'bitbucket.org':
 					$repository = new Bitbucket( $project );
 					break;
+				case 'sourceforge.net':
+					$repository = new SourceForge( $project );
+					break;
 			}
 		}
 
@@ -70,7 +76,7 @@ class RepositoryFactory {
 		 * Can be used to set a custom handler for self-managed repositories.
 		 *
 		 * @param Repository|null $repository Repository instance.
-		 * @param Project         $project    Project information.
+		 * @param Project         $project    Project instance.
 		 */
 		return apply_filters( 'traduttore.repository', $repository, $project );
 	}

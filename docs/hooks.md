@@ -155,6 +155,49 @@ Filters the delay for scheduled project updates.
 
 ----
 
+### `traduttore.loader`
+
+**Since:** 3.0.0
+
+Filters the loader instance for a given repository and project.
+
+Since the loader is responsible for downloading the source code for a repository, you can use this filter to change the determined VCS.
+
+**Parameters:**
+
+* `$loader`: Loader instance.
+* `$repository`: Repository instance.
+
+----
+
+### `traduttore.webhook_handler`
+
+**Since:** 3.0.0
+
+Filters the determined incoming webhook handler.
+
+**Parameters:**
+
+* `$handler`: WebhookHandler instance or null.
+* `$request`: The current WP_REST_Request object.
+
+----
+
+### `traduttore.repository`
+
+**Since:** 3.0.0
+
+Filters the determined repository instance for a given project.
+
+Can be used to set a custom handler for self-managed repositories.
+
+**Parameters:**
+
+* `$repository`: Repository instance.
+* `$project`: Project instance.
+
+----
+
 ### `traduttore.webhook_secret`
 
 **Since:** 3.0.0

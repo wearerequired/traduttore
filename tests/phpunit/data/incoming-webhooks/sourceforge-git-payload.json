@@ -1,0 +1,35 @@
+{
+  "after": "a72ab8566ed1a81e485a8451868ee9364069ea6b",
+  "before": "27bc571ceb56beeda796e0069bfba84581f55770",
+  "size": 1,
+  "commits": [
+    {
+      "id": "a72ab8566ed1a81e485a8451868ee9364069ea6b",
+      "message": "Update README",
+      "added": [],
+      "copied": [],
+      "removed": [],
+      "modified": [
+        "README.md"
+      ],
+      "author": {
+        "email": "jetmind@example.com",
+        "name": "Igor Bondarenko",
+        "username": "jetmind"
+      },
+      "committer": {
+        "email": "jetmind@example.com",
+        "name": "Igor Bondarenko",
+        "username": "jetmind"
+      },
+      "timestamp": "2015-02-23T14:30:42Z",
+      "url": "http://sourceforge.net/p/test/git/ci/a72ab8566ed1a81e485a8451868ee9364069ea6b/"
+    }
+  ],
+  "ref": "refs/heads/master",
+  "repository": {
+    "full_name": "/p/test/git/",
+    "name": "Git",
+    "url": "http://sourceforge.net/p/test/git/"
+  }
+}

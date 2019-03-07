@@ -67,6 +67,11 @@ abstract class Base implements WebhookHandler {
 					$secret = TRADUTTORE_GITLAB_SYNC_SECRET;
 				}
 				break;
+			case SourceForge::class:
+				if ( defined( 'TRADUTTORE_SOURCEFORGE_SYNC_SECRET' ) ) {
+					$secret = TRADUTTORE_SOURCEFORGE_SYNC_SECRET;
+				}
+				break;
 		}
 
 		$project_secret = $project ? $project->get_repository_webhook_secret() : null;
