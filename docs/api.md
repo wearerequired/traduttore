@@ -1,3 +1,9 @@
+---
+layout: default
+title: REST API
+nav_order: 13
+---
+
 # REST API
 
 Traduttore adds new routes to both the [WordPress REST API](https://developer.wordpress.org/rest-api/) as well as the API provided by GlotPress.

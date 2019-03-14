@@ -1,3 +1,9 @@
+---
+layout: default
+title: Bitbucket Repository Configuration
+nav_order: 5
+---
+
 #  Bitbucket Repository Configuration
 
 Traduttore supports both private and public Git repositories hosted on [Bitbucket.org](https:/bitbucket.org).

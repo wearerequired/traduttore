@@ -1,3 +1,9 @@
+---
+layout: default
+title: Installation
+nav_order: 2
+---
+
 # Installation
 
 The goal for Traduttore is to make it as easy as possible to supercharge your WordPress internationalization workflow.
