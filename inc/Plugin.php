@@ -124,16 +124,16 @@ class Plugin {
 		add_filter(
 			'gp_update_meta',
 			function( $meta_tuple ) {
-				$project = ( new ProjectLocator( $meta_tuple['object_id'] ) )->get_project();
-				if ( ! $project || ! $project->is_active() ) {
-					return $meta_tuple;
-				}
-
 				$allowed_keys = [
 					Project::VERSION_KEY, // '_traduttore_version'.
 					Project::TEXT_DOMAIN_KEY, // '_traduttore_text_domain'.
 				];
 				if ( ! in_array( $meta_tuple['meta_key'], $allowed_keys, true ) ) {
+					return $meta_tuple;
+				}
+
+				$project = ( new ProjectLocator( $meta_tuple['object_id'] ) )->get_project();
+				if ( ! $project || ! $project->is_active() ) {
 					return $meta_tuple;
 				}
 
