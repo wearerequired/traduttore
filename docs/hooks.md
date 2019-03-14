@@ -1,3 +1,9 @@
+---
+layout: default
+title: Hooks and Filters
+nav_order: 12
+---
+
 # Hooks and Filters
 
 All WordPress hooks and filters provided by Traduttore are prefixed with `traduttore.`.

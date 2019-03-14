@@ -1,3 +1,9 @@
+---
+layout: default
+title: Integrating Traduttore
+nav_order: 9
+---
+
 # Integration
 
 Using our little helper library called [Traduttore Registry](https://github.com/wearerequired/traduttore-registry), you can then tell WordPress that translations for your project should be loaded from Traduttore.

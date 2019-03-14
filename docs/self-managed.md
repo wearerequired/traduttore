@@ -1,3 +1,9 @@
+---
+layout: default
+title: Self-managed Repository Configuration
+nav_order: 8
+---
+
 # Self-managed Repository Configuration
 
 In theory, Traduttore can be adapted to work with any kind of source code repository.

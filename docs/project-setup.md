@@ -1,3 +1,9 @@
+---
+layout: default
+title: GlotPress Project Configuration
+nav_order: 4
+---
+
 # Project Setup
 
 When you successfully installed Traduttore, it's time to set up your first project.

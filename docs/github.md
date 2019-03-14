@@ -1,4 +1,10 @@
-#  GitHub Repository Configuration
+---
+layout: default
+title: GitHub Repository Configuration
+nav_order: 6
+---
+
+# GitHub Repository Configuration
 
 Traduttore supports both private and public Git repositories hosted on [GitHub.com](https://github.com).
 

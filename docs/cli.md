@@ -1,3 +1,9 @@
+---
+layout: default
+title: CLI Commands
+nav_order: 11
+---
+
 # CLI Commands
 
 Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer to be installed on the server.
