@@ -25,23 +25,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 * All filters and actions with `_` as the separator.
 
-## [2.0.3]
+## [2.0.3] - 2018-07-09
 ### Changed
 * Use HTTPS instead of SSH for cloning repositories if possible.
 
 ### Fixed
 * Uninstall routine and a few other smaller issues.
 
-## [2.0.2]
+## [2.0.2] - 2018-06-25
 ### Added
 * Introduce `TRADUTTORE_WP_BIN` constant to allow overriding the path to WP-CLI.
 
 ### Fixed
 * A few errors within the CLI commands
-* Fixed an error where deleting the local Git repository wasn't possible.
+* Fix an error where deleting the local Git repository wasn't possible.
 * Make sure `wp_tempnam()` is always available.
 
-## [2.0.1]
+## [2.0.1] - 2018-06-21
 
 ### Fixed
 * Fix a possible fatal error in the project locator class.
@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Improve code formatting and inline documentation.
 
-## 2.0.0
+## 2.0.0 - 2018-06-19
 
 ### Added
 * CLI commands.
@@ -57,10 +57,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Translation API.
 * Slack notifications.
 
-## 1.0.0
+## 1.0.0 - 2017-05-30
 
 ### Added
-* Initial release
+* Initial release.
 
 [Unreleased]: https://github.com/wearerequired/traduttore/compare/2.0.3...HEAD
 [2.0.3]: https://github.com/wearerequired/traduttore/compare/2.0.2...2.0.3
