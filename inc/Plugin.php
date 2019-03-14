@@ -60,9 +60,18 @@ class Plugin {
 				if ( ! $project || ! $project->is_active() ) {
 					return;
 				}
-				$zip_provider = new ZipProvider( $translation_set );
 
-				$zip_provider->schedule_generation();
+				$last_modified = $translation_set->last_modified();
+				if ( $last_modified ) {
+					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+				} else {
+					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				}
+
+				$zip_provider = new ZipProvider( $translation_set );
+				if ( $last_modified > $zip_provider->get_last_build_time() ) {
+					$zip_provider->schedule_generation();
+				}
 			}
 		);
 
@@ -83,9 +92,17 @@ class Plugin {
 
 				/* @var GP_Translation_Set $translation_set */
 				foreach ( $translation_sets as $translation_set ) {
-					$zip_provider = new ZipProvider( $translation_set );
+					$last_modified = $translation_set->last_modified();
+					if ( $last_modified ) {
+						$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+					} else {
+						$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+					}
 
-					$zip_provider->schedule_generation();
+					$zip_provider = new ZipProvider( $translation_set );
+					if ( $last_modified > $zip_provider->get_last_build_time() ) {
+						$zip_provider->schedule_generation();
+					}
 				}
 			},
 			10,
@@ -97,20 +114,8 @@ class Plugin {
 			function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
-				$last_modified   = $translation_set->last_modified();
-
-				if ( $last_modified ) {
-					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
-				} else {
-					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-				}
 
 				$zip_provider = new ZipProvider( $translation_set );
-
-				if ( $last_modified <= $zip_provider->get_last_build_time() ) {
-					return;
-				}
-
 				$zip_provider->generate_zip_file();
 			}
 		);
