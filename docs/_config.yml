@@ -1,5 +1,8 @@
 remote_theme: pmarsceill/just-the-docs
 
+title: Traduttore
+description: Documentation for Traduttore, a WordPress plugin that allows you to host your own WordPress.org-style translation API for your WordPress projects.
+
 aux_links:
   "Traduttore on GitHub":
     - "https://github.com/wearerequired/traduttore"
