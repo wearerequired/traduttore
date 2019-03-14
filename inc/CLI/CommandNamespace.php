@@ -52,7 +52,7 @@ namespace Required\Traduttore\CLI;
  *     Success: Language pack generation finished
  *
  *     # Remove cached repository for given project ID.
- *     $ wp traduttore cache clear 123
+ *     $ wp traduttore project cache clear 123
  *     Success: Removed cached Git repository for project (ID: 123)!
  */
 class CommandNamespace extends \WP_CLI\Dispatcher\CommandNamespace {

@@ -37,7 +37,7 @@ Removes the cached source code repository for a given project.
 Useful when the local repository was somehow corrupted.
 
 ```bash
-wp traduttore cache clear <project|repository_url>
+wp traduttore project cache clear <project|repository_url>
 ````
 
 ## Show various details about a project
@@ -50,6 +50,13 @@ This includes things like the text domain and repository URLs.
 wp traduttore project info <project|repository_url>
 ```
 
+## List project language packs
+
+List language packs for the given project.
+
+```bash
+wp traduttore project list <project|repository_url>
+````
 
 ## Show various details about the environment
 
