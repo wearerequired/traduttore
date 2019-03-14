@@ -98,7 +98,7 @@ class Project {
 	 *
 	 * @var string Text domain meta key.
 	 */
-	protected const TEXT_DOMAIN_KEY = '_traduttore_text_domain';
+	public const TEXT_DOMAIN_KEY = '_traduttore_text_domain';
 
 	/**
 	 * Last update time meta key.
@@ -116,7 +116,7 @@ class Project {
 	 *
 	 * @var string Version number meta key.
 	 */
-	protected const VERSION_KEY = '_traduttore_version';
+	public const VERSION_KEY = '_traduttore_version';
 
 	/**
 	 * GlotPress project.
