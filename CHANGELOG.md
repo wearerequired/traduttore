@@ -17,27 +17,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Support for self-managed repositories (GitLab and others).
 * New REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`).
 * CLI command `wp traduttore info` for information about Traduttore setup.
-* Greatly improved documentation.
+* Greatly improved [documentation](https://wearerequired.github.io/traduttore/).
 
 ### Deprecated
 * The REST API route `github-webhook/v1/push-event` for incoming webhooks is replaced by `traduttore/v1/incoming-webhook`.
 
 ### Removed
-* All filters and actions with `_` as the separator.
+* Remove all filters and actions with `_` as the separator.
 
 ## [2.0.3] - 2018-07-09
 ### Changed
 * Use HTTPS instead of SSH for cloning repositories if possible.
 
 ### Fixed
-* Uninstall routine and a few other smaller issues.
+* Fix uninstall routine and a few other smaller issues.
 
 ## [2.0.2] - 2018-06-25
 ### Added
 * Introduce `TRADUTTORE_WP_BIN` constant to allow overriding the path to WP-CLI.
 
 ### Fixed
-* A few errors within the CLI commands
+* Fix a few errors within the CLI commands.
 * Fix an error where deleting the local Git repository wasn't possible.
 * Make sure `wp_tempnam()` is always available.
 
