@@ -18,11 +18,11 @@ Generate language packs for one or more projects.
 wp traduttore language-pack build <project>
 ```
 
-Language packs will automatically be updated upon translation changes.
-
-This WP-CLI command is mostly useful for debugging / testing.
+Language packs will automatically be updated upon translation changes. This WP-CLI command is mostly useful for debugging / testing.
 
 Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
+
+Use the `--all` flag to generate the language packs for all active projects.
 
 ## List project language packs
 
