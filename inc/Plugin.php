@@ -22,6 +22,7 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
+use \Required\Traduttore\Project;
 
 /**
  * Class used to register main actions and filters.
@@ -60,9 +61,18 @@ class Plugin {
 				if ( ! $project || ! $project->is_active() ) {
 					return;
 				}
-				$zip_provider = new ZipProvider( $translation_set );
 
-				$zip_provider->schedule_generation();
+				$last_modified = $translation_set->last_modified();
+				if ( $last_modified ) {
+					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+				} else {
+					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				}
+
+				$zip_provider = new ZipProvider( $translation_set );
+				if ( $last_modified > $zip_provider->get_last_build_time() ) {
+					$zip_provider->schedule_generation();
+				}
 			}
 		);
 
@@ -83,9 +93,17 @@ class Plugin {
 
 				/* @var GP_Translation_Set $translation_set */
 				foreach ( $translation_sets as $translation_set ) {
-					$zip_provider = new ZipProvider( $translation_set );
+					$last_modified = $translation_set->last_modified();
+					if ( $last_modified ) {
+						$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+					} else {
+						$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+					}
 
-					$zip_provider->schedule_generation();
+					$zip_provider = new ZipProvider( $translation_set );
+					if ( $last_modified > $zip_provider->get_last_build_time() ) {
+						$zip_provider->schedule_generation();
+					}
 				}
 			},
 			10,
@@ -97,21 +115,45 @@ class Plugin {
 			function( $translation_set_id ) {
 				/* @var GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
-				$last_modified   = $translation_set->last_modified();
-
-				if ( $last_modified ) {
-					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
-				} else {
-					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-				}
 
 				$zip_provider = new ZipProvider( $translation_set );
+				$zip_provider->generate_zip_file();
+			}
+		);
 
-				if ( $last_modified <= $zip_provider->get_last_build_time() ) {
-					return;
+		add_filter(
+			'gp_update_meta',
+			function( $meta_tuple ) {
+				$allowed_keys = [
+					Project::VERSION_KEY, // '_traduttore_version'.
+					Project::TEXT_DOMAIN_KEY, // '_traduttore_text_domain'.
+				];
+				if ( ! in_array( $meta_tuple['meta_key'], $allowed_keys, true ) ) {
+					return $meta_tuple;
 				}
 
-				$zip_provider->generate_zip_file();
+				$project = ( new ProjectLocator( $meta_tuple['object_id'] ) )->get_project();
+				if ( ! $project || ! $project->is_active() ) {
+					return $meta_tuple;
+				}
+
+				$current_value = gp_get_meta( $meta_tuple['object_type'], $meta_tuple['object_id'], $meta_tuple['meta_key'] );
+				if ( $current_value === $meta_tuple['meta_value'] ) {
+					return $meta_tuple;
+				}
+
+				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
+				/* @var GP_Translation_Set $translation_set */
+				foreach ( $translation_sets as $translation_set ) {
+					if ( 0 === $translation_set->current_count() ) {
+						continue;
+					}
+
+					$zip_provider = new ZipProvider( $translation_set );
+					$zip_provider->schedule_generation();
+				}
+
+				return $meta_tuple;
 			}
 		);
 

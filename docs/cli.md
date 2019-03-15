@@ -15,14 +15,22 @@ You can define `TRADUTTORE_WP_BIN` in your `wp-config.php` file to tell Tradutto
 Generate language packs for one or more projects.
 
 ```bash
-wp traduttore project build <project>
+wp traduttore language-pack build <project>
 ```
 
-Language packs will automatically be updated upon translation changes.
-
-This WP-CLI command is mostly useful for debugging / testing.
+Language packs will automatically be updated upon translation changes. This WP-CLI command is mostly useful for debugging / testing.
 
 Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
+
+Use the `--all` flag to generate the language packs for all active projects.
+
+## List project language packs
+
+List language packs for the given project.
+
+```bash
+wp traduttore language-pack list <project|repository_url>
+````
 
 ## Update translations from remote
 
@@ -55,14 +63,6 @@ This includes things like the text domain and repository URLs.
 ```bash
 wp traduttore project info <project|repository_url>
 ```
-
-## List project language packs
-
-List language packs for the given project.
-
-```bash
-wp traduttore project list <project|repository_url>
-````
 
 ## Show various details about the environment
 
