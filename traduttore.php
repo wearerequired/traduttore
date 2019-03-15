@@ -43,7 +43,7 @@ if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
 	return;
 }
 
-define( __NAMESPACE__ . '\VERSION', '3.0.0-alpha' );
+define( __NAMESPACE__ . '\VERSION', '3.0.0' );
 define( __NAMESPACE__ . '\PLUGIN_FILE', __FILE__ );
 
 register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' ] );

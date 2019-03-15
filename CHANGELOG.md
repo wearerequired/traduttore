@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0] - 2019-03-15
 Due to the large number of changes in the release it is recommended to update all of the language packs. This can be done with the WP-CLI command `wp traduttore language-pack build --all`.
+
 ### Changed
 * Heavy architectural changes to make the plugin more modular.
 * All filters and actions now use `.` as the separator between the prefix and hook name instead of `_`.
 * Scheduling of cron events to reduce number of unnecessary builds and updates.
+* Bump Traduttore Registry version to 2.0.
 * Existing WP-CLI commands:
   * `wp traduttore build <project>` → `wp traduttore language-pack build <project>`
   * `wp traduttore cache clear <project>` → `wp traduttore project cache clear <project>`
@@ -26,7 +28,6 @@ Due to the large number of changes in the release it is recommended to update al
   * `wp traduttore info` for information about the Traduttore setup.
   * `wp traduttore project info <project>` for information about a project.
   * `wp traduttore language-pack list <project>` for listing all language packs in a project.
-
 
 ### Deprecated
 * The REST API route `github-webhook/v1/push-event` for incoming webhooks is replaced by `traduttore/v1/incoming-webhook`.
@@ -51,7 +52,6 @@ Due to the large number of changes in the release it is recommended to update al
 * Make sure `wp_tempnam()` is always available.
 
 ## [2.0.1] - 2018-06-21
-
 ### Fixed
 * Fix a possible fatal error in the project locator class.
 
@@ -59,7 +59,6 @@ Due to the large number of changes in the release it is recommended to update al
 * Improve code formatting and inline documentation.
 
 ## 2.0.0 - 2018-06-19
-
 ### Added
 * CLI commands.
 * ZIP file generation.
@@ -67,7 +66,6 @@ Due to the large number of changes in the release it is recommended to update al
 * Slack notifications.
 
 ## 1.0.0 - 2017-05-30
-
 ### Added
 * Initial release.
 
