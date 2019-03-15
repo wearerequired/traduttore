@@ -43,13 +43,31 @@ class ZipProvider {
 	protected const BUILD_TIME_KEY = '_traduttore_build_time';
 
 	/**
-	 * The GlotPress translation set.
+	 * The current GlotPress translation set.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @var GP_Translation_Set The translation set.
 	 */
 	protected $translation_set;
+
+	/**
+	 * The current GlotPress locale.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var GP_Locale The locale.
+	 */
+	protected $locale;
+
+	/**
+	 * The current project.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var Project The project.
+	 */
+	protected $project;
 
 	/**
 	 * ZipProvider constructor.
@@ -60,6 +78,8 @@ class ZipProvider {
 	 */
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
+		$this->locale          = GP_Locales::by_slug( $this->translation_set->locale );
+		$this->project         = new Project( GP::$project->get( $this->translation_set->project_id ) );
 	}
 
 	/**
@@ -161,8 +181,9 @@ class ZipProvider {
 		 * @param string             $file            Path to the generated language pack.
 		 * @param string             $url             URL to the generated language pack.
 		 * @param GP_Translation_Set $translation_set Translation set the language pack is for.
+		 * @param Project            $project         The translation set's project.
 		 */
-		do_action( 'traduttore.zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set );
+		do_action( 'traduttore.zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set, $this->project );
 
 		return true;
 	}
@@ -209,14 +230,22 @@ class ZipProvider {
 	 * @return string ZIP filename.
 	 */
 	protected function get_zip_filename() : string {
-		/* @var GP_Locale $locale */
-		$locale  = GP_Locales::by_slug( $this->translation_set->locale );
-		$project = GP::$project->get( $this->translation_set->project_id );
+		$slug    = str_replace( '/', '-', $this->project->get_slug() );
+		$version = $this->project->get_version();
+
+		if ( $version ) {
+			return sprintf(
+				'%1$s-%2$s-%3$s.zip',
+				$slug,
+				$this->locale->wp_locale,
+				$version
+			);
+		}
 
 		return sprintf(
 			'%1$s-%2$s.zip',
-			str_replace( '/', '-', $project->slug ),
-			$locale->wp_locale
+			$slug,
+			$this->locale->wp_locale
 		);
 	}
 
