@@ -22,9 +22,11 @@ To send Slack notifications, Traduttore requires a separate WordPress plugin. [L
 
 Traduttore requires at least PHP 7.1, while the [Traduttore Registry](https://github.com/wearerequired/traduttore-registry) also supports PHP 7.0.
 
-To download the latest code from your source code repositories, Traduttore requires Git to be installed on the server. For string extraction Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer. [Learn more about the available CLI commands](cli.md).
+To download the latest code from your source code repositories, Traduttore requires the respective version control to be installed on the server. Depending on the projects it may be Git, Subversion or Mercurial.
 
-If you're not sure whether Git or WP-CLI are available on your system, please contact your hosting provider.
+For string extraction Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer. [Learn more about the available CLI commands](cli.md).
+
+If you're not sure whether Git or WP-CLI are available on your system, please contact your hosting provider or run the WP-CLI command `wp traduttore info`.
 
 ## Installing Traduttore
 
