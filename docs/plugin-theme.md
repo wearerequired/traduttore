@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Integrating Traduttore
+title: Plugin & Theme Integration
 nav_order: 9
 ---
 
-# Integration
+# Plugin & Theme Integration
 
 Using our little helper library called [Traduttore Registry](https://github.com/wearerequired/traduttore-registry), you can then tell WordPress that translations for your project should be loaded from Traduttore.
 
@@ -15,7 +15,7 @@ Using our little helper library called [Traduttore Registry](https://github.com/
 If you're using [Composer](https://getcomposer.org/) to manage dependencies, you can use the following command to add the library to your WordPress plugin or theme:
 
 ```bash
-composer require wearerequired/traduttore
+composer require wearerequired/traduttore-registry
 ```
 
 After that, you can use `Required\Traduttore_Registry\add_project( $type, $slug, $api_url )` in your theme or plugin.
