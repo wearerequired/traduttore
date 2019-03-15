@@ -6,18 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-
 * Heavy architectural changes to make the plugin more modular.
 * All filters and actions now use `.` as the separator between the prefix and hook name instead of `_`.
 * Scheduling of cron events to reduce number of unnecessary builds and updates.
+* Existing WP-CLI commands:
+  * `wp traduttore build <project>` → `wp traduttore language-pack build <project>`
+  * `wp traduttore cache clear <project>` → `wp traduttore project cache clear <project>`
+  * `wp traduttore update <project>` → `wp traduttore project update <project>`
 
 ### Added
 * Support for Bitbucket.org repositories (Mercurial and Git).
 * Support for GitLab repositories.
 * Support for self-managed repositories (GitLab and others).
 * New REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`).
-* CLI command `wp traduttore info` for information about Traduttore setup.
 * Greatly improved [documentation](https://wearerequired.github.io/traduttore/).
+* New WP-CLI commands:
+  * `wp traduttore info` for information about the Traduttore setup.
+  * `wp traduttore project info <project>` for information about a project.
+  * `wp traduttore language-pack list <project>` for listing all language packs in a project.
+
 
 ### Deprecated
 * The REST API route `github-webhook/v1/push-event` for incoming webhooks is replaced by `traduttore/v1/incoming-webhook`.
