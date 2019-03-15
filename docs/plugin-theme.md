@@ -8,7 +8,7 @@ nav_order: 9
 
 Using our little helper library called [Traduttore Registry](https://github.com/wearerequired/traduttore-registry), you can then tell WordPress that translations for your project should be loaded from Traduttore.
 
-**Note:** Traduttore Registry requires PHP 7.0 or higher.
+**Note:** Traduttore Registry requires PHP 7.1 or higher.
 
 ## Setting up Traduttore Registry
 
