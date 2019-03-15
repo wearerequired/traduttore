@@ -18,6 +18,7 @@ Due to the large number of changes in the release it is recommended to update al
 * Support for self-managed repositories (GitLab and others).
 * New REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`).
 * CLI command `wp traduttore info` for information about Traduttore setup.
+* Support for [JavaScript translations](https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/).
 * Greatly improved [documentation](https://wearerequired.github.io/traduttore/).
 
 ### Deprecated
