@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.0.0] - 2019-03-14
+## [3.0.0] - 2019-03-15
 Due to the large number of changes in the release it is recommended to update all of the language packs. This can be done with the WP-CLI command `wp traduttore language-pack build --all`.
 ### Changed
 * Heavy architectural changes to make the plugin more modular.
