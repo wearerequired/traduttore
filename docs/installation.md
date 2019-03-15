@@ -20,7 +20,7 @@ To send Slack notifications, Traduttore requires a separate WordPress plugin. [L
 
 ### Server
 
-Traduttore requires at least PHP 7.1, while the [Traduttore Registry](https://github.com/wearerequired/traduttore-registry) also supports PHP 7.0.
+Traduttore requires at least PHP 7.1.
 
 To download the latest code from your source code repositories, Traduttore requires the respective version control to be installed on the server. Depending on the projects it may be Git, Subversion or Mercurial.
 

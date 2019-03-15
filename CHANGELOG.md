@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.0.0] - 2019-03-15
+Due to the large number of changes in the release it is recommended to update all of the language packs. This can be done with the WP-CLI command `wp traduttore language-pack build --all`.
 ### Changed
 * Heavy architectural changes to make the plugin more modular.
 * All filters and actions now use `.` as the separator between the prefix and hook name instead of `_`.
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Support for GitLab repositories.
 * Support for self-managed repositories (GitLab and others).
 * New REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`).
+* Support for [JavaScript translations](https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/).
 * Greatly improved [documentation](https://wearerequired.github.io/traduttore/).
 * New WP-CLI commands:
   * `wp traduttore info` for information about the Traduttore setup.
@@ -69,7 +71,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Initial release.
 
-[Unreleased]: https://github.com/wearerequired/traduttore/compare/2.0.3...HEAD
+[Unreleased]: https://github.com/wearerequired/traduttore/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/wearerequired/traduttore/compare/2.0.3...3.0.0
 [2.0.3]: https://github.com/wearerequired/traduttore/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/wearerequired/traduttore/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/wearerequired/traduttore/compare/2.0.0...2.0.1
