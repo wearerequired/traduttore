@@ -22,8 +22,12 @@
       "role": "Developer"
     },
     {
+      "name": "Ulrich Pogson",
+      "email": "ulrich@required.ch",
+      "role": "Developer"
+    },
+    {
       "name": "Pascal Birchler",
-      "email": "pascal@required.ch",
       "role": "Developer"
     }
   ],
