@@ -44,16 +44,16 @@ namespace Required\Traduttore\CLI;
  *     Repository Instance:   Required\Traduttore\Repository\GitHub
  *     Loader Instance:       Required\Traduttore\Loader\Git
  *
+ *     # Remove cached repository for given project ID.
+ *     $ wp traduttore project cache clear 123
+ *     Success: Removed cached Git repository for project (ID: 123)!
+ *
  *     # Generate language packs for the project with ID 123.
- *     $ wp traduttore project build 123
+ *     $ wp traduttore language-pack build 123
  *     Language pack generated for translation set (ID: 1)
  *     Language pack generated for translation set (ID: 3)
  *     Language pack generated for translation set (ID: 7)
  *     Success: Language pack generation finished
- *
- *     # Remove cached repository for given project ID.
- *     $ wp traduttore project cache clear 123
- *     Success: Removed cached Git repository for project (ID: 123)!
  */
 class CommandNamespace extends \WP_CLI\Dispatcher\CommandNamespace {
 
