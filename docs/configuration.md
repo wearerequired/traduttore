@@ -25,11 +25,15 @@ There's no need for any manual configuration, everything happens in the backgrou
 
 ## Task Scheduler
 
-Traduttore relies on WordPress' built-in cron functionality to schedule single events. This functionality relies on users visiting your WordPress site in order to execute scheduled events.
+Traduttore relies on WordPress' built-in cron functionality to schedule single events. The WordPress cron normally relies on users visiting your WordPress site in order to execute scheduled events.
 
-To make sure your events are executed on time, we suggest setting up system cron jobs that run reliably every few minutes.
+To make sure your events are executed on time, we suggest setting up system cron jobs that runs reliably every few minutes.
 
 [Learn more about hooking WP-Cron into the system task scheduler](https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/).
+
+There are two tasks that are scheduled:
+1. The `traduttore.update` task is created when the webhook is hit. The task runs by default 3 minutes after being triggered.
+2. The `traduttore.generate_zip` tasks in created when a translation is updated. This tasks runs by default 5 minutes after being triggered.
 
 ## String Extraction
 
