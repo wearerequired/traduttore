@@ -27,7 +27,7 @@ There's no need for any manual configuration, everything happens in the backgrou
 
 Traduttore relies on WordPress' built-in cron functionality to schedule single events. The WordPress cron normally relies on users visiting your WordPress site in order to execute scheduled events.
 
-To make sure your events are executed on time, we suggest setting up system cron jobs that runs reliably every few minutes.
+To make sure your events are executed on time, we suggest setting up a system cron job that runs reliably every few minutes.
 
 [Learn more about hooking WP-Cron into the system task scheduler](https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/).
 
