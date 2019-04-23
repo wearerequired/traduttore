@@ -29,7 +29,7 @@ Traduttore relies on WordPress' built-in cron functionality to schedule single e
 
 To make sure your events are executed on time, we suggest setting up system cron jobs that run reliably every few minutes.
 
-[Learn more about hooking WP-Cron into the system task scheduler](https://developer.wordpress.org/plugins/cron/hooking-into-the-system-task-scheduler/).
+[Learn more about hooking WP-Cron into the system task scheduler](https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/).
 
 ## String Extraction
 
