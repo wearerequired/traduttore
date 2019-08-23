@@ -12,9 +12,7 @@ Mercurial repositores are not supported at this time. If you want to use Tradutt
 
 ## Repository Access
 
-Traduttore connects to Bitbucket via either HTTPS or SSH to fetch a project's repository. If you're projects are not public, you need to make sure that the server has access to them by providing an SSH key. Ideally, you'd create a so-called [machine user](https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users) for this purpose.
-
-You can learn more about this at [Connecting to GitHub with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/)
+Traduttore connects to Bitbucket via either HTTPS or SSH to fetch a project's repository. If your projects are not public, you need to make sure that the server has access to them by providing an SSH key. You can do this by adding an [access key](https://confluence.atlassian.com/bitbucket/access-keys-294486051.html) in your repository settings.
 
 ## Webhooks
 
