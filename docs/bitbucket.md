@@ -12,7 +12,7 @@ Mercurial repositores are not supported at this time. If you want to use Tradutt
 
 ## Repository Access
 
-Traduttore connects to Bitbucket via either HTTPS or SSH to fetch a project's repository. If you're projects are not public, you need to make sure that the server has access to them by providing an SSH key. You can to this adding an [access key](https://confluence.atlassian.com/bitbucket/access-keys-294486051.html) in your repository settings.
+Traduttore connects to Bitbucket via either HTTPS or SSH to fetch a project's repository. If your projects are not public, you need to make sure that the server has access to them by providing an SSH key. You can do this by adding an [access key](https://confluence.atlassian.com/bitbucket/access-keys-294486051.html) in your repository settings.
 
 ## Webhooks
 
