@@ -200,6 +200,16 @@ class Export {
 		foreach ( $mapping as $file => $entries ) {
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
+			/**
+			 * Filters the JavaScript filename (including the relative path) before the md5 hash for the JSON filename is created from it.
+			 *
+			 * @since 3.1.0
+			 *
+			 * @param string  $file    The JS filename with relative path.
+			 * @param Project $project The project that is exported.
+			 */
+			$file = apply_filters( 'traduttore.js_file_for_hash', $file, $this->project->get_project() );
+
 			$hash      = md5( $file );
 			$file_name = "{$base_file_name}-{$hash}.json";
 			$temp_file = wp_tempnam( $file_name );
