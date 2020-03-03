@@ -149,7 +149,7 @@ class ZipProvider {
 
 		$temp_zip_file = wp_tempnam( $this->get_zip_filename() );
 
-		if ( $zip->open( $temp_zip_file, ZipArchive::OVERWRITE ) === true ) {
+		if ( $zip->open( $temp_zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE ) === true ) {
 			foreach ( $files_for_zip as $file_name => $temp_file ) {
 				$zip->addFile( $temp_file, $file_name );
 			}
