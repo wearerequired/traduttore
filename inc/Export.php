@@ -184,6 +184,7 @@ class Export {
 				 * @param Project $project The project that is exported.
 				 */
 				$source = apply_filters( 'traduttore.js_translation_entry_source', $source, $this->project->get_project() );
+
 				$mapping[ $source ][] = $entry;
 			}
 		}
