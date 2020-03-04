@@ -176,14 +176,14 @@ class Export {
 
 			foreach ( $sources as $source ) {
 				/**
-				 * Filters the entry source for a JavaScript translation.
+				 * Filters the entry source for a translation.
 				 *
 				 * @since 3.1.0
 				 *
-				 * @param string  $source  The JS filename with relative path.
+				 * @param string  $source  The filename with relative path, or `php` for translations from PHP files.
 				 * @param Project $project The project that is exported.
 				 */
-				$source = apply_filters( 'traduttore.js_translation_entry_source', $source, $this->project->get_project() );
+				$source = apply_filters( 'traduttore.translation_entry_source', $source, $this->project->get_project() );
 
 				$mapping[ $source ][] = $entry;
 			}
