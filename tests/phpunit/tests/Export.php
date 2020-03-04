@@ -140,6 +140,93 @@ class Export extends TestCase {
 		);
 	}
 
+	/**
+	 * Modify the source of JS files to build.js to test the traduttore.translation_entry_source filter.
+	 *
+	 * @param string $source The translation source.
+	 *
+	 * @return string The maybe modified source.
+	 */
+	public function filter_translation_entry_source( string $source ): string {
+		$wanted_sources = [
+			'my-super-script.js',
+			'my-other-script.js',
+		];
+
+		if ( in_array( $source, $wanted_sources ) ) {
+			return 'build.js';
+		}
+
+		return $source;
+	}
+
+	public function test_translation_entry_source_filter(): void {
+		$filename_1      = 'my-super-script.js';
+		$filename_2      = 'my-other-script.js';
+		$filename_target = 'build.js';
+
+		/* @var \GP_Original $original_1 */
+		$original_1 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_1,
+			]
+		);
+
+		/* @var \GP_Original $original_2 */
+		$original_2 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_2,
+			]
+		);
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original_1->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original_2->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$export = new E( $this->translation_set );
+
+		add_filter( 'traduttore.translation_entry_source', [ $this, 'filter_translation_entry_source' ] );
+
+		$actual = $export->export_strings();
+
+		remove_filter( 'traduttore.translation_entry_source', [ $this, 'filter_translation_entry_source' ] );
+
+		$json_filename_1      = 'foo-project-de_DE-' . md5( $filename_1 ) . '.json';
+		$json_filename_2      = 'foo-project-de_DE-' . md5( $filename_2 ) . '.json';
+		$json_filename_target = 'foo-project-de_DE-' . md5( $filename_target ) . '.json';
+
+		$this->assertArrayNotHasKey( $json_filename_1, $actual );
+		$this->assertArrayNotHasKey( $json_filename_2, $actual );
+
+		$json = file_get_contents( $actual[ $json_filename_target ] );
+
+		array_map( 'unlink', $actual );
+
+		$this->assertJson( $json );
+		$this->assertEqualSets(
+			[
+				'foo-project-de_DE.po',
+				'foo-project-de_DE.mo',
+				$json_filename_target,
+			],
+			array_keys( $actual )
+		);
+	}
+
 	public function test_js_entries_are_not_in_po_file(): void {
 		$filename_1 = 'my-super-script';
 		$filename_2 = 'my-super-minified-script';
