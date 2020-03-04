@@ -54,7 +54,7 @@ jobs:
   include:
     - stage: lint
       before_script:
-        - composer global require localheinz/composer-normalize
+        - composer global require ergebnis/composer-normalize
       script:
         - composer lint
         - composer normalize --dry-run
