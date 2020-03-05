@@ -147,7 +147,7 @@ class Export extends TestCase {
 	 *
 	 * @return array The maybe modified mapping.
 	 */
-	public function filter_map_entries_to_source( array $mapping ): string {
+	public function filter_map_entries_to_source( array $mapping ): array {
 		$mapping['build.js'] = array_merge( $mapping['my-super-script.js'], $mapping['my-other-script.js'] );
 
 		unset( $mapping['my-super-script.js'], $mapping['my-other-script.js'] );
