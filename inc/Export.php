@@ -179,7 +179,16 @@ class Export {
 			}
 		}
 
-		return $mapping;
+		/**
+		 * Filters the mapping of sources to translation entries.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array               $mapping The mapping of sources to translation entries.
+		 * @param Translation_Entry[] $entries The translation entries to map.
+		 * @param Project             $project The project that is exported.
+		 */
+		return (array) apply_filters( 'traduttore.map_entries_to_source', $mapping, $entries, $this->project );
 	}
 
 	/**

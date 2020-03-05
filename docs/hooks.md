@@ -200,3 +200,20 @@ Useful when language packs should be stored somewhere else.
 **Parameters:**
 
 * `$dir`: Cache directory path.
+
+----
+
+### `traduttore.map_entries_to_source`
+
+**Since:** 3.1.0
+
+Filters the mapping of sources to translation entries.
+
+Useful when the source and dist path of JavaScript sources does not match and not only differ in `.js` and `.min.js`.
+
+**Parameters:**
+
+* `$mapping`: The mapping of sources to translation entries.
+* `$entries`: The translation entries to map.
+* `$project`: The project that is exported.
+
