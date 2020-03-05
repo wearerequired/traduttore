@@ -18,5 +18,5 @@ If applicable, add screenshots to show the visual change.
 
 **Checklist:**
 - [ ] My code is tested.
-- [ ] My code follows the WordPress code style. <!-- Check code: `composer lint lint`, Guidelines: https://make.wordpress.org/core/handbook/best-practices/coding-standards/ -->
+- [ ] My code follows the WordPress code style. <!-- Check code: `composer run lint`, Guidelines: https://make.wordpress.org/core/handbook/best-practices/coding-standards/ -->
 - [ ] My code has proper inline documentation. <!-- Guidelines: https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/javascript/ -->
