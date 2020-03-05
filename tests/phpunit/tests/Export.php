@@ -141,26 +141,21 @@ class Export extends TestCase {
 	}
 
 	/**
-	 * Modify the source of JS files to build.js to test the traduttore.translation_entry_source filter.
+	 * Modify the mapping of sources to translation entries.
 	 *
-	 * @param string $source The translation source.
+	 * @param array $mapping The mapping of sources to translation entries.
 	 *
-	 * @return string The maybe modified source.
+	 * @return array The maybe modified mapping.
 	 */
-	public function filter_translation_entry_source( string $source ): string {
-		$wanted_sources = [
-			'my-super-script.js',
-			'my-other-script.js',
-		];
+	public function filter_map_entries_to_source( array $mapping ): string {
+		$mapping['build.js'] = array_merge( $mapping['my-super-script.js'], $mapping['my-other-script.js'] );
 
-		if ( in_array( $source, $wanted_sources ) ) {
-			return 'build.js';
-		}
+		unset( $mapping['my-super-script.js'], $mapping['my-other-script.js'] );
 
-		return $source;
+		return $mapping;
 	}
 
-	public function test_translation_entry_source_filter(): void {
+	public function test_map_entries_to_source_filter(): void {
 		$filename_1      = 'my-super-script.js';
 		$filename_2      = 'my-other-script.js';
 		$filename_target = 'build.js';
@@ -199,11 +194,11 @@ class Export extends TestCase {
 
 		$export = new E( $this->translation_set );
 
-		add_filter( 'traduttore.translation_entry_source', [ $this, 'filter_translation_entry_source' ] );
+		add_filter( 'traduttore.filter_map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
 
 		$actual = $export->export_strings();
 
-		remove_filter( 'traduttore.translation_entry_source', [ $this, 'filter_translation_entry_source' ] );
+		remove_filter( 'traduttore.filter_map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
 
 		$json_filename_1      = 'foo-project-de_DE-' . md5( $filename_1 ) . '.json';
 		$json_filename_2      = 'foo-project-de_DE-' . md5( $filename_2 ) . '.json';

@@ -175,21 +175,20 @@ class Export {
 			$sources = array_unique( $sources );
 
 			foreach ( $sources as $source ) {
-				/**
-				 * Filters the entry source for a translation.
-				 *
-				 * @since 3.1.0
-				 *
-				 * @param string  $source  The filename with relative path, or `php` for translations from PHP files.
-				 * @param Project $project The project that is exported.
-				 */
-				$source = apply_filters( 'traduttore.translation_entry_source', $source, $this->project->get_project() );
-
 				$mapping[ $source ][] = $entry;
 			}
 		}
 
-		return $mapping;
+		/**
+		 * Filters the mapping of sources to translation entries.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array               $mapping The mapping of sources to translation entries.
+		 * @param Translation_Entry[] $entries The translation entries to map.
+		 * @param Project             $project The project that is exported.
+		 */
+		return (array) apply_filters( 'traduttore.map_entries_to_source', $mapping, $entries, $this->project );
 	}
 
 	/**
