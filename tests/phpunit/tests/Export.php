@@ -194,11 +194,11 @@ class Export extends TestCase {
 
 		$export = new E( $this->translation_set );
 
-		add_filter( 'traduttore.filter_map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
+		add_filter( 'traduttore.map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
 
 		$actual = $export->export_strings();
 
-		remove_filter( 'traduttore.filter_map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
+		remove_filter( 'traduttore.map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
 
 		$json_filename_1      = 'foo-project-de_DE-' . md5( $filename_1 ) . '.json';
 		$json_filename_2      = 'foo-project-de_DE-' . md5( $filename_2 ) . '.json';
