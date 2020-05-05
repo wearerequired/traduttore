@@ -29,7 +29,8 @@ class Project extends TestCase {
 
 		$this->gp_project = $this->factory->project->create(
 			[
-				'name' => 'Project',
+				'name'   => 'Project',
+				'active' => 1,
 			]
 		);
 
@@ -174,5 +175,9 @@ class Project extends TestCase {
 		$this->project->set_version( $version );
 
 		$this->assertSame( $version, $this->project->get_version() );
+	}
+
+	public function test_is_active(): void {
+		$this->assertTrue( $this->project->is_active() );
 	}
 }
