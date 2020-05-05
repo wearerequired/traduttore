@@ -29,7 +29,8 @@ class Project extends TestCase {
 
 		$this->gp_project = $this->factory->project->create(
 			[
-				'name' => 'Project',
+				'name'   => 'Project',
+				'active' => 1,
 			]
 		);
 
