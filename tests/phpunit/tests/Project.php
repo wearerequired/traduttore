@@ -175,4 +175,8 @@ class Project extends TestCase {
 
 		$this->assertSame( $version, $this->project->get_version() );
 	}
+	
+	public function test_is_active(): void {
+		$this->assertTrue( $this->project->is_active() );
+	}
 }
