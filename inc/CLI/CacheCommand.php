@@ -3,14 +3,15 @@
  * Command for managing the Traduttore cache
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore\CLI
  */
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\{LoaderFactory, RepositoryFactory, Updater, Runner};
+use Required\Traduttore\LoaderFactory;
 use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\RepositoryFactory;
+use Required\Traduttore\Runner;
+use Required\Traduttore\Updater;
 use WP_CLI;
 use WP_CLI_Command;
 
@@ -47,9 +48,8 @@ class CacheCommand extends WP_CLI_Command {
 	 * @since 2.0.0
 	 *
 	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
 	 */
-	public function clear( $args, $assoc_args ): void {
+	public function clear( $args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 

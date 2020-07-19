@@ -1,8 +1,6 @@
 <?php
 /**
  * Base source code loader implementation
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Loader;
@@ -21,7 +19,7 @@ abstract class Base implements Loader {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Repository Repository object.
+	 * @var \Required\Traduttore\Repository Repository object.
 	 */
 	protected $repository;
 
@@ -30,7 +28,7 @@ abstract class Base implements Loader {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Repository $repository Repository instance.
+	 * @param \Required\Traduttore\Repository $repository Repository instance.
 	 */
 	public function __construct( Repository $repository ) {
 		$this->repository = $repository;
@@ -43,7 +41,7 @@ abstract class Base implements Loader {
 	 *
 	 * @return string Git repository path.
 	 */
-	public function get_local_path() : string {
+	public function get_local_path(): string {
 		return sprintf(
 			'%1$straduttore-%2$s-%3$s',
 			get_temp_dir(),

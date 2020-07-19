@@ -3,8 +3,6 @@
  * Base repository implementation
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore\Repository
  */
 
 namespace Required\Traduttore\Repository;
@@ -23,7 +21,7 @@ abstract class Base implements Repository {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Project Project information.
+	 * @var \Required\Traduttore\Project Project information.
 	 */
 	protected $project;
 
@@ -32,7 +30,7 @@ abstract class Base implements Repository {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Project $project Project information.
+	 * @param \Required\Traduttore\Project $project Project information.
 	 */
 	public function __construct( Project $project ) {
 		$this->project = $project;
@@ -45,7 +43,7 @@ abstract class Base implements Repository {
 	 *
 	 * @return string Repository type.
 	 */
-	public function get_type() : string {
+	public function get_type(): string {
 		$type = $this->project->get_repository_type();
 
 		return $type ?: Repository::TYPE_UNKNOWN;
@@ -58,7 +56,7 @@ abstract class Base implements Repository {
 	 *
 	 * @return bool Whether the repository is publicly accessible.
 	 */
-	public function is_public() : bool {
+	public function is_public(): bool {
 		return 'public' === $this->project->get_repository_visibility();
 	}
 
@@ -67,7 +65,7 @@ abstract class Base implements Repository {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return Project The project.
+	 * @return \Required\Traduttore\Project The project.
 	 */
 	public function get_project(): Project {
 		return $this->project;
@@ -123,7 +121,7 @@ abstract class Base implements Repository {
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
-	public function get_ssh_url() : ?string {
+	public function get_ssh_url(): ?string {
 		$ssh_url = $this->project->get_repository_ssh_url();
 
 		if ( $ssh_url ) {
@@ -144,7 +142,7 @@ abstract class Base implements Repository {
 	 *
 	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
 	 */
-	public function get_https_url() : ?string {
+	public function get_https_url(): ?string {
 		$https_url = $this->project->get_repository_https_url();
 
 		if ( ! $https_url && $this->get_host() && $this->get_name() ) {
@@ -160,8 +158,9 @@ abstract class Base implements Repository {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string     $credentials HTTP authentication credentials in the form username:password. Default empty string.
-		 * @param Repository $repository  The current repository.
+		 * @param string                          $credentials HTTP authentication credentials in the form
+		 *                                                     username:password. Default empty string.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		$credentials = apply_filters( 'traduttore.git_https_credentials', '', $this );
 

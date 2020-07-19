@@ -3,13 +3,9 @@
  * Runner class
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
-
-use WP_Filesystem_Base;
 
 /**
  * Update runner class to update a project's strings given a specific loader and an updater.
@@ -24,7 +20,7 @@ class Runner {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Loader VCS loader.
+	 * @var \Required\Traduttore\Loader VCS loader.
 	 */
 	protected $loader;
 
@@ -33,7 +29,7 @@ class Runner {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Updater Translation updater.
+	 * @var \Required\Traduttore\Updater Translation updater.
 	 */
 	protected $updater;
 
@@ -42,8 +38,8 @@ class Runner {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Loader  $loader VCS loader.
-	 * @param Updater $updater Translation updater.
+	 * @param \Required\Traduttore\Loader  $loader  VCS loader.
+	 * @param \Required\Traduttore\Updater $updater Translation updater.
 	 */
 	public function __construct( Loader $loader, Updater $updater ) {
 		$this->loader  = $loader;
@@ -57,7 +53,7 @@ class Runner {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function delete_local_repository() : bool {
+	public function delete_local_repository(): bool {
 		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 

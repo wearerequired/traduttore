@@ -3,8 +3,6 @@
  * ProjectLocator class
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -23,7 +21,7 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @var Project Project instance.
+	 * @var \Required\Traduttore\Project Project instance.
 	 */
 	protected $project;
 
@@ -43,9 +41,9 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return Project GlotPress project.
+	 * @return \Required\Traduttore\Project GlotPress project.
 	 */
-	public function get_project() :? Project {
+	public function get_project(): ?Project {
 		return $this->project;
 	}
 
@@ -55,10 +53,9 @@ class ProjectLocator {
 	 * @since 2.0.0
 	 *
 	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
-	 *
-	 * @return Project Project instance.
+	 * @return \Required\Traduttore\Project Project instance.
 	 */
-	protected function find_project( $project ) :? Project {
+	protected function find_project( $project ): ?Project {
 		if ( ! $project ) {
 			return null;
 		}
@@ -101,9 +98,9 @@ class ProjectLocator {
 	 * @since 3.0.0
 	 *
 	 * @param string $project Possible repository path or URL.
-	 * @return GP_Project|null Project on success, null otherwise.
+	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
-	protected function find_by_repository_name( $project ):? GP_Project {
+	protected function find_by_repository_name( $project ): ?GP_Project {
 		global $wpdb;
 
 		$meta_key = '_traduttore_repository_name';
@@ -135,7 +132,7 @@ class ProjectLocator {
 	 * @since 3.0.0
 	 *
 	 * @param string $project Possible repository path or URL.
-	 * @return GP_Project|null Project on success, null otherwise.
+	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
 	protected function find_by_repository_url( $project ): ?GP_Project {
 		global $wpdb;
@@ -166,14 +163,14 @@ class ProjectLocator {
 	 * @since 3.0.0
 	 *
 	 * @param string $project Possible source code repository path or URL.
-	 * @return GP_Project|null Project on success, null otherwise.
+	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
 	protected function find_by_source_url_template( $project ): ?GP_Project {
 		global $wpdb;
 
 		$table = GP::$project->table;
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $project ) . '%' );
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared

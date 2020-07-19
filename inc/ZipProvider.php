@@ -3,8 +3,6 @@
  * Language pack provider implementation
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -12,10 +10,8 @@ namespace Required\Traduttore;
 use DateTime;
 use DateTimeZone;
 use GP;
-use GP_Locale;
 use GP_Locales;
 use GP_Translation_Set;
-use WP_Filesystem_Base;
 use ZipArchive;
 
 /**
@@ -47,7 +43,7 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @var GP_Translation_Set The translation set.
+	 * @var \GP_Translation_Set The translation set.
 	 */
 	protected $translation_set;
 
@@ -56,7 +52,7 @@ class ZipProvider {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var GP_Locale The locale.
+	 * @var \GP_Locale The locale.
 	 */
 	protected $locale;
 
@@ -65,7 +61,7 @@ class ZipProvider {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Project The project.
+	 * @var \Required\Traduttore\Project The project.
 	 */
 	protected $project;
 
@@ -74,7 +70,7 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param GP_Translation_Set $translation_set Translation set to get the ZIP for.
+	 * @param \GP_Translation_Set $translation_set Translation set to get the ZIP for.
 	 */
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
@@ -97,8 +93,8 @@ class ZipProvider {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param int                $delay           Delay in minutes. Default is 5 minutes.
-		 * @param GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
+		 * @param int                 $delay           Delay in minutes. Default is 5 minutes.
+		 * @param \GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
 		 */
 		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $translation_set_id );
 
@@ -120,7 +116,7 @@ class ZipProvider {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function generate_zip_file() : bool {
+	public function generate_zip_file(): bool {
 		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
@@ -178,10 +174,10 @@ class ZipProvider {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string             $file            Path to the generated language pack.
-		 * @param string             $url             URL to the generated language pack.
-		 * @param GP_Translation_Set $translation_set Translation set the language pack is for.
-		 * @param Project            $project         The translation set's project.
+		 * @param string                       $file            Path to the generated language pack.
+		 * @param string                       $url             URL to the generated language pack.
+		 * @param \GP_Translation_Set          $translation_set Translation set the language pack is for.
+		 * @param \Required\Traduttore\Project $project         The translation set's project.
 		 */
 		do_action( 'traduttore.zip_generated', $this->get_zip_path(), $this->get_zip_url(), $this->translation_set, $this->project );
 
@@ -197,7 +193,7 @@ class ZipProvider {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function remove_zip_file() : bool {
+	public function remove_zip_file(): bool {
 		if ( ! file_exists( $this->get_zip_path() ) ) {
 			return false;
 		}
@@ -229,7 +225,7 @@ class ZipProvider {
 	 *
 	 * @return string ZIP filename.
 	 */
-	protected function get_zip_filename() : string {
+	protected function get_zip_filename(): string {
 		$slug    = str_replace( '/', '-', $this->project->get_slug() );
 		$version = $this->project->get_version();
 
@@ -254,9 +250,9 @@ class ZipProvider {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return DateTime Last build time.
+	 * @return \DateTime Last build time.
 	 */
-	public function get_last_build_time() :? DateTime {
+	public function get_last_build_time(): ?DateTime {
 		$meta = gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
 
 		return $meta ? new DateTime( $meta, new DateTimeZone( 'UTC' ) ) : null;
@@ -269,7 +265,7 @@ class ZipProvider {
 	 *
 	 * @return string ZIP file URL.
 	 */
-	public function get_zip_url() : string {
+	public function get_zip_url(): string {
 		$url = content_url( self::CACHE_DIR );
 
 		/**
@@ -297,7 +293,7 @@ class ZipProvider {
 	 *
 	 * @return string ZIP file path.
 	 */
-	public function get_zip_path() : string {
+	public function get_zip_path(): string {
 		return sprintf(
 			'%1$s/%2$s',
 			static::get_cache_dir(),
@@ -312,7 +308,7 @@ class ZipProvider {
 	 *
 	 * @return string Cache directory path.
 	 */
-	public static function get_cache_dir() : string {
+	public static function get_cache_dir(): string {
 		$dir = sprintf(
 			'%1$s/%2$s',
 			WP_CONTENT_DIR,

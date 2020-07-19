@@ -3,18 +3,13 @@
  * TranslationApi class
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
-use DateTime;
 use GP;
-use GP_Locale;
 use GP_Locales;
 use GP_Route_Main;
-use GP_Translation_Set;
 
 /**
  * Class used to add a simple translations API.
@@ -29,7 +24,7 @@ class TranslationApiRoute extends GP_Route_Main {
 	 *
 	 * @param string $project_path Project path.
 	 */
-	public function route_callback( $project_path ) : void {
+	public function route_callback( $project_path ): void {
 		$this->header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
 		// Get the project object from the project path that was passed in.

@@ -3,8 +3,6 @@
  * Command for printing various details about the environment
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore\CLI
  */
 
 namespace Required\Traduttore\CLI;
@@ -12,6 +10,7 @@ namespace Required\Traduttore\CLI;
 use Required\Traduttore\ZipProvider;
 use WP_CLI;
 use WP_CLI_Command;
+use function WP_CLI\Utils\get_flag_value;
 
 /**
  * Environment information command.
@@ -64,8 +63,8 @@ class InfoCommand extends WP_CLI_Command {
 		$wp_cli_binary  = $this->get_wp_binary_path();
 		$cache_dir      = ZipProvider::get_cache_dir();
 
-		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'json' ) {
-			$info = array(
+		if ( get_flag_value( $assoc_args, 'format' ) === 'json' ) {
+			$info = [
 				'traduttore_version' => $plugin_version,
 				'wp_version'         => $wp_version,
 				'gp_version'         => $gp_version,
@@ -75,7 +74,7 @@ class InfoCommand extends WP_CLI_Command {
 				'hg_path'            => $hg_binary,
 				'svn_path'           => $svn_binary,
 				'cache_dir'          => $cache_dir,
-			);
+			];
 
 			WP_CLI::line( json_encode( $info ) );
 		} else {
@@ -150,7 +149,7 @@ class InfoCommand extends WP_CLI_Command {
 	 * @return null|string Binary path on success, null otherwise.
 	 */
 	protected function get_wp_binary_path(): ?string {
-		if ( defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
+		if ( \defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
 			return TRADUTTORE_WP_BIN;
 		}
 

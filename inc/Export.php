@@ -3,8 +3,6 @@
  * Translation export class
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -12,7 +10,6 @@ namespace Required\Traduttore;
 use GP;
 use GP_Locales;
 use GP_Translation_Set;
-use Translation_Entry;
 
 /**
  * Export strings to translation files in PO, MO, and JSON format.
@@ -43,7 +40,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Project
+	 * @var \Required\Traduttore\Project
 	 */
 	protected $project;
 
@@ -59,7 +56,7 @@ class Export {
 	/**
 	 * Export constructor.
 	 *
-	 * @param GP_Translation_Set $translation_set The translation set this export is for.
+	 * @param \GP_Translation_Set $translation_set The translation set this export is for.
 	 */
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
@@ -84,7 +81,7 @@ class Export {
 		// Build a mapping based on where the translation entries occur and separate the po entries.
 		$mapping = $this->map_entries_to_source( $entries );
 
-		$php_entries = array_key_exists( 'php', $mapping ) ? $mapping['php'] : [];
+		$php_entries = \array_key_exists( 'php', $mapping ) ? $mapping['php'] : [];
 
 		unset( $mapping['php'] );
 
@@ -102,7 +99,6 @@ class Export {
 	 *
 	 * @param string $file     File path.
 	 * @param string $contents File contents.
-	 *
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function write_to_file( string $file, string $contents ): bool {
@@ -145,8 +141,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Translation_Entry[] $entries The translation entries to map.
-	 *
+	 * @param \Translation_Entry[] $entries The translation entries to map.
 	 * @return array The mapping of sources to translation entries.
 	 */
 	protected function map_entries_to_source( $entries ): array {
@@ -184,9 +179,9 @@ class Export {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param array               $mapping The mapping of sources to translation entries.
-		 * @param Translation_Entry[] $entries The translation entries to map.
-		 * @param Project             $project The project that is exported.
+		 * @param array                        $mapping The mapping of sources to translation entries.
+		 * @param \Translation_Entry[]         $entries The translation entries to map.
+		 * @param \Required\Traduttore\Project $project The project that is exported.
 		 */
 		return (array) apply_filters( 'traduttore.map_entries_to_source', $mapping, $entries, $this->project );
 	}
@@ -224,7 +219,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Translation_Entry[] $entries The translation entries.
+	 * @param \Translation_Entry[] $entries The translation entries.
 	 */
 	protected function build_po_file( $entries ): void {
 		/* @var \GP_Format $format */
@@ -246,7 +241,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Translation_Entry[] $entries The translation entries.
+	 * @param \Translation_Entry[] $entries The translation entries.
 	 */
 	protected function build_mo_file( $entries ): void {
 		/* @var \GP_Format $format */

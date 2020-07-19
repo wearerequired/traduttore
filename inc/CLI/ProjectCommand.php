@@ -3,15 +3,17 @@
  * Command for managing projects
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore\CLI
  */
 
 namespace Required\Traduttore\CLI;
 
+use Required\Traduttore\LoaderFactory;
+use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\RepositoryFactory;
+use Required\Traduttore\Runner;
+use Required\Traduttore\Updater;
 use WP_CLI;
 use WP_CLI_Command;
-use Required\Traduttore\{ProjectLocator, LoaderFactory, RepositoryFactory, Updater, Runner};
 use function WP_CLI\Utils\get_flag_value;
 
 /**
@@ -86,10 +88,10 @@ class ProjectCommand extends WP_CLI_Command {
 		$repository_visibility = $project->get_repository_visibility() ?? '(unknown)';
 		$repository_ssh_url    = $repository ? $repository->get_ssh_url() : '(unknown)';
 		$repository_https_url  = $repository ? $repository->get_https_url() : '(unknown)';
-		$repository_instance   = $repository ? get_class( $repository ) : '(unknown)';
-		$loader_instance       = $loader ? get_class( $loader ) : '(unknown)';
+		$repository_instance   = $repository ? \get_class( $repository ) : '(unknown)';
+		$loader_instance       = $loader ? \get_class( $loader ) : '(unknown)';
 
-		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'json' ) {
+		if ( get_flag_value( $assoc_args, 'format' ) === 'json' ) {
 			$info = [
 				'id'                    => $project_id,
 				'name'                  => $project_name,

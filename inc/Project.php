@@ -3,8 +3,6 @@
  * Project class
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -123,7 +121,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var GP_Project Project information.
+	 * @var \GP_Project Project information.
 	 */
 	protected $project;
 
@@ -132,7 +130,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param GP_Project $project GlotPress project.
+	 * @param \GP_Project $project GlotPress project.
 	 */
 	public function __construct( $project ) {
 		$this->project = $project;
@@ -143,7 +141,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return GP_Project GlotPress project.
+	 * @return \GP_Project GlotPress project.
 	 */
 	public function get_project(): GP_Project {
 		return $this->project;
@@ -434,7 +432,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return null|DateTime Last updated time if stored, null otherwise.
+	 * @return null|\DateTime Last updated time if stored, null otherwise.
 	 */
 	public function get_last_updated_time(): ?DateTime {
 		$time = gp_get_meta( 'project', $this->project->id, static::UPDATE_TIME_KEY );
@@ -447,7 +445,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param DateTime $time The new updated time.
+	 * @param \DateTime $time The new updated time.
 	 * @return bool Whether the data was successfully saved or not.
 	 */
 	public function set_last_updated_time( DateTime $time ): bool {
