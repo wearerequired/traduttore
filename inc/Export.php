@@ -204,6 +204,11 @@ class Export {
 		foreach ( $mapping as $file => $entries ) {
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
+			// Add comment with file reference for debugging.
+			$contents_decoded          = json_decode( $contents );
+			$contents_decoded->comment = [ 'reference' => $file ];
+			$contents                  = wp_json_encode( $contents_decoded );
+
 			$hash      = md5( $file );
 			$file_name = "{$base_file_name}-{$hash}.json";
 			$temp_file = wp_tempnam( $file_name );
