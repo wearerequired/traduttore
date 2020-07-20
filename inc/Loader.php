@@ -3,8 +3,6 @@
  * Source code loader interface
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -20,7 +18,7 @@ interface Loader {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Repository $repository Repository instance.
+	 * @param \Required\Traduttore\Repository $repository Repository instance.
 	 */
 	public function __construct( Repository $repository );
 
@@ -33,7 +31,7 @@ interface Loader {
 	 *
 	 * @return string Path to the downloaded repository on success.
 	 */
-	public function download() :? string;
+	public function download(): ?string;
 
 	/**
 	 * Returns the local repository path..
@@ -42,5 +40,5 @@ interface Loader {
 	 *
 	 * @return string Repository path.
 	 */
-	public function get_local_path() : string;
+	public function get_local_path(): string;
 }

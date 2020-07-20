@@ -3,8 +3,6 @@
  * Bitbucket repository implementation
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Repository;
@@ -31,7 +29,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return string Repository type.
 	 */
-	public function get_type() : string {
+	public function get_type(): string {
 		return Repository::TYPE_BITBUCKET;
 	}
 
@@ -53,7 +51,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return bool Whether the repository is publicly accessible.
 	 */
-	public function is_public() : bool {
+	public function is_public(): bool {
 		$visibility = $this->project->get_repository_visibility();
 
 		if ( ! $visibility ) {
@@ -74,7 +72,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return string SSH URL to the repository, e.g. git@github.com:wearerequired/traduttore.git.
 	 */
-	public function get_ssh_url() : ?string {
+	public function get_ssh_url(): ?string {
 		if ( Repository::VCS_TYPE_HG === $this->project->get_repository_vcs_type() ) {
 			$ssh_url = $this->project->get_repository_ssh_url();
 
@@ -97,7 +95,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return string HTTPS URL to the repository, e.g. https://github.com/wearerequired/traduttore.git.
 	 */
-	public function get_https_url() : ?string {
+	public function get_https_url(): ?string {
 		if ( Repository::VCS_TYPE_HG === $this->project->get_repository_vcs_type() ) {
 			$https_url = $this->project->get_repository_https_url();
 
@@ -114,8 +112,9 @@ class Bitbucket extends Base {
 			 *
 			 * @since 3.0.0
 			 *
-			 * @param string     $credentials HTTP authentication credentials in the form username:password. Default empty string.
-			 * @param Repository $repository  The current repository.
+			 * @param string                          $credentials HTTP authentication credentials in the form
+			 *                                                     username:password. Default empty string.
+			 * @param \Required\Traduttore\Repository $repository  The current repository.
 			 */
 			$credentials = apply_filters( 'traduttore.hg_https_credentials', '', $this );
 

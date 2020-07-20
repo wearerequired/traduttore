@@ -3,8 +3,6 @@
  * Bitbucket webhook handler
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\WebhookHandler;
@@ -12,7 +10,6 @@ namespace Required\Traduttore\WebhookHandler;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
-use WP_Error;
 use WP_REST_Response;
 
 /**
@@ -61,7 +58,7 @@ class Bitbucket extends Base {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
+	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback() {
 		$params = $this->request->get_params();
@@ -70,7 +67,7 @@ class Bitbucket extends Base {
 		$project = $locator->get_project();
 
 		if ( ! $project ) {
-			return new WP_Error( '404', 'Could not find project for this repository' );
+			return new \WP_Error( '404', 'Could not find project for this repository' );
 		}
 
 		if ( ! $project->get_repository_vcs_type() ) {

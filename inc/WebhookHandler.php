@@ -3,15 +3,11 @@
  * Webhook handler interface
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
-use WP_Error;
 use WP_REST_Request;
-use WP_REST_Response;
 
 /**
  * WebhookHandler interface.
@@ -24,7 +20,7 @@ interface WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object.
 	 */
 	public function __construct( WP_REST_Request $request );
 
@@ -42,7 +38,7 @@ interface WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
+	 * @return \WP_Error|\Required\Traduttore\WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback();
 }

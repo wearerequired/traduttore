@@ -3,13 +3,9 @@
  * Mercurial source code loader
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Loader;
-
-use Required\Traduttore\Repository;
 
 /**
  * Mercurial loader class.
@@ -70,9 +66,10 @@ class Mercurial extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool       $use_https  Whether to use HTTPS instead of SSH for cloning repositories.
-		 *                               Defaults to true for public repositories.
-		 * @param Repository $repository The current repository.
+		 * @param bool                            $use_https  Whether to use HTTPS instead of SSH for
+		 *                                                    cloning repositories.
+		 *                                                    Defaults to true for public repositories.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		$use_https = apply_filters( 'traduttore.hg_clone_use_https', $this->repository->is_public(), $this->repository );
 
@@ -87,8 +84,8 @@ class Mercurial extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string     $clone_url  The URL to clone a Mercurial repository.
-		 * @param Repository $repository The current repository.
+		 * @param string                          $clone_url  The URL to clone a Mercurial repository.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		return apply_filters( 'traduttore.hg_clone_url', $clone_url, $this->repository );
 	}

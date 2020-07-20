@@ -3,8 +3,6 @@
  * Updater class
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -34,7 +32,7 @@ class Updater {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var Project Project information.
+	 * @var \Required\Traduttore\Project Project information.
 	 */
 	protected $project;
 
@@ -43,7 +41,7 @@ class Updater {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Project $project Project information.
+	 * @param \Required\Traduttore\Project $project Project information.
 	 */
 	public function __construct( Project $project ) {
 		$this->project = $project;
@@ -62,8 +60,8 @@ class Updater {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param int     $delay   Delay in minutes. Default is 3 minutes.
-		 * @param Project $project The current project.
+		 * @param int                          $delay   Delay in minutes. Default is 3 minutes.
+		 * @param \Required\Traduttore\Project $project The current project.
 		 */
 		$delay = (int) apply_filters( 'traduttore.update_delay', MINUTE_IN_SECONDS * 3, $this->project );
 
@@ -110,10 +108,10 @@ class Updater {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Configuration $config Configuration object.
+	 * @param \Required\Traduttore\Configuration $config Configuration object.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function update( Configuration $config ) : bool {
+	public function update( Configuration $config ): bool {
 		$pot_file = $this->create_pot_file( $config );
 
 		if ( ! $pot_file ) {
@@ -144,9 +142,9 @@ class Updater {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param Project $project      The project that was updated.
-		 * @param array   $stats        Stats about the number of imported translations.
-		 * @param PO      $translations PO object containing all the translations from the POT file.
+		 * @param \Required\Traduttore\Project $project      The project that was updated.
+		 * @param array                        $stats        Stats about the number of imported translations.
+		 * @param \PO                          $translations PO object containing all the translations from the POT file.
 		 */
 		do_action( 'traduttore.updated', $this->project, $stats, $translations );
 
@@ -176,10 +174,10 @@ class Updater {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Configuration $config Configuration object.
+	 * @param \Required\Traduttore\Configuration $config Configuration object.
 	 * @return string Path to the POT file.
 	 */
-	protected function create_pot_file( Configuration $config ) :? string {
+	protected function create_pot_file( Configuration $config ): ?string {
 		$source  = $config->get_path();
 		$merge   = $config->get_config_value( 'mergeWith' );
 		$domain  = $config->get_config_value( 'textDomain' );
@@ -224,8 +222,8 @@ class Updater {
 	 *
 	 * @return string WP-CLI binary path.
 	 */
-	protected function get_wp_bin() : string {
-		if ( defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
+	protected function get_wp_bin(): string {
+		if ( \defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
 			return TRADUTTORE_WP_BIN;
 		}
 
@@ -239,7 +237,7 @@ class Updater {
 	 *
 	 * @return string POT file path.
 	 */
-	protected function get_temp_pot_file() : string {
+	protected function get_temp_pot_file(): string {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 
 		return wp_tempnam( sprintf( 'traduttore-%s.pot', $this->project->get_slug() ) );

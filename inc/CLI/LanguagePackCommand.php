@@ -3,8 +3,6 @@
  * Command for managing language packs
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore\CLI
  */
 
 namespace Required\Traduttore\CLI;
@@ -12,12 +10,11 @@ namespace Required\Traduttore\CLI;
 use DateTime;
 use DateTimeZone;
 use GP;
-use GP_Locale;
 use GP_Locales;
-use GP_Translation_Set;
+use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\ZipProvider;
 use WP_CLI;
 use WP_CLI_Command;
-use Required\Traduttore\{ProjectLocator, ZipProvider};
 use function WP_CLI\Utils\get_flag_value;
 
 /**
@@ -222,7 +219,6 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @param array $args Passed arguments.
 	 * @param bool  $all  All flag.
-	 *
 	 * @return array Same as $args if not all, otherwise all slugs.
 	 */
 	protected function check_optional_args_and_all( $args, $all ): array {

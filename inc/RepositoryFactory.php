@@ -3,13 +3,13 @@
  * Repository factory
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
-use Required\Traduttore\Repository\{Bitbucket, GitHub, GitLab};
+use Required\Traduttore\Repository\Bitbucket;
+use Required\Traduttore\Repository\GitHub;
+use Required\Traduttore\Repository\GitLab;
 
 /**
  * RepositoryFactory class.
@@ -22,8 +22,8 @@ class RepositoryFactory {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Project $project Project information.
-	 * @return Repository Repository instance.
+	 * @param \Required\Traduttore\Project $project Project information.
+	 * @return \Required\Traduttore\Repository Repository instance.
 	 */
 	public function get_repository( Project $project ): ?Repository {
 		$repository = null;
@@ -69,8 +69,8 @@ class RepositoryFactory {
 		 *
 		 * Can be used to set a custom handler for self-managed repositories.
 		 *
-		 * @param Repository|null $repository Repository instance.
-		 * @param Project         $project    Project information.
+		 * @param \Required\Traduttore\Repository|null $repository Repository instance.
+		 * @param \Required\Traduttore\Project         $project    Project information.
 		 */
 		return apply_filters( 'traduttore.repository', $repository, $project );
 	}

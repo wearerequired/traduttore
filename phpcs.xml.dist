@@ -1,40 +1,39 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards for Plugins">
-	<description>Generally-applicable sniffs for WordPress plugins</description>
+<ruleset name="Coding Standard for Traduttore">
+	<description>Coding Standard for Traduttore</description>
 
-	<rule ref="WordPress-Core" />
-	<rule ref="WordPress-Docs">
-		<exclude-pattern>*/tests/*</exclude-pattern>
-		<!-- Prevent false positives for IDE annotations -->
-		<exclude name="Squiz.PHP.CommentedOutCode"/>
-	</rule>
-
-	<!-- Check all PHP files in directory tree by default. -->
-	<arg name="extensions" value="php"/>
 	<file>.</file>
 
-	<!-- Show progress and sniff codes in all reports -->
-	<arg value="ps"/>
+	<rule ref="Required"/>
 
-	<rule ref="WordPress-Core">
-		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
-		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>traduttore\.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="traduttore" />
+			<property name="text_domain" type="array">
+				<element value="traduttore"/>
+			</property>
 		</properties>
 	</rule>
 
-	<!-- Allow . in hook names -->
-	<rule ref="WordPress.NamingConventions.ValidHookName">
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
-			<property name="additionalWordDelimiters" value="."/>
+			<property name="prefixes" type="array">
+				<element value="Required\Traduttore"/>
+				<element value="traduttore"/>
+			</property>
 		</properties>
 	</rule>
 
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>*/tests/phpunit/data/*</exclude-pattern>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
+		<properties>
+			<property name="exclude" type="array">
+				<element value="system_calls"/>
+			</property>
+		</properties>
+	</rule>
+
+	<exclude-pattern>/tests/*</exclude-pattern>
 </ruleset>

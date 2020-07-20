@@ -37,9 +37,9 @@
     "wearerequired/traduttore-registry": "^2.0"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "phpunit/phpunit": "^6.5",
-    "wp-coding-standards/wpcs": "^1.2"
+    "wearerequired/coding-standards": "^1.5"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"

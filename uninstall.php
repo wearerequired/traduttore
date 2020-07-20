@@ -1,17 +1,13 @@
 <?php
 /**
  * Plugin uninstall handler.
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
-use WP_Filesystem_Base;
+\defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
-
-/* @var WP_Filesystem_Base $wp_filesystem */
+/* @var \WP_Filesystem_Base $wp_filesystem */
 global $wp_filesystem;
 
 if ( ! $wp_filesystem ) {
@@ -34,9 +30,11 @@ if ( $wp_filesystem ) {
 /* @var \wpdb $wpdb */
 global $wpdb;
 
-$meta_key_prefix = '_traduttore_';
-
-$query = $wpdb->prepare( "DELETE FROM `$wpdb->gp_meta` WHERE `meta_key` LIKE %s ", $wpdb->esc_like( $meta_key_prefix ) . '%' );
+$traduttore_meta_key_prefix = '_traduttore_';
+$traduttore_query           = $wpdb->prepare(
+	"DELETE FROM `$wpdb->gp_meta` WHERE `meta_key` LIKE %s ",
+	$wpdb->esc_like( $traduttore_meta_key_prefix ) . '%'
+);
 
 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-$wpdb->query( $query );
+$wpdb->query( $traduttore_query );

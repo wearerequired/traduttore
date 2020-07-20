@@ -3,8 +3,6 @@
  * CLI command namespace class.
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore\CLI
  */
 
 namespace Required\Traduttore\CLI;
