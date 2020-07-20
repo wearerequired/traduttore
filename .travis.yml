@@ -1,5 +1,5 @@
-sudo: false
-dist: trusty
+os: linux
+dist: xenial
 
 language: php
 
@@ -15,15 +15,17 @@ cache:
     - $HOME/.composer/cache
 
 php:
+  - 7.4
+  - 7.3
   - 7.2
   - 7.1
 
 env:
-  matrix:
-  - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=latest WP_MULTISITE=1
-  - WP_VERSION=nightly WP_MULTISITE=0
-  - WP_VERSION=nightly WP_MULTISITE=1
+  jobs:
+    - WP_VERSION=latest WP_MULTISITE=0
+    - WP_VERSION=latest WP_MULTISITE=1
+    - WP_VERSION=nightly WP_MULTISITE=0
+    - WP_VERSION=nightly WP_MULTISITE=1
   global:
     - PATH="$(pwd):$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
     - WP_CLI_BIN_DIR="$(pwd)"
@@ -69,4 +71,3 @@ stages:
   - lint
   - test
   - coverage
-  - deploy
