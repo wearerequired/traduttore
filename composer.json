@@ -38,7 +38,7 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-    "phpunit/phpunit": "^6.5",
+    "phpunit/phpunit": "^6.5 || ^7.5",
     "wearerequired/coding-standards": "^1.5"
   },
   "suggest": {
