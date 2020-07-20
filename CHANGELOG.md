@@ -81,8 +81,7 @@ Due to the large number of changes in the release it is recommended to update al
 * Initial release.
 
 [Unreleased]: https://github.com/wearerequired/traduttore/compare/3.1.0...HEAD
-[3.1.0]: https://github.com/wearerequired/traduttore/compare/3.1.0...HEAD
-[3.0.0]: https://github.com/wearerequired/traduttore/compare/3.0.0...3.1.0
+[3.1.0]: https://github.com/wearerequired/traduttore/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/wearerequired/traduttore/compare/2.0.3...3.0.0
 [2.0.3]: https://github.com/wearerequired/traduttore/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/wearerequired/traduttore/compare/2.0.1...2.0.2
