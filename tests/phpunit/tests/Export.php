@@ -294,4 +294,39 @@ class Export extends TestCase {
 		$this->assertArrayHasKey( $original_2->singular, $json_2['locale_data']['messages'] );
 		$this->assertArrayHasKey( $original_3->singular, $translations->entries );
 	}
+
+	public function test_json_files_include_file_reference_comment(): void {
+		$filename_1 = 'my-super-script';
+
+		/* @var \GP_Original $original_1 */
+		$original_1 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_1 . '.js',
+			]
+		);
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original_1->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$export = new E( $this->translation_set );
+
+		$actual = $export->export_strings();
+
+		$json_filename_1 = 'foo-project-de_DE-' . md5( $filename_1 . '.js' ) . '.json';
+
+		$json_1 = file_get_contents( $actual[ $json_filename_1 ] );
+
+		array_map( 'unlink', $actual );
+
+		$this->assertJson( $json_1 );
+
+		$json1_encoded = json_decode( $json_1 );
+		$this->assertSame( $filename_1 . '.js', $json1_encoded->comment->reference );
+	}
 }
