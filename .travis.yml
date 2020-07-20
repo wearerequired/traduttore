@@ -3,6 +3,9 @@ dist: xenial
 
 language: php
 
+services:
+  - mysql
+
 notifications:
   email: false
 
