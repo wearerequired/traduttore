@@ -60,16 +60,16 @@ jobs:
       env: WP_VERSION=nightly GP_VERSION=develop WP_MULTISITE=0
     - stage: test
       php: 7.4
-      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
+      env: WP_VERSION=latest GP_VERSION=develop WP_MULTISITE=0
     - stage: test
       php: 7.4
-      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=1
+      env: WP_VERSION=latest GP_VERSION=develop WP_MULTISITE=1
     - stage: test
       php: 7.3
-      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
+      env: WP_VERSION=latest GP_VERSION=develop WP_MULTISITE=0
     - stage: test
       php: 7.2
-      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
+      env: WP_VERSION=latest GP_VERSION=develop WP_MULTISITE=0
     - stage: test
       php: 7.1
       env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
