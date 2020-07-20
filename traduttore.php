@@ -3,7 +3,7 @@
  * Plugin Name: Traduttore
  * Plugin URI:  https://github.com/wearerequired/traduttore/
  * Description: Add WordPress.org-style language pack API to your GlotPress installation for your WordPress projects hosted on GitHub.
- * Version:     3.0.0
+ * Version:     3.1.0
  * Author:      required
  * Author URI:  https://required.com
  * License:     GPL-2.0+
@@ -42,7 +42,7 @@ if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
 	return;
 }
 
-const VERSION     = '3.0.0';
+const VERSION     = '3.1.0';
 const PLUGIN_FILE = __FILE__;
 
 register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' ] );
