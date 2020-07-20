@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 3 ]; then
-	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]"
+	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [gp-version] [skip-database-creation]"
 	exit 1
 fi
 
@@ -10,7 +10,8 @@ DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
-SKIP_DB_CREATE=${6-false}
+GP_VERSION=${6-latest}
+SKIP_DB_CREATE=${7-false}
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
@@ -149,8 +150,16 @@ install_db() {
 }
 
 install_gp() {
+	if [[ $GP_VERSION == 'nightly' || $GP_VERSION == 'develop' || $GP_VERSION == 'trunk' ]]; then
+		local BRANCH_NAME='develop'
+	elif [[ $GP_VERSION == 'latest' ]]; then
+		local BRANCH_NAME='master'
+	else
+		local BRANCH_NAME="$GP_VERSION"
+	fi
+
 	# Set up GlotPress
-	git clone -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
+	git clone --branch "$BRANCH_NAME" --single-branch -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
 }
 
 install_wp

@@ -19,16 +19,8 @@ cache:
 
 php:
   - 7.4
-  - 7.3
-  - 7.2
-  - 7.1
 
 env:
-  jobs:
-    - WP_VERSION=latest WP_MULTISITE=0
-    - WP_VERSION=latest WP_MULTISITE=1
-    - WP_VERSION=nightly WP_MULTISITE=0
-    - WP_VERSION=nightly WP_MULTISITE=1
   global:
     - PATH="$(pwd):$TRAVIS_BUILD_DIR/vendor/bin:$HOME/.composer/vendor/bin:$PATH"
     - WP_CLI_BIN_DIR="$(pwd)"
@@ -63,6 +55,24 @@ jobs:
       script:
         - composer lint
         - composer normalize --dry-run
+    - stage: test
+      php: 7.4
+      env: WP_VERSION=nightly GP_VERSION=develop WP_MULTISITE=0
+    - stage: test
+      php: 7.4
+      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
+    - stage: test
+      php: 7.4
+      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=1
+    - stage: test
+      php: 7.3
+      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
+    - stage: test
+      php: 7.2
+      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
+    - stage: test
+      php: 7.1
+      env: WP_VERSION=latest GP_VERSION=latest WP_MULTISITE=0
     - stage: coverage
       before_install: skip
       script:
