@@ -36,6 +36,6 @@ If you're using [Composer](https://getcomposer.org/) to manage dependencies, you
 composer require wearerequired/traduttore
 ```
 
-Alternatively, you can download a ZIP file containing the plugin on [GitHub](https://github.com/wearerequired/traduttore) and upload it in your WordPress admin screen.
+Alternatively, you can download a ZIP file containing the plugin on [GitHub](https://github.com/wearerequired/traduttore). Extract the ZIP file, run ` composer install --no-progress --prefer-dist --optimize-autoloader`, archive the files again and upload the new ZIP file in your WordPress admin screen.
 
 Afterwards, activating Traduttore is all you need to do. There's no special settings UI or anything for it.
