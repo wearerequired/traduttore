@@ -134,7 +134,7 @@ class ProjectLocator {
 		$meta_key = '_traduttore_repository_url';
 
 		$query = $wpdb->prepare(
-			"SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1",
+			"SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` = %s LIMIT 1",
 			$meta_key,
 			$project
 		);
