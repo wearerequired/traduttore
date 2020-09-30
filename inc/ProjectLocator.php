@@ -90,14 +90,11 @@ class ProjectLocator {
 	}
 
 	/**
-	 * Finds a GlotPress project by a partially matching repository name meta data.
-	 *
-	 * Given a path like required-valencia, this would match
-	 * a repository name like wearerequired/required-valencia.
+	 * Finds a GlotPress project by matching repository name meta data.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $project Possible repository path or URL.
+	 * @param string $project Possible repository path.
 	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
 	protected function find_by_repository_name( $project ): ?GP_Project {
@@ -105,8 +102,11 @@ class ProjectLocator {
 
 		$meta_key = '_traduttore_repository_name';
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$query = $wpdb->prepare( "SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1", $meta_key, '%' . $wpdb->esc_like( $project ) . '%' );
+		$query = $wpdb->prepare(
+			"SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` = %s LIMIT 1",
+			$meta_key,
+			$project
+		);
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->get_row( $query );
@@ -121,13 +121,7 @@ class ProjectLocator {
 	}
 
 	/**
-	 * Finds a GlotPress project by a partially matching repository URL meta data.
-	 *
-	 * Given a path like wearerequired/required-valencia, this would match
-	 * a repository URL like https://github.com/wearerequired/required-valencia.
-	 *
-	 * Since there can be projects with the same repository name but different providers,
-	 * this can lead to false positives when not given enough information.
+	 * Finds a GlotPress project by matching repository URL meta data.
 	 *
 	 * @since 3.0.0
 	 *
@@ -139,8 +133,11 @@ class ProjectLocator {
 
 		$meta_key = '_traduttore_repository_url';
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$query = $wpdb->prepare( "SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1", $meta_key, '%' . $wpdb->esc_like( $project ) . '%' );
+		$query = $wpdb->prepare(
+			"SELECT object_id FROM `$wpdb->gp_meta` WHERE `object_type` = 'project' AND `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1",
+			$meta_key,
+			$project
+		);
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->get_row( $query );
@@ -168,10 +165,14 @@ class ProjectLocator {
 	protected function find_by_source_url_template( $project ): ?GP_Project {
 		global $wpdb;
 
-		$table = GP::$project->table;
+		// Make we don't match 'foo-bar' with a path 'foo'.
+		$project = trailingslashit( $project );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$query = $wpdb->prepare( "SELECT * FROM $table WHERE source_url_template LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $project ) . '%' );
+		$query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			"SELECT * FROM `$wpdb->gp_projects` WHERE source_url_template LIKE %s LIMIT 1",
+			$wpdb->esc_like( $project ) . '%'
+		);
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$gp_project = GP::$project->coerce( $wpdb->get_row( $query ) );
