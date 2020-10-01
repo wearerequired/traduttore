@@ -165,7 +165,7 @@ class ProjectLocator {
 	protected function find_by_source_url_template( $project ): ?GP_Project {
 		global $wpdb;
 
-		// Make we don't match 'foo-bar' with a path 'foo'.
+		// Make sure a URL like '…/required' doesn't match …/required-valencia/blob/…'.
 		$project = trailingslashit( $project );
 
 		$query = $wpdb->prepare(
