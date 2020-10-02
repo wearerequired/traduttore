@@ -1,7 +1,6 @@
 # Composer
 /composer.lock
 /vendor/
-/wp-content/
 
 # Node.js
 /node_modules/

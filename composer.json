@@ -50,7 +50,14 @@
   "extra": {
     "branch-alias": {
       "dev-master": "3.x-dev"
-    }
+    },
+    "installer-paths": {
+      "vendor/wordpress-plugin/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    },
+    "webroot-dir": "app/wordpress-core",
+    "webroot-package": "wordpress/wordpress"
   },
   "autoload": {
     "psr-4": {

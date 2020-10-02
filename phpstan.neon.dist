@@ -7,11 +7,11 @@ parameters:
     bootstrapFiles:
         - tests/phpstan/bootstrap.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
-        - wp-content/plugins/glotpress/gp-includes/route.php
-        - wp-content/plugins/glotpress/gp-includes/routes/_main.php
+        - vendor/wordpress-plugin/glotpress/gp-includes/route.php
+        - vendor/wordpress-plugin/glotpress/gp-includes/routes/_main.php
     scanDirectories:
-        - wp-content/plugins/glotpress/gp-includes/
-        - wp-content/plugins/glotpress/locales/
+        - vendor/wordpress-plugin/glotpress/gp-includes/
+        - vendor/wordpress-plugin/glotpress/locales/
     paths:
         - inc/
 #        - test/
