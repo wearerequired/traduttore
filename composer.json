@@ -31,12 +31,6 @@
       "role": "Developer"
     }
   ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://wpackagist.org"
-    }
-  ],
   "require": {
     "php": ">=7.1",
     "ext-zip": "*",
@@ -44,11 +38,11 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "php-stubs/wp-cli-stubs": "^2.4",
     "phpunit/phpunit": "^6.5 || ^7.5",
-    "wearerequired/coding-standards": "^1.5",
-    "wpackagist-plugin/glotpress": "^2.3.1",
     "szepeviktor/phpstan-wordpress": "^0.6.5",
-    "php-stubs/wp-cli-stubs": "^2.4"
+    "wearerequired/coding-standards": "^1.5",
+    "wpackagist-plugin/glotpress": "^2.3.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -68,6 +62,12 @@
       "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
