@@ -101,7 +101,7 @@ class LanguagePackCommand extends WP_CLI_Command {
 				'English Name' => $locale->english_name,
 				'Native Name'  => $locale->native_name,
 				'Completed'    => sprintf( '%s%%', $set->percent_translated() ),
-				'Updated'      => $zip_provider->get_last_build_time(),
+				'Updated'      => $zip_provider->get_last_build_time()->format( DATE_ATOM ),
 				'Package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : 'n/a',
 			];
 		}
