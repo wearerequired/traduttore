@@ -3,6 +3,8 @@
 	<description>Coding Standard for Traduttore</description>
 
 	<file>.</file>
+	<exclude-pattern>/wp-content/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
 
 	<rule ref="Required"/>
 
@@ -34,6 +36,4 @@
 			</property>
 		</properties>
 	</rule>
-
-	<exclude-pattern>/tests/*</exclude-pattern>
 </ruleset>
