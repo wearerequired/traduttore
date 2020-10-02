@@ -89,9 +89,9 @@ class LanguagePackCommand extends WP_CLI_Command {
 
 		$language_packs = [];
 
-		/* @var GP_Translation_Set $set */
+		/** @var \GP_Translation_Set $set */
 		foreach ( $translation_sets as $set ) {
-			/* @var GP_Locale $locale */
+			/** @var \GP_Locale $locale */
 			$locale = GP_Locales::by_slug( $set->locale );
 
 			$zip_provider = new ZipProvider( $set );
@@ -176,7 +176,7 @@ class LanguagePackCommand extends WP_CLI_Command {
 
 			$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
-			/* @var GP_Translation_Set $translation_set */
+			/** @var \GP_Translation_Set $translation_set */
 			foreach ( $translation_sets as $translation_set ) {
 				if ( 0 === $translation_set->current_count() ) {
 					WP_CLI::log( sprintf( 'No language pack generated for translation set as there are no entries (ID: %d)', $translation_set->id ) );

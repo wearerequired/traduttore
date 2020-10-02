@@ -47,7 +47,7 @@ class Plugin {
 		add_action(
 			'gp_translation_saved',
 			function ( GP_Translation $translation ) {
-				/* @var GP_Translation_Set $translation_set */
+				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
 				$project = ( new ProjectLocator( $translation_set->project_id ) )->get_project();
@@ -84,7 +84,7 @@ class Plugin {
 
 				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
-				/* @var GP_Translation_Set $translation_set */
+				/** @var \GP_Translation_Set $translation_set */
 				foreach ( $translation_sets as $translation_set ) {
 					$last_modified = $translation_set->last_modified();
 					if ( $last_modified ) {
@@ -106,7 +106,7 @@ class Plugin {
 		add_action(
 			'traduttore.generate_zip',
 			function( $translation_set_id ) {
-				/* @var GP_Translation_Set $translation_set */
+				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
 				$zip_provider = new ZipProvider( $translation_set );
@@ -136,7 +136,7 @@ class Plugin {
 				}
 
 				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
-				/* @var GP_Translation_Set $translation_set */
+				/** @var \GP_Translation_Set $translation_set */
 				foreach ( $translation_sets as $translation_set ) {
 					if ( 0 === $translation_set->current_count() ) {
 						continue;
@@ -187,7 +187,7 @@ class Plugin {
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
-						/* @var \GP_Locale $locale */
+						/** @var \GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
 						$project = new Project( GP::$project->get( $translation_set->project_id ) );
 

@@ -117,7 +117,7 @@ class ZipProvider {
 	 * @return bool True on success, false on failure.
 	 */
 	public function generate_zip_file(): bool {
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -198,7 +198,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
