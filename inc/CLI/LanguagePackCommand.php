@@ -100,8 +100,7 @@ class LanguagePackCommand extends WP_CLI_Command {
 				'Locale'       => $locale->wp_locale,
 				'English Name' => $locale->english_name,
 				'Native Name'  => $locale->native_name,
-				// Adding 0 removes trailing zeros -> FIXME Use a PHP rounding function.
-				'Completed'    => sprintf( '%s%%', number_format( $set->percent_translated(), 1 ) + 0 ),
+				'Completed'    => sprintf( '%s%%', $set->percent_translated() ),
 				'Updated'      => $zip_provider->get_last_build_time(),
 				'Package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : 'n/a',
 			];
