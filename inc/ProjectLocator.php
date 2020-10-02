@@ -177,7 +177,7 @@ class ProjectLocator {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$gp_project = GP::$project->coerce( $wpdb->get_row( $query ) );
 
-		/** @var \GP_Project $gp_project */
+		/** @var \GP_Project|false $gp_project */
 		return $gp_project ?: null;
 	}
 }

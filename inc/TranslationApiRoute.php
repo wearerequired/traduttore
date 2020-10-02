@@ -44,7 +44,7 @@ class TranslationApiRoute extends GP_Route_Main {
 
 		/** @var \GP_Translation_Set $set */
 		foreach ( $translation_sets as $set ) {
-			/** @var \Required\Traduttore\GP_Locale $locale */
+			/** @var \GP_Locale $locale */
 			$locale = GP_Locales::by_slug( $set->locale );
 
 			$zip_provider = new ZipProvider( $set );
