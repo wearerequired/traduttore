@@ -1,9 +1,10 @@
 # Composer
-composer.lock
-vendor/*
+/composer.lock
+/vendor/
+/wp-content/
 
 # Node.js
-node_modules/
+/node_modules/
 
 # PHPUnit
-coverage.xml
+/coverage.xml
