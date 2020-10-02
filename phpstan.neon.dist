@@ -18,3 +18,8 @@ parameters:
     ignoreErrors:
         # Uses func_get_args()
         - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
+        # Upstream issue: https://github.com/GlotPress/GlotPress-WP/pull/1201
+        -
+            message: '#^Ternary operator condition is always true\.$#'
+            path: inc/ProjectLocator.php
+            count: 2
