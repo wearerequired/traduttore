@@ -101,7 +101,7 @@ class ZipProvider {
 		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
 
 		if ( $next_schedule ) {
-			wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $translation_set_id ] );
+			wp_unschedule_event( $next_schedule, 'traduttore.generate_zip', [ $translation_set_id ] );
 		}
 
 		wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $translation_set_id ] );
