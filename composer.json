@@ -78,6 +78,7 @@
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
-    "test": "vendor/bin/phpunit"
+    "test": "vendor/bin/phpunit",
+    "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M"
   }
 }
