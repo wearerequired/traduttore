@@ -38,7 +38,7 @@ interface WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return \WP_Error|\Required\Traduttore\WP_REST_Response REST response on success, error object on failure.
+	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback();
 }

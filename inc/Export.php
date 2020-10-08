@@ -102,7 +102,7 @@ class Export {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function write_to_file( string $file, string $contents ): bool {
-		/* @var \WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -196,7 +196,7 @@ class Export {
 	 * @param array $mapping A mapping of files to translation entries.
 	 */
 	protected function build_json_files( $mapping ): void {
-		/* @var \GP_Format $format */
+		/** @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'jed1x' );
 
 		$base_file_name = $this->get_base_file_name();
@@ -227,7 +227,7 @@ class Export {
 	 * @param \Translation_Entry[] $entries The translation entries.
 	 */
 	protected function build_po_file( $entries ): void {
-		/* @var \GP_Format $format */
+		/** @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'po' );
 
 		$base_file_name = $this->get_base_file_name();
@@ -249,7 +249,7 @@ class Export {
 	 * @param \Translation_Entry[] $entries The translation entries.
 	 */
 	protected function build_mo_file( $entries ): void {
-		/* @var \GP_Format $format */
+		/** @var \GP_Format $format */
 		$format = gp_array_get( GP::$formats, 'mo' );
 
 		$base_file_name = $this->get_base_file_name();

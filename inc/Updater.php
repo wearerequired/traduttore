@@ -68,7 +68,7 @@ class Updater {
 		$next_schedule = wp_next_scheduled( 'traduttore.update', [ $this->project->get_id() ] );
 
 		if ( $next_schedule ) {
-			wp_unschedule_event( 'traduttore.update', $next_schedule, [ $this->project->get_id() ] );
+			wp_unschedule_event( $next_schedule, 'traduttore.update', [ $this->project->get_id() ] );
 		}
 
 		wp_schedule_single_event( time() + $delay, 'traduttore.update', [ $this->project->get_id() ] );

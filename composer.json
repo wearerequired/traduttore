@@ -38,8 +38,11 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "php-stubs/wp-cli-stubs": "^2.4",
     "phpunit/phpunit": "^6.5 || ^7.5",
-    "wearerequired/coding-standards": "^1.5"
+    "szepeviktor/phpstan-wordpress": "^0.6.5",
+    "wearerequired/coding-standards": "^1.5",
+    "wpackagist-plugin/glotpress": "^2.3.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -47,7 +50,14 @@
   "extra": {
     "branch-alias": {
       "dev-master": "3.x-dev"
-    }
+    },
+    "installer-paths": {
+      "vendor/wordpress-plugin/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    },
+    "webroot-dir": "app/wordpress-core",
+    "webroot-package": "wordpress/wordpress"
   },
   "autoload": {
     "psr-4": {
@@ -59,7 +69,14 @@
       "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
   "scripts": {
+    "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
     "test": "vendor/bin/phpunit"

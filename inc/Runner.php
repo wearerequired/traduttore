@@ -54,7 +54,7 @@ class Runner {
 	 * @return bool True on success, false on failure.
 	 */
 	public function delete_local_repository(): bool {
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {

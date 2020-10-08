@@ -101,7 +101,7 @@ class ZipProvider {
 		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
 
 		if ( $next_schedule ) {
-			wp_unschedule_event( 'traduttore.generate_zip', $next_schedule, [ $translation_set_id ] );
+			wp_unschedule_event( $next_schedule, 'traduttore.generate_zip', [ $translation_set_id ] );
 		}
 
 		wp_schedule_single_event( time() + $delay, 'traduttore.generate_zip', [ $translation_set_id ] );
@@ -117,7 +117,7 @@ class ZipProvider {
 	 * @return bool True on success, false on failure.
 	 */
 	public function generate_zip_file(): bool {
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -198,7 +198,7 @@ class ZipProvider {
 			return false;
 		}
 
-		/* @var WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {

@@ -42,9 +42,9 @@ class TranslationApiRoute extends GP_Route_Main {
 
 		$result = [];
 
-		/* @var GP_Translation_Set $set */
+		/** @var \GP_Translation_Set $set */
 		foreach ( $translation_sets as $set ) {
-			/* @var GP_Locale $locale */
+			/** @var \GP_Locale $locale */
 			$locale = GP_Locales::by_slug( $set->locale );
 
 			$zip_provider = new ZipProvider( $set );
