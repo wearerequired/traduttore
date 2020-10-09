@@ -53,7 +53,7 @@ jobs:
       before_script:
         - composer global require ergebnis/composer-normalize
       script:
-        - composer lint
+        - composer run-script lint
         - composer normalize --dry-run
     - stage: test
       php: 7.4
