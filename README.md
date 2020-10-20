@@ -29,3 +29,7 @@ After that, you never have to worry about the translation workflow ever again!
 * Custom WP-CLI commands to manage translations
 * Supports [Restricted Site Access](https://de.wordpress.org/plugins/restricted-site-access/)
 * Supports sending [Slack](https://wordpress.org/plugins/slack/) notifications
+
+<br>
+
+[![a required open source product - let's get in touch](https://media.required.com/images/open-source-banner.png)](https://required.com/en/lets-get-in-touch/)
