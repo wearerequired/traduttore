@@ -30,7 +30,7 @@ jobs:
         os: [ ubuntu-latest ]
         php: [ '7.4', '7.3', '7.2', '7.1' ]
         wordpress: [ 'latest', 'nightly' ]
-        glotpress: [ 'latest', 'develop' ]
+        glotpress: [ 'develop' ]
         experimental: [ false ]
         include:
         # - php: '8.0'
@@ -42,6 +42,11 @@ jobs:
             glotpress: 'latest'
             experimental: false
             coverage: true
+          - os: ubuntu-latest
+            php: '7.1'
+            wordpress: 'latest'
+            glotpress: 'latest'
+            experimental: false
 
     steps:
       - name: Check out Git repository
