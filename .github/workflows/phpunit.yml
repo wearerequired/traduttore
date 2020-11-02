@@ -79,7 +79,7 @@ jobs:
         run: |
           curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
           chmod +x wp-cli.phar
-          mkdir bin
+          mkdir -p bin
           mv wp-cli.phar bin/wp
           echo "WP_CLI_BIN_DIR=${PWD}/bin" >> $GITHUB_ENV
 
