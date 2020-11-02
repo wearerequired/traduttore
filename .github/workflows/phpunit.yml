@@ -39,7 +39,7 @@ jobs:
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
-            glotpress: 'latest'
+            glotpress: 'develop'
             experimental: false
             coverage: true
           - os: ubuntu-latest
