@@ -4,8 +4,6 @@ namespace {
     define( 'WP_CONTENT_DIR', './' );
     define( 'GP_VERSION', '0.0.0' );
     define( 'WP_CLI_VERSION', '0.0.0' );
-    define( 'FS_CHMOD_FILE', 0644 );
-    define( 'FS_CHMOD_DIR', 0755 );
 }
 
 namespace Required\Traduttore {
