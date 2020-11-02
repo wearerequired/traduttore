@@ -30,7 +30,7 @@ jobs:
         os: [ ubuntu-latest ]
         php: [ '7.4', '7.3', '7.2', '7.1' ]
         wordpress: [ 'latest', 'nightly' ]
-        glotpress: [ 'develop' ]
+        glotpress: [ 'develop', 'latest' ]
         experimental: [ false ]
         include:
         # - php: '8.0'
@@ -42,10 +42,17 @@ jobs:
             glotpress: 'develop'
             experimental: false
             coverage: true
+        exclude:
+          # Excludes GlotPress develop testing on PHP 7.1
           - os: ubuntu-latest
             php: '7.1'
             wordpress: 'latest'
-            glotpress: 'latest'
+            glotpress: 'develop'
+            experimental: false
+          - os: ubuntu-latest
+            php: '7.1'
+            wordpress: 'nightly'
+            glotpress: 'develop'
             experimental: false
 
     steps:
