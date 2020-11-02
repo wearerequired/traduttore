@@ -47,5 +47,8 @@ jobs:
       - name: Lint PHP files
         run: phpcs -q --report=checkstyle | cs2pr
 
+      - name: Analyze PHP files
+        run: composer run-script analyze
+
       - name: Lint composer.json
         run: composer normalize --dry-run
