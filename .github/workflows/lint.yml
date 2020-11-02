@@ -1,0 +1,51 @@
+name: Lint
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          coverage: none
+          tools: composer, cs2pr
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Get Composer home directory
+        id: composer-home
+        run: |
+          echo "::set-output name=dir::$(composer config home)"
+
+      - name: Cache PHP dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install PHP dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer global require ergebnis/composer-normalize
+          echo "${PWD}/vendor/bin" >> $GITHUB_PATH
+          echo "${{ steps.composer-home.outputs.dir }}/vendor/bin" >> $GITHUB_PATH
+
+      - name: Lint PHP files
+        run: phpcs -q --report=checkstyle | cs2pr
+
+      - name: Lint composer.json
+        run: composer normalize --dry-run
