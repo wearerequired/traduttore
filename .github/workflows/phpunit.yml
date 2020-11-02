@@ -13,7 +13,7 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     services:
       mysql:
-        image: mysql:5.6
+        image: mysql:5.7
         ports:
           - 3306/tcp
         env:
