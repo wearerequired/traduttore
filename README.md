@@ -1,6 +1,7 @@
 # Traduttore
 
-[![Build Status](https://travis-ci.com/wearerequired/traduttore.svg?branch=master)](https://travis-ci.com/wearerequired/traduttore)
+![PHPUnit](https://github.com/wearerequired/traduttore/workflows/PHPUnit/badge.svg)
+![Lint](https://github.com/wearerequired/traduttore/workflows/Lint/badge.svg)
 [![codecov](https://codecov.io/gh/wearerequired/traduttore/branch/master/graph/badge.svg)](https://codecov.io/gh/wearerequired/traduttore)
 [![Latest Stable Version](https://poser.pugx.org/wearerequired/traduttore/v/stable)](https://packagist.org/packages/wearerequired/traduttore)
 [![Latest Unstable Version](https://poser.pugx.org/wearerequired/traduttore/v/unstable)](https://packagist.org/packages/wearerequired/traduttore)
