@@ -41,7 +41,7 @@
     "php-stubs/wp-cli-stubs": "^2.4",
     "phpunit/phpunit": "^6.5 || ^7.5",
     "szepeviktor/phpstan-wordpress": "^0.7.0",
-    "wearerequired/coding-standards": "^1.5",
+    "wearerequired/coding-standards": "^2.0",
     "wpackagist-plugin/glotpress": "^2.3.1"
   },
   "suggest": {
