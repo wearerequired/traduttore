@@ -1,3 +1,9 @@
+---
+layout: default
+title: Installation
+nav_order: 2
+---
+
 # Installation
 
 The goal for Traduttore is to make it as easy as possible to supercharge your WordPress internationalization workflow.
@@ -14,11 +20,13 @@ To send Slack notifications, Traduttore requires a separate WordPress plugin. [L
 
 ### Server
 
-Traduttore requires at least PHP 7.1, while the [Traduttore Registry](https://github.com/wearerequired/traduttore-registry) also supports PHP 7.0.
+Traduttore requires at least PHP 7.1.
 
-To download the latest code from your source code repositories, Traduttore requires Git to be installed on the server. For string extraction Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer. [Learn more about the available CLI commands](cli.md).
+To download the latest code from your source code repositories, Traduttore requires the respective version control to be installed on the server. Depending on the projects it may be Git, Subversion or Mercurial.
 
-If you're not sure whether Git or WP-CLI are available on your system, please contact your hosting provider.
+For string extraction Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer. [Learn more about the available CLI commands](cli.md).
+
+If you're not sure whether Git or WP-CLI are available on your system, please contact your hosting provider or run the WP-CLI command `wp traduttore info`.
 
 ## Installing Traduttore
 
@@ -28,6 +36,6 @@ If you're using [Composer](https://getcomposer.org/) to manage dependencies, you
 composer require wearerequired/traduttore
 ```
 
-Alternatively, you can download a ZIP file containing the plugin on [GitHub](https://github.com/wearerequired/traduttore) and upload it in your WordPress admin screen.
+Alternatively, you can download a ZIP file containing the plugin on [GitHub](https://github.com/wearerequired/traduttore). Extract the ZIP file, run ` composer install --no-progress --prefer-dist --optimize-autoloader`, archive the files again and upload the new ZIP file in your WordPress admin screen.
 
 Afterwards, activating Traduttore is all you need to do. There's no special settings UI or anything for it.

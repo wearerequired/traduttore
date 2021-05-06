@@ -1,12 +1,12 @@
 # Composer
-composer.lock
-vendor/*
+/composer.lock
+/vendor/
 
 # Node.js
-node_modules/
+/node_modules/
 
 # PHPUnit
-coverage.xml
+/coverage.xml
 
 # Behat
 *.log

@@ -1,16 +1,17 @@
 <?php
 /**
- * Command for managing the Traduttore cache.
+ * Command for managing the Traduttore cache
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore\CLI
  */
 
 namespace Required\Traduttore\CLI;
 
-use Required\Traduttore\{LoaderFactory, RepositoryFactory, Updater, Runner};
+use Required\Traduttore\LoaderFactory;
 use Required\Traduttore\ProjectLocator;
+use Required\Traduttore\RepositoryFactory;
+use Required\Traduttore\Runner;
+use Required\Traduttore\Updater;
 use WP_CLI;
 use WP_CLI_Command;
 
@@ -32,24 +33,23 @@ class CacheCommand extends WP_CLI_Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     # Update translations from repository URL.
-	 *     $ wp traduttore cache clear https://github.com/wearerequired/required-valencia
+	 *     # Remove cached repository.
+	 *     $ wp traduttore project cache clear https://github.com/wearerequired/required-valencia
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
-	 *     # Update translations from project path.
-	 *     $ wp traduttore cache clear required/required-valencia
+	 *     # Remove cached repository for given project path.
+	 *     $ wp traduttore project cache clear required/required-valencia
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
-	 *     # Update translations from project ID.
-	 *     $ wp traduttore cache clear 123
+	 *     # Remove cached repository for given project ID.
+	 *     $ wp traduttore project cache clear 123
 	 *     Success: Removed cached Git repository for project (ID: 123)!
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
 	 */
-	public function clear( $args, $assoc_args ): void {
+	public function clear( $args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 

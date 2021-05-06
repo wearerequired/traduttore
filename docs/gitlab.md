@@ -1,4 +1,10 @@
-#  GitLab Repository Configuration
+---
+layout: default
+title: GitLab Repository Configuration
+nav_order: 7
+---
+
+# GitLab Repository Configuration
 
 Traduttore supports both private and public Git repositories hosted on [GitLab.com](https://gitlab.com) as well as self-managed GitLab instances.
 
@@ -53,13 +59,13 @@ class MySelfhostedGitLabRepository extends \Required\Traduttore\Repository\GitLa
 function myplugin_filter_traduttore_repository( \Required\Traduttore\Repository $repository = null, \Required\Traduttore\Project $project ) {
 	$url  = $project->get_source_url_template();
 	$host = $url ? wp_parse_url( $url, PHP_URL_HOST ) : null;
-	
+
 	if ( 'gitlab.example.com' === $host ) {
 		return new MySelfhostedGitLabRepository( $project );
 	}
 
 	return $repository;
-} 
+}
 
 add_filter( 'traduttore.repository', 'myplugin_filter_traduttore_repository', 10, 2 );
 ```

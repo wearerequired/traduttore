@@ -1,10 +1,8 @@
 <?php
 /**
- * GitLab repository class.
+ * GitLab repository implementation
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Repository;
@@ -31,7 +29,7 @@ class GitLab extends Base {
 	 *
 	 * @return string Repository type.
 	 */
-	public function get_type() : string {
+	public function get_type(): string {
 		return Repository::TYPE_GITLAB;
 	}
 
@@ -59,7 +57,7 @@ class GitLab extends Base {
 	 *
 	 * @return bool Whether the repository is publicly accessible.
 	 */
-	public function is_public() : bool {
+	public function is_public(): bool {
 		$visibility = $this->project->get_repository_visibility();
 
 		if ( ! $visibility ) {

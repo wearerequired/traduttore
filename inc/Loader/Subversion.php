@@ -1,15 +1,11 @@
 <?php
 /**
- * Subversion loader class.
+ * Subversion source code loader
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Loader;
-
-use Required\Traduttore\Repository;
 
 /**
  * Subversion loader class.
@@ -67,7 +63,7 @@ class Subversion extends Base {
 	 *
 	 * @return null|string Path to the downloaded repository on success.
 	 */
-	protected function update_existing_repository(): ?String {
+	protected function update_existing_repository(): ?string {
 		$target = $this->get_local_path();
 
 		$current_dir = getcwd();
@@ -95,9 +91,10 @@ class Subversion extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool       $use_https  Whether to use HTTPS instead of SSH for checking out Subversion repositories.
-		 *                               Defaults to true for public repositories.
-		 * @param Repository $repository The current repository.
+		 * @param bool                            $use_https  Whether to use HTTPS instead of SSH for
+		 *                                                    checking out Subversion repositories.
+		 *                                                    Defaults to true for public repositories.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		$use_https = apply_filters( 'traduttore.svn_checkout_use_https', $this->repository->is_public(), $this->repository );
 
@@ -112,8 +109,8 @@ class Subversion extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string     $checkout_url The URL to check out a Subversion repository.
-		 * @param Repository $repository   The current repository.
+		 * @param string                          $checkout_url The URL to check out a Subversion repository.
+		 * @param \Required\Traduttore\Repository $repository   The current repository.
 		 */
 		return apply_filters( 'traduttore.svn_checkout_url', $checkout_url, $this->repository );
 	}

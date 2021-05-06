@@ -1,14 +1,14 @@
 <?php
 /**
- * Project class.
+ * Project class
  *
  * @since 2.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP_Project;
 
 /**
@@ -96,7 +96,7 @@ class Project {
 	 *
 	 * @var string Text domain meta key.
 	 */
-	protected const TEXT_DOMAIN_KEY = '_traduttore_text_domain';
+	public const TEXT_DOMAIN_KEY = '_traduttore_text_domain';
 
 	/**
 	 * Last update time meta key.
@@ -108,11 +108,20 @@ class Project {
 	protected const UPDATE_TIME_KEY = '_traduttore_update_time';
 
 	/**
+	 * Version number meta key.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string Version number meta key.
+	 */
+	public const VERSION_KEY = '_traduttore_version';
+
+	/**
 	 * GlotPress project.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var GP_Project Project information.
+	 * @var \GP_Project Project information.
 	 */
 	protected $project;
 
@@ -121,7 +130,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param GP_Project $project GlotPress project.
+	 * @param \GP_Project $project GlotPress project.
 	 */
 	public function __construct( $project ) {
 		$this->project = $project;
@@ -132,7 +141,7 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return GP_Project GlotPress project.
+	 * @return \GP_Project GlotPress project.
 	 */
 	public function get_project(): GP_Project {
 		return $this->project;
@@ -169,6 +178,17 @@ class Project {
 	 */
 	public function get_slug(): string {
 		return $this->project->slug;
+	}
+
+	/**
+	 * Determines whether the project is active.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool Whether the project is active.
+	 */
+	public function is_active(): bool {
+		return 1 === (int) $this->project->active;
 	}
 
 	/**
@@ -412,12 +432,12 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return null|string Last updated time if stored, null otherwise.
+	 * @return null|\DateTime Last updated time if stored, null otherwise.
 	 */
-	public function get_last_updated_time(): ?string {
+	public function get_last_updated_time(): ?DateTime {
 		$time = gp_get_meta( 'project', $this->project->id, static::UPDATE_TIME_KEY );
 
-		return $time ?: null;
+		return $time ? new DateTime( $time, new DateTimeZone( 'UTC' ) ) : null;
 	}
 
 	/**
@@ -425,10 +445,35 @@ class Project {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $time The new updated time.
+	 * @param \DateTime $time The new updated time.
 	 * @return bool Whether the data was successfully saved or not.
 	 */
-	public function set_last_updated_time( string $time ): bool {
-		return (bool) gp_update_meta( $this->project->id, static::UPDATE_TIME_KEY, $time, 'project' );
+	public function set_last_updated_time( DateTime $time ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::UPDATE_TIME_KEY, $time->format( DATE_ATOM ), 'project' );
+	}
+
+	/**
+	 * Returns the project's version number.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return null|string Version number if stored, null otherwise.
+	 */
+	public function get_version(): ?string {
+		$version = gp_get_meta( 'project', $this->project->id, static::VERSION_KEY );
+
+		return $version ?: null;
+	}
+
+	/**
+	 * Updates the project's version number.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $version The new version number.
+	 * @return bool Whether the data was successfully saved or not.
+	 */
+	public function set_version( string $version ): bool {
+		return (bool) gp_update_meta( $this->project->id, static::VERSION_KEY, $version, 'project' );
 	}
 }

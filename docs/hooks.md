@@ -1,3 +1,9 @@
+---
+layout: default
+title: Hooks and Filters
+nav_order: 12
+---
+
 # Hooks and Filters
 
 All WordPress hooks and filters provided by Traduttore are prefixed with `traduttore.`.
@@ -166,3 +172,48 @@ Filters the sync secret for an incoming webhook request.
 * `$secret`: Webhook sync secret.
 * `$handler`: The current webhook handler instance.
 * `$project`: The current project if found.
+
+----
+
+### `traduttore.content_url`
+
+**Since:** 3.0.0
+
+Filters the URL to Traduttore's cache directory.
+
+Useful when language packs should be stored somewhere else.
+
+**Parameters:**
+
+* `$url`: Cache directory URL.
+
+----
+
+### `traduttore.content_dir`
+
+**Since:** 3.0.0
+
+Filters the path to Traduttore's cache directory.
+
+Useful when language packs should be stored somewhere else.
+
+**Parameters:**
+
+* `$dir`: Cache directory path.
+
+----
+
+### `traduttore.map_entries_to_source`
+
+**Since:** 3.1.0
+
+Filters the mapping of sources to translation entries.
+
+Useful when the source and dist path of JavaScript sources does not match and not only differ in `.js` and `.min.js`.
+
+**Parameters:**
+
+* `$mapping`: The mapping of sources to translation entries.
+* `$entries`: The translation entries to map.
+* `$project`: The project that is exported.
+

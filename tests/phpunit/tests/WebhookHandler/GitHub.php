@@ -121,6 +121,21 @@ class GitHub extends TestCase {
 		$this->assertErrorResponse( 404, $response );
 	}
 
+	public function test_invalid_request(): void {
+		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request->set_body_params(
+			[
+				'ref' => 'refs/heads/master',
+			]
+		);
+		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-github-event', 'push' );
+		$request->add_header( 'x-hub-signature', $signature );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertErrorResponse( 400, $response );
+	}
+
 	public function test_valid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params(
@@ -135,6 +150,41 @@ class GitHub extends TestCase {
 					'url'            => 'https://github.com/wearerequired/traduttore',
 					'private'        => false,
 				],
+			]
+		);
+		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-github-event', 'push' );
+		$request->add_header( 'x-hub-signature', $signature );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
+		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
+		$this->assertSame( Repository::TYPE_GITHUB, $this->project->get_repository_type() );
+		$this->assertSame( 'wearerequired/traduttore', $this->project->get_repository_name() );
+		$this->assertSame( 'https://github.com/wearerequired/traduttore', $this->project->get_repository_url() );
+		$this->assertSame( 'git@github.com:wearerequired/traduttore.git', $this->project->get_repository_ssh_url() );
+		$this->assertSame( 'https://github.com/wearerequired/traduttore.git', $this->project->get_repository_https_url() );
+		$this->assertSame( 'public', $this->project->get_repository_visibility() );
+	}
+
+	public function test_valid_project_with_x_www_form_urlencoded_content_type(): void {
+		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
+		$request->set_body_params(
+			[
+				'payload' => json_encode( [
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'full_name'      => 'wearerequired/traduttore',
+						'default_branch' => 'master',
+						'html_url'       => 'https://github.com/wearerequired/traduttore',
+						'ssh_url'        => 'git@github.com:wearerequired/traduttore.git',
+						'clone_url'      => 'https://github.com/wearerequired/traduttore.git',
+						'url'            => 'https://github.com/wearerequired/traduttore',
+						'private'        => false,
+					],
+				] )
 			]
 		);
 		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );

@@ -52,6 +52,7 @@ class Updater extends TestCase {
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
 		$this->assertSame( 'foo-plugin', $this->project->get_text_domain() );
+		$this->assertSame( '0.1.0', $this->project->get_version() );
 		$this->assertNotEmpty( $this->project->get_last_updated_time() );
 	}
 
@@ -65,6 +66,7 @@ class Updater extends TestCase {
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
 		$this->assertSame( 'baz', $this->project->get_text_domain() );
+		$this->assertSame( '1.0.0', $this->project->get_version() );
 		$this->assertNotEmpty( $this->project->get_last_updated_time() );
 	}
 
@@ -78,6 +80,7 @@ class Updater extends TestCase {
 		$this->assertTrue( $result );
 		$this->assertNotEmpty( $originals );
 		$this->assertSame( 'foo', $this->project->get_text_domain() );
+		$this->assertSame( '1.2.3-beta5', $this->project->get_version() );
 		$this->assertNotEmpty( $this->project->get_last_updated_time() );
 	}
 

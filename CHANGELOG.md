@@ -1,42 +1,100 @@
 # Changelog
+All notable changes to this project will be documented in this file.
 
-## 3.0.0
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Heavy architectural changes to make the plugin more modular
-* Added support for Bitbucket.org repositories (Mercurial and Git)
-* Added support for GitLab repositories
-* Added support for self-managed repositories (GitLab and others)
-* Added new REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`) which replaces the deprecated route (`github-webhook/v1/push-event`)
-* Changed all filters and actions to use `.` as the separator between the prefix and hook name instead of `_`
-* Improved scheduling of cron events to reduce number of unnecessary builds and updates
-* Added new `wp traduttore info` CLI command
-* Greatly improved documentation
+## [Unreleased]
 
-## 2.0.3
+### Changed
+* Make project locator more strict when matching paths with existing data to prevent false positives. [#187]
 
-* Uses HTTPS instead of SSH for cloning repositories if possible
-* Fixed uninstall routine
-* Fixed a few other smaller issues
+## [3.1.0] - 2020-07-20
 
-## 2.0.2
+### Added
+* Introduce `traduttore.map_entries_to_source` filter to change the mapping of sources to translation entries. Props @florianbrinkmann. [#170]
+* Support `application/x-www-form-urlencoded` as content type for GitHub webhooks. [#166]
+* Include file reference in JSON translation files. [#176]
 
-* Fixed a few errors within the CLI commands
-* Fixed an error where deleting the local Git repository wasn't possible ([ee4ee06](https://github.com/wearerequired/traduttore/commit/ee4ee0626b009f88e40362b22dd69c9092e742e5))
-* Introduce `TRADUTTORE_WP_BIN` constant to allow overriding the path to WP-CLI ([#32](https://github.com/wearerequired/traduttore/pull/32))
-* Makes sure `wp_tempnam()` is always available ([#31](https://github.com/wearerequired/traduttore/pull/31))
+### Fixed
+* Fix generating empty language pack ZIP files. Props @florianbrinkmann. [#168]
+* Fix compatibility with GlotPress 3.0 and its stricter type checks. [#174]
 
-## 2.0.1
+## [3.0.0] - 2019-03-15
+Due to the large number of changes in the release it is recommended to update all of the language packs. This can be done with the WP-CLI command `wp traduttore language-pack build --all`.
 
-* Fixed a possible fatal error in the project locator class ([b6f6ceb](https://github.com/wearerequired/traduttore/commit/b6f6cebbed32f67d5891726c00f7d6bc44f42ff2))
-* Improved code formatting and inline documentation
+### Changed
+* Heavy architectural changes to make the plugin more modular.
+* All filters and actions now use `.` as the separator between the prefix and hook name instead of `_`.
+* Scheduling of cron events to reduce number of unnecessary builds and updates.
+* Bump Traduttore Registry version to 2.0.
+* Existing WP-CLI commands:
+  * `wp traduttore build <project>` → `wp traduttore language-pack build <project>`
+  * `wp traduttore cache clear <project>` → `wp traduttore project cache clear <project>`
+  * `wp traduttore update <project>` → `wp traduttore project update <project>`
 
-## 2.0.0
+### Added
+* Support for Bitbucket.org repositories (Mercurial and Git).
+* Support for GitLab repositories.
+* Support for self-managed repositories (GitLab and others).
+* New REST API route for incoming webhooks (`traduttore/v1/incoming-webhook`).
+* Support for [JavaScript translations](https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/).
+* Greatly improved [documentation](https://wearerequired.github.io/traduttore/).
+* New WP-CLI commands:
+  * `wp traduttore info` for information about the Traduttore setup.
+  * `wp traduttore project info <project>` for information about a project.
+  * `wp traduttore language-pack list <project>` for listing all language packs in a project.
 
-* Added CLI commands
-* Added ZIP file generation
-* Added translation API
-* Added Slack notifications
+### Deprecated
+* The REST API route `github-webhook/v1/push-event` for incoming webhooks is replaced by `traduttore/v1/incoming-webhook`.
 
-## 1.0.0
+### Removed
+* Remove all filters and actions with `_` as the separator.
 
-* Initial release
+## [2.0.3] - 2018-07-09
+### Changed
+* Use HTTPS instead of SSH for cloning repositories if possible.
+
+### Fixed
+* Fix uninstall routine and a few other smaller issues.
+
+## [2.0.2] - 2018-06-25
+### Added
+* Introduce `TRADUTTORE_WP_BIN` constant to allow overriding the path to WP-CLI.
+
+### Fixed
+* Fix a few errors within the CLI commands.
+* Fix an error where deleting the local Git repository wasn't possible.
+* Make sure `wp_tempnam()` is always available.
+
+## [2.0.1] - 2018-06-21
+### Fixed
+* Fix a possible fatal error in the project locator class.
+
+### Changed
+* Improve code formatting and inline documentation.
+
+## 2.0.0 - 2018-06-19
+### Added
+* CLI commands.
+* ZIP file generation.
+* Translation API.
+* Slack notifications.
+
+## 1.0.0 - 2017-05-30
+### Added
+* Initial release.
+
+[Unreleased]: https://github.com/wearerequired/traduttore/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/wearerequired/traduttore/compare/3.0.0...3.1.0
+[3.0.0]: https://github.com/wearerequired/traduttore/compare/2.0.3...3.0.0
+[2.0.3]: https://github.com/wearerequired/traduttore/compare/2.0.2...2.0.3
+[2.0.2]: https://github.com/wearerequired/traduttore/compare/2.0.1...2.0.2
+[2.0.1]: https://github.com/wearerequired/traduttore/compare/2.0.0...2.0.1
+
+[#166]: https://github.com/wearerequired/traduttore/issues/166
+[#168]: https://github.com/wearerequired/traduttore/issues/168
+[#170]: https://github.com/wearerequired/traduttore/issues/170
+[#174]: https://github.com/wearerequired/traduttore/issues/174
+[#176]: https://github.com/wearerequired/traduttore/issues/176
+[#187]: https://github.com/wearerequired/traduttore/issues/187

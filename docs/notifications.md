@@ -1,3 +1,9 @@
+---
+layout: default
+title: Notifications
+nav_order: 10
+---
+
 # Notifications
 
 Traduttore has built-in support for the unofficial [Slack WordPress plugin](https://wordpress.org/plugins/slack/).

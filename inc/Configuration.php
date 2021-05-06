@@ -1,10 +1,8 @@
 <?php
 /**
- * Configuration class.
+ * Configuration class
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -53,7 +51,7 @@ class Configuration {
 	 *
 	 * @return string $path Repository path.
 	 */
-	public function get_path() : string {
+	public function get_path(): string {
 		return $this->path;
 	}
 
@@ -64,7 +62,7 @@ class Configuration {
 	 *
 	 * @return array Repository configuration.
 	 */
-	public function get_config() : array {
+	public function get_config(): array {
 		return $this->config;
 	}
 
@@ -91,7 +89,7 @@ class Configuration {
 	 *
 	 * @return array Configuration data if found.
 	 */
-	protected function load_config() : array {
+	protected function load_config(): array {
 		$config_file   = trailingslashit( $this->path ) . 'traduttore.json';
 		$composer_file = trailingslashit( $this->path ) . 'composer.json';
 

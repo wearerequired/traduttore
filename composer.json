@@ -22,23 +22,30 @@
       "role": "Developer"
     },
     {
+      "name": "Ulrich Pogson",
+      "email": "ulrich@required.ch",
+      "role": "Developer"
+    },
+    {
       "name": "Pascal Birchler",
-      "email": "pascal@required.ch",
       "role": "Developer"
     }
   ],
   "require": {
     "php": ">=7.1",
     "ext-zip": "*",
-    "wearerequired/traduttore-registry": "^1.0"
+    "wearerequired/traduttore-registry": "^2.0"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4",
-    "phpunit/phpunit": "^6.5",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "php-stubs/wp-cli-stubs": "^2.4",
+    "phpunit/phpunit": "^6.5 || ^7.5",
+    "szepeviktor/phpstan-wordpress": "^0.7.0",
+    "wearerequired/coding-standards": "^1.5",
     "wp-cli/dist-archive-command": "^2.0",
     "wp-cli/extension-command": "^2.0",
     "wp-cli/wp-cli-tests": "dev-plugin-tests",
-    "wp-coding-standards/wpcs": "^1.2"
+    "wpackagist-plugin/glotpress": "^2.3.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -49,8 +56,15 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "3.0.x-dev"
-    }
+      "dev-master": "3.x-dev"
+    },
+    "installer-paths": {
+      "vendor/wordpress-plugin/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    },
+    "webroot-dir": "app/wordpress-core",
+    "webroot-package": "wordpress/wordpress"
   },
   "autoload": {
     "psr-4": {
@@ -64,6 +78,12 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
   "scripts": {
     "behat": [
       "run-behat-tests"
@@ -81,6 +101,7 @@
       "rm -rf vendor/autoload.php",
       "composer dump-autoload"
     ],
+    "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
     "phpunit": "vendor/bin/phpunit",

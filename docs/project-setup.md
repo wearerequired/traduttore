@@ -1,3 +1,9 @@
+---
+layout: default
+title: GlotPress Project Configuration
+nav_order: 4
+---
+
 # Project Setup
 
 When you successfully installed Traduttore, it's time to set up your first project.
@@ -25,6 +31,8 @@ For projects hosted on Bitbucket, the format is slightly different:
 ```
 https://bitbucket.org/acme/my-awesome-plugin/src/master/%file%#%file%-%line%
 ```
+
+Mark the project as "Active" for the language packs to be created. The translation strings will continue to be updated with code changes even when the project is set as inactive.
 
 ## Repository Configuration
 

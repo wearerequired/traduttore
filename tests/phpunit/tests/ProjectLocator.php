@@ -147,7 +147,7 @@ class ProjectLocator extends TestCase {
 
 		$project->set_repository_url( 'https://github.com/wearerequired/traduttore-registry' );
 
-		$locator = new Locator( 'wearerequired/traduttore-registry' );
+		$locator = new Locator( 'https://github.com/wearerequired/traduttore-registry' );
 
 		$this->assertEquals( $project->get_id(), $locator->get_project()->get_id() );
 	}

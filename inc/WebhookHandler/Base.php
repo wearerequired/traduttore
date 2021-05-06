@@ -1,10 +1,8 @@
 <?php
 /**
- * Base webhook handler class.
+ * Base webhook handler implementation
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore\WebhookHandler
  */
 
 namespace Required\Traduttore\WebhookHandler;
@@ -24,7 +22,7 @@ abstract class Base implements WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var WP_REST_Request The current REST request.
+	 * @var \WP_REST_Request The current REST request.
 	 */
 	protected $request;
 
@@ -33,7 +31,7 @@ abstract class Base implements WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object.
 	 */
 	public function __construct( WP_REST_Request $request ) {
 		$this->request = $request;
@@ -44,26 +42,25 @@ abstract class Base implements WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param Project|null $project The current project if found.
-	 *
+	 * @param \Required\Traduttore\Project|null $project The current project if found.
 	 * @return string Secret if set, null otherwise.
 	 */
-	protected function get_secret( Project $project = null ): ?string {
+	protected function get_secret( ?Project $project = null ): ?string {
 		$secret = null;
 
-		switch ( get_class( $this ) ) {
+		switch ( static::class ) {
 			case Bitbucket::class:
-				if ( defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
+				if ( \defined( 'TRADUTTORE_BITBUCKET_SYNC_SECRET' ) ) {
 					$secret = TRADUTTORE_BITBUCKET_SYNC_SECRET;
 				}
 				break;
 			case GitHub::class:
-				if ( defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
+				if ( \defined( 'TRADUTTORE_GITHUB_SYNC_SECRET' ) ) {
 					$secret = TRADUTTORE_GITHUB_SYNC_SECRET;
 				}
 				break;
 			case GitLab::class:
-				if ( defined( 'TRADUTTORE_GITLAB_SYNC_SECRET' ) ) {
+				if ( \defined( 'TRADUTTORE_GITLAB_SYNC_SECRET' ) ) {
 					$secret = TRADUTTORE_GITLAB_SYNC_SECRET;
 				}
 				break;
@@ -78,9 +75,9 @@ abstract class Base implements WebhookHandler {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string         $secret  Webhook sync secret.
-		 * @param WebhookHandler $handler The current webhook handler instance.
-		 * @param Project|null   $project The current project if passed through.
+		 * @param string                              $secret  Webhook sync secret.
+		 * @param \Required\Traduttore\WebhookHandler $handler The current webhook handler instance.
+		 * @param \Required\Traduttore\Project|null   $project The current project if passed through.
 		 */
 		return apply_filters( 'traduttore.webhook_secret', $secret, $this, $project );
 	}

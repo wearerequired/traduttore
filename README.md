@@ -1,6 +1,10 @@
 # Traduttore
 
-[![Build Status](https://travis-ci.com/wearerequired/traduttore.svg?branch=master)](https://travis-ci.com/wearerequired/traduttore) [![codecov](https://codecov.io/gh/wearerequired/traduttore/branch/master/graph/badge.svg)](https://codecov.io/gh/wearerequired/traduttore)
+![PHPUnit](https://github.com/wearerequired/traduttore/workflows/PHPUnit/badge.svg)
+![Lint](https://github.com/wearerequired/traduttore/workflows/Lint/badge.svg)
+[![codecov](https://codecov.io/gh/wearerequired/traduttore/branch/master/graph/badge.svg)](https://codecov.io/gh/wearerequired/traduttore)
+[![Latest Stable Version](https://poser.pugx.org/wearerequired/traduttore/v/stable)](https://packagist.org/packages/wearerequired/traduttore)
+[![Latest Unstable Version](https://poser.pugx.org/wearerequired/traduttore/v/unstable)](https://packagist.org/packages/wearerequired/traduttore)
 
 Traduttore is a WordPress plugin that allows you to host your own WordPress.org-style translation API for your WordPress projects.
 
@@ -26,3 +30,7 @@ After that, you never have to worry about the translation workflow ever again!
 * Custom WP-CLI commands to manage translations
 * Supports [Restricted Site Access](https://de.wordpress.org/plugins/restricted-site-access/)
 * Supports sending [Slack](https://wordpress.org/plugins/slack/) notifications
+
+<br>
+
+[![a required open source product - let's get in touch](https://media.required.com/images/open-source-banner.png)](https://required.com/en/lets-get-in-touch/)

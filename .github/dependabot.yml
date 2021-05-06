@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Zurich"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "ocean90"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Zurich"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "ocean90"

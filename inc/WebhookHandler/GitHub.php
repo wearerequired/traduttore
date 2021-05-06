@@ -1,20 +1,15 @@
 <?php
 /**
- * GitHub webhook handler class.
+ * GitHub webhook handler
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\WebhookHandler;
 
-use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
-use Required\Traduttore\WebhookHandler;
-use WP_Error;
 use WP_REST_Response;
 
 /**
@@ -65,14 +60,24 @@ class GitHub extends Base {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
+	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback() {
-		$params     = $this->request->get_params();
 		$event_name = $this->request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {
 			return new WP_REST_Response( [ 'result' => 'OK' ] );
+		}
+
+		$params       = $this->request->get_params();
+		$content_type = $this->request->get_content_type();
+		// See https://developer.github.com/webhooks/creating/#content-type.
+		if ( ! empty( $content_type ) && 'application/x-www-form-urlencoded' === $content_type['value'] ) {
+			$params = json_decode( $params['payload'], true );
+		}
+
+		if ( ! isset( $params['repository']['default_branch'] ) ) {
+			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
 		}
 
 		// We only care about the default branch but don't want to send an error still.
@@ -84,7 +89,7 @@ class GitHub extends Base {
 		$project = $locator->get_project();
 
 		if ( ! $project ) {
-			return new WP_Error( '404', 'Could not find project for this repository' );
+			return new \WP_Error( '404', 'Could not find project for this repository', [ 'status' => 404 ] );
 		}
 
 		$project->set_repository_name( $params['repository']['full_name'] );

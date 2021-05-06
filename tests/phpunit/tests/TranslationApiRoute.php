@@ -160,4 +160,37 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 
 		$this->assertCount( 0, $response['translations'] );
 	}
+
+	public function test_uses_stored_project_version(): void {
+		$project = ( new \Required\Traduttore\ProjectLocator( $this->translation_set->project_id ) )->get_project();
+		$project->set_version( '1.2.3' );
+
+		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$provider = new Provider( $this->translation_set );
+
+		$provider->generate_zip_file();
+
+		$response = $this->get_route_callback( 'foo-project' );
+
+		$this->assertCount( 1, $response['translations'] );
+		$this->assertArraySubset(
+			[
+				'language'     => 'de_DE',
+				'version'      => '1.2.3',
+				'english_name' => 'German',
+				'native_name'  => 'Deutsch',
+				'package'      => $provider->get_zip_url(),
+			],
+			$response['translations'][0]
+		);
+	}
 }

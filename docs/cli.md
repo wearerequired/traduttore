@@ -1,3 +1,9 @@
+---
+layout: default
+title: CLI Commands
+nav_order: 11
+---
+
 # CLI Commands
 
 Traduttore requires [WP-CLI](https://wp-cli.org/) 2.0 or newer to be installed on the server.
@@ -9,14 +15,22 @@ You can define `TRADUTTORE_WP_BIN` in your `wp-config.php` file to tell Tradutto
 Generate language packs for one or more projects.
 
 ```bash
-wp traduttore project build <project>
+wp traduttore language-pack build <project>
 ```
 
-Language packs will automatically be updated upon translation changes.
-
-This WP-CLI command is mostly useful for debugging / testing.
+Language packs will automatically be updated upon translation changes. This WP-CLI command is mostly useful for debugging / testing.
 
 Use the `--force` flag to force ZIP file generation, even if there were no changes since the last build.
+
+Use the `--all` flag to generate the language packs for all active projects.
+
+## List project language packs
+
+List language packs for the given project.
+
+```bash
+wp traduttore language-pack list <project|repository_url>
+````
 
 ## Update translations from remote
 
@@ -37,7 +51,7 @@ Removes the cached source code repository for a given project.
 Useful when the local repository was somehow corrupted.
 
 ```bash
-wp traduttore cache clear <project|repository_url>
+wp traduttore project cache clear <project|repository_url>
 ````
 
 ## Show various details about a project
@@ -49,7 +63,6 @@ This includes things like the text domain and repository URLs.
 ```bash
 wp traduttore project info <project|repository_url>
 ```
-
 
 ## Show various details about the environment
 

@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\Tests;
 
+use DateTime;
 use \GP_Project;
 use \Required\Traduttore\Project as TraduttoreProject;
 
@@ -28,7 +29,8 @@ class Project extends TestCase {
 
 		$this->gp_project = $this->factory->project->create(
 			[
-				'name' => 'Project',
+				'name'   => 'Project',
+				'active' => 1,
 			]
 		);
 
@@ -151,11 +153,12 @@ class Project extends TestCase {
 	}
 
 	public function test_get_last_updated_time(): void {
-		$time = date( DATE_MYSQL );
+		$time = new DateTime( 'now' );
 
 		$this->project->set_last_updated_time( $time );
 
-		$this->assertSame( $time, $this->project->get_last_updated_time() );
+		$this->assertInstanceOf( DateTime::class, $this->project->get_last_updated_time() );
+		$this->assertEquals( $time, $this->project->get_last_updated_time(), 'Last updated time is not identical', 1 );
 	}
 
 	public function test_get_repository_webhook_secret(): void {
@@ -164,5 +167,17 @@ class Project extends TestCase {
 		$this->project->set_repository_webhook_secret( $secret );
 
 		$this->assertSame( $secret, $this->project->get_repository_webhook_secret() );
+	}
+
+	public function test_get_version(): void {
+		$version = '1.2.3';
+
+		$this->project->set_version( $version );
+
+		$this->assertSame( $version, $this->project->get_version() );
+	}
+
+	public function test_is_active(): void {
+		$this->assertTrue( $this->project->is_active() );
 	}
 }

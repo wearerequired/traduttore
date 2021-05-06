@@ -1,17 +1,15 @@
 <?php
 /**
- * WebhookHandlerFactory class.
+ * Webhook handler factory
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
-use Required\Traduttore\WebhookHandler\{
-	Bitbucket, GitHub, GitLab
-};
+use Required\Traduttore\WebhookHandler\Bitbucket;
+use Required\Traduttore\WebhookHandler\GitHub;
+use Required\Traduttore\WebhookHandler\GitLab;
 use WP_REST_Request;
 
 /**
@@ -25,8 +23,8 @@ class WebhookHandlerFactory {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param WP_REST_Request $request Request object.
-	 * @return WebhookHandler Webhook handler instance.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \Required\Traduttore\WebhookHandler Webhook handler instance.
 	 */
 	public function get_handler( WP_REST_Request $request ): ?WebhookHandler {
 		$handler = null;
@@ -42,8 +40,8 @@ class WebhookHandlerFactory {
 		/**
 		 * Filters the determined incoming webhook handler.
 		 *
-		 * @param WebhookHandler|null $handler Webhook handler instance.
-		 * @param WP_REST_Request The current request object.
+		 * @param \Required\Traduttore\WebhookHandler|null $handler Webhook handler instance.
+		 * @param WP_REST_Request                                   The current request object.
 		 */
 		return apply_filters( 'traduttore.webhook_handler', $handler, $request );
 	}

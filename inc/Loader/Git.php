@@ -1,15 +1,11 @@
 <?php
 /**
- * Git loader class.
+ * Git source code loader
  *
  * @since 3.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore\Loader;
-
-use Required\Traduttore\Repository;
 
 /**
  * Git loader class.
@@ -26,7 +22,7 @@ class Git extends Base {
 	 *
 	 * @return string Path to the downloaded repository on success.
 	 */
-	public function download() :? string {
+	public function download(): ?string {
 		$target = $this->get_local_path();
 
 		if ( is_dir( $target ) ) {
@@ -64,15 +60,16 @@ class Git extends Base {
 	 * @return string URL to clone the repository, e.g. git@github.com:wearerequired/traduttore.git
 	 *                or https://github.com/wearerequired/traduttore.git.
 	 */
-	protected function get_clone_url() : string {
+	protected function get_clone_url(): string {
 		/**
 		 * Filters whether HTTPS or SSH should be used to clone a repository.
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool       $use_https  Whether to use HTTPS instead of SSH for cloning repositories.
-		 *                               Defaults to true for public repositories.
-		 * @param Repository $repository The current repository.
+		 * @param bool                            $use_https  Whether to use HTTPS instead of SSH for
+		 *                                                    cloning repositories.
+		 *                                                    Defaults to true for public repositories.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->repository->is_public(), $this->repository );
 
@@ -87,8 +84,8 @@ class Git extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string     $clone_url  The URL to clone a Git repository.
-		 * @param Repository $repository The current repository.
+		 * @param string                          $clone_url  The URL to clone a Git repository.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
 	}

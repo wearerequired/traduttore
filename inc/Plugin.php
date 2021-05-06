@@ -1,24 +1,20 @@
 <?php
 /**
- * Plugin class.
+ * Main plugin entry file
  *
  * @since 1.0.0
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
 
+use DateTime;
+use DateTimeZone;
 use GP;
-use GP_Locale;
 use GP_Locales;
-use GP_Project;
 use GP_Translation;
 use GP_Translation_Set;
 use WP;
-use WP_Error;
 use WP_REST_Request;
-use WP_REST_Response;
 use WP_REST_Server;
 
 /**
@@ -51,36 +47,113 @@ class Plugin {
 		add_action(
 			'gp_translation_saved',
 			function ( GP_Translation $translation ) {
-				/* @var GP_Translation_Set $translation_set */
+				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
-				$zip_provider = new ZipProvider( $translation_set );
+				$project = ( new ProjectLocator( $translation_set->project_id ) )->get_project();
+				if ( ! $project || ! $project->is_active() ) {
+					return;
+				}
 
-				$zip_provider->schedule_generation();
+				$last_modified = $translation_set->last_modified();
+				if ( $last_modified ) {
+					$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+				} else {
+					$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				}
+
+				$zip_provider = new ZipProvider( $translation_set );
+				if ( $last_modified > $zip_provider->get_last_build_time() ) {
+					$zip_provider->schedule_generation();
+				}
 			}
+		);
+
+		add_action(
+			'gp_originals_imported',
+			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
+
+				if ( ! $project || ! $project->is_active() ) {
+					return;
+				}
+
+				if ( 0 === max( $originals_existing, $originals_obsoleted, $originals_fuzzied ) ) {
+					return;
+				}
+
+				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
+
+				/** @var \GP_Translation_Set $translation_set */
+				foreach ( $translation_sets as $translation_set ) {
+					$last_modified = $translation_set->last_modified();
+					if ( $last_modified ) {
+						$last_modified = new DateTime( $last_modified, new DateTimeZone( 'UTC' ) );
+					} else {
+						$last_modified = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+					}
+
+					$zip_provider = new ZipProvider( $translation_set );
+					if ( $last_modified > $zip_provider->get_last_build_time() ) {
+						$zip_provider->schedule_generation();
+					}
+				}
+			},
+			10,
+			5
 		);
 
 		add_action(
 			'traduttore.generate_zip',
 			function( $translation_set_id ) {
-				/* @var GP_Translation_Set $translation_set */
+				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
 				$zip_provider = new ZipProvider( $translation_set );
+				$zip_provider->generate_zip_file();
+			}
+		);
 
-				if ( $translation_set->last_modified() <= $zip_provider->get_last_build_time() ) {
-					return;
+		add_filter(
+			'gp_update_meta',
+			function( $meta_tuple ) {
+				$allowed_keys = [
+					Project::VERSION_KEY, // '_traduttore_version'.
+					Project::TEXT_DOMAIN_KEY, // '_traduttore_text_domain'.
+				];
+				if ( ! \in_array( $meta_tuple['meta_key'], $allowed_keys, true ) ) {
+					return $meta_tuple;
 				}
 
-				$zip_provider->generate_zip_file();
+				$project = ( new ProjectLocator( $meta_tuple['object_id'] ) )->get_project();
+				if ( ! $project || ! $project->is_active() ) {
+					return $meta_tuple;
+				}
+
+				$current_value = gp_get_meta( $meta_tuple['object_type'], $meta_tuple['object_id'], $meta_tuple['meta_key'] );
+				if ( $current_value === $meta_tuple['meta_value'] ) {
+					return $meta_tuple;
+				}
+
+				$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
+				/** @var \GP_Translation_Set $translation_set */
+				foreach ( $translation_sets as $translation_set ) {
+					if ( 0 === $translation_set->current_count() ) {
+						continue;
+					}
+
+					$zip_provider = new ZipProvider( $translation_set );
+					$zip_provider->schedule_generation();
+				}
+
+				return $meta_tuple;
 			}
 		);
 
 		add_action(
 			'traduttore.update',
 			function ( $project_id ) {
-				$locator = new ProjectLocator( $project_id );
-				$project = $locator->get_project();
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project ) {
 					return;
@@ -114,7 +187,7 @@ class Plugin {
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
-						/* @var GP_Locale $locale */
+						/** @var \GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
 						$project = new Project( GP::$project->get( $translation_set->project_id ) );
 
@@ -123,9 +196,9 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param bool               $send_message    Whether to send a notification or not. Default true.
-						 * @param GP_Translation_Set $translation_set Translation set the language pack is for.
-						 * @param Project            $project         The project that was updated.
+						 * @param bool                $send_message     Whether to send a notification or not. Default true.
+						 * @param \GP_Translation_Set $translation_set  Translation set the language pack is for.
+						 * @param \Required\Traduttore\Project $project The project that was updated.
 						 */
 						$send_message = apply_filters( 'traduttore.zip_generated_send_notification', true, $translation_set, $project );
 
@@ -146,9 +219,9 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param string             $message         The notification message.
-						 * @param GP_Translation_Set $translation_set Translation set the language pack is for.
-						 * @param GP_Project         $project         The GlotPress project that was updated.
+						 * @param string              $message         The notification message.
+						 * @param \GP_Translation_Set $translation_set Translation set the language pack is for.
+						 * @param \GP_Project         $project         The GlotPress project that was updated.
 						 */
 						return apply_filters( 'traduttore.zip_generated_notification_message', $message, $translation_set, $project );
 					},
@@ -164,7 +237,7 @@ class Plugin {
 							$originals_fuzzied,
 							$originals_obsoleted,
 							$originals_error,
-						] = $stats;
+						] = $stats; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 						$send_message = $originals_added + $originals_fuzzied + $originals_obsoleted + $originals_error > 0;
 
@@ -173,10 +246,11 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param bool    $send_message Whether to send a notification or not.
-						 *                              Defaults to true, unless there were no string changes at all.
-						 * @param Project $project      The Project that was updated.
-						 * @param array   $stats        Stats about the number of imported translations.
+						 * @param bool                         $send_message Whether to send a notification or not.
+						 *                                                   Defaults to true, unless there were
+						 *                                                   no string changes at all.
+						 * @param \Required\Traduttore\Project $project      The Project that was updated.
+						 * @param array                        $stats        Stats about the number of imported translations.
 						 */
 						$send_message = apply_filters( 'traduttore.updated_send_notification', $send_message, $project, $stats );
 
@@ -199,9 +273,9 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param string  $message The notification message.
-						 * @param Project $project The project that was updated.
-						 * @param array   $stats   Stats about the number of imported translations.
+						 * @param string                       $message The notification message.
+						 * @param \Required\Traduttore\Project $project The project that was updated.
+						 * @param array                        $stats   Stats about the number of imported translations.
 						 */
 						return apply_filters( 'traduttore.updated_notification_message', $message, $project, $stats );
 					},
@@ -281,7 +355,7 @@ class Plugin {
 	 * @since 3.0.0
 	 *
 	 * @param bool $is_restricted Whether access is restricted.
-	 * @param WP   $wp            The WordPress object. Only available on the front end.
+	 * @param \WP  $wp            The WordPress object. Only available on the front end.
 	 * @return bool Whether access should be restricted.
 	 */
 	public function filter_restricted_site_access_is_restricted( $is_restricted, $wp ): bool {
@@ -315,10 +389,10 @@ class Plugin {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function incoming_webhook_permission_callback( WP_REST_Request $request ) : bool {
+	public function incoming_webhook_permission_callback( WP_REST_Request $request ): bool {
 		$result  = false;
 		$handler = ( new WebhookHandlerFactory() )->get_handler( $request );
 
@@ -331,9 +405,9 @@ class Plugin {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool                $result  Permission callback result. True if permission is granted, false otherwise.
-		 * @param WebhookHandler|null $handler The current webhook handler if found.
-		 * @param WP_REST_Request     $request The current request.
+		 * @param bool                                     $result  Permission callback result. True if permission is granted, false otherwise.
+		 * @param \Required\Traduttore\WebhookHandler|null $handler The current webhook handler if found.
+		 * @param \WP_REST_Request                         $request The current request.
 		 */
 		return apply_filters( 'traduttore.incoming_webhook_permission_callback', $result, $handler, $request );
 	}
@@ -345,11 +419,11 @@ class Plugin {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param WP_REST_Request $request Request object.
-	 * @return WP_Error|WP_REST_Response REST response on success, error object on failure.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function incoming_webhook_callback( WP_REST_Request $request ) {
-		$result  = new WP_Error( '400', 'Bad request' );
+		$result  = new \WP_Error( '400', 'Bad request' );
 		$handler = ( new WebhookHandlerFactory() )->get_handler( $request );
 
 		if ( $handler ) {
@@ -361,9 +435,9 @@ class Plugin {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param WP_Error|WP_REST_Response $result  REST response on success, error object on failure.
-		 * @param WebhookHandler|null       $handler The current webhook handler if found.
-		 * @param WP_REST_Request           $request The current request.
+		 * @param \WP_Error|\WP_REST_Response              $result  REST response on success, error object on failure.
+		 * @param \Required\Traduttore\WebhookHandler|null $handler The current webhook handler if found.
+		 * @param \WP_REST_Request                         $request The current request.
 		 */
 		return apply_filters( 'traduttore.incoming_webhook_callback', $result, $handler, $request );
 	}

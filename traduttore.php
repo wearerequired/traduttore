@@ -3,7 +3,7 @@
  * Plugin Name: Traduttore
  * Plugin URI:  https://github.com/wearerequired/traduttore/
  * Description: Add WordPress.org-style language pack API to your GlotPress installation for your WordPress projects hosted on GitHub.
- * Version:     3.0.0-alpha
+ * Version:     3.2.0-alpha
  * Author:      required
  * Author URI:  https://required.com
  * License:     GPL-2.0+
@@ -11,7 +11,7 @@
  * Text Domain: traduttore
  * Domain Path: /languages
  *
- * Copyright (c) 2017-2018 required (email: info@required.ch)
+ * Copyright (c) 2017-2020 required (email: info@required.ch)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -26,8 +26,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @package Required\Traduttore
  */
 
 namespace Required\Traduttore;
@@ -39,12 +37,13 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 if ( ! class_exists( __NAMESPACE__ . '\Plugin' ) ) {
+	// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 	trigger_error( sprintf( '%s does not exist. Check Composer\'s autoloader.', __NAMESPACE__ . '\Plugin' ), E_USER_WARNING );
 	return;
 }
 
-define( __NAMESPACE__ . '\VERSION', '3.0.0-alpha' );
-define( __NAMESPACE__ . '\PLUGIN_FILE', __FILE__ );
+const VERSION     = '3.2.0-alpha';
+const PLUGIN_FILE = __FILE__;
 
 register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' ] );
 
@@ -61,7 +60,12 @@ function init() {
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init', 1 );
 
 if ( class_exists( '\WP_CLI' ) ) {
+	if ( class_exists( '\WP_CLI\Dispatcher\CommandNamespace' ) ) {
+		WP_CLI::add_command( 'traduttore', CLI\CommandNamespace::class );
+	}
+
 	WP_CLI::add_command( 'traduttore info', CLI\InfoCommand::class );
 	WP_CLI::add_command( 'traduttore project', CLI\ProjectCommand::class );
 	WP_CLI::add_command( 'traduttore project cache', CLI\CacheCommand::class );
+	WP_CLI::add_command( 'traduttore language-pack', CLI\LanguagePackCommand::class );
 }
