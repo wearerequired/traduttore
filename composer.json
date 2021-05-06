@@ -41,10 +41,10 @@
     "php-stubs/wp-cli-stubs": "^2.4",
     "phpunit/phpunit": "^6.5 || ^7.5",
     "szepeviktor/phpstan-wordpress": "^0.7.0",
-    "wearerequired/coding-standards": "^1.5",
+    "wearerequired/coding-standards": "^2.1.0",
     "wp-cli/dist-archive-command": "^2.0",
     "wp-cli/extension-command": "^2.0",
-    "wp-cli/wp-cli-tests": "dev-plugin-tests",
+    "wp-cli/wp-cli-tests": "^3.0.11",
     "wpackagist-plugin/glotpress": "^2.3.1"
   },
   "suggest": {
@@ -85,41 +85,24 @@
     }
   ],
   "scripts": {
-    "behat": [
-      "run-behat-tests"
-    ],
-    "behat-rerun": "rerun-behat-tests",
-    "build": [
-      "composer install --no-dev",
-      "composer dump-autoload --optimize",
-      "wp dist-archive \"$(pwd)\" \"$(pwd)/build/traduttore.zip\" --create-target-dir"
-    ],
-    "build-ci": [
-      "rm -rf vendor/autoload.php",
-      "composer dump-autoload",
-      "wp dist-archive ./ build/traduttore.zip",
-      "rm -rf vendor/autoload.php",
-      "composer dump-autoload"
-    ],
     "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
+    "behat": "behat",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
     "phpunit": "vendor/bin/phpunit",
-    "prepare-tests": "install-package-tests",
     "test": [
+      "@analyze",
+      "@behat",
       "@lint",
-      "@phpunit",
-      "@behat"
+      "@phpunit"
     ]
   },
   "scripts-descriptions": {
+    "analyze": "Run static analysis",
     "behat": "Run functional tests",
-    "behat-rerun": "Run Behat tests with the option to re-run failed tests",
-    "build": "Build a ZIP archive containing the plugin files",
     "format": "Detect and automatically fix most coding standards issues",
     "lint": "Detect coding standards issues",
     "phpunit": "Run unit tests",
-    "prepare-tests": "Prepare the plugin test suite",
     "test": "Run all tests at once"
   },
   "support": {

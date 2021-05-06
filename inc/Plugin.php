@@ -16,6 +16,7 @@ use GP_Translation_Set;
 use WP;
 use WP_REST_Request;
 use WP_REST_Server;
+use function Required\Traduttore_Registry\add_project;
 
 /**
  * Class used to register main actions and filters.
@@ -46,7 +47,7 @@ class Plugin {
 
 		add_action(
 			'gp_translation_saved',
-			function ( GP_Translation $translation ) {
+			static function ( GP_Translation $translation ) {
 				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
@@ -71,7 +72,7 @@ class Plugin {
 
 		add_action(
 			'gp_originals_imported',
-			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
+			static function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
 				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project || ! $project->is_active() ) {
@@ -105,7 +106,7 @@ class Plugin {
 
 		add_action(
 			'traduttore.generate_zip',
-			function( $translation_set_id ) {
+			static function( $translation_set_id ) {
 				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
@@ -116,7 +117,7 @@ class Plugin {
 
 		add_filter(
 			'gp_update_meta',
-			function( $meta_tuple ) {
+			static function( $meta_tuple ) {
 				$allowed_keys = [
 					Project::VERSION_KEY, // '_traduttore_version'.
 					Project::TEXT_DOMAIN_KEY, // '_traduttore_text_domain'.
@@ -182,7 +183,7 @@ class Plugin {
 
 		add_filter(
 			'slack_get_events',
-			function( $events ) {
+			static function( $events ) {
 				$events['traduttore.zip_generated'] = [
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
@@ -233,11 +234,11 @@ class Plugin {
 					'message'     => function( Project $project, array $stats ) {
 						[
 							$originals_added,
-							$originals_existing,
+							$originals_existing, // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 							$originals_fuzzied,
 							$originals_obsoleted,
 							$originals_error,
-						] = $stats; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+						] = $stats;
 
 						$send_message = $originals_added + $originals_fuzzied + $originals_obsoleted + $originals_error > 0;
 
@@ -304,7 +305,7 @@ class Plugin {
 	 * @since 3.0.0
 	 */
 	public function setup_translations(): void {
-		\Required\Traduttore_Registry\add_project(
+		add_project(
 			'plugin',
 			'traduttore',
 			'https://translate.required.com/api/translations/required/traduttore'

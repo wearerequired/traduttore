@@ -3,13 +3,13 @@
 bin
 build
 docs
-features
 tests
 .distignore
 .editorconfig
 .gitattributes
 .gitignore
 .travis.yml
+behat.yml
 composer.lock
 CONTRIBUTING.md
 coverage.xml

@@ -54,7 +54,7 @@ class InfoCommand extends WP_CLI_Command {
 	public function __invoke( $args, $assoc_args ): void {
 		$plugin_version = \Required\Traduttore\VERSION;
 		$wp_version     = get_bloginfo( 'version' );
-		$gp_version     = GP_VERSION;
+		$gp_version     = \defined( 'GP_VERSION' ) ? GP_VERSION : null;
 
 		$wp_cli_version = WP_CLI_VERSION;
 		$git_binary     = $this->get_git_binary_path();

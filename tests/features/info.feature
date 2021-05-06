@@ -2,11 +2,7 @@
 Feature: Print various details about the environment.
 
   Background:
-	Given a WP installation
-	And these installed and active plugins:
-	  """
-	  {PROJECT_DIR}/build/traduttore.zip
-	  """
+	Given a WP installation with the Traduttore plugin
 
   Scenario: Run info command
     When I run `wp traduttore info`
