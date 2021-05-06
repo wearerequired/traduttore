@@ -18,7 +18,7 @@ if ( ! $wp_filesystem ) {
 
 if ( $wp_filesystem ) {
 	array_map(
-		function ( $file_or_folder ) use ( $wp_filesystem ) {
+		function ( $file_or_folder ) use ( $wp_filesystem ): void {
 			$wp_filesystem->delete( $file_or_folder, true, is_dir( $file_or_folder ) ? 'd' : 'f' );
 		},
 		glob( get_temp_dir() . 'traduttore-*' )

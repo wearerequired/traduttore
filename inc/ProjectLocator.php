@@ -97,7 +97,7 @@ class ProjectLocator {
 	 * @param string $project Possible repository path.
 	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
-	protected function find_by_repository_name( $project ): ?GP_Project {
+	protected function find_by_repository_name( string $project ): ?GP_Project {
 		global $wpdb;
 
 		$meta_key = '_traduttore_repository_name';
@@ -128,7 +128,7 @@ class ProjectLocator {
 	 * @param string $project Possible repository path or URL.
 	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
-	protected function find_by_repository_url( $project ): ?GP_Project {
+	protected function find_by_repository_url( string $project ): ?GP_Project {
 		global $wpdb;
 
 		$meta_key = '_traduttore_repository_url';
@@ -162,7 +162,7 @@ class ProjectLocator {
 	 * @param string $project Possible source code repository path or URL.
 	 * @return \GP_Project|null Project on success, null otherwise.
 	 */
-	protected function find_by_source_url_template( $project ): ?GP_Project {
+	protected function find_by_source_url_template( string $project ): ?GP_Project {
 		global $wpdb;
 
 		// Make sure a URL like '…/required' doesn't match …/required-valencia/blob/…'.

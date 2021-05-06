@@ -60,7 +60,7 @@ class Configuration {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return array Repository configuration.
+	 * @return array<string, mixed> Repository configuration.
 	 */
 	public function get_config(): array {
 		return $this->config;
@@ -87,7 +87,7 @@ class Configuration {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return array Configuration data if found.
+	 * @return array<string, array<string, string>> Configuration data if found.
 	 */
 	protected function load_config(): array {
 		$config_file   = trailingslashit( $this->path ) . 'traduttore.json';
