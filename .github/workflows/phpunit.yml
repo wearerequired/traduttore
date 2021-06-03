@@ -109,8 +109,15 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Run tests
+        if: ${{ ! matrix.coverage }}
         run: composer run-script test
+
+      - name: Run tests with code coverage
+        if: ${{ matrix.coverage }}
+        run: composer run-script test -- --coverage-clover coverage-clover-${{ github.sha }}.xml
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v1
+        with:
+          file: coverage-clover-${{ github.sha }}.xml

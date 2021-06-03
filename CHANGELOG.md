@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Make project locator more strict when matching paths with existing data to prevent false positives. [#187]
 
+### Fixed
+* Don't create JSON translation files for JavaScript source files. [#206]
+
 ## [3.1.0] - 2020-07-20
 
 ### Added
@@ -98,3 +101,4 @@ Due to the large number of changes in the release it is recommended to update al
 [#174]: https://github.com/wearerequired/traduttore/issues/174
 [#176]: https://github.com/wearerequired/traduttore/issues/176
 [#187]: https://github.com/wearerequired/traduttore/issues/187
+[#206]: https://github.com/wearerequired/traduttore/issues/206

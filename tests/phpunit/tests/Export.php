@@ -242,7 +242,7 @@ class Export extends TestCase {
 			]
 		);
 
-		/* @var \GP_Original $original_2 */
+		/* @var \GP_Original $original_3 */
 		$original_3 = $this->factory->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
@@ -293,6 +293,82 @@ class Export extends TestCase {
 		$this->assertArrayHasKey( $original_1->singular, $json_1['locale_data']['messages'] );
 		$this->assertArrayHasKey( $original_2->singular, $json_2['locale_data']['messages'] );
 		$this->assertArrayHasKey( $original_3->singular, $translations->entries );
+	}
+
+	public function test_js_source_entries_are_not_exported_as_json_files(): void {
+		$filename_1 = 'src/component.js';
+		$filename_2 = 'assets/src/component.js';
+		$filename_3 = 'dist/build.js';
+
+		/* @var \GP_Original $original_1 */
+		$original_1 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => "$filename_1 $filename_3",
+			]
+		);
+
+		/* @var \GP_Original $original_2 */
+		$original_2 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => "$filename_2 $filename_3",
+			]
+		);
+
+		/* @var \GP_Original $original_3 */
+		$original_3 = $this->factory->original->create(
+			[
+				'project_id' => $this->translation_set->project_id,
+				'references' => $filename_3,
+			]
+		);
+
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original_1->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original_2->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+		$this->factory->translation->create(
+			[
+				'original_id'        => $original_3->id,
+				'translation_set_id' => $this->translation_set->id,
+				'status'             => 'current',
+			]
+		);
+
+		$export = new E( $this->translation_set );
+
+		$actual = $export->export_strings();
+
+		$json_filename = 'foo-project-de_DE-' . md5( $filename_3 ) . '.json';
+
+		$json = json_decode( file_get_contents( $actual[ $json_filename ] ), true );
+
+		array_map( 'unlink', $actual );
+
+		$this->assertInternalType( 'array', $json );
+		$this->assertCount( 4, $json['locale_data']['messages'] );
+		$this->assertArrayHasKey( $original_1->singular, $json['locale_data']['messages'] );
+		$this->assertArrayHasKey( $original_2->singular, $json['locale_data']['messages'] );
+		$this->assertArrayHasKey( $original_3->singular, $json['locale_data']['messages'] );
+		$this->assertEqualSets(
+			[
+				'foo-project-de_DE.po',
+				'foo-project-de_DE.mo',
+				$json_filename,
+			],
+			array_keys( $actual )
+		);
 	}
 
 	public function test_json_files_include_file_reference_comment(): void {

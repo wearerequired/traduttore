@@ -102,10 +102,10 @@ class Export {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function write_to_file( string $file, string $contents ): bool {
-		/** @var \WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base|null $wp_filesystem */
 		global $wp_filesystem;
 
-		if ( ! $wp_filesystem ) {
+		if ( ! $wp_filesystem instanceof \WP_Filesystem_Base ) {
 			require_once ABSPATH . '/wp-admin/includes/admin.php';
 
 			if ( ! \WP_Filesystem() ) {
@@ -202,6 +202,11 @@ class Export {
 		$base_file_name = $this->get_base_file_name();
 
 		foreach ( $mapping as $file => $entries ) {
+			// Don't create JSON files for source files.
+			if ( 0 === strpos( $file, 'src/' ) || false !== strpos( $file, '/src/' ) ) {
+				continue;
+			}
+
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
 			// Add comment with file reference for debugging.
