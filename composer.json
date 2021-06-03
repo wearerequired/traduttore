@@ -76,14 +76,14 @@
       "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "repositories": [
     {
       "type": "composer",
       "url": "https://wpackagist.org"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "scripts": {
     "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
     "behat": "behat",
