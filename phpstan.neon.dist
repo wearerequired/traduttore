@@ -8,7 +8,7 @@ parameters:
         - tests/phpstan/bootstrap.php
         - vendor/wordpress-plugin/glotpress/gp-includes/route.php
         - vendor/wordpress-plugin/glotpress/gp-includes/routes/_main.php
-    stubFiles:
+    scanFiles:
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
     scanDirectories:
         - vendor/wordpress-plugin/glotpress/gp-includes/
