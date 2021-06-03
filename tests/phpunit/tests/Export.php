@@ -356,7 +356,7 @@ class Export extends TestCase {
 
 		array_map( 'unlink', $actual );
 
-		$this->assertJson( $json );
+		$this->assertInternalType( 'array', $json );
 		$this->assertCount( 3, $json['locale_data']['messages'] );
 		$this->assertEqualSets(
 			[
