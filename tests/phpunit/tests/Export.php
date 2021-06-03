@@ -357,9 +357,14 @@ class Export extends TestCase {
 		array_map( 'unlink', $actual );
 
 		$this->assertInternalType( 'array', $json );
-		$this->assertCount( 3, $json['locale_data']['messages'] );
+		$this->assertCount( 4, $json['locale_data']['messages'] );
+		$this->assertArrayHasKey( $original_1->singular, $json['locale_data']['messages'] );
+		$this->assertArrayHasKey( $original_2->singular, $json['locale_data']['messages'] );
+		$this->assertArrayHasKey( $original_3->singular, $json['locale_data']['messages'] );
 		$this->assertEqualSets(
 			[
+				'foo-project-de_DE.po',
+				'foo-project-de_DE.mo',
 				$json_filename,
 			],
 			array_keys( $actual )
