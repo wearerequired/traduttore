@@ -24,6 +24,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
+          -e MYSQL_ROOT_PASSWORD=root
+          -e MYSQL_DATABASE=wp_cli_test
+          --entrypoint sh mysql:${{ matrix.mysql }}
+          -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
 
     strategy:
       matrix:
@@ -36,6 +40,12 @@ jobs:
         # - php: '8.0'
         #   os: ubuntu-latest
         #   experimental: true
+          - os: ubuntu-latest
+            php: '7.4'
+            wordpress: 'latest'
+            glotpress: 'develop'
+            experimental: false
+            coverage: true
           - os: ubuntu-latest
             php: '7.1'
             wordpress: 'latest'
@@ -55,8 +65,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: none
+          coverage: ${{ matrix.coverage && 'pcov' || 'none' }}
           tools: composer
+
+      - name: Shutdown default MySQL service
+        run: sudo service mysql stop
+
+      - name: Verify MariaDB connection
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"${{ job.services.mysql.ports[3306] }}" --silent; do
+            sleep 1
+          done
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -84,12 +103,36 @@ jobs:
           composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
           echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
-      - name: Install WordPress test setup
-        env:
-          WP_VERSION: ${{ matrix.wordpress }}
-          GP_VERSION: ${{ matrix.glotpress }}
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
-        run: bash bin/install-wp-tests.sh wordpress_test root password "127.0.0.1:$MYSQL_PORT" "$WP_VERSION" "$GP_VERSION"
+      - name: Configure DB environment
+        run: |
+          export MYSQL_HOST=127.0.0.1
+          export MYSQL_TCP_PORT=${{ job.services.mysql.ports['3306'] }}
+          echo "WP_CLI_TEST_DBROOTUSER=root" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBROOTPASS=root" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBUSER=wp_cli_test" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBPASS=password1" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBHOST=$MYSQL_HOST:$MYSQL_TCP_PORT" >> $GITHUB_ENV
+
+      - name: Prepare test database
+        run: composer prepare-tests
+
+      - name: Check Behat environment
+        run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 composer behat
 
       - name: Run tests
         run: composer run-script behat
+
+      - name: Retrieve list of coverage files
+        if: ${{ matrix.coverage == true }}
+        run: |
+          FILES=$(ls -d -1 "$GITHUB_WORKSPACE/build/logs/clover-behat/"*.* | xargs echo | sed 's/ /,/g')
+          echo $FILES
+          echo "COVERAGE_FILES=$FILES" >> $GITHUB_ENV
+
+      - name: Upload code coverage report
+        if: ${{ matrix.coverage == true }}
+        uses: codecov/codecov-action@v1.5.0
+        with:
+          files: ${{ env.COVERAGE_FILES }}
+          flags: php,feature
+          fail_ci_if_error: true

@@ -85,9 +85,11 @@
   "prefer-stable": true,
   "scripts": {
     "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
-    "behat": "behat",
+    "behat": "run-behat-tests",
+    "behat-rerun": "rerun-behat-tests",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
+    "prepare-tests": "install-package-tests",
     "phpunit": "vendor/bin/phpunit",
     "test": [
       "@behat",
@@ -97,8 +99,10 @@
   "scripts-descriptions": {
     "analyze": "Run static analysis",
     "behat": "Run functional tests",
+    "behat-rerun": "Re-run failed functional tests",
     "format": "Detect and automatically fix most coding standards issues",
     "lint": "Detect coding standards issues",
+    "prepare-tests": "Prepare functional tests",
     "phpunit": "Run unit tests",
     "test": "Run all tests at once"
   },
