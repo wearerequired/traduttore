@@ -26,7 +26,7 @@ jobs:
           --health-retries 3
           -e MYSQL_ROOT_PASSWORD=root
           -e MYSQL_DATABASE=wp_cli_test
-          --entrypoint sh mysql:${{ matrix.mysql }}
+          --entrypoint sh mysql:5.7
           -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
 
     strategy:
