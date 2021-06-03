@@ -23,9 +23,3 @@ parameters:
             message: '#^Ternary operator condition is always true\.$#'
             path: inc/ProjectLocator.php
             count: 2
-        -
-            message: '#^Negated boolean expression is always false\.$#'
-            paths:
-                - inc/Export.php
-                - inc/Runner.php
-                - inc/ZipProvider.php

@@ -102,10 +102,10 @@ class Export {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function write_to_file( string $file, string $contents ): bool {
-		/** @var \WP_Filesystem_Base $wp_filesystem */
+		/** @var \WP_Filesystem_Base|null $wp_filesystem */
 		global $wp_filesystem;
 
-		if ( ! $wp_filesystem ) {
+		if ( ! $wp_filesystem instanceof \WP_Filesystem_Base ) {
 			require_once ABSPATH . '/wp-admin/includes/admin.php';
 
 			if ( ! \WP_Filesystem() ) {
