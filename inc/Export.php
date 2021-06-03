@@ -202,6 +202,11 @@ class Export {
 		$base_file_name = $this->get_base_file_name();
 
 		foreach ( $mapping as $file => $entries ) {
+			// Don't create JSON files for source files.
+			if ( 0 === strpos( $file, 'src/' ) || false !== strpos( $file, '/src/' ) ) {
+				continue;
+			}
+
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
 			// Add comment with file reference for debugging.

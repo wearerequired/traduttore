@@ -233,11 +233,11 @@ class Plugin {
 					'message'     => function( Project $project, array $stats ) {
 						[
 							$originals_added,
-							$originals_existing,
+							$originals_existing, // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 							$originals_fuzzied,
 							$originals_obsoleted,
 							$originals_error,
-						] = $stats; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+						] = $stats;
 
 						$send_message = $originals_added + $originals_fuzzied + $originals_obsoleted + $originals_error > 0;
 
