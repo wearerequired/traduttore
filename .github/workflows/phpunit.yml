@@ -57,19 +57,17 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - name: Set PHP_COVERAGE
+      - name: Set xdebug as coverage driver
+        id: coverage-driver
+        if: ${{ matrix.coverage }}
         run: |
-          if [ ${{ matrix.coverage }} == 'true' ]; then
-            echo "PHP_COVERAGE=xdebug" >> $GITHUB_ENV
-          else
-            echo "PHP_COVERAGE=none" >> $GITHUB_ENV
-          fi
+          echo "::set-output name=name::xdebug"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: ${{ env.PHP_COVERAGE }}
+          coverage: ${{ steps.coverage-driver.outputs.name }}
           tools: composer
 
       - name: Get Composer cache directory
