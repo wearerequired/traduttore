@@ -123,14 +123,15 @@ jobs:
         run: composer run-script behat
 
       - name: Retrieve list of coverage files
-        if: ${{ matrix.coverage == true }}
+        if: ${{ matrix.coverage }}
         run: |
-          FILES=$(ls -d -1 "$GITHUB_WORKSPACE/build/logs/clover-behat/"*.* | xargs echo | sed 's/ /,/g')
-          echo $FILES
+          FILES=$(ls -d -1 "$GITHUB_WORKSPACE/build/logs/clover-behat/"*.* | paste --serial --delimiters=",")
+          test -n "$FILES"
+          echo "Coverage files: $FILES"
           echo "COVERAGE_FILES=$FILES" >> $GITHUB_ENV
 
       - name: Upload code coverage report
-        if: ${{ matrix.coverage == true }}
+        if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v1.5.0
         with:
           files: ${{ env.COVERAGE_FILES }}
