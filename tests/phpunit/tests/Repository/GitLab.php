@@ -107,7 +107,7 @@ class GitLab extends TestCase {
 	 * @return array|false Response data.
 	 */
 	public function mock_repository_visibility_request( $preempt, $r, $url ) {
-		if ( GitLabRepository::API_BASE . '/projects/wearerequired%2traduttore' === $url ) {
+		if ( GitLabRepository::API_BASE . '/projects/wearerequired%2Ftraduttore' === $url ) {
 			++ $this->http_request_count;
 
 			return [
