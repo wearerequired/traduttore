@@ -48,8 +48,8 @@ class InfoCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array<mixed> $args Command args.
-	 * @param array<mixed> $assoc_args Associative args.
+	 * @param string[] $args Command args.
+	 * @param string[] $assoc_args Associative args.
 	 */
 	public function __invoke( array $args, array $assoc_args ): void {
 		$plugin_version = \Required\Traduttore\VERSION;
