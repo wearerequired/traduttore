@@ -76,7 +76,7 @@ class Runner {
 	 * @param bool $cached Whether to use cached source code instead of updated one.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function run( $cached = false ): bool {
+	public function run( bool $cached = false ): bool {
 		if ( $this->updater->has_lock() ) {
 			return false;
 		}

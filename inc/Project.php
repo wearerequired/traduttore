@@ -21,8 +21,6 @@ class Project {
 	 * Project repository type meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository type meta key.
 	 */
 	protected const REPOSITORY_TYPE_KEY = '_traduttore_repository_type';
 
@@ -30,8 +28,6 @@ class Project {
 	 * Project repository URL meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository URL meta key.
 	 */
 	protected const REPOSITORY_URL_KEY = '_traduttore_repository_url';
 
@@ -39,8 +35,6 @@ class Project {
 	 * Project repository name meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository name meta key.
 	 */
 	protected const REPOSITORY_NAME_KEY = '_traduttore_repository_name';
 
@@ -48,8 +42,6 @@ class Project {
 	 * Project repository visibility meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository visibility meta key.
 	 */
 	protected const REPOSITORY_VISIBILITY_KEY = '_traduttore_repository_visibility';
 
@@ -57,8 +49,6 @@ class Project {
 	 * Project repository VCS type key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository VCS type key.
 	 */
 	protected const REPOSITORY_VCS_TYPE_KEY = '_traduttore_repository_vcs_type';
 
@@ -66,8 +56,6 @@ class Project {
 	 * Project repository SSH URL meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository SSH URL meta key.
 	 */
 	protected const REPOSITORY_SSH_URL_KEY = '_traduttore_repository_ssh_url';
 
@@ -75,8 +63,6 @@ class Project {
 	 * Project repository HTTPS URL meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Project repository HTTPS URL meta key.
 	 */
 	protected const REPOSITORY_HTTPS_URL_KEY = '_traduttore_repository_https_url';
 
@@ -84,8 +70,6 @@ class Project {
 	 * Project repository webhook sync secret meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Webhook sync secret meta key.
 	 */
 	protected const REPOSITORY_WEBHOOK_SECRET_KEY = '_traduttore_repository_webhook_secret';
 
@@ -93,8 +77,6 @@ class Project {
 	 * Text domain meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Text domain meta key.
 	 */
 	public const TEXT_DOMAIN_KEY = '_traduttore_text_domain';
 
@@ -102,8 +84,6 @@ class Project {
 	 * Last update time meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Last update meta key.
 	 */
 	protected const UPDATE_TIME_KEY = '_traduttore_update_time';
 
@@ -111,8 +91,6 @@ class Project {
 	 * Version number meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Version number meta key.
 	 */
 	public const VERSION_KEY = '_traduttore_version';
 
@@ -132,7 +110,7 @@ class Project {
 	 *
 	 * @param \GP_Project $project GlotPress project.
 	 */
-	public function __construct( $project ) {
+	public function __construct( \GP_Project $project ) {
 		$this->project = $project;
 	}
 

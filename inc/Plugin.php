@@ -46,7 +46,7 @@ class Plugin {
 
 		add_action(
 			'gp_translation_saved',
-			function ( GP_Translation $translation ) {
+			function ( GP_Translation $translation ): void {
 				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation->translation_set_id );
 
@@ -71,7 +71,7 @@ class Plugin {
 
 		add_action(
 			'gp_originals_imported',
-			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ) {
+			function ( $project_id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied ): void {
 				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project || ! $project->is_active() ) {
@@ -105,7 +105,7 @@ class Plugin {
 
 		add_action(
 			'traduttore.generate_zip',
-			function( $translation_set_id ) {
+			function( $translation_set_id ): void {
 				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
@@ -152,7 +152,7 @@ class Plugin {
 
 		add_action(
 			'traduttore.update',
-			function ( $project_id ) {
+			function ( $project_id ): void {
 				$project = ( new ProjectLocator( $project_id ) )->get_project();
 
 				if ( ! $project ) {
@@ -358,7 +358,7 @@ class Plugin {
 	 * @param \WP  $wp            The WordPress object. Only available on the front end.
 	 * @return bool Whether access should be restricted.
 	 */
-	public function filter_restricted_site_access_is_restricted( $is_restricted, $wp ): bool {
+	public function filter_restricted_site_access_is_restricted( bool $is_restricted, \WP $wp ): bool {
 		if ( $wp instanceof WP && isset( $wp->query_vars['rest_route'] ) ) {
 			$route = untrailingslashit( $wp->query_vars['rest_route'] );
 
