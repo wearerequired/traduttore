@@ -24,8 +24,6 @@ class ZipProvider {
 	 * Traduttore cache directory name.
 	 *
 	 * @since 2.0.0
-	 *
-	 * @var string Cache directory for ZIP files.
 	 */
 	protected const CACHE_DIR = 'traduttore';
 
@@ -33,8 +31,6 @@ class ZipProvider {
 	 * Build time meta key.
 	 *
 	 * @since 2.0.0
-	 *
-	 * @var string Build time meta key.
 	 */
 	protected const BUILD_TIME_KEY = '_traduttore_build_time';
 

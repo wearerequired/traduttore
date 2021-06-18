@@ -48,10 +48,10 @@ class InfoCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param string[] $args Command args.
+	 * @param string[] $assoc_args Associative args.
 	 */
-	public function __invoke( $args, $assoc_args ): void {
+	public function __invoke( array $args, array $assoc_args ): void {
 		$plugin_version = \Required\Traduttore\VERSION;
 		$wp_version     = get_bloginfo( 'version' );
 		$gp_version     = GP_VERSION;

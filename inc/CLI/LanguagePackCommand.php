@@ -74,10 +74,10 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param string[] $args Command args.
+	 * @param string[] $assoc_args Associative args.
 	 */
-	public function list( $args, $assoc_args ): void {
+	public function list( array $args, array $assoc_args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -156,10 +156,10 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param string[] $args Command args.
+	 * @param string[] $assoc_args Associative args.
 	 */
-	public function build( $args, $assoc_args ): void {
+	public function build( array $args, array $assoc_args ): void {
 		$all      = get_flag_value( $assoc_args, 'all', false );
 		$force    = get_flag_value( $assoc_args, 'force', false );
 		$projects = $this->check_optional_args_and_all( $args, $all );
@@ -169,10 +169,6 @@ class LanguagePackCommand extends WP_CLI_Command {
 		}
 
 		foreach ( $projects as $project ) {
-			if ( ! $project ) {
-				continue;
-			}
-
 			$translation_sets = (array) GP::$translation_set->by_project_id( $project->get_id() );
 
 			/** @var \GP_Translation_Set $translation_set */
@@ -216,15 +212,11 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Passed arguments.
-	 * @param bool  $all  All flag.
-	 * @return array Same as $args if not all, otherwise all slugs.
+	 * @param string[] $args Passed arguments.
+	 * @param bool     $all  All flag.
+	 * @return \Required\Traduttore\Project[] List of projects based off args.
 	 */
-	protected function check_optional_args_and_all( $args, $all ): array {
-		if ( $all ) {
-			$args = $this->get_all_projects();
-		}
-
+	protected function check_optional_args_and_all( array $args, bool $all ): array {
 		if ( empty( $args ) ) {
 			if ( ! $all ) {
 				WP_CLI::error( 'Please specify one or more projects, or use --all.' );
@@ -233,19 +225,31 @@ class LanguagePackCommand extends WP_CLI_Command {
 			WP_CLI::success( 'No projects found' );
 		}
 
-		$args = array_map(
-			function ( $project ) {
-				$project = ( new ProjectLocator( $project ) )->get_project();
-				if ( $project->is_active() ) {
-					return $project;
+		$projects = [];
+		if ( $all ) {
+			$projects = $this->get_all_projects();
+		}
+
+		$projects = array_map(
+			function ( $project_id ) {
+				$project = ( new ProjectLocator( $project_id ) )->get_project();
+				if ( ! $project ) {
+					WP_CLI::log( sprintf( 'Project (ID: %d) does not exist.', $project_id ) );
+					return null;
 				}
-				WP_CLI::log( sprintf( 'Project (ID: %d) is inactive.', $project->get_id() ) );
-				return null;
+				if ( ! $project->is_active() ) {
+					WP_CLI::log( sprintf( 'Project (ID: %d) is inactive.', $project->get_id() ) );
+					return null;
+				}
+				return $project;
 			},
 			$args
 		);
 
-		return $args;
+		// Remove inexistant projects.
+		$projects = array_filter( $projects );
+
+		return $projects;
 	}
 
 	/**
