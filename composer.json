@@ -39,7 +39,7 @@
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "php-stubs/wp-cli-stubs": "^2.4",
-    "phpunit/phpunit": "^6.5 || ^7.5",
+    "phpunit/phpunit": "^7.5.20",
     "szepeviktor/phpstan-wordpress": "^0.7.0",
     "wearerequired/coding-standards": "^1.5",
     "wp-cli/extension-command": "^2.0",

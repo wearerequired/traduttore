@@ -103,6 +103,14 @@ jobs:
           composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
           echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
+      - name: Update PHPUnit to get latest php-code-coverage library
+        if: ${{ matrix.coverage == true }}
+        # phpunit/phpunit has to be updated as the one in use provides an older version of phpunit/php-code-coverage,
+        # but we need the v9.x branch.
+        # It cannot be removed, as it is a requirement of wp-cli/wp-cli-tests as well.
+        run: |
+          composer require --dev --ignore-platform-reqs --update-with-all-dependencies phpunit/phpunit
+
       - name: Configure DB environment
         run: |
           export MYSQL_HOST=127.0.0.1
