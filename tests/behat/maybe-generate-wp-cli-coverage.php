@@ -1,11 +1,11 @@
 <?php
 
-use SebastianBergmann\CodeCoverage\Filter;
-use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
+use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report\Clover;
 
-$root_folder = realpath(dirname(__DIR__, 2));
+$root_folder = realpath( dirname( __DIR__, 2 ) );
 
 if ( ! class_exists( 'SebastianBergmann\CodeCoverage\Filter' ) ) {
 	require "{$root_folder}/vendor/autoload.php";
