@@ -87,8 +87,8 @@
     "behat-rerun": "rerun-behat-tests",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
-    "prepare-tests": "install-package-tests",
     "phpunit": "vendor/bin/phpunit",
+    "prepare-tests": "install-package-tests",
     "test": [
       "@behat",
       "@phpunit"
@@ -100,8 +100,8 @@
     "behat-rerun": "Re-run failed functional tests",
     "format": "Detect and automatically fix most coding standards issues",
     "lint": "Detect coding standards issues",
-    "prepare-tests": "Prepare functional tests",
     "phpunit": "Run unit tests",
+    "prepare-tests": "Prepare functional tests",
     "test": "Run all tests at once"
   },
   "support": {
