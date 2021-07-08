@@ -6,7 +6,7 @@ Feature: Print various details about the environment.
 	And GlotPress develop being active
 
   Scenario: Check active plugins
-	When I run `wp plugin list --active`
+	When I try the WP-CLI command `plugin list --active`
     Then STDOUT should contain:
       """
       glotpress
@@ -17,7 +17,7 @@ Feature: Print various details about the environment.
 	  """
 
   Scenario: Run info command with invalid project ID
-	When I try `wp traduttore project info 99999`
+	When I try the WP-CLI command `traduttore project info 99999`
 	# FIXME
 	Then STDERR should contain:
       """
@@ -30,7 +30,7 @@ Feature: Print various details about the environment.
 #      """
 
   Scenario: Run update command with invalid project ID
-    When I try `wp traduttore project update 99999`
+	When I try the WP-CLI command `traduttore project update 99999`
 	# FIXME
     Then STDERR should contain:
       """

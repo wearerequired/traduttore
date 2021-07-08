@@ -3,9 +3,10 @@ Feature: Print various details about the environment.
 
   Background:
 	Given a WP installation with the Traduttore plugin
+	And GlotPress develop being active
 
   Scenario: Run info command
-    When I run `wp traduttore info`
+	When I run the WP-CLI command `traduttore info`
     Then STDOUT should contain:
       """
       Traduttore version:
