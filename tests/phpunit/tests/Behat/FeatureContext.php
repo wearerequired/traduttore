@@ -83,6 +83,22 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	}
 
 	/**
+	 * @Given /^GlotPress (.*) being active$/
+	 */
+	public function given_the_glotpress_plugin_being_active( $gp_version ): void {
+		$branch_name = $gp_version;
+		if ( 'nightly' === $gp_version || 'develop' === $gp_version || 'trunk' === $gp_version ) {
+			$branch_name = 'develop';
+		} elseif ( 'latest' === $gp_version ) {
+			$branch_name = 'master';
+		}
+
+		// Activate the plugin.
+		$this->proc( "git clone --branch \"$branch_name\" --single-branch -q git://github.com/glotpress/glotpress-wp wp-content/plugins/glotpress" )->run_check();
+		$this->proc( 'wp plugin activate glotpress' )->run_check();
+	}
+
+	/**
 	 * @When /^I (run|try) the WP-CLI command `([^`]+)`$/
 	 */
 	public function when_i_run_the_wp_cli_command( $mode, $command ): void {
