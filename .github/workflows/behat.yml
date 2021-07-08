@@ -130,7 +130,7 @@ jobs:
       - name: Run tests
         env:
           BEHAT_CODE_COVERAGE: ${{ matrix.coverage }}
-        run: composer run-script behat
+        run: vendor/bin/behat
 
       - name: Retrieve list of coverage files
         id: coverage_files
