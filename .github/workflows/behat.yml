@@ -128,11 +128,13 @@ jobs:
         run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 composer behat
 
       - name: Run tests
+        env:
+          BEHAT_CODE_COVERAGE: ${{ matrix.coverage }}
         run: composer run-script behat
 
       - name: Retrieve list of coverage files
         id: coverage_files
-        if: ${{ matrix.coverage }}
+        if: ${{ matrix.coverage == true }}
         run: |
           FILES=$(ls -d -1 "$GITHUB_WORKSPACE/build/logs/clover-behat/"*.* | paste --serial --delimiters=",")
           test -n "$FILES"
