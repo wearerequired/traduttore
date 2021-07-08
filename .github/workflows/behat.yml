@@ -123,17 +123,18 @@ jobs:
         run: composer run-script behat
 
       - name: Retrieve list of coverage files
+        id: coverage_files
         if: ${{ matrix.coverage }}
         run: |
           FILES=$(ls -d -1 "$GITHUB_WORKSPACE/build/logs/clover-behat/"*.* | paste --serial --delimiters=",")
           test -n "$FILES"
           echo "Coverage files: $FILES"
-          echo "COVERAGE_FILES=$FILES" >> $GITHUB_ENV
+          echo "::set-output name=COVERAGE_FILES::$FILES"
 
       - name: Upload code coverage report
         if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v1.5.0
         with:
-          files: ${{ env.COVERAGE_FILES }}
+          files: ${{ steps.coverage_files.outputs.COVERAGE_FILES }}
           flags: php,feature
           fail_ci_if_error: true
