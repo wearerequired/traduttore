@@ -97,7 +97,7 @@ class GitLab extends TestCase {
 					'homepage'            => 'https://gitlab.com/wearerequired/not-traduttore',
 					'http_url'            => 'https://gitlab.com/wearerequired/not-traduttore.git',
 					'ssh_url'             => 'git@gitlab.com/wearerequired/not-traduttore.git',
-					'visibility_level'    => 0,
+					'visibility_level'    => 20,
 				],
 			]
 		);
@@ -119,7 +119,7 @@ class GitLab extends TestCase {
 					'homepage'            => 'https://gitlab.com/wearerequired/traduttore',
 					'http_url'            => 'https://gitlab.com/wearerequired/traduttore.git',
 					'ssh_url'             => 'git@gitlab.com:wearerequired/traduttore.git',
-					'visibility_level'    => 0,
+					'visibility_level'    => 20,
 				],
 			]
 		);
@@ -153,7 +153,7 @@ class GitLab extends TestCase {
 					'homepage'            => 'https://gitlab.com/wearerequired/traduttore',
 					'http_url'            => 'https://gitlab.com/wearerequired/traduttore.git',
 					'ssh_url'             => 'git@gitlab.com:wearerequired/traduttore.git',
-					'visibility_level'    => 0,
+					'visibility_level'    => 20,
 				],
 			]
 		);

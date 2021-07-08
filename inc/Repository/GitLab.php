@@ -61,7 +61,7 @@ class GitLab extends Base {
 		$visibility = $this->project->get_repository_visibility();
 
 		if ( ! $visibility ) {
-			$response = wp_remote_head( self::API_BASE . '/projects/' . $this->get_name() );
+			$response = wp_remote_head( self::API_BASE . '/projects/' . rawurlencode( $this->get_name() ) );
 
 			$visibility = 200 === wp_remote_retrieve_response_code( $response ) ? 'public' : 'private';
 

@@ -75,7 +75,7 @@ class GitLab extends Base {
 		$project->set_repository_url( $params['project']['homepage'] );
 		$project->set_repository_ssh_url( $params['project']['ssh_url'] );
 		$project->set_repository_https_url( $params['project']['http_url'] );
-		$project->set_repository_visibility( 0 === $params['project']['visibility_level'] ? 'public' : 'private' );
+		$project->set_repository_visibility( 20 === $params['project']['visibility_level'] ? 'public' : 'private' );
 
 		if ( ! $project->get_repository_type() ) {
 			$project->set_repository_type( Repository::TYPE_GITLAB );
