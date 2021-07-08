@@ -11,13 +11,9 @@ use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioInterface;
 use WP_CLI\Process;
 use WP_CLI\Tests\Context\FeatureContext as WP_CLI_FeatureContext;
 use WP_CLI\Utils;
-use RuntimeException;
-
 use function WP_CLI\Tests\Context\wp_cli_behat_env_debug;
 
 /**
@@ -25,57 +21,55 @@ use function WP_CLI\Tests\Context\wp_cli_behat_env_debug;
  *
  * This class extends the one that is provided by the wp-cli/wp-cli-tests package.
  * To see a list of all recognized step definitions, run `vendor/bin/behat -dl`.
- *
- * @package Required\Traduttore
  */
 final class FeatureContext extends WP_CLI_FeatureContext {
 
 	/**
 	 * The current feature.
 	 *
-	 * @var FeatureNode|null
+	 * @var \Behat\Gherkin\Node\FeatureNode|null
 	 */
 	private static $feature;
 
 	/**
 	 * The current scenario.
 	 *
-	 * @var ScenarioInterface|null
+	 * @var \Behat\Gherkin\Node\ScenarioInterface|null
 	 */
 	private $scenario;
 
 	/**
 	 * @BeforeFeature
 	 */
-	public static function store_feature( BeforeFeatureScope $scope ) {
+	public static function store_feature( BeforeFeatureScope $scope ): void {
 		self::$feature = $scope->getFeature();
 	}
 
 	/**
 	 * @BeforeScenario
 	 */
-	public function store_scenario( BeforeScenarioScope $scope ) {
+	public function store_scenario( BeforeScenarioScope $scope ): void {
 		$this->scenario = $scope->getScenario();
 	}
 
 	/**
 	 * @AfterScenario
 	 */
-	public function forget_scenario( AfterScenarioScope $scope ) {
+	public function forget_scenario( AfterScenarioScope $scope ): void {
 		$this->scenario = null;
 	}
 
 	/**
 	 * @AfterFeature
 	 */
-	public static function forget_feature( AfterFeatureScope $scope ) {
+	public static function forget_feature( AfterFeatureScope $scope ): void {
 		self::$feature = null;
 	}
 
 	/**
 	 * @Given a WP install(ation) with the Traduttore plugin
 	 */
-	public function given_a_wp_installation_with_the_traduttore_plugin() {
+	public function given_a_wp_installation_with_the_traduttore_plugin(): void {
 		$this->install_wp();
 
 		// Symlink the current project folder into the WP folder as a plugin.
@@ -91,11 +85,11 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	/**
 	 * @When /^I (run|try) the WP-CLI command `([^`]+)`$/
 	 */
-	public function when_i_run_the_wp_cli_command( $mode, $command ) {
+	public function when_i_run_the_wp_cli_command( $mode, $command ): void {
 		$command = "wp {$command}";
 
 		$with_code_coverage = getenv( 'BEHAT_CODE_COVERAGE' );
-		if ( in_array( $with_code_coverage, [ true, 'true', 1, '1' ], true ) ) {
+		if ( \in_array( $with_code_coverage, [ true, 'true', 1, '1' ], true ) ) {
 			$command = "{$command} --require={PROJECT_DIR}/tests/behat/maybe-generate-wp-cli-coverage.php";
 		}
 
@@ -121,7 +115,7 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	 *
 	 * @param string $directory Directory to ensure the existence of.
 	 */
-	private function ensure_dir_exists( $directory ) {
+	private function ensure_dir_exists( $directory ): void {
 		$parent = dirname( $directory );
 
 		if ( ! empty( $parent ) && ! is_dir( $parent ) ) {
@@ -129,7 +123,7 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 		}
 
 		if ( ! is_dir( $directory ) && ! mkdir( $directory ) && ! is_dir( $directory ) ) {
-			throw new RuntimeException( "Could not create directory '{$directory}'." );
+			throw new \RuntimeException( "Could not create directory '{$directory}'." );
 		}
 	}
 
@@ -138,9 +132,9 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	 *
 	 * @param string $command Command to run.
 	 * @param array  $env     Associative array of environment variables to add.
-	 * @return Process Process to execute.
+	 * @return \WP_CLI\Process Process to execute.
 	 */
-	public function proc_with_env( $command, $env = [] ) {
+	public function proc_with_env( $command, $env = [] ): Process {
 		$env = array_merge(
 			self::get_process_env_variables(),
 			$env
@@ -164,7 +158,7 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	 *
 	 * This is copied over from WP_CLI\Tests\Context\FeatureContext, to enable an adaption of FeatureContext::proc().
 	 */
-	private static function get_process_env_variables() {
+	private static function get_process_env_variables(): array {
 		// Ensure we're using the expected `wp` binary.
 		$bin_path = self::get_bin_path();
 		wp_cli_behat_env_debug( "WP-CLI binary path: {$bin_path}" );
