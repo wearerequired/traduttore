@@ -46,16 +46,6 @@ jobs:
             glotpress: 'develop'
             experimental: false
             coverage: true
-          - os: ubuntu-latest
-            php: '7.1'
-            wordpress: 'latest'
-            glotpress: 'latest'
-            experimental: false
-          - os: ubuntu-latest
-            php: '7.1'
-            wordpress: 'nightly'
-            glotpress: 'latest'
-            experimental: false
 
     steps:
       - name: Check out Git repository
