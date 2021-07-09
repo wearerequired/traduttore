@@ -80,6 +80,9 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 
 		// Activate the plugin.
 		$this->proc( 'wp plugin activate traduttore' )->run_check();
+
+		// GlotPress requires pretty permalinks.
+		$this->proc( 'wp rewrite structure "/%postname%/"' )->run_check();
 	}
 
 	/**
