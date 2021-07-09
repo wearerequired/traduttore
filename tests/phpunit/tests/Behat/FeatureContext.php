@@ -99,6 +99,21 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 		// Activate the plugin.
 		$this->proc( "git clone --branch \"$branch_name\" --single-branch -q git://github.com/glotpress/glotpress-wp wp-content/plugins/glotpress" )->run_check();
 		$this->proc( 'wp plugin activate glotpress' )->run_check();
+
+		// GlotPress only runs its installation in wp-admin and does not support a CLI context.
+		// See https://github.com/GlotPress/GlotPress-WP/blob/889bd7308f8145103e2b0e637532a08deab99962/gp-settings.php#L131-L137
+
+		$install_glotpress = <<<PHPCODE
+if ( GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once GP_PATH . GP_INC . 'install-upgrade.php';
+	require_once GP_PATH . GP_INC . 'schema.php';
+	gp_upgrade_db();
+}
+PHPCODE;
+
+		// Hacky, but works.
+		$this->proc( "wp eval \"$install_glotpress\"" )->run_check();
 	}
 
 	/**
