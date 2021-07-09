@@ -6,7 +6,7 @@
 /node_modules/
 
 # PHPUnit
-/coverage.xml
+/coverage*.xml
 
 # Behat
 *.log
