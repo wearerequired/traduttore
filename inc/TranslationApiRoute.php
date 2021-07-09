@@ -24,7 +24,7 @@ class TranslationApiRoute extends GP_Route_Main {
 	 *
 	 * @param string $project_path Project path.
 	 */
-	public function route_callback( $project_path ): void {
+	public function route_callback( string $project_path ): void {
 		$this->header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
 		// Get the project object from the project path that was passed in.

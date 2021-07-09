@@ -52,7 +52,7 @@ register_deactivation_hook( __FILE__, [ Plugin::class, 'on_plugin_deactivation' 
  *
  * @since 1.0.0
  */
-function init() {
+function init(): void {
 	$plugin = new Plugin();
 	$plugin->init();
 }

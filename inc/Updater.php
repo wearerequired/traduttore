@@ -22,8 +22,6 @@ class Updater {
 	 * Lock meta key.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @var string Lock meta key.
 	 */
 	protected const LOCK_KEY = '_traduttore_update_lock';
 

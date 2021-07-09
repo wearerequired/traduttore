@@ -48,13 +48,13 @@ class InfoCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param array<mixed> $args Command args.
+	 * @param array<mixed> $assoc_args Associative args.
 	 */
-	public function __invoke( $args, $assoc_args ): void {
+	public function __invoke( array $args, array $assoc_args ): void {
 		$plugin_version = \Required\Traduttore\VERSION;
 		$wp_version     = get_bloginfo( 'version' );
-		$gp_version     = GP_VERSION;
+		$gp_version     = \defined( 'GP_VERSION' ) ? GP_VERSION : null;
 
 		$wp_cli_version = WP_CLI_VERSION;
 		$git_binary     = $this->get_git_binary_path();

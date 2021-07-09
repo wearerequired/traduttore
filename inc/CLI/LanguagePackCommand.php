@@ -74,10 +74,10 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param array<mixed> $args Command args.
+	 * @param array<mixed> $assoc_args Associative args.
 	 */
-	public function list( $args, $assoc_args ): void {
+	public function list( array $args, array $assoc_args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -156,10 +156,10 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param array<mixed> $args Command args.
+	 * @param array<mixed> $assoc_args Associative args.
 	 */
-	public function build( $args, $assoc_args ): void {
+	public function build( array $args, array $assoc_args ): void {
 		$all      = get_flag_value( $assoc_args, 'all', false );
 		$force    = get_flag_value( $assoc_args, 'force', false );
 		$projects = $this->check_optional_args_and_all( $args, $all );
@@ -216,11 +216,11 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Passed arguments.
-	 * @param bool  $all  All flag.
-	 * @return array Same as $args if not all, otherwise all slugs.
+	 * @param array<mixed> $args Passed arguments.
+	 * @param bool         $all  All flag.
+	 * @return array<mixed> Same as $args if not all, otherwise all slugs.
 	 */
-	protected function check_optional_args_and_all( $args, $all ): array {
+	protected function check_optional_args_and_all( array $args, bool $all ): array {
 		if ( $all ) {
 			$args = $this->get_all_projects();
 		}

@@ -61,10 +61,10 @@ class ProjectCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param array<mixed> $args Command args.
+	 * @param array<mixed> $assoc_args Associative args.
 	 */
-	public function info( $args, $assoc_args ): void {
+	public function info( array $args, array $assoc_args ): void {
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -162,10 +162,10 @@ class ProjectCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array $args Command args.
-	 * @param array $assoc_args Associative args.
+	 * @param array<mixed> $args Command args.
+	 * @param array<mixed> $assoc_args Associative args.
 	 */
-	public function update( $args, $assoc_args ): void {
+	public function update( array $args, array $assoc_args ): void {
 		$delete  = get_flag_value( $assoc_args, 'delete', false );
 		$cached  = get_flag_value( $assoc_args, 'cached', false );
 		$locator = new ProjectLocator( $args[0] );

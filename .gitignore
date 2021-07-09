@@ -6,4 +6,10 @@
 /node_modules/
 
 # PHPUnit
-/coverage.xml
+/coverage*.xml
+
+# Behat
+*.log
+
+# Build process
+/build
