@@ -57,6 +57,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: ${{ matrix.coverage && 'pcov' || 'none' }}
           tools: composer
+          ini-values: pcov.directory=.
 
       - name: Shutdown default MySQL service
         run: sudo service mysql stop
