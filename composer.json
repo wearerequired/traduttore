@@ -40,13 +40,20 @@
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "php-stubs/wp-cli-stubs": "^2.4",
-    "phpunit/phpunit": "^6.5 || ^7.5",
+    "phpunit/phpunit": "^7.5.20",
     "szepeviktor/phpstan-wordpress": "^0.7.0",
     "wearerequired/coding-standards": "^1.5",
+    "wp-cli/extension-command": "^2.0",
+    "wp-cli/rewrite-command": "^2.0",
+    "wp-cli/wp-cli-tests": "^3.0.11",
     "wpackagist-plugin/glotpress": "^2.3.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
+  },
+  "config": {
+    "process-timeout": 7200,
+    "sort-packages": true
   },
   "extra": {
     "branch-alias": {
@@ -78,8 +85,28 @@
   ],
   "scripts": {
     "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
+    "behat": "run-behat-tests",
+    "behat-rerun": "rerun-behat-tests",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
-    "test": "vendor/bin/phpunit"
+    "phpunit": "vendor/bin/phpunit",
+    "prepare-tests": "install-package-tests",
+    "test": [
+      "@behat",
+      "@phpunit"
+    ]
+  },
+  "scripts-descriptions": {
+    "analyze": "Run static analysis",
+    "behat": "Run functional tests",
+    "behat-rerun": "Re-run failed functional tests",
+    "format": "Detect and automatically fix most coding standards issues",
+    "lint": "Detect coding standards issues",
+    "phpunit": "Run unit tests",
+    "prepare-tests": "Prepare functional tests",
+    "test": "Run all tests at once"
+  },
+  "support": {
+    "issues": "https://github.com/wearerequired/traduttore/issues"
   }
 }
