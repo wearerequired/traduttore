@@ -1,14 +1,13 @@
 {
   "name": "wearerequired/traduttore",
-  "type": "wordpress-plugin",
   "description": "WordPress.org-style translation API for your WordPress projects.",
+  "license": "GPL-2.0-or-later",
+  "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
     "glotpress",
     "translations"
   ],
-  "homepage": "https://github.com/wearerequired/traduttore",
-  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "required",
@@ -31,6 +30,10 @@
       "role": "Developer"
     }
   ],
+  "homepage": "https://github.com/wearerequired/traduttore",
+  "support": {
+    "issues": "https://github.com/wearerequired/traduttore/issues"
+  },
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
@@ -51,6 +54,22 @@
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Required\\Traduttore\\": "inc"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
+    }
+  },
   "config": {
     "process-timeout": 7200,
     "sort-packages": true
@@ -67,22 +86,6 @@
     "webroot-dir": "app/wordpress-core",
     "webroot-package": "wordpress/wordpress"
   },
-  "autoload": {
-    "psr-4": {
-      "Required\\Traduttore\\": "inc"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
-    }
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://wpackagist.org"
-    }
-  ],
   "scripts": {
     "analyze": "vendor/bin/phpstan analyze --no-progress --memory-limit=1024M",
     "behat": "run-behat-tests",
@@ -105,8 +108,5 @@
     "phpunit": "Run unit tests",
     "prepare-tests": "Prepare functional tests",
     "test": "Run all tests at once"
-  },
-  "support": {
-    "issues": "https://github.com/wearerequired/traduttore/issues"
   }
 }
