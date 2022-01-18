@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.2.0] - 2022-01-18
 
 ### Changed
 * Make project locator more strict when matching paths with existing data to prevent false positives. [#187]
@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * Don't create JSON translation files for JavaScript source files. [#206]
 * Fix file check for `mergeWith` option. [#225]
+* GitLab: Use the correct `visibility_level` value for public repos. [#217]
+* GitLab: URL-encode the project name for the public repo check. [#217]
 
 ## [3.1.0] - 2020-07-20
 
@@ -104,3 +106,4 @@ Due to the large number of changes in the release it is recommended to update al
 [#187]: https://github.com/wearerequired/traduttore/issues/187
 [#206]: https://github.com/wearerequired/traduttore/issues/206
 [#225]: https://github.com/wearerequired/traduttore/issues/225
+[#217]: https://github.com/wearerequired/traduttore/issues/217
