@@ -181,7 +181,7 @@ class Updater {
 		$domain  = $config->get_config_value( 'textDomain' );
 		$exclude = $config->get_config_value( 'exclude' );
 
-		$merge = $merge ? $source . $merge : null;
+		$merge = $merge ? $source . '/' . ltrim( $merge, '/' ) : null;
 
 		if ( $merge && ! file_exists( $merge ) ) {
 			$merge = null;
