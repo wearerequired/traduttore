@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Don't create JSON translation files for JavaScript source files. [#206]
+* Fix file check for `mergeWith` option. [#225]
 
 ## [3.1.0] - 2020-07-20
 
@@ -102,3 +103,4 @@ Due to the large number of changes in the release it is recommended to update al
 [#176]: https://github.com/wearerequired/traduttore/issues/176
 [#187]: https://github.com/wearerequired/traduttore/issues/187
 [#206]: https://github.com/wearerequired/traduttore/issues/206
+[#225]: https://github.com/wearerequired/traduttore/issues/225
