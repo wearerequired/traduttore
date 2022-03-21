@@ -33,7 +33,7 @@ jobs:
           echo "::set-output name=dir::$(composer config home)"
 
       - name: Cache PHP dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
