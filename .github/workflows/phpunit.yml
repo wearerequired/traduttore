@@ -8,7 +8,7 @@ on:
 
 jobs:
   phpunit:
-    name: PHPUnit (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }}, GlotPress ${{ matrix.glotpress }})
+    name: PHPUnit${{ matrix.coverage && ' with coverage' || '' }} (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }}, GlotPress ${{ matrix.glotpress }})
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     services:
@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        php: [ '7.4', '7.3', '7.2' ]
+        php: [ '7.4' ]
         wordpress: [ 'latest', 'nightly' ]
         glotpress: [ 'develop' ]
         experimental: [ false ]
@@ -48,8 +48,13 @@ jobs:
             glotpress: 'latest'
             experimental: false
           - os: ubuntu-latest
-            php: '7.1'
-            wordpress: 'nightly'
+            php: '7.2'
+            wordpress: 'latest'
+            glotpress: 'latest'
+            experimental: false
+          - os: ubuntu-latest
+            php: '7.3'
+            wordpress: 'latest'
             glotpress: 'latest'
             experimental: false
 
