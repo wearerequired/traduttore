@@ -161,7 +161,7 @@ install_gp() {
 	fi
 
 	# Set up GlotPress
-	git clone --branch "$BRANCH_NAME" --single-branch -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
+	git clone --branch "$BRANCH_NAME" --single-branch -q https://github.com/GlotPress/GlotPress.git "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
 }
 
 install_wp
