@@ -35,7 +35,7 @@
     "issues": "https://github.com/wearerequired/traduttore/issues"
   },
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "ext-json": "*",
     "ext-zip": "*",
     "wearerequired/traduttore-registry": "^2.0"
