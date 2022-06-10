@@ -93,11 +93,11 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 		if ( 'nightly' === $gp_version || 'develop' === $gp_version || 'trunk' === $gp_version ) {
 			$branch_name = 'develop';
 		} elseif ( 'latest' === $gp_version ) {
-			$branch_name = 'master';
+			$branch_name = 'stable';
 		}
 
 		// Activate the plugin.
-		$this->proc( "git clone --branch \"$branch_name\" --single-branch -q git://github.com/glotpress/glotpress-wp wp-content/plugins/glotpress" )->run_check();
+		$this->proc( "git clone --branch \"$branch_name\" --single-branch -q https://github.com/GlotPress/GlotPress.git wp-content/plugins/glotpress" )->run_check();
 		$this->proc( 'wp plugin activate glotpress' )->run_check();
 
 		// GlotPress only runs its installation in wp-admin and does not support a CLI context.
