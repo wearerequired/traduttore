@@ -80,9 +80,6 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 
 		// Activate the plugin.
 		$this->proc( 'wp plugin activate traduttore' )->run_check();
-
-		// GlotPress requires pretty permalinks.
-		$this->proc( 'wp rewrite structure "/%postname%/"' )->run_check();
 	}
 
 	/**
@@ -98,6 +95,10 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 
 		// Activate the plugin.
 		$this->proc( "git clone --branch \"$branch_name\" --single-branch -q https://github.com/GlotPress/GlotPress.git wp-content/plugins/glotpress" )->run_check();
+
+		// GlotPress requires pretty permalinks.
+		$this->proc( 'wp rewrite structure "/%postname%/"' )->run_check();
+
 		$this->proc( 'wp plugin activate glotpress' )->run_check();
 
 		// GlotPress only runs its installation in wp-admin and does not support a CLI context.
