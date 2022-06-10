@@ -155,7 +155,7 @@ install_gp() {
 	if [[ $GP_VERSION == 'nightly' || $GP_VERSION == 'develop' || $GP_VERSION == 'trunk' ]]; then
 		local BRANCH_NAME='develop'
 	elif [[ $GP_VERSION == 'latest' ]]; then
-		local BRANCH_NAME='master'
+		local BRANCH_NAME='stable'
 	else
 		local BRANCH_NAME="$GP_VERSION"
 	fi
