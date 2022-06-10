@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+* Require at least PHP 7.2. [#236]
+
+### Fixed
+* Pass correct parameter for translation set in `traduttore.generate_zip_delay` filter. [#236]
+
 ## [3.2.0] - 2022-01-18
 
 ### Changed
@@ -108,3 +116,4 @@ Due to the large number of changes in the release it is recommended to update al
 [#206]: https://github.com/wearerequired/traduttore/issues/206
 [#225]: https://github.com/wearerequired/traduttore/issues/225
 [#217]: https://github.com/wearerequired/traduttore/issues/217
+[#236]: https://github.com/wearerequired/traduttore/pull/236
