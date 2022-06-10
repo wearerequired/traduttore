@@ -32,7 +32,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        php: [ '7.4', '7.3', '7.2' ]
+        php: [ '7.4' ]
         wordpress: [ 'latest', 'nightly' ]
         glotpress: [ 'develop' ]
         experimental: [ false ]
@@ -40,6 +40,16 @@ jobs:
         # - php: '8.0'
         #   os: ubuntu-latest
         #   experimental: true
+          - os: ubuntu-latest
+            php: '7.2'
+            wordpress: 'latest'
+            glotpress: 'latest'
+            experimental: false
+          - os: ubuntu-latest
+            php: '7.3'
+            wordpress: 'latest'
+            glotpress: 'latest'
+            experimental: false
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
