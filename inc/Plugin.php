@@ -197,9 +197,9 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param bool                $send_message     Whether to send a notification or not. Default true.
-						 * @param \GP_Translation_Set $translation_set  Translation set the language pack is for.
-						 * @param \Required\Traduttore\Project $project The project that was updated.
+						 * @param bool                         $send_message    Whether to send a notification or not. Default true.
+						 * @param \GP_Translation_Set          $translation_set Translation set the language pack is for.
+						 * @param \Required\Traduttore\Project $project         The project that was updated.
 						 */
 						$send_message = apply_filters( 'traduttore.zip_generated_send_notification', true, $translation_set, $project );
 
@@ -220,9 +220,9 @@ class Plugin {
 						 *
 						 * @since 3.0.0
 						 *
-						 * @param string              $message         The notification message.
-						 * @param \GP_Translation_Set $translation_set Translation set the language pack is for.
-						 * @param \GP_Project         $project         The GlotPress project that was updated.
+						 * @param string                       $message         The notification message.
+						 * @param \GP_Translation_Set          $translation_set Translation set the language pack is for.
+						 * @param \Required\Traduttore\Project $project         The project that was updated.
 						 */
 						return apply_filters( 'traduttore.zip_generated_notification_message', $message, $translation_set, $project );
 					},

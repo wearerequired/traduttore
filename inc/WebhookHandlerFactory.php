@@ -41,7 +41,7 @@ class WebhookHandlerFactory {
 		 * Filters the determined incoming webhook handler.
 		 *
 		 * @param \Required\Traduttore\WebhookHandler|null $handler Webhook handler instance.
-		 * @param WP_REST_Request                                   The current request object.
+		 * @param \WP_REST_Request                         $request The current request object.
 		 */
 		return apply_filters( 'traduttore.webhook_handler', $handler, $request );
 	}

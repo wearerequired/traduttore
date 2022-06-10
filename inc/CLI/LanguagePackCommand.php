@@ -253,7 +253,7 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return \GP_Project[] GlotPress projects
+	 * @return \GP_Thing[] GlotPress projects
 	 */
 	protected function get_all_projects(): array {
 		return GP::$project->many( GP::$project->select_all_from_conditions_and_order( [ 'active' => 1 ] ) );
