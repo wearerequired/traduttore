@@ -49,7 +49,8 @@
     "wp-cli/extension-command": "^2.0",
     "wp-cli/rewrite-command": "^2.0",
     "wp-cli/wp-cli-tests": "^3.0.11",
-    "wpackagist-plugin/glotpress": "^2.3.1"
+    "wpackagist-plugin/glotpress": "^2.3.1",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -71,6 +72,9 @@
     }
   },
   "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
     "process-timeout": 7200,
     "sort-packages": true
   },
