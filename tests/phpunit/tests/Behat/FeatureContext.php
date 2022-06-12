@@ -94,7 +94,7 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 		}
 
 		// Activate the plugin.
-		$this->proc( "git clone --branch \"$branch_name\" --single-branch -q https://github.com/GlotPress/GlotPress.git wp-content/plugins/glotpress" )->run_check();
+		$this->proc( "git clone --branch \"{$branch_name}\" --single-branch -q https://github.com/GlotPress/GlotPress.git {$this->variables['RUN_DIR']}/wp-content/plugins/glotpress" )->run_check();
 
 		// GlotPress requires pretty permalinks.
 		$this->proc( 'wp rewrite structure "/%postname%/"' )->run_check();
