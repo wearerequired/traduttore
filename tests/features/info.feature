@@ -1,4 +1,4 @@
-@require-php-7.1
+@require-php-7.4
 Feature: Print various details about the environment.
 
   Background:

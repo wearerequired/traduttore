@@ -30,7 +30,6 @@ jobs:
           -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
 
     strategy:
-      fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
         php: [ '7.4' ]
