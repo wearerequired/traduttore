@@ -1,10 +1,10 @@
-@require-php-7.4
 Feature: Print various details about the environment.
 
   Background:
     Given a WP installation with the Traduttore plugin
     And GlotPress develop being active
 
+  @require-php-7.4
   Scenario: Run info command
     When I run the WP-CLI command `traduttore info`
     Then STDOUT should contain:
@@ -44,6 +44,7 @@ Feature: Print various details about the environment.
       Cache directory
       """
 
+  @require-php-7.4
   Scenario: Run info command with JSON formatting
     When I run the WP-CLI command `traduttore info --format=json`
     Then STDOUT should contain:
