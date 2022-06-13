@@ -115,7 +115,7 @@ jobs:
         run: composer prepare-tests
 
       - name: Check Behat environment
-        run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 composer behat
+        run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 BEHAT_FEATURES_FOLDER=tests/features composer behat
 
       - name: Run tests
         env:
