@@ -1,10 +1,10 @@
+@require-php-7.4
 Feature: Print various details about the environment.
 
   Background:
     Given a WP installation with the Traduttore plugin
     And GlotPress develop being active
 
-  @require-php-7.4
   Scenario: Run info command with invalid project ID
     When I try the WP-CLI command `traduttore project info 99999`
     Then STDERR should contain:
@@ -16,7 +16,6 @@ Feature: Print various details about the environment.
       WordPress database error
       """
 
-  @require-php-7.4
   Scenario: Run update command with invalid project ID
     When I try the WP-CLI command `traduttore project update 99999`
     Then STDERR should contain:
