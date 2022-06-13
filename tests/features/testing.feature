@@ -11,6 +11,9 @@ Feature: Test that the tests are working.
     Then STDOUT should contain:
       """
       Name: GlotPress
+      """
+    And STDOUT should contain:
+      """
       Status: Active
       """
     And the return code should be 0
@@ -19,6 +22,9 @@ Feature: Test that the tests are working.
     Then STDOUT should contain:
       """
       Name: Traduttore
+      """
+    And STDOUT should contain:
+      """
       Status: Active
       """
     And the return code should be 0
@@ -30,6 +36,9 @@ Feature: Test that the tests are working.
     Then STDOUT should contain:
       """
       Name: GlotPress
+      """
+    And STDOUT should contain:
+      """
       Status: Active
       """
     And the return code should be 0
@@ -38,6 +47,9 @@ Feature: Test that the tests are working.
     Then STDOUT should contain:
       """
       Name: Traduttore
+      """
+    And STDOUT should contain:
+      """
       Status: Active
       """
     And the return code should be 0
