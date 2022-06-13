@@ -8,7 +8,7 @@ on:
 
 jobs:
   behat:
-    name: Behat (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }}, GlotPress ${{ matrix.glotpress }})
+    name: Behat${{ matrix.coverage && ' with coverage' || '' }} (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }}, GlotPress ${{ matrix.glotpress }})
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     services:
