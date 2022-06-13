@@ -120,6 +120,7 @@ jobs:
       - name: Run tests
         env:
           BEHAT_CODE_COVERAGE: ${{ matrix.coverage }}
+          BEHAT_FEATURES_FOLDER: tests/features
         run: vendor/bin/behat
 
       - name: Retrieve list of coverage files
