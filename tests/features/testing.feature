@@ -8,7 +8,7 @@ Feature: Test that the tests are working.
     Given GlotPress develop being active
 
     When I run `wp plugin status glotpress`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
       Name: GlotPress
       Status: Active
@@ -16,7 +16,7 @@ Feature: Test that the tests are working.
     And the return code should be 0
 
     When I run `wp plugin status traduttore`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
       Name: Traduttore
       Status: Active
@@ -27,7 +27,7 @@ Feature: Test that the tests are working.
     Given GlotPress stable being active
 
     When I run `wp plugin status glotpress`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
       Name: GlotPress
       Status: Active
@@ -35,7 +35,7 @@ Feature: Test that the tests are working.
     And the return code should be 0
 
     When I run `wp plugin status traduttore`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
       Name: Traduttore
       Status: Active
