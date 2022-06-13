@@ -35,7 +35,7 @@
     "issues": "https://github.com/wearerequired/traduttore/issues"
   },
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "ext-json": "*",
     "ext-zip": "*",
     "wearerequired/traduttore-registry": "^2.0"
@@ -44,12 +44,13 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "php-stubs/wp-cli-stubs": "^2.4",
     "phpunit/phpunit": "^7.5.20",
-    "szepeviktor/phpstan-wordpress": "^1.0.2",
+    "szepeviktor/phpstan-wordpress": "^1.1",
     "wearerequired/coding-standards": "^1.5",
     "wp-cli/extension-command": "^2.0",
     "wp-cli/rewrite-command": "^2.0",
     "wp-cli/wp-cli-tests": "^3.0.11",
-    "wpackagist-plugin/glotpress": "^2.3.1"
+    "wpackagist-plugin/glotpress": "^3.0.0",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -71,6 +72,10 @@
     }
   },
   "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "composer/installers": true
+    },
     "process-timeout": 7200,
     "sort-packages": true
   },

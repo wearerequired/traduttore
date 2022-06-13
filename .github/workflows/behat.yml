@@ -8,7 +8,7 @@ on:
 
 jobs:
   behat:
-    name: Behat (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }}, GlotPress ${{ matrix.glotpress }})
+    name: Behat${{ matrix.coverage && ' with coverage' || '' }} (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }}, GlotPress ${{ matrix.glotpress }})
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     services:
@@ -32,7 +32,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        php: [ '7.4', '7.3', '7.2' ]
+        php: [ '7.4' ]
         wordpress: [ 'latest', 'nightly' ]
         glotpress: [ 'develop' ]
         experimental: [ false ]
@@ -40,6 +40,16 @@ jobs:
         # - php: '8.0'
         #   os: ubuntu-latest
         #   experimental: true
+          - os: ubuntu-latest
+            php: '7.2'
+            wordpress: 'latest'
+            glotpress: 'latest'
+            experimental: false
+          - os: ubuntu-latest
+            php: '7.3'
+            wordpress: 'latest'
+            glotpress: 'latest'
+            experimental: false
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
@@ -49,7 +59,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -68,18 +78,12 @@ jobs:
             sleep 1
           done
 
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Install PHP dependencies
+        uses: ramsey/composer-install@v2
 
-      - name: Cache PHP dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+      - name: Make Composer packages available globally
+        run: |
+          echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
       - name: Install WP-CLI
         run: |
@@ -88,11 +92,6 @@ jobs:
           mkdir -p bin
           mv wp-cli.phar bin/wp
           echo "WP_CLI_BIN_DIR=${PWD}/bin" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-          echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
       - name: Update PHPUnit to get latest php-code-coverage library
         if: ${{ matrix.coverage == true }}
@@ -116,12 +115,13 @@ jobs:
         run: composer prepare-tests
 
       - name: Check Behat environment
-        run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 composer behat
+        run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 BEHAT_FEATURES_FOLDER=tests/features composer behat
 
       - name: Run tests
         env:
           BEHAT_CODE_COVERAGE: ${{ matrix.coverage }}
-        run: vendor/bin/behat
+          BEHAT_FEATURES_FOLDER: tests/features
+        run: composer behat || composer behat-rerun
 
       - name: Retrieve list of coverage files
         id: coverage_files
@@ -134,7 +134,7 @@ jobs:
 
       - name: Upload code coverage report
         if: ${{ matrix.coverage }}
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           files: ${{ steps.coverage_files.outputs.COVERAGE_FILES }}
           flags: feature

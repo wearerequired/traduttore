@@ -92,7 +92,7 @@ class ZipProvider {
 		 * @param int                 $delay           Delay in minutes. Default is 5 minutes.
 		 * @param \GP_Translation_Set $translation_set Translation set the ZIP generation will be scheduled for.
 		 */
-		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $translation_set_id );
+		$delay = (int) apply_filters( 'traduttore.generate_zip_delay', MINUTE_IN_SECONDS * 5, $this->translation_set );
 
 		$next_schedule = wp_next_scheduled( 'traduttore.generate_zip', [ $translation_set_id ] );
 

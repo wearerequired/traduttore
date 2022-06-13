@@ -155,13 +155,13 @@ install_gp() {
 	if [[ $GP_VERSION == 'nightly' || $GP_VERSION == 'develop' || $GP_VERSION == 'trunk' ]]; then
 		local BRANCH_NAME='develop'
 	elif [[ $GP_VERSION == 'latest' ]]; then
-		local BRANCH_NAME='master'
+		local BRANCH_NAME='stable'
 	else
 		local BRANCH_NAME="$GP_VERSION"
 	fi
 
 	# Set up GlotPress
-	git clone --branch "$BRANCH_NAME" --single-branch -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
+	git clone --branch "$BRANCH_NAME" --single-branch -q https://github.com/GlotPress/GlotPress.git "$WP_CORE_DIR/build/wp-content/plugins/glotpress"
 }
 
 install_wp
