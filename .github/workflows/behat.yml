@@ -121,7 +121,7 @@ jobs:
         env:
           BEHAT_CODE_COVERAGE: ${{ matrix.coverage }}
           BEHAT_FEATURES_FOLDER: tests/features
-        run: vendor/bin/behat
+        run: composer behat || composer behat-rerun
 
       - name: Retrieve list of coverage files
         id: coverage_files
