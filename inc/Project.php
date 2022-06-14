@@ -110,7 +110,7 @@ class Project {
 	 *
 	 * @param \GP_Project $project GlotPress project.
 	 */
-	public function __construct( \GP_Project $project ) {
+	public function __construct( GP_Project $project ) {
 		$this->project = $project;
 	}
 
