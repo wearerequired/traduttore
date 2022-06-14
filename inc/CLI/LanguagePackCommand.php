@@ -246,7 +246,7 @@ class LanguagePackCommand extends WP_CLI_Command {
 			$args
 		);
 
-		// Remove inexistant projects.
+		// Remove non-existent projects.
 		$projects = array_filter( $projects );
 
 		return $projects;
