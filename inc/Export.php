@@ -69,7 +69,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return array<string, string> List of files with names as key and temporary file location as value.
+	 * @return array<string,string> List of files with names as key and temporary file location as value.
 	 */
 	public function export_strings(): ?array {
 		$entries = GP::$translation->for_export( $this->project->get_project(), $this->translation_set, [ 'status' => 'current' ] );
@@ -142,7 +142,7 @@ class Export {
 	 * @since 3.0.0
 	 *
 	 * @param \Translation_Entry[] $entries The translation entries to map.
-	 * @return array<string, string> The mapping of sources to translation entries.
+	 * @return array<string,string> The mapping of sources to translation entries.
 	 */
 	protected function map_entries_to_source( array $entries ): array {
 		$mapping = [];
@@ -193,7 +193,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array<string, string> $mapping A mapping of files to translation entries.
+	 * @param array<string,string> $mapping A mapping of files to translation entries.
 	 */
 	protected function build_json_files( array $mapping ): void {
 		/** @var \GP_Format $format */

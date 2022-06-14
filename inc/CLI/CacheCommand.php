@@ -47,7 +47,7 @@ class CacheCommand extends WP_CLI_Command {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<mixed> $args Command args.
+	 * @param string[] $args Command args.
 	 */
 	public function clear( array $args ): void {
 		$locator = new ProjectLocator( $args[0] );
