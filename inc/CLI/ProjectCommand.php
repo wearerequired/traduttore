@@ -206,4 +206,63 @@ class ProjectCommand extends WP_CLI_Command {
 		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->get_id() ) );
 	}
 
+	/**
+	 * Unlocks a project.
+	 *
+	 * Finds the project and removes the lock.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <project|url>
+	 * : Project path / ID or source code repository URL, e.g. https://github.com/wearerequired/required-valencia
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Unlock project with repository URL.
+	 *     $ wp traduttore project unlock https://github.com/wearerequired/required-valencia
+	 *     Success: Project unlocked (ID: 123)!
+	 *
+	 *     # Unlock project with project path.
+	 *     $ wp traduttore project unlock wearerequired/required-valencia
+	 *     Success: Project unlocked (ID: 123)!
+	 *
+	 *     # Unlock project with project ID.
+	 *     $ wp traduttore project unlock 123
+	 *     Success: Project unlocked (ID: 123)!
+	 *
+	 * @param string[] $args       Command args.
+	 * @param string[] $assoc_args Associative args.
+	 */
+	public function unlock( array $args, array $assoc_args ): void {
+
+		$locator = new ProjectLocator( $args[0] );
+		$project = $locator->get_project();
+
+		if ( ! $project ) {
+			WP_CLI::error( 'Project not found' );
+		}
+
+		$repository = ( new RepositoryFactory() )->get_repository( $project );
+
+		if ( ! $repository ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$loader = ( new LoaderFactory() )->get_loader( $repository );
+
+		if ( ! $loader ) {
+			WP_CLI::error( 'Invalid project type' );
+		}
+
+		$updater = new Updater( $project );
+
+		if ( ! $updater->has_lock() ) {
+			WP_CLI::error( sprintf( 'Project was not locked (ID: %d)!', $project->get_id() ) );
+		}
+
+		$updater->remove_lock();
+
+		WP_CLI::success( sprintf( 'Project unlocked (ID: %d)!', $project->get_id() ) );
+	}
+
 }
