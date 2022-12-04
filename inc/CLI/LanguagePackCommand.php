@@ -94,14 +94,15 @@ class LanguagePackCommand extends WP_CLI_Command {
 			/** @var \GP_Locale $locale */
 			$locale = GP_Locales::by_slug( $set->locale );
 
-			$zip_provider = new ZipProvider( $set );
+			$zip_provider    = new ZipProvider( $set );
+			$last_build_time = $zip_provider->get_last_build_time();
 
 			$language_packs[] = [
 				'Locale'       => $locale->wp_locale,
 				'English Name' => $locale->english_name,
 				'Native Name'  => $locale->native_name,
 				'Completed'    => sprintf( '%s%%', $set->percent_translated() ),
-				'Updated'      => $zip_provider->get_last_build_time()->format( DATE_ATOM ),
+				'Updated'      => $last_build_time ? $last_build_time->format( DATE_ATOM ) : 'n/a',
 				'Package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : 'n/a',
 			];
 		}
