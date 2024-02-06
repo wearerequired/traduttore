@@ -85,7 +85,7 @@ class Export {
 
 		unset( $mapping['php'] );
 
-		$this->build_json_files( $mapping );
+		$this->build_single_json_file();
 		$this->build_po_file( $php_entries );
 		$this->build_mo_file( $php_entries );
 
@@ -184,6 +184,26 @@ class Export {
 		 * @param \Required\Traduttore\Project $project The project that is exported.
 		 */
 		return (array) apply_filters( 'traduttore.map_entries_to_source', $mapping, $entries, $this->project );
+	}
+
+	/**
+	 * Builds a single JSON file for translations.
+	 *
+	 * Exports translations for all JS files to a single translation file.
+	 *
+	 * @since 3.0.0
+	 */
+	protected function build_single_json_file(): void {
+		$project = $this->project->get_project();
+		$entries = GP::$translation->for_export( $project, $this->translation_set );
+		$format = gp_array_get( GP::$formats, 'jed1x' );
+		$contents = $format->print_exported_file( $project, $this->locale, $this->translation_set, $entries );
+		$base_file_name = $this->get_base_file_name();
+		$file_name = "{$base_file_name}.json";
+		$temp_file = wp_tempnam( $file_name );
+		if ( $this->write_to_file( $temp_file, $contents ) ) {
+			$this->files[ $file_name ] = $temp_file;
+		}
 	}
 
 	/**
