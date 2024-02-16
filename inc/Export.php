@@ -81,9 +81,9 @@ class Export {
 		// Build a mapping based on where the translation entries occur and separate the po entries.
 		$mapping = $this->map_entries_to_source( $entries );
 
-		$php_entries = \array_key_exists( 'php', $mapping ) ? $mapping['php'] : [];
+		$php_entries = \array_key_exists( 'po', $mapping ) ? $mapping['po'] : [];
 
-		unset( $mapping['php'] );
+		unset( $mapping['po'] );
 
 		$this->build_json_files( $mapping );
 		$this->build_po_file( $php_entries );
@@ -149,25 +149,28 @@ class Export {
 
 		foreach ( $entries as $entry ) {
 			// Find all unique sources this translation originates from.
-			$sources = array_map(
-				function ( $reference ) {
-					$parts = explode( ':', $reference );
-					$file  = $parts[0];
+			if ( ! empty( $entry->references ) ) {
+				$sources = array_map(
+					function ( $reference ) {
+						$parts = explode( ':', $reference );
+						$file  = $parts[0];
 
-					if ( substr( $file, -7 ) === '.min.js' ) {
-						return substr( $file, 0, -7 ) . '.js';
-					}
+						if ( substr( $file, -7 ) === '.min.js' ) {
+							return substr( $file, 0, -7 ) . '.js';
+						}
 
-					if ( substr( $file, -3 ) === '.js' ) {
-						return $file;
-					}
+						if ( substr( $file, -3 ) === '.js' ) {
+							return $file;
+						}
+						return 'po';
+					},
+					$entry->references
+				);
 
-					return 'php';
-				},
-				$entry->references
-			);
-
-			$sources = array_unique( $sources );
+				$sources = array_unique( $sources );
+			} else {
+				$sources = [ 'po' ];
+			}
 
 			foreach ( $sources as $source ) {
 				$mapping[ $source ][] = $entry;
