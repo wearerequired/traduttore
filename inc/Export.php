@@ -162,6 +162,7 @@ class Export {
 						if ( substr( $file, -3 ) === '.js' ) {
 							return $file;
 						}
+
 						return 'php';
 					},
 					$entry->references
