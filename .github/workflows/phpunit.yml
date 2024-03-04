@@ -65,7 +65,7 @@ jobs:
           tools: composer
 
       - name: Install PHP dependencies
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
 
       - name: Make Composer packages available globally
         run: |
