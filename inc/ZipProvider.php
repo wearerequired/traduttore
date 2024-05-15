@@ -132,6 +132,10 @@ class ZipProvider {
 			}
 		}
 
+		if ( ! $wp_filesystem ) {
+			return false;
+		}
+
 		// Make sure the cache directory exists.
 		if ( ! is_dir( static::get_cache_dir() ) ) {
 			$wp_filesystem->mkdir( static::get_cache_dir(), FS_CHMOD_DIR );
@@ -211,6 +215,10 @@ class ZipProvider {
 			if ( ! \WP_Filesystem() ) {
 				return false;
 			}
+		}
+
+		if ( ! $wp_filesystem ) {
+			return false;
 		}
 
 		$success = $wp_filesystem->rmdir( $this->get_zip_path(), true );

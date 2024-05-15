@@ -9,6 +9,7 @@ namespace Required\Traduttore;
 
 use GP;
 use GP_Project;
+use http\Exception\InvalidArgumentException;
 
 /**
  * Helper class to find a GlotPress project based on path, ID, or GitHub repository URL.
@@ -33,7 +34,13 @@ class ProjectLocator {
 	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
 	 */
 	public function __construct( $project ) {
-		$this->project = $this->find_project( $project );
+		$found = $this->find_project( $project );
+
+		if ( ! $found ) {
+			throw new InvalidArgumentException( __( 'Project not found', 'traduttore' ) );
+		}
+
+		$this->project = $found;
 	}
 
 	/**

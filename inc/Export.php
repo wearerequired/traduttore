@@ -123,6 +123,10 @@ class Export {
 			}
 		}
 
+		if ( ! $wp_filesystem ) {
+			return false;
+		}
+
 		return $wp_filesystem->put_contents( $file, $contents, FS_CHMOD_FILE );
 	}
 

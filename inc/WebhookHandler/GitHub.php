@@ -50,6 +50,10 @@ class GitHub extends Base {
 
 		$secret = $this->get_secret( $project );
 
+		if ( ! $secret ) {
+			return false;
+		}
+
 		$payload_signature = 'sha1=' . hash_hmac( 'sha1', (string) wp_json_encode( $params ), $secret );
 
 		return hash_equals( $token, $payload_signature );

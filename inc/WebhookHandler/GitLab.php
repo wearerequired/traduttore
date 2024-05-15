@@ -46,6 +46,10 @@ class GitLab extends Base {
 
 		$secret = $this->get_secret( $project );
 
+		if ( ! $secret ) {
+			return false;
+		}
+
 		return hash_equals( $token, $secret );
 	}
 

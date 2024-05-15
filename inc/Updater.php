@@ -128,7 +128,7 @@ class Updater {
 		$this->project->set_text_domain( sanitize_text_field( $translations->headers['X-Domain'] ) );
 
 		if ( $translations->headers['Project-Id-Version'] ) {
-			$this->project->set_version( $this->extract_version( $translations->headers['Project-Id-Version'] ) );
+			$this->project->set_version( $this->extract_version( $translations->headers['Project-Id-Version'] ) ?? '' );
 		}
 
 		$stats = GP::$original->import_for_project( $this->project->get_project(), $translations );

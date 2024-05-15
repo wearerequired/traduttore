@@ -89,6 +89,6 @@ class Git extends Base {
 		 * @param string                          $clone_url  The URL to clone a Git repository.
 		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
-		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
+		return apply_filters( 'traduttore.git_clone_url', (string) $clone_url, $this->repository );
 	}
 }

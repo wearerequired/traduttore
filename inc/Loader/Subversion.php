@@ -113,6 +113,6 @@ class Subversion extends Base {
 		 * @param string                          $checkout_url The URL to check out a Subversion repository.
 		 * @param \Required\Traduttore\Repository $repository   The current repository.
 		 */
-		return apply_filters( 'traduttore.svn_checkout_url', $checkout_url, $this->repository );
+		return apply_filters( 'traduttore.svn_checkout_url', (string) $checkout_url, $this->repository );
 	}
 }

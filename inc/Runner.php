@@ -65,6 +65,10 @@ class Runner {
 			}
 		}
 
+		if ( ! $wp_filesystem ) {
+			return false;
+		}
+
 		return $wp_filesystem->rmdir( $this->loader->get_local_path(), true );
 	}
 
