@@ -106,7 +106,7 @@ class Plugin {
 
 		add_action(
 			'traduttore.generate_zip',
-			static function( $translation_set_id ): void {
+			static function ( $translation_set_id ): void {
 				/** @var \GP_Translation_Set $translation_set */
 				$translation_set = GP::$translation_set->get( $translation_set_id );
 
@@ -117,7 +117,7 @@ class Plugin {
 
 		add_filter(
 			'gp_update_meta',
-			static function( $meta_tuple ) {
+			static function ( $meta_tuple ) {
 				$allowed_keys = [
 					Project::VERSION_KEY, // '_traduttore_version'.
 					Project::TEXT_DOMAIN_KEY, // '_traduttore_text_domain'.
@@ -183,11 +183,11 @@ class Plugin {
 
 		add_filter(
 			'slack_get_events',
-			static function( $events ) {
+			static function ( $events ) {
 				$events['traduttore.zip_generated'] = [
 					'action'      => 'traduttore.zip_generated',
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
-					'message'     => function( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
+					'message'     => function ( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
 						/** @var \GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
 						$project = new Project( GP::$project->get( $translation_set->project_id ) );
@@ -231,7 +231,7 @@ class Plugin {
 				$events['traduttore.updated'] = [
 					'action'      => 'traduttore.updated',
 					'description' => __( 'When new translations are updated for a project', 'traduttore' ),
-					'message'     => function( Project $project, array $stats ) {
+					'message'     => function ( Project $project, array $stats ) {
 						[
 							$originals_added,
 							$originals_existing, // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable

@@ -205,5 +205,4 @@ class ProjectCommand extends WP_CLI_Command {
 
 		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->get_id() ) );
 	}
-
 }

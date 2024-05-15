@@ -53,7 +53,6 @@ class Subversion extends Base {
 		);
 
 		return 0 === $status ? $target : null;
-
 	}
 
 	/**
