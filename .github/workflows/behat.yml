@@ -33,29 +33,36 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         php: [ '7.4' ]
-        wordpress: [ 'latest', 'nightly' ]
-        glotpress: [ 'develop' ]
+        wordpress: [ 'latest' ]
+        glotpress: [ 'latest' ]
         experimental: [ false ]
         include:
-        # - php: '8.0'
-        #   os: ubuntu-latest
-        #   experimental: true
           - os: ubuntu-latest
-            php: '7.2'
+            php: '8.0'
             wordpress: 'latest'
             glotpress: 'latest'
             experimental: false
           - os: ubuntu-latest
-            php: '7.3'
+            php: '8.1'
             wordpress: 'latest'
             glotpress: 'latest'
             experimental: false
           - os: ubuntu-latest
-            php: '7.4'
+            php: '8.2'
             wordpress: 'latest'
-            glotpress: 'develop'
+            glotpress: 'latest'
             experimental: false
             coverage: true
+          - os: ubuntu-latest
+            php: '8.2'
+            wordpress: 'nightly'
+            glotpress: 'develop'
+            experimental: true
+          - os: ubuntu-latest
+            php: '8.3'
+            wordpress: 'nightly'
+            glotpress: 'develop'
+            experimental: true
 
     steps:
       - name: Check out Git repository
