@@ -11,6 +11,7 @@
  * Text Domain: traduttore
  * Domain Path: /languages
  * Update URI:  false
+ * Requires PHP: 7.4
  *
  * Copyright (c) 2017-2022 required (email: info@required.ch)
  *

@@ -21,7 +21,7 @@ class Bitbucket extends TestCase {
 	 */
 	protected $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
@@ -52,7 +52,7 @@ class Bitbucket extends TestCase {
 	public function test_invalid_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params( [] );
-		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'foo' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', wp_json_encode( $request->get_params() ), 'foo' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -100,7 +100,7 @@ class Bitbucket extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -125,12 +125,12 @@ class Bitbucket extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_BITBUCKET, $this->project->get_repository_type() );
@@ -160,12 +160,12 @@ class Bitbucket extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_HG, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_BITBUCKET, $this->project->get_repository_type() );

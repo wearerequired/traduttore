@@ -21,7 +21,7 @@ class GitHub extends TestCase {
 	 */
 	protected $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
@@ -54,7 +54,7 @@ class GitHub extends TestCase {
 		$request->add_header( 'x-github-event', 'ping' );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 	}
 
@@ -69,7 +69,7 @@ class GitHub extends TestCase {
 	public function test_invalid_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params( [] );
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'foo' );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), 'foo' );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -88,12 +88,12 @@ class GitHub extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'Not the default branch' ], $response->get_data() );
 	}
 
@@ -113,7 +113,7 @@ class GitHub extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -128,7 +128,7 @@ class GitHub extends TestCase {
 				'ref' => 'refs/heads/master',
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -152,12 +152,12 @@ class GitHub extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITHUB, $this->project->get_repository_type() );
@@ -187,12 +187,12 @@ class GitHub extends TestCase {
 				] )
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITHUB, $this->project->get_repository_type() );
@@ -223,12 +223,12 @@ class GitHub extends TestCase {
 				],
 			]
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), $secret );
+		$signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $request->get_params() ), $secret );
 		$request->add_header( 'x-github-event', 'push' );
 		$request->add_header( 'x-hub-signature', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITHUB, $this->project->get_repository_type() );

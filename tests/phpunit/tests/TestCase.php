@@ -28,11 +28,11 @@ class TestCase extends GP_UnitTestCase {
 		}
 
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( $code, $response->get_error_code() );
+		$this->assertSame( $code, $response->get_error_code() );
 		if ( null !== $status ) {
 			$data = $response->get_error_data();
 			$this->assertArrayHasKey( 'status', $data );
-			$this->assertEquals( $status, $data['status'] );
+			$this->assertSame( $status, $data['status'] );
 		}
 	}
 }

@@ -31,7 +31,7 @@ class Runner extends TestCase {
 	 */
 	protected $loader;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
@@ -63,7 +63,7 @@ class Runner extends TestCase {
 
 		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
 		$this->assertTrue( $this->runner->delete_local_repository() );
-		$this->assertFileNotExists( $this->loader->get_local_path() . '/foo.txt' );
+		$this->assertFileDoesNotExist( $this->loader->get_local_path() . '/foo.txt' );
 	}
 
 	public function test_delete_local_repository_without_filesystem(): void {
@@ -138,7 +138,7 @@ class Runner extends TestCase {
 
 		$loader = $this->createMock( Loader::class );
 		$loader->expects( $this->once() )->method( 'get_local_path' )->willReturn( $test_path );
-		$loader->expects( $this->never() )->method( 'download' )->willReturn( false );
+		$loader->expects( $this->never() )->method( 'download' )->willReturn( null );
 
 		mkdir( $loader->get_local_path() );
 

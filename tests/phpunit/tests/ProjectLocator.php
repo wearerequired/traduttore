@@ -29,7 +29,7 @@ class ProjectLocator extends TestCase {
 	 */
 	protected $subsub;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->root   = $this->factory->project->create(
@@ -81,43 +81,43 @@ class ProjectLocator extends TestCase {
 		$project = $this->root;
 		$locator = new Locator( $project );
 
-		$this->assertEquals( $this->root->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->root->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_path(): void {
 		$locator = new Locator( 'root' );
 
-		$this->assertEquals( $this->root->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->root->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_subpath(): void {
 		$locator = new Locator( 'root/sub' );
 
-		$this->assertEquals( $this->sub->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->sub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_subsubpath(): void {
 		$locator = new Locator( 'root/sub/subsub' );
 
-		$this->assertEquals( $this->subsub->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->subsub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_id(): void {
 		$locator = new Locator( (int) $this->sub->id );
 
-		$this->assertEquals( $this->sub->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->sub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_glotpress_id_as_string(): void {
 		$locator = new Locator( (string) $this->sub->id );
 
-		$this->assertEquals( $this->sub->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->sub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_github_url(): void {
 		$locator = new Locator( 'https://github.com/wearerequired/traduttore' );
 
-		$this->assertEquals( $this->subsub->id, $locator->get_project()->get_id() );
+		$this->assertSame( $this->subsub->id, $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_repository_name(): void {
@@ -133,7 +133,7 @@ class ProjectLocator extends TestCase {
 
 		$locator = new Locator( 'wearerequired/traduttore-registry' );
 
-		$this->assertEquals( $project->get_id(), $locator->get_project()->get_id() );
+		$this->assertSame( $project->get_id(), $locator->get_project()->get_id() );
 	}
 
 	public function test_find_project_by_repository_url(): void {
@@ -149,6 +149,6 @@ class ProjectLocator extends TestCase {
 
 		$locator = new Locator( 'https://github.com/wearerequired/traduttore-registry' );
 
-		$this->assertEquals( $project->get_id(), $locator->get_project()->get_id() );
+		$this->assertSame( $project->get_id(), $locator->get_project()->get_id() );
 	}
 }

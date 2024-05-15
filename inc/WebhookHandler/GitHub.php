@@ -50,7 +50,7 @@ class GitHub extends Base {
 
 		$secret = $this->get_secret( $project );
 
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), $secret );
+		$payload_signature = 'sha1=' . hash_hmac( 'sha1', wp_json_encode( $params ), $secret );
 
 		return hash_equals( $token, $payload_signature );
 	}

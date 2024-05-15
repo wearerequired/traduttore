@@ -27,7 +27,7 @@ class GitLab extends TestCase {
 	 */
 	public $http_request_count = 0;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(

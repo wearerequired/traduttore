@@ -39,7 +39,7 @@ class ZipProvider extends TestCase {
 	 */
 	protected $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->locale = $this->factory->locale->create(
@@ -71,7 +71,7 @@ class ZipProvider extends TestCase {
 		$this->project = new \Required\Traduttore\Project( GP::$project->get( $this->translation_set->project_id ) );
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		/* @var WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
@@ -79,7 +79,7 @@ class ZipProvider extends TestCase {
 			require_once ABSPATH . '/wp-admin/includes/admin.php';
 
 			if ( ! \WP_Filesystem() ) {
-				return false;
+				return;
 			}
 		}
 
@@ -214,7 +214,7 @@ class ZipProvider extends TestCase {
 
 		$file_after = $zip_after->statName( 'foo.txt' );
 
-		$this->assertInternalType( 'array', $file_before );
+		$this->assertIsArray( $file_before );
 		$this->assertFalse( $file_after );
 	}
 
@@ -324,7 +324,11 @@ class ZipProvider extends TestCase {
 		$provider = new Provider( $this->translation_set );
 		$result   = $provider->generate_zip_file();
 
-		$expected_files = [ 'foo-bar-baz-de_DE.po', 'foo-bar-baz-de_DE.mo' ];
+		$expected_files = [
+		  'foo-bar-baz-de_DE.po',
+		  'foo-bar-baz-de_DE.mo',
+		  'foo-bar-baz-de_DE.l10n.php'
+		];
 		$actual_files   = [];
 
 		$zip = new ZipArchive();
@@ -352,7 +356,7 @@ class ZipProvider extends TestCase {
 		$after = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
 
 		$this->assertFalse( $before );
-		$this->assertInternalType( 'int', $after );
+		$this->assertIsInt( $after );
 	}
 
 	public function test_schedule_generation_removes_existing_event(): void {
@@ -426,7 +430,7 @@ class ZipProvider extends TestCase {
 
 		$this->assertFalse( $before );
 		$this->assertTrue( $result );
-		$this->assertInternalType( 'int', $after );
+		$this->assertIsInt( $after );
 	}
 
 	public function test_does_not_schedule_generation_after_importing_originals_for_inactive_project(): void {
@@ -459,7 +463,7 @@ class ZipProvider extends TestCase {
 		$after                 = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
 
 		$this->assertFalse( $before );
-		$this->assertInternalType( 'int', $after );
+		$this->assertIsInt( $after );
 		$this->assertCount( 0, $originals_for_project );
 	}
 }

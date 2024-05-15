@@ -26,7 +26,7 @@ class Updater extends TestCase {
 	 */
 	protected $updater;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(

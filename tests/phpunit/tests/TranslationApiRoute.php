@@ -29,7 +29,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	 */
 	protected $locale;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->locale = $this->factory->locale->create(
@@ -51,7 +51,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		/* @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
@@ -127,16 +127,16 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		$response = $this->get_route_callback( 'foo-project' );
 
 		$this->assertCount( 1, $response['translations'] );
-		$this->assertArraySubset(
-			[
-				'language'     => 'de_DE',
-				'version'      => '1.0',
-				'english_name' => 'German',
-				'native_name'  => 'Deutsch',
-				'package'      => $provider->get_zip_url(),
-			],
-			$response['translations'][0]
-		);
+		$this->assertArrayHasKey( 'language', $response['translations'][0] );
+		$this->assertSame( 'de_DE', $response['translations'][0]['language'] );
+		$this->assertArrayHasKey( 'version', $response['translations'][0] );
+		$this->assertSame( '1.0', $response['translations'][0]['version'] );
+		$this->assertArrayHasKey( 'english_name', $response['translations'][0] );
+		$this->assertSame( 'German', $response['translations'][0]['english_name'] );
+		$this->assertArrayHasKey( 'native_name', $response['translations'][0] );
+		$this->assertSame( 'Deutsch', $response['translations'][0]['native_name'] );
+		$this->assertArrayHasKey( 'package', $response['translations'][0] );
+		$this->assertSame( $provider->get_zip_url(), $response['translations'][0]['package'] );
 	}
 
 	public function test_missing_build_time(): void {
@@ -182,15 +182,16 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		$response = $this->get_route_callback( 'foo-project' );
 
 		$this->assertCount( 1, $response['translations'] );
-		$this->assertArraySubset(
-			[
-				'language'     => 'de_DE',
-				'version'      => '1.2.3',
-				'english_name' => 'German',
-				'native_name'  => 'Deutsch',
-				'package'      => $provider->get_zip_url(),
-			],
-			$response['translations'][0]
-		);
+		$this->assertCount( 1, $response['translations'] );
+		$this->assertArrayHasKey( 'language', $response['translations'][0] );
+		$this->assertSame( 'de_DE', $response['translations'][0]['language'] );
+		$this->assertArrayHasKey( 'version', $response['translations'][0] );
+		$this->assertSame( '1.2.3', $response['translations'][0]['version'] );
+		$this->assertArrayHasKey( 'english_name', $response['translations'][0] );
+		$this->assertSame( 'German', $response['translations'][0]['english_name'] );
+		$this->assertArrayHasKey( 'native_name', $response['translations'][0] );
+		$this->assertSame( 'Deutsch', $response['translations'][0]['native_name'] );
+		$this->assertArrayHasKey( 'package', $response['translations'][0] );
+		$this->assertSame( $provider->get_zip_url(), $response['translations'][0]['package'] );
 	}
 }

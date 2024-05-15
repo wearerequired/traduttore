@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -79,7 +79,7 @@ jobs:
           done
 
       - name: Install PHP dependencies
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
 
       - name: Make Composer packages available globally
         run: |
@@ -134,8 +134,9 @@ jobs:
 
       - name: Upload code coverage report
         if: ${{ matrix.coverage }}
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.coverage_files.outputs.COVERAGE_FILES }}
           flags: feature
           fail_ci_if_error: true

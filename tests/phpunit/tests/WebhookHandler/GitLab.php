@@ -21,7 +21,7 @@ class GitLab extends TestCase {
 	 */
 	protected $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
@@ -82,7 +82,7 @@ class GitLab extends TestCase {
 		$request->add_header( 'x-gitlab-token', 'traduttore-test' );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'Not the default branch' ], $response->get_data() );
 	}
 
@@ -127,7 +127,7 @@ class GitLab extends TestCase {
 		$request->add_header( 'x-gitlab-token', 'traduttore-test' );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITLAB, $this->project->get_repository_type() );
@@ -161,7 +161,7 @@ class GitLab extends TestCase {
 		$request->add_header( 'x-gitlab-token', $secret );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITLAB, $this->project->get_repository_type() );

@@ -74,6 +74,7 @@ class Export extends TestCase {
 			[
 				'foo-project-de_DE.po',
 				'foo-project-de_DE.mo',
+				'foo-project-de_DE.l10n.php',
 			],
 			array_keys( $actual )
 		);
@@ -133,6 +134,7 @@ class Export extends TestCase {
 			[
 				'foo-project-de_DE.po',
 				'foo-project-de_DE.mo',
+				'foo-project-de_DE.l10n.php',
 				$json_filename_1,
 				$json_filename_2,
 			],
@@ -216,6 +218,7 @@ class Export extends TestCase {
 			[
 				'foo-project-de_DE.po',
 				'foo-project-de_DE.mo',
+				'foo-project-de_DE.l10n.php',
 				$json_filename_target,
 			],
 			array_keys( $actual )
@@ -356,7 +359,7 @@ class Export extends TestCase {
 
 		array_map( 'unlink', $actual );
 
-		$this->assertInternalType( 'array', $json );
+		$this->assertIsArray( $json );
 		$this->assertCount( 4, $json['locale_data']['messages'] );
 		$this->assertArrayHasKey( $original_1->singular, $json['locale_data']['messages'] );
 		$this->assertArrayHasKey( $original_2->singular, $json['locale_data']['messages'] );
@@ -365,6 +368,7 @@ class Export extends TestCase {
 			[
 				'foo-project-de_DE.po',
 				'foo-project-de_DE.mo',
+				'foo-project-de_DE.l10n.php',
 				$json_filename,
 			],
 			array_keys( $actual )

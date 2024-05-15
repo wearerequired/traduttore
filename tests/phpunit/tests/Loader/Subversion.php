@@ -23,7 +23,7 @@ class Subversion extends TestCase {
 	 */
 	protected $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(

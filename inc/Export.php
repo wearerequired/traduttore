@@ -88,6 +88,7 @@ class Export {
 		$this->build_json_files( $mapping );
 		$this->build_po_file( $php_entries );
 		$this->build_mo_file( $php_entries );
+		$this->build_php_file( $php_entries );
 
 		return $this->files;
 	}
@@ -263,6 +264,28 @@ class Export {
 
 		$base_file_name = $this->get_base_file_name();
 		$file_name      = "{$base_file_name}.mo";
+		$temp_file      = wp_tempnam( $file_name );
+
+		$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
+
+		if ( $this->write_to_file( $temp_file, $contents ) ) {
+			$this->files[ $file_name ] = $temp_file;
+		}
+	}
+
+	/**
+	 * Builds a PHP file for translations.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param \Translation_Entry[] $entries The translation entries.
+	 */
+	protected function build_php_file( array $entries ): void {
+		/** @var \GP_Format $format */
+		$format = gp_array_get( GP::$formats, 'php' );
+
+		$base_file_name = $this->get_base_file_name();
+		$file_name      = "{$base_file_name}.l10n.php";
 		$temp_file      = wp_tempnam( $file_name );
 
 		$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
