@@ -12,6 +12,7 @@ use DateTimeZone;
 use GP;
 use GP_Locales;
 use GP_Translation_Set;
+use http\Exception\InvalidArgumentException;
 use ZipArchive;
 
 /**
@@ -71,7 +72,14 @@ class ZipProvider {
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $this->translation_set->locale );
-		$this->project         = new Project( GP::$project->get( $this->translation_set->project_id ) );
+
+		$gp_project = GP::$project->get( $this->translation_set->project_id );
+
+		if ( ! $gp_project ) {
+			throw new InvalidArgumentException( __( 'Project not found', 'traduttore' ) );
+		}
+
+		$this->project = new Project( $gp_project );
 	}
 
 	/**

@@ -190,7 +190,14 @@ class Plugin {
 					'message'     => function ( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
 						/** @var \GP_Locale $locale */
 						$locale  = GP_Locales::by_slug( $translation_set->locale );
-						$project = new Project( GP::$project->get( $translation_set->project_id ) );
+
+						$gp_project = GP::$project->get( $translation_set->project_id );
+
+						if ( ! $gp_project ) {
+							return false;
+						}
+
+						$project = new Project( $gp_project );
 
 						/**
 						 * Filters whether a Slack notification for translation updates from GitHub should be sent.

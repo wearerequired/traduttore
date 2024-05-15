@@ -100,7 +100,7 @@ class Configuration {
 		$composer_file = trailingslashit( $this->path ) . 'composer.json';
 
 		if ( file_exists( $config_file ) ) {
-			$config = json_decode( file_get_contents( $config_file ), true );
+			$config = json_decode( (string) file_get_contents( $config_file ), true );
 
 			if ( $config ) {
 				return $config;
@@ -108,7 +108,7 @@ class Configuration {
 		}
 
 		if ( file_exists( $composer_file ) ) {
-			$config = json_decode( file_get_contents( $composer_file ), true );
+			$config = json_decode( (string) file_get_contents( $composer_file ), true );
 
 			if ( $config && isset( $config['extra']['traduttore'] ) ) {
 				return $config['extra']['traduttore'];

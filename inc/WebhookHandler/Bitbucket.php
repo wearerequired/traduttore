@@ -45,7 +45,7 @@ class Bitbucket extends Base {
 				return false;
 			}
 
-			$payload_signature = 'sha256=' . hash_hmac( 'sha256', wp_json_encode( $params ), $secret );
+			$payload_signature = 'sha256=' . hash_hmac( 'sha256', (string) wp_json_encode( $params ), $secret );
 
 			return hash_equals( $token, $payload_signature );
 		}

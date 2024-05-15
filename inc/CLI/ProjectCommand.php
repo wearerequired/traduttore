@@ -110,7 +110,7 @@ class ProjectCommand extends WP_CLI_Command {
 				'loader_instance'       => $loader_instance,
 			];
 
-			WP_CLI::line( json_encode( $info ) );
+			WP_CLI::line( (string) json_encode( $info ) );
 		} else {
 			WP_CLI::line( "Project ID:\t\t" . $project_id );
 			WP_CLI::line( "Project name:\t\t" . $project_name );

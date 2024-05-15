@@ -79,9 +79,10 @@ abstract class Base implements Repository {
 	 * @return string Repository host name.
 	 */
 	public function get_host(): ?string {
-		$url = $this->project->get_repository_url();
+		$url  = $this->project->get_repository_url();
+		$host = $url ? wp_parse_url( $url, PHP_URL_HOST ) : null;
 
-		return $url ? wp_parse_url( $url, PHP_URL_HOST ) : null;
+		return $host ?: null;
 	}
 
 	/**
@@ -105,7 +106,8 @@ abstract class Base implements Repository {
 			}
 
 			if ( $url ) {
-				$path  = trim( wp_parse_url( $url, PHP_URL_PATH ), '/' );
+				$path = wp_parse_url( $url, PHP_URL_PATH );
+				$path  = $path ? trim( $path, '/' ) : '';
 				$parts = explode( '/', $path );
 				$name  = implode( '/', array_splice( $parts, 0, 2 ) );
 			}

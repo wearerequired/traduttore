@@ -69,7 +69,9 @@ class Subversion extends Base {
 		chdir( $target );
 		exec( escapeshellcmd( 'svn revert --recursive .' ), $output, $status );
 		exec( escapeshellcmd( 'svn update .' ), $output, $status );
-		chdir( $current_dir );
+		if ( $current_dir ) {
+			chdir( $current_dir );
+		}
 
 		return 0 === $status ? $target : null;
 	}

@@ -76,7 +76,7 @@ class InfoCommand extends WP_CLI_Command {
 				'cache_dir'          => $cache_dir,
 			];
 
-			WP_CLI::line( json_encode( $info ) );
+			WP_CLI::line( (string) json_encode( $info ) );
 		} else {
 			WP_CLI::line( "Traduttore version:\t" . $plugin_version );
 			WP_CLI::line( "WordPress version:\t" . $wp_version );

@@ -10,6 +10,7 @@ namespace Required\Traduttore;
 use GP;
 use GP_Locales;
 use GP_Translation_Set;
+use http\Exception\InvalidArgumentException;
 
 /**
  * Export strings to translation files in PO, MO, and JSON format.
@@ -61,7 +62,14 @@ class Export {
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $translation_set->locale );
-		$this->project         = new Project( GP::$project->get( $translation_set->project_id ) );
+
+		$gp_project = GP::$project->get( $translation_set->project_id );
+
+		if ( ! $gp_project ) {
+			throw new InvalidArgumentException( __( 'Project not found', 'traduttore' ) );
+		}
+
+		$this->project = new Project( $gp_project );
 	}
 
 	/**
@@ -79,6 +87,7 @@ class Export {
 		}
 
 		// Build a mapping based on where the translation entries occur and separate the po entries.
+
 		$mapping = $this->map_entries_to_source( $entries );
 
 		$php_entries = \array_key_exists( 'php', $mapping ) ? $mapping['php'] : [];
@@ -143,7 +152,7 @@ class Export {
 	 * @since 3.0.0
 	 *
 	 * @param \Translation_Entry[] $entries The translation entries to map.
-	 * @return array<string,string> The mapping of sources to translation entries.
+	 * @return array<string,\Translation_Entry[]> The mapping of sources to translation entries.
 	 */
 	protected function map_entries_to_source( array $entries ): array {
 		$mapping = [];
@@ -198,7 +207,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array<string,string> $mapping A mapping of files to translation entries.
+	 * @param array<string,\Translation_Entry[]> $mapping A mapping of files to translation entries.
 	 */
 	protected function build_json_files( array $mapping ): void {
 		/** @var \GP_Format $format */
@@ -217,7 +226,7 @@ class Export {
 			// Add comment with file reference for debugging.
 			$contents_decoded          = json_decode( $contents );
 			$contents_decoded->comment = [ 'reference' => $file ];
-			$contents                  = wp_json_encode( $contents_decoded );
+			$contents                  = (string) wp_json_encode( $contents_decoded );
 
 			$hash      = md5( $file );
 			$file_name = "{$base_file_name}-{$hash}.json";

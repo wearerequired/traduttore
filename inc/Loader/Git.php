@@ -30,7 +30,9 @@ class Git extends Base {
 			chdir( $target );
 			exec( escapeshellcmd( 'git reset --hard -q' ), $output, $status );
 			exec( escapeshellcmd( 'git pull -q' ), $output, $status );
-			chdir( $current_dir );
+			if ( $current_dir ) {
+				chdir( $current_dir );
+			}
 
 			return 0 === $status ? $target : null;
 		}

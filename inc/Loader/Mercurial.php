@@ -30,7 +30,9 @@ class Mercurial extends Base {
 			chdir( $target );
 			exec( escapeshellcmd( 'hg update --clean -q' ), $output, $status );
 			exec( escapeshellcmd( 'hg pull -q' ), $output, $status );
-			chdir( $current_dir );
+			if ( $current_dir ) {
+				chdir( $current_dir );
+			}
 
 			return 0 === $status ? $target : null;
 		}
