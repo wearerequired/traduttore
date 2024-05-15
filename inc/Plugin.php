@@ -390,6 +390,8 @@ class Plugin {
 	 *
 	 * @since 3.0.0
 	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
+	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return bool True if permission is granted, false otherwise.
 	 */
@@ -419,6 +421,8 @@ class Plugin {
 	 * Picks a webhook handler based on the request information.
 	 *
 	 * @since 3.0.0
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.

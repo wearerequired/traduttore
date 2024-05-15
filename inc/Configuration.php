@@ -11,6 +11,8 @@ namespace Required\Traduttore;
  * Configuration class.
  *
  * @since 3.0.0
+ *
+ * @phpstan-type ProjectConfig array{ mergeWith?: string, textDomain?: string,exclude?: string }
  */
 class Configuration {
 	/**
@@ -28,6 +30,8 @@ class Configuration {
 	 * @since 3.0.0
 	 *
 	 * @var array Repository configuration.
+	 *
+	 * @phpstan-var ProjectConfig
 	 */
 	protected $config = [];
 
@@ -88,6 +92,8 @@ class Configuration {
 	 * @since 3.0.0
 	 *
 	 * @return array<string,array<string,string>> Configuration data if found.
+	 *
+	 * @phpstan-return ProjectConfig
 	 */
 	protected function load_config(): array {
 		$config_file   = trailingslashit( $this->path ) . 'traduttore.json';

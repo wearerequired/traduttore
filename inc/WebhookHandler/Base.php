@@ -23,6 +23,8 @@ abstract class Base implements WebhookHandler {
 	 * @since 3.0.0
 	 *
 	 * @var \WP_REST_Request The current REST request.
+	 *
+	 * @phpstan-var \WP_REST_Request<array{}>
 	 */
 	protected $request;
 
@@ -30,6 +32,8 @@ abstract class Base implements WebhookHandler {
 	 * Class constructor.
 	 *
 	 * @since 3.0.0
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 */

@@ -20,6 +20,8 @@ interface WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
+	 *
 	 * @param \WP_REST_Request $request Request object.
 	 */
 	public function __construct( WP_REST_Request $request );

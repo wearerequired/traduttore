@@ -1,8 +1,5 @@
-includes:
-    - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-# DREAM    level: max
-    level: 5
+    level: 6
     inferPrivatePropertyTypeFromConstructor: true
     bootstrapFiles:
         - tests/phpstan/bootstrap.php
@@ -16,6 +13,3 @@ parameters:
     paths:
         - inc/
 #        - test/
-    ignoreErrors:
-        # Uses func_get_args()
-        - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
