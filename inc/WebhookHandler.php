@@ -33,7 +33,7 @@ interface WebhookHandler {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool;
+	public function permission_callback(): bool;
 
 	/**
 	 * Callback for incoming webhooks.

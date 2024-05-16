@@ -419,7 +419,7 @@ class Plugin {
 		 * @param \Required\Traduttore\WebhookHandler|null $handler The current webhook handler if found.
 		 * @param \WP_REST_Request                         $request The current request.
 		 */
-		return apply_filters( 'traduttore.incoming_webhook_permission_callback', (bool) $result, $handler, $request );
+		return apply_filters( 'traduttore.incoming_webhook_permission_callback', $result, $handler, $request );
 	}
 
 	/**

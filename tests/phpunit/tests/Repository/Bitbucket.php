@@ -88,7 +88,7 @@ class Bitbucket extends TestCase {
 	 * @param string $url     The request URL.
 	 * @return array{response: array{ code: int }, body: string}|false Response data.
 	 */
-	public function mock_repository_visibility_request( false $preempt, mixed $r, string $url ): array|false {
+	public function mock_repository_visibility_request( bool $preempt, mixed $r, string $url ): array|false {
 		if ( BitbucketRepository::API_BASE . '/repositories/wearerequired/traduttore' === $url ) {
 			++$this->http_request_count;
 

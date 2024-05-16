@@ -27,7 +27,7 @@ class GitLab extends Base {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool {
+	public function permission_callback(): bool {
 		$event_name = $this->request->get_header( 'x-gitlab-event' );
 
 		if ( 'Push Hook' !== $event_name ) {

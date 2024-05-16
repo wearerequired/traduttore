@@ -27,7 +27,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool {
+	public function permission_callback(): bool {
 		$event_name = $this->request->get_header( 'x-event-key' );
 
 		if ( 'repo:push' !== $event_name ) {

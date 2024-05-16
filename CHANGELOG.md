@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Require GlotPress 4.0. [#270]
-* Require at least PHP 7.4. [#270]
+* Require at least PHP 8.1. [#270]
 
 ### Fixed
 * Pass correct parameter for translation set in `traduttore.generate_zip_delay` filter. [#236]
