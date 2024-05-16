@@ -22,16 +22,11 @@ jobs:
           coverage: none
           tools: composer, cs2pr
 
-      - name: Get Composer home directory
-        id: composer-home
-        run: |
-          echo "::set-output name=dir::$(composer config home)"
-
       - name: Install PHP dependencies
         uses: ramsey/composer-install@v3
 
       - name: Lint PHP files
-        run: phpcs -q --report=checkstyle | cs2pr
+        run: composer run-script lint -- -q --report=checkstyle | cs2pr
 
       - name: Analyze PHP files
         run: composer run-script analyze
