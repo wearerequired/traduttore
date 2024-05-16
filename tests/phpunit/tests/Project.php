@@ -7,20 +7,16 @@ namespace Required\Traduttore\Tests;
 
 use DateTime;
 use DateTimeZone;
+use GP_Project;
 use Required\Traduttore\Project as TraduttoreProject;
 
 /**
  * Test cases for \Required\Traduttore\Project.
  */
 class Project extends TestCase {
-	/**
-	 * @var \Required\Traduttore\Tests\GP_Project
-	 */
-	protected $gp_project;
-	/**
-	 * @var \Required\Traduttore\Tests\TraduttoreProject
-	 */
-	protected $project;
+	protected GP_Project $gp_project;
+
+	protected TraduttoreProject $project;
 
 	public function setUp(): void {
 		parent::setUp();

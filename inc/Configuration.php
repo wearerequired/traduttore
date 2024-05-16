@@ -33,7 +33,7 @@ class Configuration {
 	 *
 	 * @phpstan-var ProjectConfig
 	 */
-	protected $config = [];
+	protected array $config = [];
 
 	/**
 	 * Class constructor.
@@ -84,7 +84,7 @@ class Configuration {
 	 * @phpstan-param T $key
 	 * @phpstan-return ProjectConfig[T] | null
 	 */
-	public function get_config_value( string $key ): string|array|null {
+	public function get_config_value( string $key ): mixed {
 		if ( isset( $this->config[ $key ] ) ) {
 			return $this->config[ $key ];
 		}

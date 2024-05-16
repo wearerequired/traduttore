@@ -16,10 +16,7 @@ use Required\Traduttore\Tests\TestCase;
  * @todo Mock shell execution
  */
 class Mercurial extends TestCase {
-	/**
-	 * @var \Required\Traduttore\Tests\Loader\Project
-	 */
-	protected $project;
+	protected Project $project;
 
 	public function setUp(): void {
 		parent::setUp();

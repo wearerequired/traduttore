@@ -14,20 +14,11 @@ use Required\Traduttore\Updater;
  * Test cases for \Required\Traduttore\Runner.
  */
 class Runner extends TestCase {
-	/**
-	 * @var \Required\Traduttore\Tests\Project
-	 */
-	protected $project;
+	protected Project $project;
 
-	/**
-	 * @var \Required\Traduttore\Tests\R
-	 */
-	protected $runner;
+	protected R $runner;
 
-	/**
-	 * @var \Required\Traduttore\Loader
-	 */
-	protected $loader;
+	protected Loader $loader;
 
 	public function setUp(): void {
 		parent::setUp();

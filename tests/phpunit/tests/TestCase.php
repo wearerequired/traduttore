@@ -7,6 +7,7 @@ namespace Required\Traduttore\Tests;
 
 use GP_UnitTest_Factory;
 use GP_UnitTestCase;
+use WP_Error;
 use WP_REST_Response;
 
 /**

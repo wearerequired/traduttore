@@ -12,10 +12,7 @@ use Required\Traduttore\Export as E;
  * Test cases for \Required\Traduttore\Export.
  */
 class Export extends TestCase {
-	/**
-	 * @var \GP_Translation_Set
-	 */
-	protected $translation_set;
+	protected \GP_Translation_Set $translation_set;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -149,7 +146,7 @@ class Export extends TestCase {
 	 * Modify the mapping of sources to translation entries.
 	 *
 	 * @param array<string, \Translation_Entry[]> $mapping The mapping of sources to translation entries.
-	 * @return array<string, \Required\Traduttore\Tests\Translation_Entry[]> The maybe modified mapping.
+	 * @return array<string, \Translation_Entry[]> The maybe modified mapping.
 	 */
 	public function filter_map_entries_to_source( array $mapping ): array {
 		$mapping['build.js'] = array_merge( $mapping['my-super-script.js'], $mapping['my-other-script.js'] );

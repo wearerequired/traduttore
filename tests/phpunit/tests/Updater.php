@@ -14,15 +14,9 @@ use Required\Traduttore\Updater as U;
  * Test cases for \Required\Traduttore\Updater.
  */
 class Updater extends TestCase {
-	/**
-	 * @var \Required\Traduttore\Tests\Project
-	 */
-	protected $project;
+	protected Project $project;
 
-	/**
-	 * @var \Required\Traduttore\Tests\U
-	 */
-	protected $updater;
+	protected U $updater;
 
 	public function setUp(): void {
 		parent::setUp();
