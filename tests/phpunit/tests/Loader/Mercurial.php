@@ -7,7 +7,6 @@
 
 namespace Required\Traduttore\Tests\Loader;
 
-use \GP_UnitTestCase;
 use \Required\Traduttore\Loader\Mercurial as MercurialLoader;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository\Bitbucket;

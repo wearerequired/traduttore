@@ -7,7 +7,6 @@
 
 namespace Required\Traduttore\Tests\Repository;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Repository\GitLab as GitLabRepository;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;

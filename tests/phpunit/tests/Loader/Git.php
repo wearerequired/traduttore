@@ -7,7 +7,6 @@
 
 namespace Required\Traduttore\Tests\Loader;
 
-use \GP_UnitTestCase;
 use \Required\Traduttore\Loader\Git as GitLoader;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository\GitHub;

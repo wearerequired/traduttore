@@ -7,7 +7,6 @@
 
 namespace Required\Traduttore\Tests\Repository;
 
-use \GP_UnitTestCase;
 use Required\Traduttore\Repository\GitHub as GitHubRepository;
 use \Required\Traduttore\Project;
 use Required\Traduttore\Repository;
