@@ -30,7 +30,9 @@ class Git extends Base {
 			chdir( $target );
 			exec( escapeshellcmd( 'git reset --hard -q' ), $output, $status );
 			exec( escapeshellcmd( 'git pull -q' ), $output, $status );
-			chdir( $current_dir );
+			if ( $current_dir ) {
+				chdir( $current_dir );
+			}
 
 			return 0 === $status ? $target : null;
 		}
@@ -87,6 +89,6 @@ class Git extends Base {
 		 * @param string                          $clone_url  The URL to clone a Git repository.
 		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
-		return apply_filters( 'traduttore.git_clone_url', $clone_url, $this->repository );
+		return apply_filters( 'traduttore.git_clone_url', (string) $clone_url, $this->repository );
 	}
 }

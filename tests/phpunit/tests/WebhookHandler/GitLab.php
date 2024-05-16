@@ -1,8 +1,6 @@
 <?php
 /**
- * Class GitLab
- *
- * @package Traduttore\Tests\WebhookHandler
+ * Class GitLab\WebhookHandler
  */
 
 namespace Required\Traduttore\Tests\WebhookHandler;
@@ -10,22 +8,22 @@ namespace Required\Traduttore\Tests\WebhookHandler;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Tests\TestCase;
-use \WP_REST_Request;
+use WP_REST_Request;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitLab.
  */
 class GitLab extends TestCase {
 	/**
-	 * @var Project
+	 * @var \Required\Traduttore\Project
 	 */
 	protected $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'source_url_template' => 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%',
@@ -82,7 +80,7 @@ class GitLab extends TestCase {
 		$request->add_header( 'x-gitlab-token', 'traduttore-test' );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'Not the default branch' ], $response->get_data() );
 	}
 
@@ -127,7 +125,7 @@ class GitLab extends TestCase {
 		$request->add_header( 'x-gitlab-token', 'traduttore-test' );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITLAB, $this->project->get_repository_type() );
@@ -161,7 +159,7 @@ class GitLab extends TestCase {
 		$request->add_header( 'x-gitlab-token', $secret );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( [ 'result' => 'OK' ], $response->get_data() );
 		$this->assertSame( Repository::VCS_TYPE_GIT, $this->project->get_repository_vcs_type() );
 		$this->assertSame( Repository::TYPE_GITLAB, $this->project->get_repository_type() );

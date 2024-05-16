@@ -22,7 +22,7 @@ class Runner {
 	 *
 	 * @var \Required\Traduttore\Loader VCS loader.
 	 */
-	protected $loader;
+	protected Loader $loader;
 
 	/**
 	 * Updater instance.
@@ -31,7 +31,7 @@ class Runner {
 	 *
 	 * @var \Required\Traduttore\Updater Translation updater.
 	 */
-	protected $updater;
+	protected Updater $updater;
 
 	/**
 	 * Runner constructor.
@@ -63,6 +63,10 @@ class Runner {
 			if ( ! \WP_Filesystem() ) {
 				return false;
 			}
+		}
+
+		if ( ! $wp_filesystem ) {
+			return false;
 		}
 
 		return $wp_filesystem->rmdir( $this->loader->get_local_path(), true );

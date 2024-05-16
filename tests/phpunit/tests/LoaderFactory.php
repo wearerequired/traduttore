@@ -1,16 +1,16 @@
 <?php
 /**
  * Class LoaderFactory
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use Required\Traduttore\Loader\{Git, Mercurial};
-use \Required\Traduttore\Project;
-use \Required\Traduttore\Repository;
-use \Required\Traduttore\LoaderFactory as Factory;
+use Required\Traduttore\Loader\Git;
+use Required\Traduttore\Loader\Mercurial;
+
+use Required\Traduttore\Project;
+use Required\Traduttore\Repository;
+use Required\Traduttore\LoaderFactory as Factory;
 use Required\Traduttore\Repository\Bitbucket;
 use Required\Traduttore\Repository\GitHub;
 use Required\Traduttore\Repository\GitLab;
@@ -22,7 +22,7 @@ class LoaderFactory extends TestCase {
 	public function test_get_mercurial_loader(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -39,7 +39,7 @@ class LoaderFactory extends TestCase {
 	public function test_get_git_loader_for_bitbucket_repository(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -54,7 +54,7 @@ class LoaderFactory extends TestCase {
 	public function test_get_git_loader_for_github_repository(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -69,7 +69,7 @@ class LoaderFactory extends TestCase {
 	public function test_get_git_loader_for_gitlab_repository(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]

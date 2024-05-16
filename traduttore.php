@@ -11,6 +11,8 @@
  * Text Domain: traduttore
  * Domain Path: /languages
  * Update URI:  false
+ * Requires PHP: 8.1
+ * Requires Plugins: glotpress
  *
  * Copyright (c) 2017-2022 required (email: info@required.ch)
  *

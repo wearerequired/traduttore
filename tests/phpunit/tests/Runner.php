@@ -1,41 +1,30 @@
 <?php
 /**
  * Class Runner
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use \Required\Traduttore\Project;
-use \Required\Traduttore\Updater;
-use \Required\Traduttore\Runner as R;
-use \Required\Traduttore\Loader\Git as Loader;
+use Required\Traduttore\Loader\Git as Loader;
+use Required\Traduttore\Project;
+use Required\Traduttore\Runner as R;
+use Required\Traduttore\Updater;
 
 /**
  * Test cases for \Required\Traduttore\Runner.
  */
 class Runner extends TestCase {
-	/**
-	 * @var Project
-	 */
-	protected $project;
+	protected Project $project;
 
-	/**
-	 * @var R
-	 */
-	protected $runner;
+	protected R $runner;
 
-	/**
-	 * @var \Required\Traduttore\Loader
-	 */
-	protected $loader;
+	protected Loader $loader;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'slug'                => 'sample-project',
@@ -63,7 +52,7 @@ class Runner extends TestCase {
 
 		$this->assertFileExists( $this->loader->get_local_path() . '/foo.txt' );
 		$this->assertTrue( $this->runner->delete_local_repository() );
-		$this->assertFileNotExists( $this->loader->get_local_path() . '/foo.txt' );
+		$this->assertFileDoesNotExist( $this->loader->get_local_path() . '/foo.txt' );
 	}
 
 	public function test_delete_local_repository_without_filesystem(): void {
@@ -138,7 +127,7 @@ class Runner extends TestCase {
 
 		$loader = $this->createMock( Loader::class );
 		$loader->expects( $this->once() )->method( 'get_local_path' )->willReturn( $test_path );
-		$loader->expects( $this->never() )->method( 'download' )->willReturn( false );
+		$loader->expects( $this->never() )->method( 'download' )->willReturn( null );
 
 		mkdir( $loader->get_local_path() );
 

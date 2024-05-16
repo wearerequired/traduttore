@@ -23,8 +23,10 @@ abstract class Base implements WebhookHandler {
 	 * @since 3.0.0
 	 *
 	 * @var \WP_REST_Request The current REST request.
+	 *
+	 * @phpstan-var \WP_REST_Request<array{}>
 	 */
-	protected $request;
+	protected WP_REST_Request $request;
 
 	/**
 	 * Class constructor.
@@ -32,6 +34,8 @@ abstract class Base implements WebhookHandler {
 	 * @since 3.0.0
 	 *
 	 * @param \WP_REST_Request $request Request object.
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 */
 	public function __construct( WP_REST_Request $request ) {
 		$this->request = $request;
@@ -75,7 +79,7 @@ abstract class Base implements WebhookHandler {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string                              $secret  Webhook sync secret.
+		 * @param string|null                         $secret  Webhook sync secret.
 		 * @param \Required\Traduttore\WebhookHandler $handler The current webhook handler instance.
 		 * @param \Required\Traduttore\Project|null   $project The current project if passed through.
 		 */

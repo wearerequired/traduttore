@@ -1,12 +1,11 @@
 <?php
 /**
  * Class TestCase
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
+use GP_UnitTest_Factory;
 use GP_UnitTestCase;
 use WP_Error;
 use WP_REST_Response;
@@ -16,23 +15,33 @@ use WP_REST_Response;
  */
 class TestCase extends GP_UnitTestCase {
 	/**
-	 * @see WP_Test_REST_TestCase
+	 * Fetches the factory object for generating WordPress fixtures.
 	 *
-	 * @param mixed                     $code
-	 * @param WP_REST_Response|WP_Error $response
-	 * @param mixed                     $status
+	 * @return \GP_UnitTest_Factory The fixture factory.
 	 */
-	protected function assertErrorResponse( $code, $response, $status = null ): void {
+	protected static function factory(): GP_UnitTest_Factory {
+		static $factory = null;
+		if ( ! $factory ) {
+			$factory = new GP_UnitTest_Factory();
+		}
+		return $factory;
+	}
+
+	/**
+	 * @see WP_Test_REST_TestCase
+	 */
+	protected function assertErrorResponse( mixed $code, WP_REST_Response|WP_Error $response, mixed $status = null ): void {
 		if ( $response instanceof WP_REST_Response ) {
 			$response = $response->as_error();
 		}
 
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( $code, $response->get_error_code() );
+		$this->assertSame( $code, $response->get_error_code() );
 		if ( null !== $status ) {
 			$data = $response->get_error_data();
+			$this->assertIsArray( $data );
 			$this->assertArrayHasKey( 'status', $data );
-			$this->assertEquals( $status, $data['status'] );
+			$this->assertSame( $status, $data['status'] );
 		}
 	}
 }
