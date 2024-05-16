@@ -67,11 +67,9 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	}
 
 	/**
-	 * @Given a WP install(ation) with the Traduttore plugin
+	 * @Given Traduttore being active
 	 */
-	public function given_a_wp_installation_with_the_traduttore_plugin(): void {
-		$this->install_wp();
-
+	public function given_traduttore_being_active(): void {
 		// Symlink the current project folder into the WP folder as a plugin.
 		$project_dir = realpath( self::get_vendor_dir() . '/../' );
 		$plugin_dir  = $this->variables['RUN_DIR'] . '/wp-content/plugins';
