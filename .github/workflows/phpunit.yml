@@ -49,11 +49,6 @@ jobs:
             wordpress: 'nightly'
             glotpress: 'develop'
             experimental: true
-          - os: ubuntu-latest
-            php: '8.4'
-            wordpress: 'nightly'
-            glotpress: 'develop'
-            experimental: true
 
     steps:
       - name: Check out Git repository
