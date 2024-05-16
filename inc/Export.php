@@ -161,25 +161,29 @@ class Export {
 
 		foreach ( $entries as $entry ) {
 			// Find all unique sources this translation originates from.
-			$sources = array_map(
-				function ( $reference ) {
-					$parts = explode( ':', $reference );
-					$file  = $parts[0];
+			if ( ! empty( $entry->references ) ) {
+				$sources = array_map(
+					function ( $reference ) {
+						$parts = explode( ':', $reference );
+						$file  = $parts[0];
 
-					if ( substr( $file, -7 ) === '.min.js' ) {
-						return substr( $file, 0, -7 ) . '.js';
-					}
+						if ( substr( $file, -7 ) === '.min.js' ) {
+							return substr( $file, 0, -7 ) . '.js';
+						}
 
-					if ( substr( $file, -3 ) === '.js' ) {
-						return $file;
-					}
+						if ( substr( $file, -3 ) === '.js' ) {
+							return $file;
+						}
 
-					return 'php';
-				},
-				$entry->references
-			);
+						return 'php';
+					},
+					$entry->references
+				);
 
-			$sources = array_unique( $sources );
+				$sources = array_unique( $sources );
+			} else {
+				$sources = [ 'php' ];
+			}
 
 			foreach ( $sources as $source ) {
 				$mapping[ $source ][] = $entry;
