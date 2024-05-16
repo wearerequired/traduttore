@@ -44,8 +44,27 @@ class GitHub extends Base {
 			return false;
 		}
 
-		$params  = $this->request->get_params();
-		$locator = new ProjectLocator( $params['repository']['html_url'] ?? null );
+		$params       = $this->request->get_params();
+		$content_type = $this->request->get_content_type();
+
+		// See https://developer.github.com/webhooks/creating/#content-type.
+		if ( ! empty( $content_type ) && 'application/x-www-form-urlencoded' === $content_type['value'] ) {
+			$params = json_decode( $params['payload'], true );
+		}
+
+		/**
+		 * Request params.
+		 *
+		 * @var array{repository: array{ default_branch?: string, html_url?: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
+		 */
+
+		$repository = $params['repository']['html_url'] ?? null;
+
+		if ( ! $repository ) {
+			return false;
+		}
+
+		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 
 		$secret = $this->get_secret( $project );

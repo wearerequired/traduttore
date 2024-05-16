@@ -46,8 +46,9 @@ class Bitbucket extends TestCase {
 
 	public function test_invalid_signature(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->set_body_params( [] );
-		$signature = 'sha256=' . hash_hmac( 'sha256', (string) wp_json_encode( $request->get_params() ), 'foo' );
+		$request->add_header( 'Content-Type', 'application/json' );
+		$request->set_body( (string) wp_json_encode( [] ) );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'foo' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -57,20 +58,23 @@ class Bitbucket extends TestCase {
 
 	public function test_missing_signature_is_valid(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->set_body_params(
-			[
-				'ref'        => 'refs/heads/master',
-				'repository' => [
-					'links'      => [
-						'html' => [
-							'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
+		$request->add_header( 'Content-Type', 'application/json' );
+		$request->set_body(
+			(string) wp_json_encode(
+				[
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'links'      => [
+							'html' => [
+								'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
+							],
 						],
+						'full_name'  => 'wearerequired/not-traduttore',
+						'scm'        => 'git',
+						'is_private' => false,
 					],
-					'full_name'  => 'wearerequired/not-traduttore',
-					'scm'        => 'git',
-					'is_private' => false,
-				],
-			]
+				]
+			)
 		);
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$response = rest_get_server()->dispatch( $request );
@@ -80,22 +84,25 @@ class Bitbucket extends TestCase {
 
 	public function test_invalid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->set_body_params(
-			[
-				'ref'        => 'refs/heads/master',
-				'repository' => [
-					'links'      => [
-						'html' => [
-							'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
+		$request->add_header( 'Content-Type', 'application/json' );
+		$request->set_body(
+			(string) wp_json_encode(
+				[
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'links'      => [
+							'html' => [
+								'href' => 'https://bitbucket.org/wearerequired/not-traduttore',
+							],
 						],
+						'full_name'  => 'wearerequired/not-traduttore',
+						'scm'        => 'git',
+						'is_private' => false,
 					],
-					'full_name'  => 'wearerequired/not-traduttore',
-					'scm'        => 'git',
-					'is_private' => false,
-				],
-			]
+				]
+			)
 		);
-		$signature = 'sha256=' . hash_hmac( 'sha256', (string) wp_json_encode( $request->get_params() ), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -105,22 +112,25 @@ class Bitbucket extends TestCase {
 
 	public function test_valid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->set_body_params(
-			[
-				'ref'        => 'refs/heads/master',
-				'repository' => [
-					'links'      => [
-						'html' => [
-							'href' => 'https://bitbucket.org/wearerequired/traduttore',
+		$request->add_header( 'Content-Type', 'application/json' );
+		$request->set_body(
+			(string) wp_json_encode(
+				[
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'links'      => [
+							'html' => [
+								'href' => 'https://bitbucket.org/wearerequired/traduttore',
+							],
 						],
+						'full_name'  => 'wearerequired/traduttore',
+						'scm'        => 'git',
+						'is_private' => false,
 					],
-					'full_name'  => 'wearerequired/traduttore',
-					'scm'        => 'git',
-					'is_private' => false,
-				],
-			]
+				]
+			)
 		);
-		$signature = 'sha256=' . hash_hmac( 'sha256', (string) wp_json_encode( $request->get_params() ), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
@@ -140,22 +150,25 @@ class Bitbucket extends TestCase {
 		$this->project->set_repository_vcs_type( Repository::VCS_TYPE_HG );
 
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
-		$request->set_body_params(
-			[
-				'ref'        => 'refs/heads/master',
-				'repository' => [
-					'links'      => [
-						'html' => [
-							'href' => 'https://bitbucket.org/wearerequired/traduttore',
+		$request->add_header( 'Content-Type', 'application/json' );
+		$request->set_body(
+			(string) wp_json_encode(
+				[
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'links'      => [
+							'html' => [
+								'href' => 'https://bitbucket.org/wearerequired/traduttore',
+							],
 						],
+						'full_name'  => 'wearerequired/traduttore',
+						'scm'        => 'git',
+						'is_private' => false,
 					],
-					'full_name'  => 'wearerequired/traduttore',
-					'scm'        => 'git',
-					'is_private' => false,
-				],
-			]
+				]
+			)
 		);
-		$signature = 'sha256=' . hash_hmac( 'sha256', (string) wp_json_encode( $request->get_params() ), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-event-key', 'repo:push' );
 		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );

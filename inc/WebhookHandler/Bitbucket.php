@@ -34,9 +34,15 @@ class Bitbucket extends Base {
 			return false;
 		}
 
-		$token   = $this->request->get_header( 'x-hub-signature-256' );
-		$params  = $this->request->get_params();
-		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] ?? null );
+		$token      = $this->request->get_header( 'x-hub-signature-256' );
+		$params     = $this->request->get_params();
+		$repository = $params['repository']['links']['html']['href'] ?? null;
+
+		if ( ! $repository ) {
+			return false;
+		}
+
+		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 		$secret  = $this->get_secret( $project );
 
@@ -45,7 +51,7 @@ class Bitbucket extends Base {
 				return false;
 			}
 
-			$payload_signature = 'sha256=' . hash_hmac( 'sha256', (string) wp_json_encode( $params ), $secret );
+			$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), $secret );
 
 			return hash_equals( $token, $payload_signature );
 		}

@@ -141,7 +141,7 @@ class GitHub extends TestCase {
 		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
-		$this->assertErrorResponse( 400, $response );
+		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
 	}
 
 	public function test_valid_project(): void {

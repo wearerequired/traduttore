@@ -40,8 +40,14 @@ class GitLab extends Base {
 			return false;
 		}
 
-		$params  = $this->request->get_params();
-		$locator = new ProjectLocator( $params['project']['homepage'] ?? null );
+		$params     = $this->request->get_params();
+		$repository = $params['project']['homepage'] ?? null;
+
+		if ( ! $repository ) {
+			return false;
+		}
+
+		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 
 		$secret = $this->get_secret( $project );

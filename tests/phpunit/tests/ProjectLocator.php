@@ -56,12 +56,6 @@ class ProjectLocator extends TestCase {
 		$this->assertNull( $locator->get_project() );
 	}
 
-	public function test_false(): void {
-		$locator = new Locator( false );
-
-		$this->assertNull( $locator->get_project() );
-	}
-
 	public function test_invalid_project_id(): void {
 		$locator = new Locator( 0 );
 
