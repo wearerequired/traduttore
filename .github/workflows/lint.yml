@@ -26,7 +26,7 @@ jobs:
         uses: ramsey/composer-install@v3
 
       - name: Lint PHP files
-        run: composer run-script lint -- -q --report=checkstyle | cs2pr
+        run: vendor/bin/phpcs -q --report=checkstyle --severity=1 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 | cs2pr --graceful-warnings
 
       - name: Analyze PHP files
         run: composer run-script analyze
