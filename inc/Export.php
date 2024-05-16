@@ -76,7 +76,7 @@ class Export {
 		/**
 		 * Filters the status of the entries to export.
 		 *
-		 * @since 3.2.1
+		 * @since 4.0.0
 		 *
 		 * @param string                       $export_status   The status of the entries to export. Default is 'current'.
 		 * @param \GP_Translation_Set          $translation_set Translation set the language pack is for.
