@@ -1,8 +1,6 @@
 <?php
 /**
  * PHPUnit bootstrap file
- *
- * @package Required\Traduttore
  */
 
 $_tests_dir    = getenv( 'WP_TESTS_DIR' );
@@ -32,7 +30,7 @@ require_once $_tests_dir . '/includes/functions.php';
 
 tests_add_filter(
 	'muplugins_loaded',
-	function() use ( $_gp_tests_dir ) {
+	function () use ( $_gp_tests_dir ): void {
 		require_once $_gp_tests_dir . '/includes/loader.php';
 
 		require dirname( __DIR__, 2 ) . '/traduttore.php';

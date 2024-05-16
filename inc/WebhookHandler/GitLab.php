@@ -27,7 +27,7 @@ class GitLab extends Base {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool {
+	public function permission_callback(): bool {
 		$event_name = $this->request->get_header( 'x-gitlab-event' );
 
 		if ( 'Push Hook' !== $event_name ) {
@@ -40,11 +40,21 @@ class GitLab extends Base {
 			return false;
 		}
 
-		$params  = $this->request->get_params();
-		$locator = new ProjectLocator( $params['project']['homepage'] ?? null );
+		$params     = $this->request->get_params();
+		$repository = $params['project']['homepage'] ?? null;
+
+		if ( ! $repository ) {
+			return false;
+		}
+
+		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 
 		$secret = $this->get_secret( $project );
+
+		if ( ! $secret ) {
+			return false;
+		}
 
 		return hash_equals( $token, $secret );
 	}
@@ -56,7 +66,7 @@ class GitLab extends Base {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback() {
+	public function callback(): \WP_Error|\WP_REST_Response {
 		$params = $this->request->get_params();
 
 		// We only care about the default branch but don't want to send an error still.

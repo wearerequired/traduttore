@@ -1,8 +1,5 @@
-includes:
-    - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-# DREAM    level: max
-    level: 5
+    level: 9
     inferPrivatePropertyTypeFromConstructor: true
     bootstrapFiles:
         - tests/phpstan/bootstrap.php
@@ -10,12 +7,11 @@ parameters:
         - vendor/wordpress-plugin/glotpress/gp-includes/routes/_main.php
     scanFiles:
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
+        - vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
     scanDirectories:
+        - tests/phpstan/stubs/
         - vendor/wordpress-plugin/glotpress/gp-includes/
         - vendor/wordpress-plugin/glotpress/locales/
     paths:
         - inc/
-#        - test/
-    ignoreErrors:
-        # Uses func_get_args()
-        - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
+        - tests/phpunit

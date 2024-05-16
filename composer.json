@@ -35,22 +35,27 @@
     "issues": "https://github.com/wearerequired/traduttore/issues"
   },
   "require": {
-    "php": ">=7.2",
+    "php": ">=8.1",
     "ext-json": "*",
     "ext-zip": "*",
     "wearerequired/traduttore-registry": "^2.0"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-    "php-stubs/wp-cli-stubs": "^2.4",
-    "phpunit/phpunit": "^7.5.20",
-    "szepeviktor/phpstan-wordpress": "^1.1",
-    "wearerequired/coding-standards": "^3.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
+    "ergebnis/composer-normalize": "^2.42",
+    "php-stubs/wordpress-tests-stubs": "^6.5",
+    "php-stubs/wp-cli-stubs": "^2.10",
+    "phpstan/extension-installer": "^1.3",
+    "phpstan/phpstan-deprecation-rules": "^1.2",
+    "phpstan/phpstan-phpunit": "^1.4",
+    "swissspidy/phpstan-no-private": "^0.2.0",
+    "szepeviktor/phpstan-wordpress": "^1.3",
+    "wearerequired/coding-standards": "^6.0",
     "wp-cli/extension-command": "^2.0",
     "wp-cli/rewrite-command": "^2.0",
-    "wp-cli/wp-cli-tests": "^3.0.11",
-    "wpackagist-plugin/glotpress": "^3.0.0",
-    "yoast/phpunit-polyfills": "^1.0"
+    "wp-cli/wp-cli-tests": "^4.2.9",
+    "wpackagist-plugin/glotpress": "^4.0.0",
+    "yoast/phpunit-polyfills": "^1.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -73,8 +78,10 @@
   },
   "config": {
     "allow-plugins": {
+      "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "composer/installers": true
+      "ergebnis/composer-normalize": true,
+      "phpstan/extension-installer": true
     },
     "process-timeout": 7200,
     "sort-packages": true

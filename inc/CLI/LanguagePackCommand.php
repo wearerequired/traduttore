@@ -96,12 +96,14 @@ class LanguagePackCommand extends WP_CLI_Command {
 
 			$zip_provider = new ZipProvider( $set );
 
+			$last_updated = $zip_provider->get_last_build_time();
+
 			$language_packs[] = [
 				'Locale'       => $locale->wp_locale,
 				'English Name' => $locale->english_name,
 				'Native Name'  => $locale->native_name,
 				'Completed'    => sprintf( '%s%%', $set->percent_translated() ),
-				'Updated'      => $zip_provider->get_last_build_time()->format( DATE_ATOM ),
+				'Updated'      => $last_updated ? $last_updated->format( DATE_ATOM ) : 'n/a',
 				'Package'      => file_exists( $zip_provider->get_zip_path() ) ? $zip_provider->get_zip_url() : 'n/a',
 			];
 		}
@@ -160,8 +162,8 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 * @param string[] $assoc_args Associative args.
 	 */
 	public function build( array $args, array $assoc_args ): void {
-		$all      = get_flag_value( $assoc_args, 'all', false );
-		$force    = get_flag_value( $assoc_args, 'force', false );
+		$all      = (bool) get_flag_value( $assoc_args, 'all', false );
+		$force    = (bool) get_flag_value( $assoc_args, 'force', false );
 		$projects = $this->check_optional_args_and_all( $args, $all );
 
 		if ( ! $projects ) {

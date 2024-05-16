@@ -21,18 +21,18 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @var \Required\Traduttore\Project Project instance.
+	 * @var \Required\Traduttore\Project|null Project instance.
 	 */
-	protected $project;
+	protected ?Project $project;
 
 	/**
 	 * ProjectLocator constructor.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
+	 * @param int|string|\Required\Traduttore\Project|\GP_Project $project Possible GlotPress project ID or path or source code repository path.
 	 */
-	public function __construct( $project ) {
+	public function __construct( int|string|Project|\GP_Project $project ) {
 		$this->project = $this->find_project( $project );
 	}
 
@@ -52,10 +52,10 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
+	 * @param int|string|\Required\Traduttore\Project|\GP_Project $project Possible GlotPress project ID or path or source code repository path.
 	 * @return \Required\Traduttore\Project Project instance.
 	 */
-	protected function find_project( $project ): ?Project {
+	protected function find_project( int|string|Project|\GP_Project $project ): ?Project {
 		if ( ! $project ) {
 			return null;
 		}
@@ -75,15 +75,15 @@ class ProjectLocator {
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_repository_name( $project );
+			$found = $this->find_by_repository_name( (string) $project );
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_repository_url( $project );
+			$found = $this->find_by_repository_url( (string) $project );
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_source_url_template( $project );
+			$found = $this->find_by_source_url_template( (string) $project );
 		}
 
 		return $found ? new Project( $found ) : null;

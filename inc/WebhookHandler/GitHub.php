@@ -27,7 +27,7 @@ class GitHub extends Base {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool {
+	public function permission_callback(): bool {
 		$event_name = $this->request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {
@@ -38,19 +38,42 @@ class GitHub extends Base {
 			return false;
 		}
 
-		$token = $this->request->get_header( 'x-hub-signature' );
+		$token = $this->request->get_header( 'x-hub-signature-256' );
 
 		if ( ! $token ) {
 			return false;
 		}
 
-		$params  = $this->request->get_params();
-		$locator = new ProjectLocator( $params['repository']['html_url'] ?? null );
+		$params       = $this->request->get_params();
+		$content_type = $this->request->get_content_type();
+
+		// See https://developer.github.com/webhooks/creating/#content-type.
+		if ( ! empty( $content_type ) && 'application/x-www-form-urlencoded' === $content_type['value'] ) {
+			$params = json_decode( $params['payload'], true );
+		}
+
+		/**
+		 * Request params.
+		 *
+		 * @var array{repository: array{ default_branch?: string, html_url?: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
+		 */
+
+		$repository = $params['repository']['html_url'] ?? null;
+
+		if ( ! $repository ) {
+			return false;
+		}
+
+		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 
 		$secret = $this->get_secret( $project );
 
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), $secret );
+		if ( ! $secret ) {
+			return false;
+		}
+
+		$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), $secret );
 
 		return hash_equals( $token, $payload_signature );
 	}
@@ -62,7 +85,7 @@ class GitHub extends Base {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback() {
+	public function callback(): \WP_Error|\WP_REST_Response {
 		$event_name = $this->request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {
@@ -71,10 +94,17 @@ class GitHub extends Base {
 
 		$params       = $this->request->get_params();
 		$content_type = $this->request->get_content_type();
+
 		// See https://developer.github.com/webhooks/creating/#content-type.
 		if ( ! empty( $content_type ) && 'application/x-www-form-urlencoded' === $content_type['value'] ) {
 			$params = json_decode( $params['payload'], true );
 		}
+
+		/**
+		 * Request params.
+		 *
+		 * @var array{repository: array{ default_branch?: string, html_url: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
+		 */
 
 		if ( ! isset( $params['repository']['default_branch'] ) ) {
 			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );

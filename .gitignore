@@ -7,6 +7,7 @@
 
 # PHPUnit
 /coverage*.xml
+.phpunit.result.cache
 
 # Behat
 *.log

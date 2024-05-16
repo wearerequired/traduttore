@@ -27,16 +27,22 @@ class Bitbucket extends Base {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool {
+	public function permission_callback(): bool {
 		$event_name = $this->request->get_header( 'x-event-key' );
 
 		if ( 'repo:push' !== $event_name ) {
 			return false;
 		}
 
-		$token   = $this->request->get_header( 'x-hub-signature' );
-		$params  = $this->request->get_params();
-		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] ?? null );
+		$token      = $this->request->get_header( 'x-hub-signature-256' );
+		$params     = $this->request->get_params();
+		$repository = $params['repository']['links']['html']['href'] ?? null;
+
+		if ( ! $repository ) {
+			return false;
+		}
+
+		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 		$secret  = $this->get_secret( $project );
 
@@ -60,7 +66,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback() {
+	public function callback(): \WP_Error|\WP_REST_Response {
 		$params = $this->request->get_params();
 
 		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] );

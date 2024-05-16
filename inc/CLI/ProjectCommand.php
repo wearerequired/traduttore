@@ -88,8 +88,8 @@ class ProjectCommand extends WP_CLI_Command {
 		$repository_visibility = $project->get_repository_visibility() ?? '(unknown)';
 		$repository_ssh_url    = $repository ? $repository->get_ssh_url() : '(unknown)';
 		$repository_https_url  = $repository ? $repository->get_https_url() : '(unknown)';
-		$repository_instance   = $repository ? \get_class( $repository ) : '(unknown)';
-		$loader_instance       = $loader ? \get_class( $loader ) : '(unknown)';
+		$repository_instance   = $repository ? $repository::class : '(unknown)';
+		$loader_instance       = $loader ? $loader::class : '(unknown)';
 
 		if ( get_flag_value( $assoc_args, 'format' ) === 'json' ) {
 			$info = [
@@ -110,7 +110,7 @@ class ProjectCommand extends WP_CLI_Command {
 				'loader_instance'       => $loader_instance,
 			];
 
-			WP_CLI::line( json_encode( $info ) );
+			WP_CLI::line( (string) json_encode( $info ) );
 		} else {
 			WP_CLI::line( "Project ID:\t\t" . $project_id );
 			WP_CLI::line( "Project name:\t\t" . $project_name );
@@ -166,8 +166,8 @@ class ProjectCommand extends WP_CLI_Command {
 	 * @param string[] $assoc_args Associative args.
 	 */
 	public function update( array $args, array $assoc_args ): void {
-		$delete  = get_flag_value( $assoc_args, 'delete', false );
-		$cached  = get_flag_value( $assoc_args, 'cached', false );
+		$delete  = (bool) get_flag_value( $assoc_args, 'delete', false );
+		$cached  = (bool) get_flag_value( $assoc_args, 'cached', false );
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 
@@ -205,5 +205,4 @@ class ProjectCommand extends WP_CLI_Command {
 
 		WP_CLI::warning( sprintf( 'Could not update translations for project (ID: %d)!', $project->get_id() ) );
 	}
-
 }
