@@ -166,8 +166,8 @@ class ProjectCommand extends WP_CLI_Command {
 	 * @param string[] $assoc_args Associative args.
 	 */
 	public function update( array $args, array $assoc_args ): void {
-		$delete  = get_flag_value( $assoc_args, 'delete', false );
-		$cached  = get_flag_value( $assoc_args, 'cached', false );
+		$delete  = (bool) get_flag_value( $assoc_args, 'delete', false );
+		$cached  = (bool) get_flag_value( $assoc_args, 'cached', false );
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
 

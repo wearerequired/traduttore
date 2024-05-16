@@ -9,7 +9,6 @@ namespace Required\Traduttore;
 
 use GP;
 use GP_Project;
-use http\Exception\InvalidArgumentException;
 
 /**
  * Helper class to find a GlotPress project based on path, ID, or GitHub repository URL.
@@ -22,7 +21,7 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @var \Required\Traduttore\Project Project instance.
+	 * @var \Required\Traduttore\Project|null Project instance.
 	 */
 	protected $project;
 
@@ -31,16 +30,10 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
+	 * @param int|string|Project|GP_Project $project Possible GlotPress project ID or path or source code repository path.
 	 */
 	public function __construct( $project ) {
-		$found = $this->find_project( $project );
-
-		if ( ! $found ) {
-			throw new InvalidArgumentException( __( 'Project not found', 'traduttore' ) );
-		}
-
-		$this->project = $found;
+		$this->project = $this->find_project( $project );
 	}
 
 	/**
@@ -59,7 +52,7 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param mixed $project Possible GlotPress project ID or path or source code repository path.
+	 * @param int|string|Project|GP_Project $project Possible GlotPress project ID or path or source code repository path.
 	 * @return \Required\Traduttore\Project Project instance.
 	 */
 	protected function find_project( $project ): ?Project {
@@ -82,15 +75,15 @@ class ProjectLocator {
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_repository_name( $project );
+			$found = $this->find_by_repository_name( (string) $project );
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_repository_url( $project );
+			$found = $this->find_by_repository_url( (string) $project );
 		}
 
 		if ( ! $found ) {
-			$found = $this->find_by_source_url_template( $project );
+			$found = $this->find_by_source_url_template( (string) $project );
 		}
 
 		return $found ? new Project( $found ) : null;

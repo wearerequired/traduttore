@@ -54,7 +54,7 @@ class GitHub extends Base {
 			return false;
 		}
 
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', (string) wp_json_encode( $params ), $secret );
+		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), $secret );
 
 		return hash_equals( $token, $payload_signature );
 	}
@@ -75,10 +75,17 @@ class GitHub extends Base {
 
 		$params       = $this->request->get_params();
 		$content_type = $this->request->get_content_type();
+
 		// See https://developer.github.com/webhooks/creating/#content-type.
 		if ( ! empty( $content_type ) && 'application/x-www-form-urlencoded' === $content_type['value'] ) {
 			$params = json_decode( $params['payload'], true );
 		}
+
+		/**
+		 * Request params.
+		 *
+		 * @var array{repository: array{ default_branch?: string, html_url: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
+		 */
 
 		if ( ! isset( $params['repository']['default_branch'] ) ) {
 			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );

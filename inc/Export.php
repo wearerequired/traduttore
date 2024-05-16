@@ -10,7 +10,7 @@ namespace Required\Traduttore;
 use GP;
 use GP_Locales;
 use GP_Translation_Set;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Export strings to translation files in PO, MO, and JSON format.
@@ -228,7 +228,7 @@ class Export {
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
 			// Add comment with file reference for debugging.
-			$contents_decoded          = json_decode( $contents );
+			$contents_decoded          = (object) json_decode( $contents );
 			$contents_decoded->comment = [ 'reference' => $file ];
 			$contents                  = (string) wp_json_encode( $contents_decoded );
 

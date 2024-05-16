@@ -12,7 +12,7 @@ use DateTimeZone;
 use GP;
 use GP_Locales;
 use GP_Translation_Set;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use ZipArchive;
 
 /**
@@ -265,6 +265,11 @@ class ZipProvider {
 	 * @return \DateTime Last build time.
 	 */
 	public function get_last_build_time(): ?DateTime {
+		/**
+		 * Build time.
+		 *
+		 * @var string|false $meta
+		 */
 		$meta = gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
 
 		return $meta ? new DateTime( $meta, new DateTimeZone( 'UTC' ) ) : null;

@@ -12,7 +12,7 @@ namespace Required\Traduttore;
  *
  * @since 3.0.0
  *
- * @phpstan-type ProjectConfig array{ mergeWith?: string, textDomain?: string,exclude?: string }
+ * @phpstan-type ProjectConfig array{ mergeWith?: string, textDomain?: string,exclude?: string[] }
  */
 class Configuration {
 	/**
@@ -29,9 +29,9 @@ class Configuration {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var array Repository configuration.
-	 *
 	 * @phpstan-var ProjectConfig
+	 *
+	 * @var array Repository configuration.
 	 */
 	protected $config = [];
 
@@ -64,7 +64,9 @@ class Configuration {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return array<string,mixed> Repository configuration.
+	 * @phpstan-return ProjectConfig
+	 *
+	 * @return array<string,string|string[]> Repository configuration.
 	 */
 	public function get_config(): array {
 		return $this->config;
@@ -75,8 +77,12 @@ class Configuration {
 	 *
 	 * @since 3.0.0
 	 *
+	 * @phpstan-template T of key-of<ProjectConfig>
+	 * @phpstan-param T $key
+	 * @phpstan-return ProjectConfig[T] | null
+	 *
 	 * @param string $key Config key.
-	 * @return mixed|null Config value.
+	 * @return string|string[]|null Config value.
 	 */
 	public function get_config_value( string $key ) {
 		if ( isset( $this->config[ $key ] ) ) {
@@ -91,15 +97,21 @@ class Configuration {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @return array<string,array<string,string>> Configuration data if found.
-	 *
 	 * @phpstan-return ProjectConfig
+	 *
+	 * @return array<string,string|string[]> Configuration data if found.
 	 */
 	protected function load_config(): array {
 		$config_file   = trailingslashit( $this->path ) . 'traduttore.json';
 		$composer_file = trailingslashit( $this->path ) . 'composer.json';
 
 		if ( file_exists( $config_file ) ) {
+			/**
+			 * Traduttore configuration.
+			 *
+			 * @phpstan-var ProjectConfig $config
+			 * @var array<string, string | string[]> $config
+			 */
 			$config = json_decode( (string) file_get_contents( $config_file ), true );
 
 			if ( $config ) {
@@ -108,6 +120,12 @@ class Configuration {
 		}
 
 		if ( file_exists( $composer_file ) ) {
+			/**
+			 * Composer configuration.
+			 *
+			 * @phpstan-var array{extra?: array{ traduttore?: ProjectConfig } } $config
+			 * @var array{extra?: array{ traduttore?: array<string, string | string[]> } } $config
+			 */
 			$config = json_decode( (string) file_get_contents( $composer_file ), true );
 
 			if ( $config && isset( $config['extra']['traduttore'] ) ) {

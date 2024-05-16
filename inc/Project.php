@@ -190,6 +190,11 @@ class Project {
 	 * @return string|null Repository type if stored, null otherwise.
 	 */
 	public function get_repository_type(): ?string {
+		/**
+		 * Project type.
+		 *
+		 * @var string|false $type
+		 */
 		$type = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_TYPE_KEY );
 
 		return $type ?: null;
@@ -215,6 +220,11 @@ class Project {
 	 * @return null|string VCS type if stored, null otherwise.
 	 */
 	public function get_repository_vcs_type(): ?string {
+		/**
+		 * VCS type.
+		 *
+		 * @var string|false $type
+		 */
 		$type = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_VCS_TYPE_KEY );
 
 		return $type ?: null;
@@ -240,6 +250,11 @@ class Project {
 	 * @return null|string Repository URL if stored, null otherwise.
 	 */
 	public function get_repository_url(): ?string {
+		/**
+		 * Repository URL.
+		 *
+		 * @var string|false $url
+		 */
 		$url = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_URL_KEY );
 
 		return $url ?: null;
@@ -265,6 +280,11 @@ class Project {
 	 * @return null|string Repository name if stored, null otherwise.
 	 */
 	public function get_repository_name(): ?string {
+		/**
+		 * Repository name.
+		 *
+		 * @var string|false $name
+		 */
 		$name = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_NAME_KEY );
 
 		return $name ?: null;
@@ -290,6 +310,11 @@ class Project {
 	 * @return null|string Repository visibility if stored, null otherwise.
 	 */
 	public function get_repository_visibility(): ?string {
+		/**
+		 * Repository visibility.
+		 *
+		 * @var string|false $visibility
+		 */
 		$visibility = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_VISIBILITY_KEY );
 
 		return $visibility ?: null;
@@ -313,6 +338,11 @@ class Project {
 	 * @return null|string Repository SSH URL if stored, null otherwise.
 	 */
 	public function get_repository_ssh_url(): ?string {
+		/**
+		 * Repository SSH URL.
+		 *
+		 * @var string|false $url
+		 */
 		$url = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_SSH_URL_KEY );
 
 		return $url ?: null;
@@ -338,6 +368,11 @@ class Project {
 	 * @return null|string Repository HTTPS URL if stored, null otherwise.
 	 */
 	public function get_repository_https_url(): ?string {
+		/**
+		 * Repository HTTPS URL.
+		 *
+		 * @var string|false $url
+		 */
 		$url = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_HTTPS_URL_KEY );
 
 		return $url ?: null;
@@ -363,6 +398,11 @@ class Project {
 	 * @return null|string Webhook sync secret if stored, null otherwise.
 	 */
 	public function get_repository_webhook_secret(): ?string {
+		/**
+		 * Repository webhook secret.
+		 *
+		 * @var string|false $name
+		 */
 		$name = gp_get_meta( 'project', $this->project->id, static::REPOSITORY_WEBHOOK_SECRET_KEY );
 
 		return $name ?: null;
@@ -388,6 +428,11 @@ class Project {
 	 * @return null|string Text domain if stored, null otherwise.
 	 */
 	public function get_text_domain(): ?string {
+		/**
+		 * Project text domain
+		 *
+		 * @var string|false $name
+		 */
 		$name = gp_get_meta( 'project', $this->project->id, static::TEXT_DOMAIN_KEY );
 
 		return $name ?: null;
@@ -413,6 +458,11 @@ class Project {
 	 * @return null|\DateTime Last updated time if stored, null otherwise.
 	 */
 	public function get_last_updated_time(): ?DateTime {
+		/**
+		 * Project last updated time.
+		 *
+		 * @var string|false $time
+		 */
 		$time = gp_get_meta( 'project', $this->project->id, static::UPDATE_TIME_KEY );
 
 		return $time ? new DateTime( $time, new DateTimeZone( 'UTC' ) ) : null;
@@ -438,6 +488,11 @@ class Project {
 	 * @return null|string Version number if stored, null otherwise.
 	 */
 	public function get_version(): ?string {
+		/**
+		 * Project version number.
+		 *
+		 * @var string|false $version
+		 */
 		$version = gp_get_meta( 'project', $this->project->id, static::VERSION_KEY );
 
 		return $version ?: null;

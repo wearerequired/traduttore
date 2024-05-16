@@ -162,8 +162,8 @@ class LanguagePackCommand extends WP_CLI_Command {
 	 * @param string[] $assoc_args Associative args.
 	 */
 	public function build( array $args, array $assoc_args ): void {
-		$all      = get_flag_value( $assoc_args, 'all', false );
-		$force    = get_flag_value( $assoc_args, 'force', false );
+		$all      = (bool) get_flag_value( $assoc_args, 'all', false );
+		$force    = (bool) get_flag_value( $assoc_args, 'force', false );
 		$projects = $this->check_optional_args_and_all( $args, $all );
 
 		if ( ! $projects ) {
