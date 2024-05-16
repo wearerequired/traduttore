@@ -67,9 +67,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: ${{ matrix.coverage && 'pcov' || 'none' }}
+          coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           tools: composer
-          ini-values: pcov.directory=.,pcov.exclude=~(vendor|tests)~
 
       - name: Shutdown default MySQL service
         run: sudo service mysql stop
