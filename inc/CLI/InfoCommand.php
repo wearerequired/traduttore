@@ -149,7 +149,7 @@ class InfoCommand extends WP_CLI_Command {
 	 * @return null|string Binary path on success, null otherwise.
 	 */
 	protected function get_wp_binary_path(): ?string {
-		if ( \defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
+		if ( \defined( 'TRADUTTORE_WP_BIN' ) && \is_string( TRADUTTORE_WP_BIN ) ) {
 			return TRADUTTORE_WP_BIN;
 		}
 

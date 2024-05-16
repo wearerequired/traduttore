@@ -23,16 +23,16 @@ class ProjectLocator {
 	 *
 	 * @var \Required\Traduttore\Project|null Project instance.
 	 */
-	protected $project;
+	protected ?Project $project;
 
 	/**
 	 * ProjectLocator constructor.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param int|string|Project|GP_Project $project Possible GlotPress project ID or path or source code repository path.
+	 * @param int|string|false|null|\Required\Traduttore\Project|\GP_Project $project Possible GlotPress project ID or path or source code repository path.
 	 */
-	public function __construct( $project ) {
+	public function __construct( int|string|false|\Required\Traduttore\Project|\GP_Project|null $project ) {
 		$this->project = $this->find_project( $project );
 	}
 
@@ -52,10 +52,10 @@ class ProjectLocator {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param int|string|Project|GP_Project $project Possible GlotPress project ID or path or source code repository path.
+	 * @param int|string|false|null|\Required\Traduttore\Project|\GP_Project $project Possible GlotPress project ID or path or source code repository path.
 	 * @return \Required\Traduttore\Project Project instance.
 	 */
-	protected function find_project( $project ): ?Project {
+	protected function find_project( int|string|false|\Required\Traduttore\Project|\GP_Project|null $project ): ?Project {
 		if ( ! $project ) {
 			return null;
 		}

@@ -23,7 +23,7 @@ abstract class Base implements Repository {
 	 *
 	 * @var \Required\Traduttore\Project Project information.
 	 */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * Loader constructor.
@@ -106,7 +106,7 @@ abstract class Base implements Repository {
 			}
 
 			if ( $url ) {
-				$path = wp_parse_url( $url, PHP_URL_PATH );
+				$path  = wp_parse_url( $url, PHP_URL_PATH );
 				$path  = $path ? trim( $path, '/' ) : '';
 				$parts = explode( '/', $path );
 				$name  = implode( '/', array_splice( $parts, 0, 2 ) );

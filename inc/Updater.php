@@ -32,7 +32,7 @@ class Updater {
 	 *
 	 * @var \Required\Traduttore\Project Project information.
 	 */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * Returns a new loader instance for a given project.
@@ -221,7 +221,7 @@ class Updater {
 	 * @return string WP-CLI binary path.
 	 */
 	protected function get_wp_bin(): string {
-		if ( \defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
+		if ( \defined( 'TRADUTTORE_WP_BIN' ) && \is_string( TRADUTTORE_WP_BIN ) ) {
 			return TRADUTTORE_WP_BIN;
 		}
 

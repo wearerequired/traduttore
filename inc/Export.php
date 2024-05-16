@@ -10,7 +10,6 @@ namespace Required\Traduttore;
 use GP;
 use GP_Locales;
 use GP_Translation_Set;
-use InvalidArgumentException;
 
 /**
  * Export strings to translation files in PO, MO, and JSON format.
@@ -25,7 +24,7 @@ class Export {
 	 *
 	 * @var \GP_Translation_Set
 	 */
-	protected $translation_set;
+	protected GP_Translation_Set $translation_set;
 
 	/**
 	 * The current locale.
@@ -43,7 +42,7 @@ class Export {
 	 *
 	 * @var \Required\Traduttore\Project
 	 */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * List of generated files.
@@ -52,7 +51,7 @@ class Export {
 	 *
 	 * @var string[]
 	 */
-	protected $files;
+	protected array $files;
 
 	/**
 	 * Export constructor.
@@ -63,11 +62,12 @@ class Export {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $translation_set->locale );
 
+		/**
+		 * GlotPress project.
+		 *
+		 * @var \GP_Project $gp_project
+		 */
 		$gp_project = GP::$project->get( $translation_set->project_id );
-
-		if ( ! $gp_project ) {
-			throw new InvalidArgumentException( __( 'Project not found', 'traduttore' ) );
-		}
 
 		$this->project = new Project( $gp_project );
 	}

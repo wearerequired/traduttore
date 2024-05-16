@@ -88,8 +88,8 @@ class ProjectCommand extends WP_CLI_Command {
 		$repository_visibility = $project->get_repository_visibility() ?? '(unknown)';
 		$repository_ssh_url    = $repository ? $repository->get_ssh_url() : '(unknown)';
 		$repository_https_url  = $repository ? $repository->get_https_url() : '(unknown)';
-		$repository_instance   = $repository ? \get_class( $repository ) : '(unknown)';
-		$loader_instance       = $loader ? \get_class( $loader ) : '(unknown)';
+		$repository_instance   = $repository ? $repository::class : '(unknown)';
+		$loader_instance       = $loader ? $loader::class : '(unknown)';
 
 		if ( get_flag_value( $assoc_args, 'format' ) === 'json' ) {
 			$info = [

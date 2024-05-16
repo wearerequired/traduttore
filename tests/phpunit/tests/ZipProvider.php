@@ -1,17 +1,14 @@
 <?php
 /**
  * Class ZipProvider
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
 use DateTime;
 use GP;
-use GP_Translation_Set;
 use Required\Traduttore\ProjectLocator;
-use \Required\Traduttore\ZipProvider as Provider;
+use Required\Traduttore\ZipProvider as Provider;
 use Translations;
 use ZipArchive;
 
@@ -25,12 +22,12 @@ class ZipProvider extends TestCase {
 	protected $locale;
 
 	/**
-	 * @var GP_Translation_Set
+	 * @var \GP_Translation_Set
 	 */
 	protected $translation_set;
 
 	/**
-	 * @var GP_Translation_Set
+	 * @var \GP_Translation_Set
 	 */
 	protected $sub_translation_set;
 
@@ -42,14 +39,14 @@ class ZipProvider extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->locale = $this->factory->locale->create(
+		$this->locale = $this->factory()->locale->create(
 			[
 				'slug'      => 'de',
 				'wp_locale' => 'de_DE',
 			]
 		);
 
-		$this->translation_set = $this->factory->translation_set->create_with_project(
+		$this->translation_set = $this->factory()->translation_set->create_with_project(
 			[
 				'locale' => $this->locale->slug,
 			],
@@ -58,7 +55,7 @@ class ZipProvider extends TestCase {
 			]
 		);
 
-		$this->sub_translation_set = $this->factory->translation_set->create_with_project(
+		$this->sub_translation_set = $this->factory()->translation_set->create_with_project(
 			[
 				'locale' => $this->locale->slug,
 			],
@@ -68,7 +65,11 @@ class ZipProvider extends TestCase {
 			]
 		);
 
-		$this->project = new \Required\Traduttore\Project( GP::$project->get( $this->translation_set->project_id ) );
+		$gp_project = GP::$project->get( $this->translation_set->project_id );
+
+		$this->assertNotFalse( $gp_project );
+
+		$this->project = new \Required\Traduttore\Project( $gp_project );
 	}
 
 	public function tearDown(): void {
@@ -145,9 +146,9 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_generate_zip_file(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -165,9 +166,9 @@ class ZipProvider extends TestCase {
 	 * @preserveGlobalState disabled
 	 */
 	public function test_generate_zip_file_missing_wp_filesystem(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -185,9 +186,9 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_replaces_existing_zip_file(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -219,9 +220,9 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_get_last_build_time_after_zip_generation(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -237,9 +238,9 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_remove_zip_file(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -255,9 +256,9 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_remove_zip_file_resets_build_time(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -284,9 +285,9 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_remove_zip_file_no_filesystem(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -308,10 +309,13 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_use_text_domain_for_translation_files(): void {
-		$project  = ( new ProjectLocator( $this->translation_set->project_id ) )->get_project();
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$project = ( new ProjectLocator( $this->translation_set->project_id ) )->get_project();
 
-		$this->factory->translation->create(
+		$this->assertInstanceOf( \Required\Traduttore\Project::class, $project );
+
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -325,9 +329,9 @@ class ZipProvider extends TestCase {
 		$result   = $provider->generate_zip_file();
 
 		$expected_files = [
-		  'foo-bar-baz-de_DE.po',
-		  'foo-bar-baz-de_DE.mo',
-		  'foo-bar-baz-de_DE.l10n.php'
+			'foo-bar-baz-de_DE.po',
+			'foo-bar-baz-de_DE.mo',
+			'foo-bar-baz-de_DE.l10n.php',
 		];
 		$actual_files   = [];
 
@@ -335,10 +339,13 @@ class ZipProvider extends TestCase {
 
 		$zip->open( $provider->get_zip_path() );
 
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
-		for ( $i = 0; $i < $zip->numFiles; $i ++ ) {
-			$stat           = $zip->statIndex( $i );
-			$actual_files[] = $stat['name'];
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		for ( $i = 0; $i < $zip->numFiles; $i++ ) {
+			$stat = $zip->statIndex( $i );
+
+			if ( $stat ) {
+				$actual_files[] = $stat['name'];
+			}
 		}
 
 		$zip->close();
@@ -370,9 +377,9 @@ class ZipProvider extends TestCase {
 
 		$crons = _get_cron_array();
 		$key   = md5( serialize( [ $this->translation_set->id ] ) );
-		foreach ( $crons as $timestamp => $cron ) {
+		foreach ( $crons as $cron ) {
 			if ( isset( $cron['traduttore.generate_zip'][ $key ] ) ) {
-				$actual_count ++;
+				$actual_count++;
 			}
 		}
 
@@ -380,11 +387,11 @@ class ZipProvider extends TestCase {
 	}
 
 	public function test_does_not_schedule_generation_after_saving_translation_for_inactive_project(): void {
-		$original           = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original           = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 		$translation_set_id = (int) $this->translation_set->id;
 
 		/** @var \GP_Translation $translation */
-		$translation = $this->factory->translation->create(
+		$translation = $this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -408,11 +415,11 @@ class ZipProvider extends TestCase {
 	public function test_schedules_generation_after_saving_translation(): void {
 		$this->project->get_project()->save( [ 'active' => 1 ] );
 
-		$original           = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original           = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 		$translation_set_id = (int) $this->translation_set->id;
 
 		/** @var \GP_Translation $translation */
-		$translation = $this->factory->translation->create(
+		$translation = $this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -435,7 +442,7 @@ class ZipProvider extends TestCase {
 
 	public function test_does_not_schedule_generation_after_importing_originals_for_inactive_project(): void {
 		/** @var \GP_Original $original */
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
 
@@ -453,7 +460,7 @@ class ZipProvider extends TestCase {
 		$this->project->get_project()->save( [ 'active' => 1 ] );
 
 		/** @var \GP_Original $original */
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$before = wp_next_scheduled( 'traduttore.generate_zip', [ $this->translation_set->id ] );
 

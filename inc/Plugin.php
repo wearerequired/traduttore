@@ -189,7 +189,7 @@ class Plugin {
 					'description' => __( 'When a new translation ZIP file is built', 'traduttore' ),
 					'message'     => function ( $zip_path, $zip_url, GP_Translation_Set $translation_set ) {
 						/** @var \GP_Locale $locale */
-						$locale  = GP_Locales::by_slug( $translation_set->locale );
+						$locale = GP_Locales::by_slug( $translation_set->locale );
 
 						$gp_project = GP::$project->get( $translation_set->project_id );
 
@@ -397,10 +397,10 @@ class Plugin {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @phpstan-param \WP_REST_Request<array{}> $request
-	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return bool True if permission is granted, false otherwise.
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 */
 	public function incoming_webhook_permission_callback( WP_REST_Request $request ): bool {
 		$result  = false;
@@ -429,12 +429,12 @@ class Plugin {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @phpstan-param \WP_REST_Request<array{}> $request
-	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 */
-	public function incoming_webhook_callback( WP_REST_Request $request ) {
+	public function incoming_webhook_callback( WP_REST_Request $request ): \WP_Error|\WP_REST_Response {
 		$result  = new \WP_Error( '400', 'Bad request' );
 		$handler = ( new WebhookHandlerFactory() )->get_handler( $request );
 

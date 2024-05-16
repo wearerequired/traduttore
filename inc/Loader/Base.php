@@ -21,7 +21,7 @@ abstract class Base implements Loader {
 	 *
 	 * @var \Required\Traduttore\Repository Repository object.
 	 */
-	protected $repository;
+	protected Repository $repository;
 
 	/**
 	 * Class constructor.

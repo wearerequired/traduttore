@@ -34,7 +34,7 @@ class Bitbucket extends Base {
 			return false;
 		}
 
-		$token   = $this->request->get_header( 'x-hub-signature' );
+		$token   = $this->request->get_header( 'x-hub-signature-256' );
 		$params  = $this->request->get_params();
 		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] ?? null );
 		$project = $locator->get_project();
@@ -60,7 +60,7 @@ class Bitbucket extends Base {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback() {
+	public function callback(): \WP_Error|\WP_REST_Response {
 		$params = $this->request->get_params();
 
 		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] );

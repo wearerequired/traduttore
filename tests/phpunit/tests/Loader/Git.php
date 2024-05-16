@@ -1,14 +1,12 @@
 <?php
 /**
  * Class Git
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests\Loader;
 
-use \Required\Traduttore\Loader\Git as GitLoader;
-use \Required\Traduttore\Project;
+use Required\Traduttore\Loader\Git as GitLoader;
+use Required\Traduttore\Project;
 use Required\Traduttore\Repository\GitHub;
 use Required\Traduttore\Tests\TestCase;
 
@@ -19,7 +17,7 @@ use Required\Traduttore\Tests\TestCase;
  */
 class Git extends TestCase {
 	/**
-	 * @var Project
+	 * @var \Required\Traduttore\Tests\Loader\Project
 	 */
 	protected $project;
 
@@ -27,7 +25,7 @@ class Git extends TestCase {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'slug'                => 'sample-project',
@@ -44,8 +42,9 @@ class Git extends TestCase {
 	}
 
 	public function test_download_repository(): void {
-		$this->markTestSkipped( 'Need to mock shell command execution' );
+		$this->markTestIncomplete( 'Need to mock shell command execution' );
 
+		// @phpstan-ignore-next-line
 		$loader = new GitLoader( new GitHub( $this->project ) );
 
 		add_filter( 'traduttore.git_clone_use_https', '__return_true' );
@@ -56,8 +55,9 @@ class Git extends TestCase {
 	}
 
 	public function test_download_existing_repository(): void {
-		$this->markTestSkipped( 'Need to mock shell command execution' );
+		$this->markTestIncomplete( 'Need to mock shell command execution' );
 
+		// @phpstan-ignore-next-line
 		$loader = new GitLoader( new GitHub( $this->project ) );
 
 		add_filter( 'traduttore.git_clone_use_https', '__return_true' );

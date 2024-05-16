@@ -1,34 +1,31 @@
 <?php
 /**
  * Project class.
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
 use DateTime;
 use DateTimeZone;
-use \GP_Project;
-use \Required\Traduttore\Project as TraduttoreProject;
+use Required\Traduttore\Project as TraduttoreProject;
 
 /**
  * Test cases for \Required\Traduttore\Project.
  */
 class Project extends TestCase {
 	/**
-	 * @var GP_Project
+	 * @var \Required\Traduttore\Tests\GP_Project
 	 */
 	protected $gp_project;
 	/**
-	 * @var TraduttoreProject
+	 * @var \Required\Traduttore\Tests\TraduttoreProject
 	 */
 	protected $project;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->gp_project = $this->factory->project->create(
+		$this->gp_project = $this->factory()->project->create(
 			[
 				'name'   => 'Project',
 				'active' => 1,
@@ -159,7 +156,7 @@ class Project extends TestCase {
 		$this->project->set_last_updated_time( $time );
 
 		$this->assertInstanceOf( DateTime::class, $this->project->get_last_updated_time() );
-		$this->assertSame( $time->getTimestamp(), $this->project->get_last_updated_time()->getTimestamp(), 'Last updated time is not identical', 1 );
+		$this->assertSame( $time->getTimestamp(), $this->project->get_last_updated_time()->getTimestamp(), 'Last updated time is not identical' );
 	}
 
 	public function test_get_repository_webhook_secret(): void {

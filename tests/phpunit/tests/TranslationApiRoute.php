@@ -1,15 +1,16 @@
 <?php
 /**
  * Class TranslationApiRoute
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use ReflectionClass;
 use GP;
+use GP_Locale;
+use GP_Translation_Set;
+use GP_UnitTest_Factory;
 use GP_UnitTestCase_Route;
+use ReflectionClass;
 use Required\Traduttore\TranslationApiRoute as Route;
 use Required\Traduttore\ZipProvider as Provider;
 
@@ -17,22 +18,32 @@ use Required\Traduttore\ZipProvider as Provider;
  * Test cases for \Required\Traduttore\TranslationApiRoute.
  */
 class TranslationApiRoute extends GP_UnitTestCase_Route {
+	/**
+	 * @var class-string
+	 */
 	public $route_class = Route::class;
 
-	/**
-	 * @var \GP_Translation_Set
-	 */
-	protected $translation_set;
+	protected GP_Translation_Set $translation_set;
+
+	protected GP_Locale $locale;
 
 	/**
-	 * @var \GP_Locale
+	 * Fetches the factory object for generating WordPress fixtures.
+	 *
+	 * @return \GP_UnitTest_Factory The fixture factory.
 	 */
-	protected $locale;
+	protected static function factory(): GP_UnitTest_Factory {
+		static $factory = null;
+		if ( ! $factory ) {
+			$factory = new GP_UnitTest_Factory();
+		}
+		return $factory;
+	}
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->locale = $this->factory->locale->create(
+		$this->locale = $this->factory()->locale->create(
 			[
 				'english_name' => 'German',
 				'native_name'  => 'Deutsch',
@@ -41,7 +52,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 			]
 		);
 
-		$this->translation_set = $this->factory->translation_set->create_with_project(
+		$this->translation_set = $this->factory()->translation_set->create_with_project(
 			[
 				'locale' => $this->locale->slug,
 			],
@@ -52,7 +63,6 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	}
 
 	public function tearDown(): void {
-		/* @var \WP_Filesystem_Base $wp_filesystem */
 		global $wp_filesystem;
 
 		if ( ! $wp_filesystem ) {
@@ -70,17 +80,30 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		$this->assertSame( 404, $this->route->http_status );
 	}
 
-	protected function get_route_callback( $project_path ) {
+	/**
+	 * @return array{error?: string, translations?: array<int, array<string, string|string[]>>} Response data.
+	 */
+	protected function get_route_callback( string $project_path ): array {
 		$route = $this->route;
 
+		/**
+		 * Route response.
+		 *
+		 * @var string $response
+		 */
 		$response = get_echo(
-			function() use ( $route, $project_path ) {
-				/** @var Route $route */
-				return $route->route_callback( $project_path );
+			function () use ( $route, $project_path ): void {
+				/** @var \Required\Traduttore\TranslationApiRoute $route */
+				$route->route_callback( $project_path );
 			}
 		);
 
-		return json_decode( $response, true );
+		/**
+		 * @var array{error?: string, translations?: array<int, array<string, string|string[]>>} $result
+		 */
+		$result = (array) json_decode( $response, true );
+
+		return $result;
 	}
 
 	/**
@@ -92,7 +115,14 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 		$property = $class->getProperty( 'urls' );
 		$property->setAccessible( true );
 
-		$this->assertTrue( isset( $property->getValue( GP::$router )['get:/api/translations/(.+?)'] ) );
+		/**
+		 * Registered routes.
+		 *
+		 * @var array<string, string> $routes
+		 */
+		$routes = $property->getValue( GP::$router );
+
+		$this->assertTrue( isset( $routes['get:/api/translations/(.+?)'] ) );
 	}
 
 	public function test_invalid_project(): void {
@@ -110,9 +140,9 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	}
 
 	public function test_one_zip_file(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -126,6 +156,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 
 		$response = $this->get_route_callback( 'foo-project' );
 
+		$this->assertArrayHasKey( 'translations', $response );
 		$this->assertCount( 1, $response['translations'] );
 		$this->assertArrayHasKey( 'language', $response['translations'][0] );
 		$this->assertSame( 'de_DE', $response['translations'][0]['language'] );
@@ -140,9 +171,9 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 	}
 
 	public function test_missing_build_time(): void {
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -158,16 +189,20 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 
 		$response = $this->get_route_callback( 'foo-project' );
 
+		$this->assertArrayHasKey( 'translations', $response );
 		$this->assertCount( 0, $response['translations'] );
 	}
 
 	public function test_uses_stored_project_version(): void {
 		$project = ( new \Required\Traduttore\ProjectLocator( $this->translation_set->project_id ) )->get_project();
+
+		$this->assertInstanceOf( \Required\Traduttore\Project::class, $project );
+
 		$project->set_version( '1.2.3' );
 
-		$original = $this->factory->original->create( [ 'project_id' => $this->translation_set->project_id ] );
+		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -181,7 +216,7 @@ class TranslationApiRoute extends GP_UnitTestCase_Route {
 
 		$response = $this->get_route_callback( 'foo-project' );
 
-		$this->assertCount( 1, $response['translations'] );
+		$this->assertArrayHasKey( 'translations', $response );
 		$this->assertCount( 1, $response['translations'] );
 		$this->assertArrayHasKey( 'language', $response['translations'][0] );
 		$this->assertSame( 'de_DE', $response['translations'][0]['language'] );

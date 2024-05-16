@@ -23,10 +23,10 @@ class WebhookHandlerFactory {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @phpstan-param \WP_REST_Request<array{}> $request
-	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \Required\Traduttore\WebhookHandler Webhook handler instance.
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 */
 	public function get_handler( WP_REST_Request $request ): ?WebhookHandler {
 		$handler = null;

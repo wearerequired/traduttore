@@ -1,28 +1,26 @@
 <?php
 /**
  * Class Runner
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use \Required\Traduttore\Project;
-use \Required\Traduttore\Updater;
-use \Required\Traduttore\Runner as R;
-use \Required\Traduttore\Loader\Git as Loader;
+use Required\Traduttore\Loader\Git as Loader;
+use Required\Traduttore\Project;
+use Required\Traduttore\Runner as R;
+use Required\Traduttore\Updater;
 
 /**
  * Test cases for \Required\Traduttore\Runner.
  */
 class Runner extends TestCase {
 	/**
-	 * @var Project
+	 * @var \Required\Traduttore\Tests\Project
 	 */
 	protected $project;
 
 	/**
-	 * @var R
+	 * @var \Required\Traduttore\Tests\R
 	 */
 	protected $runner;
 
@@ -35,7 +33,7 @@ class Runner extends TestCase {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'slug'                => 'sample-project',

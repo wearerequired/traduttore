@@ -1,8 +1,6 @@
 <?php
 /**
- * Class GitHub
- *
- * @package Traduttore\Tests\WebhookHandler
+ * Class GitHub\WebhookHandler
  */
 
 namespace Required\Traduttore\Tests\WebhookHandler;
@@ -10,14 +8,14 @@ namespace Required\Traduttore\Tests\WebhookHandler;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Tests\TestCase;
-use \WP_REST_Request;
+use WP_REST_Request;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitHub.
  */
 class GitHub extends TestCase {
 	/**
-	 * @var Project
+	 * @var \Required\Traduttore\Project
 	 */
 	protected $project;
 
@@ -25,7 +23,7 @@ class GitHub extends TestCase {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
@@ -70,9 +68,9 @@ class GitHub extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->add_header( 'Content-Type', 'application/json' );
 		$request->set_body( (string) wp_json_encode( [] ) );
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'foo' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'foo' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
@@ -92,9 +90,9 @@ class GitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );
@@ -120,9 +118,9 @@ class GitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 404, $response );
@@ -138,9 +136,9 @@ class GitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 400, $response );
@@ -150,7 +148,7 @@ class GitHub extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->add_header( 'Content-Type', 'application/json' );
 		$request->set_body(
-		  (string) wp_json_encode(
+			(string) wp_json_encode(
 				[
 					'ref'        => 'refs/heads/master',
 					'repository' => [
@@ -165,9 +163,9 @@ class GitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );
@@ -185,25 +183,27 @@ class GitHub extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
 		$data = [
-			'payload' => json_encode( [
-				'ref'        => 'refs/heads/master',
-				'repository' => [
-					'full_name'      => 'wearerequired/traduttore',
-					'default_branch' => 'master',
-					'html_url'       => 'https://github.com/wearerequired/traduttore',
-					'ssh_url'        => 'git@github.com:wearerequired/traduttore.git',
-					'clone_url'      => 'https://github.com/wearerequired/traduttore.git',
-					'url'            => 'https://github.com/wearerequired/traduttore',
-					'private'        => false,
-				],
-			] )
+			'payload' => json_encode(
+				[
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'full_name'      => 'wearerequired/traduttore',
+						'default_branch' => 'master',
+						'html_url'       => 'https://github.com/wearerequired/traduttore',
+						'ssh_url'        => 'git@github.com:wearerequired/traduttore.git',
+						'clone_url'      => 'https://github.com/wearerequired/traduttore.git',
+						'url'            => 'https://github.com/wearerequired/traduttore',
+						'private'        => false,
+					],
+				]
+			),
 		];
 		$request->set_body_params( $data );
 		$request->set_body( http_build_query( $data ) );
 
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );
@@ -240,9 +240,9 @@ class GitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), $secret );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), $secret );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );

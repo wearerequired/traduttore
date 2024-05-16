@@ -1,15 +1,15 @@
 <?php
 /**
  * Class RepositoryFactory
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use Required\Traduttore\Repository\{Bitbucket, GitHub, GitLab};
-use \Required\Traduttore\Project;
-use \Required\Traduttore\RepositoryFactory as Factory;
+use Required\Traduttore\Repository\Bitbucket;
+use Required\Traduttore\Repository\GitHub;
+use Required\Traduttore\Repository\GitLab;
+use Required\Traduttore\Project;
+use Required\Traduttore\RepositoryFactory as Factory;
 
 /**
  * Test cases for \Required\Traduttore\RepositoryFactory.
@@ -18,7 +18,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_unknown_repository(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -31,7 +31,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_unknown_repository_by_type(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -46,7 +46,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_bitbucket_repository_by_type(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -61,7 +61,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_bitbucket_repository_by_url(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -76,7 +76,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_bitbucket_repository_by_source_url_template(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Project',
 					'source_url_template' => 'https://bitbucket.org/wearerequired/traduttore/src/master/%file%#L%line%',
@@ -90,7 +90,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_github_repository_by_type(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -105,7 +105,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_github_repository_by_url(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -120,7 +120,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_github_repository_by_source_url_template(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Project',
 					'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
@@ -134,7 +134,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_gitlab_repository_by_type(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -149,7 +149,7 @@ class RepositoryFactory extends TestCase {
 	public function test_get_gitlab_repository_by_source_url_template(): void {
 		$factory = new Factory();
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Project',
 					'source_url_template' => 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%',

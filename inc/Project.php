@@ -101,7 +101,7 @@ class Project {
 	 *
 	 * @var \GP_Project Project information.
 	 */
-	protected $project;
+	protected GP_Project $project;
 
 	/**
 	 * Project constructor.

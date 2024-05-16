@@ -7,9 +7,11 @@ parameters:
         - vendor/wordpress-plugin/glotpress/gp-includes/routes/_main.php
     scanFiles:
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
+        - vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
     scanDirectories:
+        - tests/phpstan/stubs/
         - vendor/wordpress-plugin/glotpress/gp-includes/
         - vendor/wordpress-plugin/glotpress/locales/
     paths:
         - inc/
-#        - test/
+        - tests/phpunit

@@ -22,7 +22,7 @@ class Runner {
 	 *
 	 * @var \Required\Traduttore\Loader VCS loader.
 	 */
-	protected $loader;
+	protected Loader $loader;
 
 	/**
 	 * Updater instance.
@@ -31,7 +31,7 @@ class Runner {
 	 *
 	 * @var \Required\Traduttore\Updater Translation updater.
 	 */
-	protected $updater;
+	protected Updater $updater;
 
 	/**
 	 * Runner constructor.

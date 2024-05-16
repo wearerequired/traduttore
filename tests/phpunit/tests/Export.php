@@ -1,29 +1,26 @@
 <?php
 /**
  * Class Export
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use GP_Translation_Set;
 use PO;
-use \Required\Traduttore\Export as E;
+use Required\Traduttore\Export as E;
 
 /**
  * Test cases for \Required\Traduttore\Export.
  */
 class Export extends TestCase {
 	/**
-	 * @var GP_Translation_Set
+	 * @var \GP_Translation_Set
 	 */
 	protected $translation_set;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$locale = $this->factory->locale->create(
+		$locale = $this->factory()->locale->create(
 			[
 				'english_name' => 'German',
 				'native_name'  => 'Deutsch',
@@ -32,7 +29,7 @@ class Export extends TestCase {
 			]
 		);
 
-		$this->translation_set = $this->factory->translation_set->create_with_project(
+		$this->translation_set = $this->factory()->translation_set->create_with_project(
 			[
 				'locale' => $locale->slug,
 			],
@@ -49,14 +46,14 @@ class Export extends TestCase {
 	}
 
 	public function test_creates_only_po_and_mo_files(): void {
-		$original = $this->factory->original->create(
+		$original = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => 'my-plugin.php',
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -67,6 +64,8 @@ class Export extends TestCase {
 		$export = new E( $this->translation_set );
 
 		$actual = $export->export_strings();
+
+		$this->assertIsArray( $actual );
 
 		array_map( 'unlink', $actual );
 
@@ -85,7 +84,7 @@ class Export extends TestCase {
 		$filename_2 = 'my-super-minified-script';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create(
+		$original_1 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_1 . '.js',
@@ -93,14 +92,14 @@ class Export extends TestCase {
 		);
 
 		/* @var \GP_Original $original_2 */
-		$original_2 = $this->factory->original->create(
+		$original_2 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_2 . '.min.js',
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_1->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -108,7 +107,7 @@ class Export extends TestCase {
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_2->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -120,6 +119,8 @@ class Export extends TestCase {
 
 		$actual = $export->export_strings();
 
+		$this->assertIsArray( $actual );
+
 		$json_filename_1 = 'foo-project-de_DE-' . md5( $filename_1 . '.js' ) . '.json';
 		$json_filename_2 = 'foo-project-de_DE-' . md5( $filename_2 . '.js' ) . '.json';
 
@@ -128,6 +129,8 @@ class Export extends TestCase {
 
 		array_map( 'unlink', $actual );
 
+		$this->assertIsString( $json_1 );
+		$this->assertIsString( $json_2 );
 		$this->assertJson( $json_1 );
 		$this->assertJson( $json_2 );
 		$this->assertEqualSets(
@@ -145,9 +148,8 @@ class Export extends TestCase {
 	/**
 	 * Modify the mapping of sources to translation entries.
 	 *
-	 * @param array $mapping The mapping of sources to translation entries.
-	 *
-	 * @return array The maybe modified mapping.
+	 * @param array<string, \Translation_Entry[]> $mapping The mapping of sources to translation entries.
+	 * @return array<string, \Required\Traduttore\Tests\Translation_Entry[]> The maybe modified mapping.
 	 */
 	public function filter_map_entries_to_source( array $mapping ): array {
 		$mapping['build.js'] = array_merge( $mapping['my-super-script.js'], $mapping['my-other-script.js'] );
@@ -163,7 +165,7 @@ class Export extends TestCase {
 		$filename_target = 'build.js';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create(
+		$original_1 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_1,
@@ -171,14 +173,14 @@ class Export extends TestCase {
 		);
 
 		/* @var \GP_Original $original_2 */
-		$original_2 = $this->factory->original->create(
+		$original_2 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_2,
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_1->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -186,7 +188,7 @@ class Export extends TestCase {
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_2->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -199,6 +201,8 @@ class Export extends TestCase {
 		add_filter( 'traduttore.map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
 
 		$actual = $export->export_strings();
+
+		$this->assertIsArray( $actual );
 
 		remove_filter( 'traduttore.map_entries_to_source', [ $this, 'filter_map_entries_to_source' ] );
 
@@ -213,6 +217,7 @@ class Export extends TestCase {
 
 		array_map( 'unlink', $actual );
 
+		$this->assertIsString( $json );
 		$this->assertJson( $json );
 		$this->assertEqualSets(
 			[
@@ -230,7 +235,7 @@ class Export extends TestCase {
 		$filename_2 = 'my-super-minified-script';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create(
+		$original_1 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_1 . '.js',
@@ -238,7 +243,7 @@ class Export extends TestCase {
 		);
 
 		/* @var \GP_Original $original_2 */
-		$original_2 = $this->factory->original->create(
+		$original_2 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_2 . '.min.js',
@@ -246,28 +251,28 @@ class Export extends TestCase {
 		);
 
 		/* @var \GP_Original $original_3 */
-		$original_3 = $this->factory->original->create(
+		$original_3 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => 'foo.php',
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_1->id,
 				'translation_set_id' => $this->translation_set->id,
 				'status'             => 'current',
 			]
 		);
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_2->id,
 				'translation_set_id' => $this->translation_set->id,
 				'status'             => 'current',
 			]
 		);
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_3->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -279,14 +284,19 @@ class Export extends TestCase {
 
 		$actual = $export->export_strings();
 
+		$this->assertIsArray( $actual );
+
 		$translations = new PO();
 		$translations->import_from_file( $actual['foo-project-de_DE.po'] );
 
 		$json_filename_1 = 'foo-project-de_DE-' . md5( $filename_1 . '.js' ) . '.json';
 		$json_filename_2 = 'foo-project-de_DE-' . md5( $filename_2 . '.js' ) . '.json';
 
-		$json_1 = json_decode( file_get_contents( $actual[ $json_filename_1 ] ), true );
-		$json_2 = json_decode( file_get_contents( $actual[ $json_filename_2 ] ), true );
+		$json_1 = json_decode( (string) file_get_contents( $actual[ $json_filename_1 ] ), true );
+		$json_2 = json_decode( (string) file_get_contents( $actual[ $json_filename_2 ] ), true );
+
+		$this->assertIsArray( $json_1 );
+		$this->assertIsArray( $json_2 );
 
 		array_map( 'unlink', $actual );
 
@@ -304,7 +314,7 @@ class Export extends TestCase {
 		$filename_3 = 'dist/build.js';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create(
+		$original_1 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => "$filename_1 $filename_3",
@@ -312,7 +322,7 @@ class Export extends TestCase {
 		);
 
 		/* @var \GP_Original $original_2 */
-		$original_2 = $this->factory->original->create(
+		$original_2 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => "$filename_2 $filename_3",
@@ -320,28 +330,28 @@ class Export extends TestCase {
 		);
 
 		/* @var \GP_Original $original_3 */
-		$original_3 = $this->factory->original->create(
+		$original_3 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_3,
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_1->id,
 				'translation_set_id' => $this->translation_set->id,
 				'status'             => 'current',
 			]
 		);
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_2->id,
 				'translation_set_id' => $this->translation_set->id,
 				'status'             => 'current',
 			]
 		);
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_3->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -353,9 +363,11 @@ class Export extends TestCase {
 
 		$actual = $export->export_strings();
 
+		$this->assertIsArray( $actual );
+
 		$json_filename = 'foo-project-de_DE-' . md5( $filename_3 ) . '.json';
 
-		$json = json_decode( file_get_contents( $actual[ $json_filename ] ), true );
+		$json = json_decode( (string) file_get_contents( $actual[ $json_filename ] ), true );
 
 		array_map( 'unlink', $actual );
 
@@ -379,14 +391,14 @@ class Export extends TestCase {
 		$filename_1 = 'my-super-script';
 
 		/* @var \GP_Original $original_1 */
-		$original_1 = $this->factory->original->create(
+		$original_1 = $this->factory()->original->create(
 			[
 				'project_id' => $this->translation_set->project_id,
 				'references' => $filename_1 . '.js',
 			]
 		);
 
-		$this->factory->translation->create(
+		$this->factory()->translation->create(
 			[
 				'original_id'        => $original_1->id,
 				'translation_set_id' => $this->translation_set->id,
@@ -398,15 +410,18 @@ class Export extends TestCase {
 
 		$actual = $export->export_strings();
 
+		$this->assertIsArray( $actual );
+
 		$json_filename_1 = 'foo-project-de_DE-' . md5( $filename_1 . '.js' ) . '.json';
 
 		$json_1 = file_get_contents( $actual[ $json_filename_1 ] );
 
 		array_map( 'unlink', $actual );
 
+		$this->assertIsString( $json_1 );
 		$this->assertJson( $json_1 );
 
-		$json1_encoded = json_decode( $json_1 );
+		$json1_encoded = (object) json_decode( $json_1 );
 		$this->assertSame( $filename_1 . '.js', $json1_encoded->comment->reference );
 	}
 }

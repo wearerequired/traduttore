@@ -20,9 +20,9 @@ interface WebhookHandler {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @phpstan-param \WP_REST_Request<array{}> $request
-	 *
 	 * @param \WP_REST_Request $request Request object.
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 */
 	public function __construct( WP_REST_Request $request );
 
@@ -42,5 +42,5 @@ interface WebhookHandler {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback();
+	public function callback(): \WP_Error|\WP_REST_Response;
 }

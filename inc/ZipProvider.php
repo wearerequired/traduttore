@@ -10,9 +10,9 @@ namespace Required\Traduttore;
 use DateTime;
 use DateTimeZone;
 use GP;
+use GP_Locale;
 use GP_Locales;
 use GP_Translation_Set;
-use InvalidArgumentException;
 use ZipArchive;
 
 /**
@@ -42,7 +42,7 @@ class ZipProvider {
 	 *
 	 * @var \GP_Translation_Set The translation set.
 	 */
-	protected $translation_set;
+	protected GP_Translation_Set $translation_set;
 
 	/**
 	 * The current GlotPress locale.
@@ -51,7 +51,7 @@ class ZipProvider {
 	 *
 	 * @var \GP_Locale The locale.
 	 */
-	protected $locale;
+	protected GP_Locale $locale;
 
 	/**
 	 * The current project.
@@ -60,7 +60,7 @@ class ZipProvider {
 	 *
 	 * @var \Required\Traduttore\Project The project.
 	 */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * ZipProvider constructor.
@@ -73,11 +73,12 @@ class ZipProvider {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $this->translation_set->locale );
 
+		/**
+		 * GlotPress project.
+		 *
+		 * @var \GP_Project $gp_project
+		 */
 		$gp_project = GP::$project->get( $this->translation_set->project_id );
-
-		if ( ! $gp_project ) {
-			throw new InvalidArgumentException( __( 'Project not found', 'traduttore' ) );
-		}
 
 		$this->project = new Project( $gp_project );
 	}

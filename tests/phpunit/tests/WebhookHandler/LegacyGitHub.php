@@ -1,8 +1,6 @@
 <?php
 /**
  * Class LegacyGitHub
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests\WebhookHandler;
@@ -10,22 +8,19 @@ namespace Required\Traduttore\Tests\WebhookHandler;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Tests\TestCase;
-use \WP_REST_Request;
+use WP_REST_Request;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitHub.
  */
 class LegacyGitHub extends TestCase {
-	/**
-	 * @var Project
-	 */
-	protected $project;
+	protected Project $project;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'source_url_template' => 'https://github.com/wearerequired/traduttore/blob/master/%file%#L%line%',
@@ -70,9 +65,9 @@ class LegacyGitHub extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/github-webhook/v1/push-event' );
 		$request->add_header( 'Content-Type', 'application/json' );
 		$request->set_body( (string) wp_json_encode( [] ) );
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'foo' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'foo' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 'rest_forbidden', $response, 401 );
@@ -92,9 +87,9 @@ class LegacyGitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );
@@ -120,9 +115,9 @@ class LegacyGitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertErrorResponse( 404, $response );
@@ -147,9 +142,9 @@ class LegacyGitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), 'traduttore-test' );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );
@@ -186,9 +181,9 @@ class LegacyGitHub extends TestCase {
 				]
 			)
 		);
-		$signature = 'sha1=' . hash_hmac( 'sha1', $request->get_body(), $secret );
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), $secret );
 		$request->add_header( 'x-github-event', 'push' );
-		$request->add_header( 'x-hub-signature', $signature );
+		$request->add_header( 'x-hub-signature-256', $signature );
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );

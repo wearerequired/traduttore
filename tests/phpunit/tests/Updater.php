@@ -1,28 +1,26 @@
 <?php
 /**
  * Class Updater
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;
 
-use \GP;
-use \Required\Traduttore\Configuration;
-use \Required\Traduttore\Project;
-use \Required\Traduttore\Updater as U;
+use GP;
+use Required\Traduttore\Configuration;
+use Required\Traduttore\Project;
+use Required\Traduttore\Updater as U;
 
 /**
  * Test cases for \Required\Traduttore\Updater.
  */
 class Updater extends TestCase {
 	/**
-	 * @var Project
+	 * @var \Required\Traduttore\Tests\Project
 	 */
 	protected $project;
 
 	/**
-	 * @var U
+	 * @var \Required\Traduttore\Tests\U
 	 */
 	protected $updater;
 
@@ -30,7 +28,7 @@ class Updater extends TestCase {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'slug'                => 'sample-project',
@@ -43,7 +41,7 @@ class Updater extends TestCase {
 	}
 
 	public function test_update_without_config(): void {
-		$config = new Configuration( dirname( __DIR__ ) . '/data/example-no-config' );
+		$config = new Configuration( \dirname( __DIR__ ) . '/data/example-no-config' );
 
 		$result = $this->updater->update( $config );
 
@@ -57,7 +55,7 @@ class Updater extends TestCase {
 	}
 
 	public function test_update_with_composer_config(): void {
-		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-composer' );
+		$config = new Configuration( \dirname( __DIR__ ) . '/data/example-with-composer' );
 
 		$result = $this->updater->update( $config );
 
@@ -71,7 +69,7 @@ class Updater extends TestCase {
 	}
 
 	public function test_update_with_config_file(): void {
-		$config = new Configuration( dirname( __DIR__ ) . '/data/example-with-config' );
+		$config = new Configuration( \dirname( __DIR__ ) . '/data/example-with-config' );
 
 		$result = $this->updater->update( $config );
 
@@ -109,7 +107,7 @@ class Updater extends TestCase {
 
 		foreach ( $crons as $timestamp => $cron ) {
 			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
-				$scheduled_count ++;
+				$scheduled_count++;
 			}
 		}
 
@@ -121,7 +119,7 @@ class Updater extends TestCase {
 
 		foreach ( $crons as $timestamp => $cron ) {
 			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
-				$scheduled_count ++;
+				$scheduled_count++;
 			}
 		}
 
@@ -135,7 +133,7 @@ class Updater extends TestCase {
 
 		foreach ( $crons as $timestamp => $cron ) {
 			if ( isset( $cron['traduttore.update'][ $key ] ) ) {
-				$scheduled_count ++;
+				$scheduled_count++;
 			}
 		}
 

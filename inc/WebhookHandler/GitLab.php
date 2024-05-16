@@ -60,7 +60,7 @@ class GitLab extends Base {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback() {
+	public function callback(): \WP_Error|\WP_REST_Response {
 		$params = $this->request->get_params();
 
 		// We only care about the default branch but don't want to send an error still.

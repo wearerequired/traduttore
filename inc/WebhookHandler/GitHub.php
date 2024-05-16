@@ -38,7 +38,7 @@ class GitHub extends Base {
 			return false;
 		}
 
-		$token = $this->request->get_header( 'x-hub-signature' );
+		$token = $this->request->get_header( 'x-hub-signature-256' );
 
 		if ( ! $token ) {
 			return false;
@@ -54,7 +54,7 @@ class GitHub extends Base {
 			return false;
 		}
 
-		$payload_signature = 'sha1=' . hash_hmac( 'sha1', $this->request->get_body(), $secret );
+		$payload_signature = 'sha256=' . hash_hmac( 'sha256', $this->request->get_body(), $secret );
 
 		return hash_equals( $token, $payload_signature );
 	}
@@ -66,7 +66,7 @@ class GitHub extends Base {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback() {
+	public function callback(): \WP_Error|\WP_REST_Response {
 		$event_name = $this->request->get_header( 'x-github-event' );
 
 		if ( 'ping' === $event_name ) {

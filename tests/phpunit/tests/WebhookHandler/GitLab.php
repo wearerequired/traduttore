@@ -1,8 +1,6 @@
 <?php
 /**
- * Class GitLab
- *
- * @package Traduttore\Tests\WebhookHandler
+ * Class GitLab\WebhookHandler
  */
 
 namespace Required\Traduttore\Tests\WebhookHandler;
@@ -10,14 +8,14 @@ namespace Required\Traduttore\Tests\WebhookHandler;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Tests\TestCase;
-use \WP_REST_Request;
+use WP_REST_Request;
 
 /**
  * Test cases for \Required\Traduttore\WebhookHandler\GitLab.
  */
 class GitLab extends TestCase {
 	/**
-	 * @var Project
+	 * @var \Required\Traduttore\Project
 	 */
 	protected $project;
 
@@ -25,7 +23,7 @@ class GitLab extends TestCase {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'source_url_template' => 'https://gitlab.com/wearerequired/traduttore/blob/master/%file%#L%line%',
