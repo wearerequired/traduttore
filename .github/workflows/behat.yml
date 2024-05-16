@@ -126,7 +126,7 @@ jobs:
           FILES=$(ls -d -1 "$GITHUB_WORKSPACE/build/logs/clover-behat/"*.* | paste --serial --delimiters=",")
           test -n "$FILES"
           echo "Coverage files: $FILES"
-          echo "::set-output name=COVERAGE_FILES::$FILES"
+          echo "COVERAGE_FILES=$FILES" >> $GITHUB_OUTPUT
 
       - name: Upload code coverage report
         if: ${{ matrix.coverage }}
