@@ -30,14 +30,6 @@ jobs:
       - name: Install PHP dependencies
         uses: ramsey/composer-install@v3
 
-      - name: Install composer-normalize
-        run: composer global require ergebnis/composer-normalize
-
-      - name: Make Composer packages available globally
-        run: |
-          echo "${PWD}/vendor/bin" >> $GITHUB_PATH
-          echo "${{ steps.composer-home.outputs.dir }}/vendor/bin" >> $GITHUB_PATH
-
       - name: Lint PHP files
         run: phpcs -q --report=checkstyle | cs2pr
 
