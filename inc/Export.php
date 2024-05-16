@@ -24,7 +24,7 @@ class Export {
 	 *
 	 * @var \GP_Translation_Set
 	 */
-	protected $translation_set;
+	protected GP_Translation_Set $translation_set;
 
 	/**
 	 * The current locale.
@@ -42,7 +42,7 @@ class Export {
 	 *
 	 * @var \Required\Traduttore\Project
 	 */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * List of generated files.
@@ -51,7 +51,7 @@ class Export {
 	 *
 	 * @var string[]
 	 */
-	protected $files;
+	protected array $files;
 
 	/**
 	 * Export constructor.
@@ -61,7 +61,15 @@ class Export {
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $translation_set->locale );
-		$this->project         = new Project( GP::$project->get( $translation_set->project_id ) );
+
+		/**
+		 * GlotPress project.
+		 *
+		 * @var \GP_Project $gp_project
+		 */
+		$gp_project = GP::$project->get( $translation_set->project_id );
+
+		$this->project = new Project( $gp_project );
 	}
 
 	/**
@@ -72,13 +80,26 @@ class Export {
 	 * @return array<string,string> List of files with names as key and temporary file location as value.
 	 */
 	public function export_strings(): ?array {
-		$entries = GP::$translation->for_export( $this->project->get_project(), $this->translation_set, [ 'status' => 'current' ] );
+
+		/**
+		 * Filters the status of the entries to export.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param string                       $export_status   The status of the entries to export. Default is 'current'.
+		 * @param \GP_Translation_Set          $translation_set Translation set the language pack is for.
+		 * @param \Required\Traduttore\Project $project         The project that was updated.
+		 */
+		$export_status = apply_filters( 'traduttore.export_status', 'current', $this->translation_set, $this->project );
+
+		$entries = GP::$translation->for_export( $this->project->get_project(), $this->translation_set, [ 'status' => $export_status ] );
 
 		if ( ! $entries ) {
 			return null;
 		}
 
 		// Build a mapping based on where the translation entries occur and separate the po entries.
+
 		$mapping = $this->map_entries_to_source( $entries );
 
 		$php_entries = \array_key_exists( 'php', $mapping ) ? $mapping['php'] : [];
@@ -88,6 +109,7 @@ class Export {
 		$this->build_json_files( $mapping );
 		$this->build_po_file( $php_entries );
 		$this->build_mo_file( $php_entries );
+		$this->build_php_file( $php_entries );
 
 		return $this->files;
 	}
@@ -111,6 +133,10 @@ class Export {
 			if ( ! \WP_Filesystem() ) {
 				return false;
 			}
+		}
+
+		if ( ! $wp_filesystem ) {
+			return false;
 		}
 
 		return $wp_filesystem->put_contents( $file, $contents, FS_CHMOD_FILE );
@@ -142,32 +168,36 @@ class Export {
 	 * @since 3.0.0
 	 *
 	 * @param \Translation_Entry[] $entries The translation entries to map.
-	 * @return array<string,string> The mapping of sources to translation entries.
+	 * @return array<string,\Translation_Entry[]> The mapping of sources to translation entries.
 	 */
 	protected function map_entries_to_source( array $entries ): array {
 		$mapping = [];
 
 		foreach ( $entries as $entry ) {
 			// Find all unique sources this translation originates from.
-			$sources = array_map(
-				function ( $reference ) {
-					$parts = explode( ':', $reference );
-					$file  = $parts[0];
+			if ( ! empty( $entry->references ) ) {
+				$sources = array_map(
+					function ( $reference ) {
+						$parts = explode( ':', $reference );
+						$file  = $parts[0];
 
-					if ( substr( $file, -7 ) === '.min.js' ) {
-						return substr( $file, 0, -7 ) . '.js';
-					}
+						if ( substr( $file, -7 ) === '.min.js' ) {
+							return substr( $file, 0, -7 ) . '.js';
+						}
 
-					if ( substr( $file, -3 ) === '.js' ) {
-						return $file;
-					}
+						if ( substr( $file, -3 ) === '.js' ) {
+							return $file;
+						}
 
-					return 'php';
-				},
-				$entry->references
-			);
+						return 'php';
+					},
+					$entry->references
+				);
 
-			$sources = array_unique( $sources );
+				$sources = array_unique( $sources );
+			} else {
+				$sources = [ 'php' ];
+			}
 
 			foreach ( $sources as $source ) {
 				$mapping[ $source ][] = $entry;
@@ -193,7 +223,7 @@ class Export {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param array<string,string> $mapping A mapping of files to translation entries.
+	 * @param array<string,\Translation_Entry[]> $mapping A mapping of files to translation entries.
 	 */
 	protected function build_json_files( array $mapping ): void {
 		/** @var \GP_Format $format */
@@ -210,9 +240,9 @@ class Export {
 			$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
 
 			// Add comment with file reference for debugging.
-			$contents_decoded          = json_decode( $contents );
+			$contents_decoded          = (object) json_decode( $contents );
 			$contents_decoded->comment = [ 'reference' => $file ];
-			$contents                  = wp_json_encode( $contents_decoded );
+			$contents                  = (string) wp_json_encode( $contents_decoded );
 
 			$hash      = md5( $file );
 			$file_name = "{$base_file_name}-{$hash}.json";
@@ -259,6 +289,28 @@ class Export {
 
 		$base_file_name = $this->get_base_file_name();
 		$file_name      = "{$base_file_name}.mo";
+		$temp_file      = wp_tempnam( $file_name );
+
+		$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );
+
+		if ( $this->write_to_file( $temp_file, $contents ) ) {
+			$this->files[ $file_name ] = $temp_file;
+		}
+	}
+
+	/**
+	 * Builds a PHP file for translations.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param \Translation_Entry[] $entries The translation entries.
+	 */
+	protected function build_php_file( array $entries ): void {
+		/** @var \GP_Format $format */
+		$format = gp_array_get( GP::$formats, 'php' );
+
+		$base_file_name = $this->get_base_file_name();
+		$file_name      = "{$base_file_name}.l10n.php";
 		$temp_file      = wp_tempnam( $file_name );
 
 		$contents = $format->print_exported_file( $this->project->get_project(), $this->locale, $this->translation_set, $entries );

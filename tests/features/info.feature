@@ -2,8 +2,9 @@
 Feature: Print various details about the environment.
 
   Background:
-    Given a WP installation with the Traduttore plugin
+    Given a WP installation
     And GlotPress develop being active
+    And Traduttore being active
 
   Scenario: Run info command
     When I run the WP-CLI command `traduttore info`

@@ -2,8 +2,9 @@
 Feature: Print various details about the environment.
 
   Background:
-    Given a WP installation with the Traduttore plugin
+    Given a WP installation
     And GlotPress develop being active
+    And Traduttore being active
 
   Scenario: Run info command with invalid project ID
     When I try the WP-CLI command `traduttore project info 99999`

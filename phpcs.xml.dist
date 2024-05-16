@@ -2,10 +2,19 @@
 <ruleset name="Coding Standard for Traduttore">
 	<description>Coding Standard for Traduttore</description>
 
-	<file>.</file>
-	<exclude-pattern>/tests/*</exclude-pattern>
+	<!-- Check for cross-version support for PHP 7.4 and higher. -->
+	<config name="testVersion" value="7.4-" />
 
-	<rule ref="Required"/>
+	<file>.</file>
+	<exclude-pattern>/tests/behat/*</exclude-pattern>
+	<exclude-pattern>/tests/features/*</exclude-pattern>
+	<exclude-pattern>/tests/phpstan/*</exclude-pattern>
+	<exclude-pattern>/tests/phpunit/data/*</exclude-pattern>
+	<exclude-pattern>/tests/phpunit/bootstrap.php</exclude-pattern>
+
+	<rule ref="Required">
+		<exclude-pattern>/tests/phpunit/tests</exclude-pattern>
+	</rule>
 
 	<rule ref="PSR1.Files.SideEffects">
 		<exclude-pattern>traduttore\.php</exclude-pattern>
@@ -18,6 +27,7 @@
 			</property>
 		</properties>
 	</rule>
+
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>

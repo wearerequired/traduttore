@@ -1,11 +1,12 @@
 Feature: Test that the tests are working.
 
   Background:
-    Given a WP installation with the Traduttore plugin
+    Given a WP installation
 
   @require-php-7.4
   Scenario: Traduttore and GlotPress develop should be active.
     Given GlotPress develop being active
+    And Traduttore being active
 
     When I run `wp plugin status glotpress`
     Then STDOUT should contain:
@@ -31,6 +32,7 @@ Feature: Test that the tests are working.
 
   Scenario: Traduttore and GlotPress stable should be active.
     Given GlotPress stable being active
+    And Traduttore being active
 
     When I run `wp plugin status glotpress`
     Then STDOUT should contain:

@@ -13,33 +13,20 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: latest
           coverage: none
           tools: composer, cs2pr
 
-      - name: Get Composer home directory
-        id: composer-home
-        run: |
-          echo "::set-output name=dir::$(composer config home)"
-
       - name: Install PHP dependencies
-        uses: ramsey/composer-install@v2
-
-      - name: Install composer-normalize
-        run: composer global require ergebnis/composer-normalize
-
-      - name: Make Composer packages available globally
-        run: |
-          echo "${PWD}/vendor/bin" >> $GITHUB_PATH
-          echo "${{ steps.composer-home.outputs.dir }}/vendor/bin" >> $GITHUB_PATH
+        uses: ramsey/composer-install@v3
 
       - name: Lint PHP files
-        run: phpcs -q --report=checkstyle | cs2pr
+        run: vendor/bin/phpcs -q --report=checkstyle --severity=1 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 | cs2pr --graceful-warnings
 
       - name: Analyze PHP files
         run: composer run-script analyze

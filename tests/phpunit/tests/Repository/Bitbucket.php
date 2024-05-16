@@ -1,36 +1,33 @@
 <?php
 /**
  * Class BitbucketRepository
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests\Repository;
 
-use Required\Traduttore\Repository\Bitbucket as BitbucketRepository;
-use \Required\Traduttore\Project;
+use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
+use Required\Traduttore\Repository\Bitbucket as BitbucketRepository;
 use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Repository\Bitbucket.
  */
 class Bitbucket extends TestCase {
-	/** @var Project */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * Count of the number of times an HTTP request was made.
 	 *
 	 * @var int
 	 */
-	public $http_request_count = 0;
+	public int $http_request_count = 0;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name' => 'Project',
 				]
@@ -54,7 +51,7 @@ class Bitbucket extends TestCase {
 
 	public function test_get_name_falls_back_to_source_url_template(): void {
 		$project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Project',
 					'source_url_template' => 'https://bitbucket.org/wearerequired/traduttore/src/master/%file%#L%line%',
@@ -89,11 +86,11 @@ class Bitbucket extends TestCase {
 	 * @param false  $preempt Whether to preempt an HTTP request's return value. Default false.
 	 * @param mixed  $r       HTTP request arguments.
 	 * @param string $url     The request URL.
-	 * @return array|false Response data.
+	 * @return array{response: array{ code: int }, body: string}|false Response data.
 	 */
-	public function mock_repository_visibility_request( $preempt, $r, $url ) {
+	public function mock_repository_visibility_request( bool $preempt, mixed $r, string $url ): array|false {
 		if ( BitbucketRepository::API_BASE . '/repositories/wearerequired/traduttore' === $url ) {
-			++ $this->http_request_count;
+			++$this->http_request_count;
 
 			return [
 				'response' => [
@@ -109,7 +106,7 @@ class Bitbucket extends TestCase {
 	public function test_is_public_performs_http_request_and_caches_it(): void {
 		$this->project->set_repository_name( 'wearerequired/traduttore' );
 
-		add_filter( 'pre_http_request', array( $this, 'mock_repository_visibility_request' ), 10, 3 );
+		add_filter( 'pre_http_request', [ $this, 'mock_repository_visibility_request' ], 10, 3 );
 
 		$repository = new BitbucketRepository( $this->project );
 
@@ -118,7 +115,7 @@ class Bitbucket extends TestCase {
 		$is_public_after   = $repository->is_public();
 		$visibility_after  = $repository->get_project()->get_repository_visibility();
 
-		remove_filter( 'pre_http_request', array( $this, 'mock_repository_visibility_request' ), 10 );
+		remove_filter( 'pre_http_request', [ $this, 'mock_repository_visibility_request' ], 10 );
 
 		$this->assertNull( $visibility_before );
 		$this->assertTrue( $is_public );
@@ -130,7 +127,7 @@ class Bitbucket extends TestCase {
 	public function test_is_public_performs_no_unnecessary_http_request(): void {
 		$this->project->set_repository_name( 'wearerequired/traduttore' );
 
-		add_filter( 'pre_http_request', array( $this, 'mock_repository_visibility_request' ), 10, 3 );
+		add_filter( 'pre_http_request', [ $this, 'mock_repository_visibility_request' ], 10, 3 );
 
 		$this->project->set_repository_visibility( 'private' );
 
@@ -139,7 +136,7 @@ class Bitbucket extends TestCase {
 		$visibility_before = $repository->get_project()->get_repository_visibility();
 		$is_public         = $repository->is_public();
 
-		remove_filter( 'pre_http_request', array( $this, 'mock_repository_visibility_request' ), 10 );
+		remove_filter( 'pre_http_request', [ $this, 'mock_repository_visibility_request' ], 10 );
 
 		$this->assertSame( 'private', $visibility_before );
 		$this->assertFalse( $is_public );
@@ -273,9 +270,7 @@ class Bitbucket extends TestCase {
 
 		add_filter(
 			'traduttore.git_https_credentials',
-			function() {
-				return 'foo:bar';
-			}
+			fn() => 'foo:bar'
 		);
 
 		$url = $repository->get_https_url();
@@ -291,9 +286,7 @@ class Bitbucket extends TestCase {
 
 		add_filter(
 			'traduttore.hg_https_credentials',
-			function() {
-				return 'foo:bar';
-			}
+			fn() => 'foo:bar'
 		);
 
 		$url = $repository->get_https_url();

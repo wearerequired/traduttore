@@ -21,6 +21,8 @@ interface WebhookHandler {
 	 * @since 3.0.0
 	 *
 	 * @param \WP_REST_Request $request Request object.
+	 *
+	 * @phpstan-param \WP_REST_Request<array{}> $request
 	 */
 	public function __construct( WP_REST_Request $request );
 
@@ -31,7 +33,7 @@ interface WebhookHandler {
 	 *
 	 * @return bool True if permission is granted, false otherwise.
 	 */
-	public function permission_callback(): ?bool;
+	public function permission_callback(): bool;
 
 	/**
 	 * Callback for incoming webhooks.
@@ -40,5 +42,5 @@ interface WebhookHandler {
 	 *
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
-	public function callback();
+	public function callback(): \WP_Error|\WP_REST_Response;
 }

@@ -76,7 +76,7 @@ class InfoCommand extends WP_CLI_Command {
 				'cache_dir'          => $cache_dir,
 			];
 
-			WP_CLI::line( json_encode( $info ) );
+			WP_CLI::line( (string) json_encode( $info ) );
 		} else {
 			WP_CLI::line( "Traduttore version:\t" . $plugin_version );
 			WP_CLI::line( "WordPress version:\t" . $wp_version );
@@ -149,7 +149,7 @@ class InfoCommand extends WP_CLI_Command {
 	 * @return null|string Binary path on success, null otherwise.
 	 */
 	protected function get_wp_binary_path(): ?string {
-		if ( \defined( 'TRADUTTORE_WP_BIN' ) && TRADUTTORE_WP_BIN ) {
+		if ( \defined( 'TRADUTTORE_WP_BIN' ) && \is_string( TRADUTTORE_WP_BIN ) ) {
 			return TRADUTTORE_WP_BIN;
 		}
 

@@ -10,6 +10,7 @@ namespace Required\Traduttore;
 use DateTime;
 use DateTimeZone;
 use GP;
+use GP_Locale;
 use GP_Locales;
 use GP_Translation_Set;
 use ZipArchive;
@@ -41,7 +42,7 @@ class ZipProvider {
 	 *
 	 * @var \GP_Translation_Set The translation set.
 	 */
-	protected $translation_set;
+	protected GP_Translation_Set $translation_set;
 
 	/**
 	 * The current GlotPress locale.
@@ -50,7 +51,7 @@ class ZipProvider {
 	 *
 	 * @var \GP_Locale The locale.
 	 */
-	protected $locale;
+	protected GP_Locale $locale;
 
 	/**
 	 * The current project.
@@ -59,7 +60,7 @@ class ZipProvider {
 	 *
 	 * @var \Required\Traduttore\Project The project.
 	 */
-	protected $project;
+	protected Project $project;
 
 	/**
 	 * ZipProvider constructor.
@@ -71,7 +72,15 @@ class ZipProvider {
 	public function __construct( GP_Translation_Set $translation_set ) {
 		$this->translation_set = $translation_set;
 		$this->locale          = GP_Locales::by_slug( $this->translation_set->locale );
-		$this->project         = new Project( GP::$project->get( $this->translation_set->project_id ) );
+
+		/**
+		 * GlotPress project.
+		 *
+		 * @var \GP_Project $gp_project
+		 */
+		$gp_project = GP::$project->get( $this->translation_set->project_id );
+
+		$this->project = new Project( $gp_project );
 	}
 
 	/**
@@ -122,6 +131,10 @@ class ZipProvider {
 			if ( ! \WP_Filesystem() ) {
 				return false;
 			}
+		}
+
+		if ( ! $wp_filesystem ) {
+			return false;
 		}
 
 		// Make sure the cache directory exists.
@@ -205,6 +218,10 @@ class ZipProvider {
 			}
 		}
 
+		if ( ! $wp_filesystem ) {
+			return false;
+		}
+
 		$success = $wp_filesystem->rmdir( $this->get_zip_path(), true );
 
 		if ( $success ) {
@@ -249,6 +266,11 @@ class ZipProvider {
 	 * @return \DateTime Last build time.
 	 */
 	public function get_last_build_time(): ?DateTime {
+		/**
+		 * Build time.
+		 *
+		 * @var string|false $meta
+		 */
 		$meta = gp_get_meta( 'translation_set', $this->translation_set->id, static::BUILD_TIME_KEY );
 
 		return $meta ? new DateTime( $meta, new DateTimeZone( 'UTC' ) ) : null;

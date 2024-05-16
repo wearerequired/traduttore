@@ -12,8 +12,8 @@ if ( ! class_exists( 'SebastianBergmann\CodeCoverage\Filter' ) ) {
 }
 
 $filter = new Filter();
-$filter->includeDirectory( "{$root_folder}/includes" );
-$filter->includeDirectory( "{$root_folder}/src" );
+$filter->includeDirectory( "{$root_folder}/inc" );
+$filter->includeDirectory( "{$root_folder}/traduttore.php" );
 
 $coverage = new CodeCoverage(
 	( new Selector() )->forLineCoverage( $filter ),

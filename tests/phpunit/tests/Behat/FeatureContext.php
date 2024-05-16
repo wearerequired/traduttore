@@ -67,11 +67,9 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	}
 
 	/**
-	 * @Given a WP install(ation) with the Traduttore plugin
+	 * @Given Traduttore being active
 	 */
-	public function given_a_wp_installation_with_the_traduttore_plugin(): void {
-		$this->install_wp();
-
+	public function given_traduttore_being_active(): void {
 		// Symlink the current project folder into the WP folder as a plugin.
 		$project_dir = realpath( self::get_vendor_dir() . '/../' );
 		$plugin_dir  = $this->variables['RUN_DIR'] . '/wp-content/plugins';
@@ -85,7 +83,7 @@ final class FeatureContext extends WP_CLI_FeatureContext {
 	/**
 	 * @Given /^GlotPress (.*) being active$/
 	 */
-	public function given_the_glotpress_plugin_being_active( $gp_version ): void {
+	public function given_the_glotpress_plugin_being_active( string $gp_version ): void {
 		$branch_name = $gp_version;
 		if ( 'nightly' === $gp_version || 'develop' === $gp_version || 'trunk' === $gp_version ) {
 			$branch_name = 'develop';
@@ -120,7 +118,7 @@ PHPCODE;
 	/**
 	 * @When /^I (run|try) the WP-CLI command `([^`]+)`$/
 	 */
-	public function when_i_run_the_wp_cli_command( $mode, $command ): void {
+	public function when_i_run_the_wp_cli_command( string $mode, string $command ): void {
 		$command = "wp {$command}";
 
 		$with_code_coverage = getenv( 'BEHAT_CODE_COVERAGE' );
@@ -135,8 +133,8 @@ PHPCODE;
 				$command,
 				[
 					'BEHAT_PROJECT_DIR'    => $this->variables['PROJECT_DIR'],
-					'BEHAT_FEATURE_TITLE'  => self::$feature->getTitle(),
-					'BEHAT_SCENARIO_TITLE' => $this->scenario->getTitle(),
+					'BEHAT_FEATURE_TITLE'  => self::$feature ? self::$feature->getTitle() : null,
+					'BEHAT_SCENARIO_TITLE' => $this->scenario ? $this->scenario->getTitle() : null,
 				]
 			),
 			$mode
@@ -150,7 +148,7 @@ PHPCODE;
 	 *
 	 * @param string $directory Directory to ensure the existence of.
 	 */
-	private function ensure_dir_exists( $directory ): void {
+	private function ensure_dir_exists( string $directory ): void {
 		$parent = dirname( $directory );
 
 		if ( ! empty( $parent ) && ! is_dir( $parent ) ) {
@@ -165,11 +163,11 @@ PHPCODE;
 	/**
 	 * Create a new process with added environment variables.
 	 *
-	 * @param string $command Command to run.
-	 * @param array  $env     Associative array of environment variables to add.
+	 * @param string                $command Command to run.
+	 * @param array<string, string> $env     Associative array of environment variables to add.
 	 * @return \WP_CLI\Process Process to execute.
 	 */
-	public function proc_with_env( $command, $env = [] ): Process {
+	public function proc_with_env( string $command, array $env = [] ): Process {
 		$env = array_merge(
 			self::get_process_env_variables(),
 			$env
@@ -192,6 +190,8 @@ PHPCODE;
 	 * Get the environment variables required for launched `wp` processes.
 	 *
 	 * This is copied over from WP_CLI\Tests\Context\FeatureContext, to enable an adaption of FeatureContext::proc().
+	 *
+	 * @return array<string, string|int>
 	 */
 	private static function get_process_env_variables(): array {
 		// Ensure we're using the expected `wp` binary.

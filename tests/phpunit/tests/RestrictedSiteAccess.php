@@ -1,8 +1,6 @@
 <?php
 /**
  * RestrictedSiteAccess class.
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests;

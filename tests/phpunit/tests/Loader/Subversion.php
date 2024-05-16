@@ -1,14 +1,12 @@
 <?php
 /**
  * Class Subversion
- *
- * @package Traduttore\Tests
  */
 
 namespace Required\Traduttore\Tests\Loader;
 
-use \Required\Traduttore\Loader\Subversion as SubversionLoader;
-use \Required\Traduttore\Project;
+use Required\Traduttore\Loader\Subversion as SubversionLoader;
+use Required\Traduttore\Project;
 use Required\Traduttore\Repository\Bitbucket;
 use Required\Traduttore\Tests\TestCase;
 
@@ -18,16 +16,13 @@ use Required\Traduttore\Tests\TestCase;
  * @todo Mock shell execution
  */
 class Subversion extends TestCase {
-	/**
-	 * @var Project
-	 */
-	protected $project;
+	protected Project $project;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->project = new Project(
-			$this->factory->project->create(
+			$this->factory()->project->create(
 				[
 					'name'                => 'Sample Project',
 					'slug'                => 'sample-project',
@@ -44,8 +39,9 @@ class Subversion extends TestCase {
 	}
 
 	public function test_download_repository(): void {
-		$this->markTestSkipped( 'Need to mock shell command execution' );
+		$this->markTestIncomplete( 'Need to mock shell command execution' );
 
+		// @phpstan-ignore-next-line
 		$loader = new SubversionLoader( new Bitbucket( $this->project ) );
 
 		add_filter( 'traduttore.svn_checkout_use_https', '__return_true' );
@@ -56,8 +52,9 @@ class Subversion extends TestCase {
 	}
 
 	public function test_download_existing_repository(): void {
-		$this->markTestSkipped( 'Need to mock shell command execution' );
+		$this->markTestIncomplete( 'Need to mock shell command execution' );
 
+		// @phpstan-ignore-next-line
 		$loader = new SubversionLoader( new Bitbucket( $this->project ) );
 
 		add_filter( 'traduttore.svn_checkout_use_https', '__return_true' );
