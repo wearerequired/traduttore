@@ -80,7 +80,19 @@ class Export {
 	 * @return array<string,string> List of files with names as key and temporary file location as value.
 	 */
 	public function export_strings(): ?array {
-		$entries = GP::$translation->for_export( $this->project->get_project(), $this->translation_set, [ 'status' => 'current' ] );
+
+		/**
+		 * Filters the status of the entries to export.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param string                       $export_status   The status of the entries to export. Default is 'current'.
+		 * @param \GP_Translation_Set          $translation_set Translation set the language pack is for.
+		 * @param \Required\Traduttore\Project $project         The project that was updated.
+		 */
+		$export_status = apply_filters( 'traduttore.export_status', 'current', $this->translation_set, $this->project );
+
+		$entries = GP::$translation->for_export( $this->project->get_project(), $this->translation_set, [ 'status' => $export_status ] );
 
 		if ( ! $entries ) {
 			return null;
