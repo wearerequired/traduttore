@@ -230,10 +230,9 @@ class ProjectCommand extends WP_CLI_Command {
 	 *     $ wp traduttore project unlock 123
 	 *     Success: Project unlocked (ID: 123)!
 	 *
-	 * @param string[] $args       Command args.
-	 * @param string[] $assoc_args Associative args.
+	 * @param string[] $args Command args.
 	 */
-	public function unlock( array $args, array $assoc_args ): void {
+	public function unlock( array $args ): void {
 
 		$locator = new ProjectLocator( $args[0] );
 		$project = $locator->get_project();
