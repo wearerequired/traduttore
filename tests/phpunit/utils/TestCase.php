@@ -3,7 +3,7 @@
  * Class TestCase
  */
 
-namespace Required\Traduttore\Tests;
+namespace Required\Traduttore\Tests\Utils;
 
 use GP_UnitTest_Factory;
 use GP_UnitTestCase;
@@ -43,5 +43,13 @@ class TestCase extends GP_UnitTestCase {
 			$this->assertArrayHasKey( 'status', $data );
 			$this->assertSame( $status, $data['status'] );
 		}
+	}
+
+	/**
+	 * Temporary workaround to allow the tests to run on PHPUnit 10.
+	 *
+	 * @link https://core.trac.wordpress.org/ticket/59486
+	 */
+	public function expectDeprecated(): void {
 	}
 }

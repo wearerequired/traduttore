@@ -5,10 +5,10 @@
 
 namespace Required\Traduttore\Tests\Loader;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Loader\Subversion as SubversionLoader;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository\Bitbucket;
-use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Loader\Subversion.

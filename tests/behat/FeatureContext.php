@@ -15,6 +15,7 @@ use WP_CLI\Process;
 use WP_CLI\Tests\Context\FeatureContext as WP_CLI_FeatureContext;
 use WP_CLI\Utils;
 use function WP_CLI\Tests\Context\wp_cli_behat_env_debug;
+use function WP_CLI\Utils;
 
 /**
  * Feature tests context class with Traduttore-specific steps.
