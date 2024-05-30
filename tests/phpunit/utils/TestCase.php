@@ -7,7 +7,6 @@ namespace Required\Traduttore\Tests\Utils;
 
 use GP_UnitTest_Factory;
 use GP_UnitTestCase;
-use WP_Error;
 use WP_REST_Response;
 
 /**
@@ -29,8 +28,12 @@ class TestCase extends GP_UnitTestCase {
 
 	/**
 	 * @see WP_Test_REST_TestCase
+	 *
+	 * @param int|string                  $code Error code.
+	 * @param \WP_REST_Response|\WP_Error $response Response.
+	 * @param int|null                    $status Status code.
 	 */
-	protected function assertErrorResponse( mixed $code, WP_REST_Response|WP_Error $response, mixed $status = null ): void {
+	protected function assertErrorResponse( mixed $code, WP_REST_Response|\WP_Error $response, mixed $status = null ): void {
 		if ( $response instanceof WP_REST_Response ) {
 			$response = $response->as_error();
 		}
