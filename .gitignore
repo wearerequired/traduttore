@@ -8,9 +8,7 @@
 # PHPUnit
 /coverage*.xml
 .phpunit.result.cache
+.phpunit.cache
 
 # Behat
 *.log
-
-# Build process
-/build

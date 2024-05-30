@@ -55,7 +55,7 @@
     "wp-cli/rewrite-command": "^2.0",
     "wp-cli/wp-cli-tests": "^4.2.9",
     "wpackagist-plugin/glotpress": "^4.0.0",
-    "yoast/phpunit-polyfills": "^1.1"
+    "yoast/phpunit-polyfills": "^2.0.1"
   },
   "suggest": {
     "wpackagist-plugin/slack": "Send Slack notifications for various events"
@@ -73,7 +73,9 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
+      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests",
+      "Required\\Traduttore\\Tests\\Behat\\": "tests/behat",
+      "Required\\Traduttore\\Tests\\Utils\\": "tests/phpunit/utils"
     }
   },
   "config": {

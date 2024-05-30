@@ -8,6 +8,7 @@ namespace Required\Traduttore\Tests;
 use DateTime;
 use DateTimeZone;
 use GP_Project;
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Project as TraduttoreProject;
 
 /**

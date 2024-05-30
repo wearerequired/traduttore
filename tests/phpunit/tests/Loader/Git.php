@@ -5,10 +5,10 @@
 
 namespace Required\Traduttore\Tests\Loader;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Loader\Git as GitLoader;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository\GitHub;
-use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Loader\Git.

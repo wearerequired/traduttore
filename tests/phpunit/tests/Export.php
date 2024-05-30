@@ -5,6 +5,7 @@
 
 namespace Required\Traduttore\Tests;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use PO;
 use Required\Traduttore\Export as E;
 

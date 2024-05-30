@@ -6,6 +6,7 @@
 namespace Required\Traduttore\Tests;
 
 use GP;
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Configuration;
 use Required\Traduttore\Project;
 use Required\Traduttore\Updater as U;
