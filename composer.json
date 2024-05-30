@@ -73,9 +73,9 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests",
       "Required\\Traduttore\\Tests\\Behat\\": "tests/behat",
-      "Required\\Traduttore\\Tests\\Utils\\": "tests/phpunit/utils",
-      "Required\\Traduttore\\Tests\\": "tests/phpunit/tests"
+      "Required\\Traduttore\\Tests\\Utils\\": "tests/phpunit/utils"
     }
   },
   "config": {
