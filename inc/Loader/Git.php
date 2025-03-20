@@ -37,17 +37,23 @@ class Git extends Base {
 			return 0 === $status ? $target : null;
 		}
 
-		exec(
-			escapeshellcmd(
-				sprintf(
-					'git clone --depth=1 %1$s %2$s -q',
-					escapeshellarg( $this->get_clone_url() ),
-					escapeshellarg( $target )
-				)
-			),
-			$output,
-			$status
+		$cmd = sprintf(
+			'git clone --depth 1 %s %s',
+			escapeshellarg( $this->get_clone_url() ),
+			escapeshellarg( $target )
 		);
+
+		/**
+		 * Allows to clone a specific Git branch.
+		 *
+		 * @param string $branch The Git branch to clone.
+		 */
+		$branch = apply_filters( 'traduttore.git_branch_specifier', '' );
+		if ( '' !== $branch ) {
+			$cmd .= ' --branch ' . escapeshellarg( $branch );
+		}
+
+		exec( escapeshellcmd( $cmd ), $output, $status );
 
 		return 0 === $status ? $target : null;
 	}
