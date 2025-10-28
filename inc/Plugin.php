@@ -239,6 +239,9 @@ class Plugin {
 					'action'      => 'traduttore.updated',
 					'description' => __( 'When new translations are updated for a project', 'traduttore' ),
 					'message'     => function ( Project $project, array $stats ) {
+						/**
+						 * @var array<int> $stats
+						 */
 						[
 							$originals_added,
 							$originals_existing, // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable

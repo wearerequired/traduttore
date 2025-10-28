@@ -40,6 +40,11 @@ class GitLab extends Base {
 			return false;
 		}
 
+		/**
+		 * Request params.
+		 *
+		 * @var array{project: array{homepage?: string}} $params
+		 */
 		$params     = $this->request->get_params();
 		$repository = $params['project']['homepage'] ?? null;
 
@@ -67,6 +72,11 @@ class GitLab extends Base {
 	 * @return \WP_Error|\WP_REST_Response REST response on success, error object on failure.
 	 */
 	public function callback(): \WP_Error|\WP_REST_Response {
+		/**
+		 * Request params.
+		 *
+		 * @var array{project: array{default_branch: string, homepage: string, path_with_namespace: string, ssh_url: string, http_url: string, visibility_level: int}, ref: string} $params
+		 */
 		$params = $this->request->get_params();
 
 		// We only care about the default branch but don't want to send an error still.
