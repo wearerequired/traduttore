@@ -44,9 +44,13 @@ class Git extends Base {
 		);
 
 		/**
-		 * Allows to clone a specific Git branch.
+		 * Filters which Git branch is checked out when the repository is cloned.
 		 *
-		 * @param string $branch The Git branch to clone.
+		 * Use this to instruct Traduttore to clone a branch other than the default.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param string $branch Name of the Git branch to clone. Empty string clones the default branch.
 		 */
 		$branch = apply_filters( 'traduttore.git_clone_branch', '' );
 		if ( '' !== $branch ) {
