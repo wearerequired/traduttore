@@ -48,7 +48,7 @@ class Git extends Base {
 		 *
 		 * @param string $branch The Git branch to clone.
 		 */
-		$branch = apply_filters( 'traduttore.git_branch_specifier', '' );
+		$branch = apply_filters( 'traduttore.git_clone_branch', '' );
 		if ( '' !== $branch ) {
 			$cmd .= ' --branch ' . escapeshellarg( $branch );
 		}
