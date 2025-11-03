@@ -37,17 +37,27 @@ class Git extends Base {
 			return 0 === $status ? $target : null;
 		}
 
-		exec(
-			escapeshellcmd(
-				sprintf(
-					'git clone --depth=1 %1$s %2$s -q',
-					escapeshellarg( $this->get_clone_url() ),
-					escapeshellarg( $target )
-				)
-			),
-			$output,
-			$status
+		$cmd = sprintf(
+			'git clone --depth 1 %s %s',
+			escapeshellarg( $this->get_clone_url() ),
+			escapeshellarg( $target )
 		);
+
+		/**
+		 * Filters which Git branch is checked out when the repository is cloned.
+		 *
+		 * Use this to instruct Traduttore to clone a branch other than the default.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param string $branch Name of the Git branch to clone. Empty string clones the default branch.
+		 */
+		$branch = apply_filters( 'traduttore.git_clone_branch', '' );
+		if ( '' !== $branch ) {
+			$cmd .= ' --branch ' . escapeshellarg( $branch );
+		}
+
+		exec( escapeshellcmd( $cmd ), $output, $status );
 
 		return 0 === $status ? $target : null;
 	}
