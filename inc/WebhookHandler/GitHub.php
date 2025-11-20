@@ -118,21 +118,25 @@ class GitHub extends Base {
 		 * @var array{repository: array{ default_branch?: string, html_url: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
 		 */
 
-		if ( ! isset( $params['repository']['default_branch'] )
-			| ! isset( $params['repository']['html_url'] )
-			| ! isset( $params['ref'] )
+		$default_branch = (string) $params['repository']['default_branch'] ?? '';
+		$html_url       = (string) $params['repository']['html_url'];
+		$ref            = (string) $params['ref'];
+
+		if ( '' === $default_branch
+			| '' === $html_url
+			| '' === $ref
 		) {
 			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
 		}
 
-		$project = $this->get_validated_project( $params['repository']['html_url'], $params['repository']['default_branch'], $params['ref'] );
+		$project = $this->resolve_project( $html_url, $default_branch, $ref );
 
 		if ( ! $project instanceof Project ) {
 			return $project;
 		}
 
 		$project->set_repository_name( $params['repository']['full_name'] );
-		$project->set_repository_url( $params['repository']['html_url'] );
+		$project->set_repository_url( $html_url );
 		$project->set_repository_ssh_url( $params['repository']['ssh_url'] );
 		$project->set_repository_https_url( $params['repository']['clone_url'] );
 		$project->set_repository_visibility( false === $params['repository']['private'] ? 'public' : 'private' );

@@ -96,7 +96,7 @@ abstract class Base implements WebhookHandler {
 	 * @param string $ref Name of the received branch through the webhook.
 	 * @return \Required\Traduttore\Project|\WP_REST_Response|\WP_Error
 	 */
-	protected function get_validated_project( string $repository, string $default_branch = '', string $ref = '' ): Project|WP_REST_Response|\WP_Error {
+	protected function resolve_project( string $repository, string $default_branch = '', string $ref = '' ): Project|WP_REST_Response|\WP_Error {
 		$locator = new ProjectLocator( $repository );
 		$project = $locator->get_project();
 
