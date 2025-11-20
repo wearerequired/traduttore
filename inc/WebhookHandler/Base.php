@@ -8,8 +8,10 @@
 namespace Required\Traduttore\WebhookHandler;
 
 use Required\Traduttore\Project;
+use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\WebhookHandler;
 use WP_REST_Request;
+use WP_REST_Response;
 
 /**
  * Base webhook handler class.
@@ -84,5 +86,35 @@ abstract class Base implements WebhookHandler {
 		 * @param \Required\Traduttore\Project|null   $project The current project if passed through.
 		 */
 		return apply_filters( 'traduttore.webhook_secret', $secret, $this, $project );
+	}
+
+	/**
+	 * Return a valid project or errors. Allows to customize the pulled branch.
+	 *
+	 * @param string $repository Metadata to find a GlotPress project.
+	 * @param string $default_branch Name of the repository's default branch.
+	 * @param string $ref Name of the received branch through the webhook.
+	 * @return \Required\Traduttore\Project|\WP_REST_Response|\WP_Error
+	 */
+	protected function get_validated_project( string $repository, string $default_branch = '', string $ref = '' ): Project|WP_REST_Response|\WP_Error {
+		$locator = new ProjectLocator( $repository );
+		$project = $locator->get_project();
+
+		if ( ! $project ) {
+			return new \WP_Error( '404', 'Could not find project for this repository', [ 'status' => 404 ] );
+		}
+
+		if ( empty( $default_branch ) || empty( $ref ) ) {
+			return $project;
+		}
+
+		$branch = 'refs/heads/' . (string) apply_filters( 'traduttore.git_clone_branch', $default_branch );
+
+		// We only care about the default or custom branch but don't want to send an error still.
+		if ( $branch !== $ref ) {
+			return new WP_REST_Response( [ 'result' => 'Not the default or custom branch' ] );
+		}
+
+		return $project;
 	}
 }

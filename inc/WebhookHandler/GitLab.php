@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
@@ -79,16 +80,17 @@ class GitLab extends Base {
 		 */
 		$params = $this->request->get_params();
 
-		// We only care about the default branch but don't want to send an error still.
-		if ( 'refs/heads/' . $params['project']['default_branch'] !== $params['ref'] ) {
-			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
+		if ( ! isset( $params['project']['default_branch'] )
+			| ! isset( $params['project']['homepage'] )
+			| ! isset( $params['ref'] )
+		) {
+			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
 		}
 
-		$locator = new ProjectLocator( $params['project']['homepage'] );
-		$project = $locator->get_project();
+		$project = $this->get_validated_project( $params['project']['homepage'], $params['project']['default_branch'], $params['ref'] );
 
-		if ( ! $project ) {
-			return new \WP_Error( '404', 'Could not find project for this repository' );
+		if ( ! $project instanceof Project ) {
+			return $project;
 		}
 
 		$project->set_repository_name( $params['project']['path_with_namespace'] );

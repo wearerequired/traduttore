@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
@@ -80,11 +81,14 @@ class Bitbucket extends Base {
 		 */
 		$params = $this->request->get_params();
 
-		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] );
-		$project = $locator->get_project();
+		if ( ! isset( $params['repository']['links']['html']['href'] ) ) {
+			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
+		}
 
-		if ( ! $project ) {
-			return new \WP_Error( '404', 'Could not find project for this repository' );
+		$project = $this->get_validated_project( $params['repository']['links']['html']['href'] );
+
+		if ( ! $project instanceof Project ) {
+			return $project;
 		}
 
 		if ( ! $project->get_repository_vcs_type() ) {
