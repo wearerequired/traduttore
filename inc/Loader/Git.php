@@ -51,6 +51,7 @@ class Git extends Base {
 		 * @since 4.0.0
 		 *
 		 * @param string $branch Name of the Git branch to clone. Empty string clones the default branch.
+		 * @param string|null $repository Name of the repository. Can be used to resolve the project.
 		 */
 		$branch = apply_filters( 'traduttore.git_clone_branch', '', $this->repository->get_name() );
 		if ( '' !== $branch ) {
