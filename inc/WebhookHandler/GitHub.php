@@ -118,7 +118,7 @@ class GitHub extends Base {
 		 * @var array{repository: array{ default_branch?: string, html_url: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
 		 */
 
-		$default_branch = (string) $params['repository']['default_branch'] ?? '';
+		$default_branch = (string) $params['repository']['default_branch'] ?: '';
 		$html_url       = (string) $params['repository']['html_url'];
 		$ref            = (string) $params['ref'];
 
