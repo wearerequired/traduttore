@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
@@ -117,24 +118,25 @@ class GitHub extends Base {
 		 * @var array{repository: array{ default_branch?: string, html_url: string, full_name: string, ssh_url: string, clone_url: string, private: bool }, ref: string } $params
 		 */
 
-		if ( ! isset( $params['repository']['default_branch'] ) ) {
+		$default_branch = (string) $params['repository']['default_branch'] ?: '';
+		$html_url       = (string) $params['repository']['html_url'];
+		$ref            = (string) $params['ref'];
+
+		if ( '' === $default_branch
+			| '' === $html_url
+			| '' === $ref
+		) {
 			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
 		}
 
-		// We only care about the default branch but don't want to send an error still.
-		if ( 'refs/heads/' . $params['repository']['default_branch'] !== $params['ref'] ) {
-			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
-		}
+		$project = $this->resolve_project( $html_url, $default_branch, $ref );
 
-		$locator = new ProjectLocator( $params['repository']['html_url'] );
-		$project = $locator->get_project();
-
-		if ( ! $project ) {
-			return new \WP_Error( '404', 'Could not find project for this repository', [ 'status' => 404 ] );
+		if ( ! $project instanceof Project ) {
+			return $project;
 		}
 
 		$project->set_repository_name( $params['repository']['full_name'] );
-		$project->set_repository_url( $params['repository']['html_url'] );
+		$project->set_repository_url( $html_url );
 		$project->set_repository_ssh_url( $params['repository']['ssh_url'] );
 		$project->set_repository_https_url( $params['repository']['clone_url'] );
 		$project->set_repository_visibility( false === $params['repository']['private'] ? 'public' : 'private' );

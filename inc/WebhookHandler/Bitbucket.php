@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
@@ -79,12 +80,16 @@ class Bitbucket extends Base {
 		 * @var array{repository: array{scm: string, full_name: string, links: array{html: array{href: string}}, is_private: bool}} $params
 		 */
 		$params = $this->request->get_params();
+		$href   = (string) $params['repository']['links']['html']['href'];
 
-		$locator = new ProjectLocator( $params['repository']['links']['html']['href'] );
-		$project = $locator->get_project();
+		if ( '' === $href ) {
+			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
+		}
 
-		if ( ! $project ) {
-			return new \WP_Error( '404', 'Could not find project for this repository' );
+		$project = $this->resolve_project( $href );
+
+		if ( ! $project instanceof Project ) {
+			return $project;
 		}
 
 		if ( ! $project->get_repository_vcs_type() ) {
@@ -92,7 +97,7 @@ class Bitbucket extends Base {
 		}
 
 		$project->set_repository_name( $params['repository']['full_name'] );
-		$project->set_repository_url( $params['repository']['links']['html']['href'] );
+		$project->set_repository_url( $href );
 
 		$ssh_url   = sprintf( 'git@bitbucket.org:%s.git', $project->get_repository_name() );
 		$https_url = sprintf( 'https://bitbucket.org/%s.git', $project->get_repository_name() );

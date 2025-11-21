@@ -7,6 +7,7 @@
 
 namespace Required\Traduttore\WebhookHandler;
 
+use Required\Traduttore\Project;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Updater;
@@ -77,22 +78,26 @@ class GitLab extends Base {
 		 *
 		 * @var array{project: array{default_branch: string, homepage: string, path_with_namespace: string, ssh_url: string, http_url: string, visibility_level: int}, ref: string} $params
 		 */
-		$params = $this->request->get_params();
+		$params         = $this->request->get_params();
+		$default_branch = (string) $params['project']['default_branch'];
+		$homepage       = (string) $params['project']['homepage'];
+		$ref            = (string) $params['ref'];
 
-		// We only care about the default branch but don't want to send an error still.
-		if ( 'refs/heads/' . $params['project']['default_branch'] !== $params['ref'] ) {
-			return new WP_REST_Response( [ 'result' => 'Not the default branch' ] );
+		if ( '' === $default_branch
+			| '' === $homepage
+			| '' === $ref
+		) {
+			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
 		}
 
-		$locator = new ProjectLocator( $params['project']['homepage'] );
-		$project = $locator->get_project();
+		$project = $this->resolve_project( $homepage, $default_branch, $ref );
 
-		if ( ! $project ) {
-			return new \WP_Error( '404', 'Could not find project for this repository' );
+		if ( ! $project instanceof Project ) {
+			return $project;
 		}
 
 		$project->set_repository_name( $params['project']['path_with_namespace'] );
-		$project->set_repository_url( $params['project']['homepage'] );
+		$project->set_repository_url( $homepage );
 		$project->set_repository_ssh_url( $params['project']['ssh_url'] );
 		$project->set_repository_https_url( $params['project']['http_url'] );
 		$project->set_repository_visibility( 20 === $params['project']['visibility_level'] ? 'public' : 'private' );
