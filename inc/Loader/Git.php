@@ -52,7 +52,7 @@ class Git extends Base {
 		 *
 		 * @param string $branch Name of the Git branch to clone. Empty string clones the default branch.
 		 */
-		$branch = apply_filters( 'traduttore.git_clone_branch', '' );
+		$branch = apply_filters( 'traduttore.git_clone_branch', '', $this->repository->get_name() );
 		if ( '' !== $branch ) {
 			$cmd .= ' --branch ' . escapeshellarg( $branch );
 		}

@@ -108,7 +108,7 @@ abstract class Base implements WebhookHandler {
 			return $project;
 		}
 
-		$branch = 'refs/heads/' . (string) apply_filters( 'traduttore.git_clone_branch', $default_branch, $project );
+		$branch = 'refs/heads/' . (string) apply_filters( 'traduttore.git_clone_branch', $default_branch, $project->get_name() );
 
 		// We only care about the default or custom branch but don't want to send an error still.
 		if ( $branch !== $ref ) {
