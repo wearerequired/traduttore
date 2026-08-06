@@ -7,6 +7,7 @@ namespace Required\Traduttore\Tests;
 
 use DateTime;
 use GP;
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\ProjectLocator;
 use Required\Traduttore\ZipProvider as Provider;
 use Translations;
@@ -161,11 +162,9 @@ class ZipProvider extends TestCase {
 		$this->assertTrue( $provider->generate_zip_file() );
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
 	public function test_generate_zip_file_missing_wp_filesystem(): void {
+		unset( $GLOBALS['wp_filesystem'] );
+
 		$original = $this->factory()->original->create( [ 'project_id' => $this->translation_set->project_id ] );
 
 		$this->factory()->translation->create(

@@ -5,6 +5,7 @@
 
 namespace Required\Traduttore\Tests;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Configuration as Config;
 
 /**

@@ -5,10 +5,10 @@
 
 namespace Required\Traduttore\Tests\Repository;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
 use Required\Traduttore\Repository\Bitbucket as BitbucketRepository;
-use Required\Traduttore\Tests\TestCase;
 
 /**
  * Test cases for \Required\Traduttore\Repository\Bitbucket.

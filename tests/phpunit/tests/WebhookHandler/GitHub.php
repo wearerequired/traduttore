@@ -5,9 +5,9 @@
 
 namespace Required\Traduttore\Tests\WebhookHandler;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
-use Required\Traduttore\Tests\TestCase;
 use WP_REST_Request;
 
 /**
@@ -96,7 +96,7 @@ class GitHub extends TestCase {
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertSame( 200, $response->get_status() );
-		$this->assertSame( [ 'result' => 'Not the default branch' ], $response->get_data() );
+		$this->assertSame( [ 'result' => 'Not the default or custom branch' ], $response->get_data() );
 	}
 
 	public function test_invalid_project(): void {

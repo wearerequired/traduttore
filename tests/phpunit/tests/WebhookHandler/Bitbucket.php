@@ -5,9 +5,9 @@
 
 namespace Required\Traduttore\Tests\WebhookHandler;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
-use Required\Traduttore\Tests\TestCase;
 use WP_REST_Request;
 
 /**

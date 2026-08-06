@@ -61,6 +61,11 @@ jobs:
           coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           tools: composer
 
+      - name: Install svn
+        run: |
+            sudo apt update -y --allow-releaseinfo-change
+            sudo apt install -y subversion
+
       - name: Install PHP dependencies
         uses: ramsey/composer-install@v3
 

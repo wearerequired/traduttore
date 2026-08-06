@@ -9,7 +9,7 @@ use GP;
 use GP_Locale;
 use GP_Translation_Set;
 use GP_UnitTest_Factory;
-use GP_UnitTestCase_Route;
+use Required\Traduttore\Tests\Utils\TestCase_Route;
 use ReflectionClass;
 use Required\Traduttore\TranslationApiRoute as Route;
 use Required\Traduttore\ZipProvider as Provider;
@@ -17,7 +17,7 @@ use Required\Traduttore\ZipProvider as Provider;
 /**
  * Test cases for \Required\Traduttore\TranslationApiRoute.
  */
-class TranslationApiRoute extends GP_UnitTestCase_Route {
+class TranslationApiRoute extends TestCase_Route {
 	/**
 	 * @var class-string
 	 */

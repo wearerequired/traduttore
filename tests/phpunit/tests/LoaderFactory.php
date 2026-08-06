@@ -5,12 +5,12 @@
 
 namespace Required\Traduttore\Tests;
 
+use Required\Traduttore\Tests\Utils\TestCase;
 use Required\Traduttore\Loader\Git;
 use Required\Traduttore\Loader\Mercurial;
-
+use Required\Traduttore\LoaderFactory as Factory;
 use Required\Traduttore\Project;
 use Required\Traduttore\Repository;
-use Required\Traduttore\LoaderFactory as Factory;
 use Required\Traduttore\Repository\Bitbucket;
 use Required\Traduttore\Repository\GitHub;
 use Required\Traduttore\Repository\GitLab;

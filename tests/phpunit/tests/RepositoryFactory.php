@@ -5,10 +5,11 @@
 
 namespace Required\Traduttore\Tests;
 
+use Required\Traduttore\Tests\Utils\TestCase;
+use Required\Traduttore\Project;
 use Required\Traduttore\Repository\Bitbucket;
 use Required\Traduttore\Repository\GitHub;
 use Required\Traduttore\Repository\GitLab;
-use Required\Traduttore\Project;
 use Required\Traduttore\RepositoryFactory as Factory;
 
 /**
